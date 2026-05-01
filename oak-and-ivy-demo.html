@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title id="pg-title">Oak &amp; Ivy Bar &amp; Grill - Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── RESET ──────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; }
+
+/* ─── FLASH ──────────────────────────────────── */
+#flash {
+  position:fixed; inset:0; z-index:9999;
+  background:#C9A96E; opacity:0; pointer-events:none;
+  transition: opacity 0.2s;
+}
+#flash.on { opacity:1; }
+
+/* ─── CANVAS ─────────────────────────────────── */
+#cvs { position:fixed; inset:0; z-index:200; pointer-events:none; }
+
+/* ─── APPLY BTN ──────────────────────────────── */
+#apply-btn {
+  position:fixed; bottom:28px; right:28px; z-index:500;
+  padding:14px 24px;
+  background:#C9A96E; color:#000;
+  font-family:'Inter',sans-serif; font-weight:700;
+  font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+  border:none; cursor:pointer;
+  animation: goldglow 2.5s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+#apply-btn:hover { transform:scale(1.06); }
+body.dope #apply-btn {
+  background:#1a1a1a; color:#C9A96E;
+  border:1px solid #2a2a2a; animation:none;
+}
+@keyframes goldglow {
+  0%,100% { box-shadow:0 0 18px rgba(201,169,110,0.5); }
+  50%      { box-shadow:0 0 38px rgba(201,169,110,0.9); }
+}
+
+/* ════════════════════════════════════════════
+   BORING SITE
+════════════════════════════════════════════ */
+#boring {
+  display:block;
+  font-family: 'Times New Roman', Times, serif;
+  background:#fff; color:#333;
+}
+body.dope #boring { display:none; }
+
+.b-header {
+  background:#8B1A1A;
+  color:#fff;
+  text-align:center;
+  padding:16px;
+}
+.b-header h1 { font-size:28px; letter-spacing:2px; }
+.b-header p  { font-size:13px; color:#ffcccc; margin-top:4px; }
+
+.b-blink { animation: blink 1s step-end infinite; display:inline-block; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+.b-nav-strip {
+  background:#f0e0e0;
+  border-top:2px solid #8B1A1A;
+  border-bottom:2px solid #8B1A1A;
+  padding:8px;
+  text-align:center;
+}
+.b-nav-strip a {
+  font-size:14px; color:#8B1A1A;
+  margin:0 12px; text-decoration:underline;
+}
+
+.b-body { max-width:800px; margin:0 auto; padding:24px 20px; }
+.b-welcome {
+  border:2px solid #ccc;
+  background:#fffaf0;
+  padding:16px;
+  margin-bottom:24px;
+  text-align:center;
+  font-size:14px; color:#555;
+}
+.b-welcome strong { display:block; font-size:18px; color:#8B1A1A; margin-bottom:6px; }
+
+.b-section-title {
+  font-size:20px; font-weight:bold;
+  color:#8B1A1A;
+  border-bottom:1px solid #ccc;
+  padding-bottom:6px;
+  margin:24px 0 12px;
+}
+.b-divider {
+  text-align:center; color:#ccc; font-size:20px;
+  margin:8px 0; letter-spacing:8px;
+}
+.b-menu-item {
+  display:flex; justify-content:space-between;
+  font-size:15px; padding:6px 0;
+  border-bottom:1px dotted #ddd;
+}
+.b-menu-item span { color:#555; font-size:13px; display:block; }
+.b-price { font-weight:bold; white-space:nowrap; padding-left:12px; }
+
+.b-specials {
+  background:#fffce0;
+  border:1px solid #ccc;
+  padding:14px;
+  margin:20px 0;
+  font-size:14px;
+}
+.b-specials strong { color:#8B1A1A; display:block; margin-bottom:8px; font-size:16px; }
+.b-specials li { margin-left:20px; padding:3px 0; }
+
+.b-footer-b {
+  background:#8B1A1A; color:#ffdddd;
+  text-align:center; padding:14px;
+  font-size:12px; margin-top:32px;
+}
+
+/* ════════════════════════════════════════════
+   DOPE SITE — OAK & IVY
+════════════════════════════════════════════ */
+#dope {
+  display:none;
+  font-family:'Inter',sans-serif;
+  background:#0d0d0d;
+  color:#f5f0e8;
+  min-height:100vh;
+}
+body.dope #dope { display:block; }
+
+/* ── NAV ─────────────────────────────────── */
+.d-nav {
+  position:sticky; top:0; z-index:300;
+  background:rgba(13,13,13,0.97);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid #1e1e1e;
+  padding:0 40px;
+  display:flex; align-items:center;
+  height:68px;
+  gap:0;
+}
+.d-nav-logo {
+  font-family:'Playfair Display',serif;
+  font-size:22px; font-weight:700;
+  color:#f5f0e8;
+  letter-spacing:0.06em;
+  white-space:nowrap;
+  margin-right:auto;
+}
+.d-nav-logo em { color:#C9A96E; font-style:italic; }
+.d-tabs {
+  display:flex; gap:0;
+}
+.d-tab {
+  padding:0 22px; height:68px;
+  display:flex; align-items:center;
+  font-size:12px; font-weight:600;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:#555; cursor:pointer; border:none;
+  background:transparent;
+  border-bottom:2px solid transparent;
+  transition:color 0.2s, border-color 0.2s;
+  white-space:nowrap;
+}
+.d-tab:hover { color:#C9A96E; }
+.d-tab.active { color:#C9A96E; border-bottom-color:#C9A96E; }
+
+/* ── HERO ────────────────────────────────── */
+.d-hero {
+  min-height:44vh;
+  display:flex; align-items:center;
+  padding:60px 40px;
+  position:relative; overflow:hidden;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(201,169,110,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(201,169,110,0.04) 0%, transparent 60%),
+    #0d0d0d;
+}
+.d-hero-inner { max-width:1200px; margin:0 auto; width:100%; }
+.d-hero-label {
+  font-size:11px; letter-spacing:0.32em; text-transform:uppercase;
+  color:#C9A96E; margin-bottom:18px; font-weight:600;
+}
+.d-hero-title {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(52px,8vw,96px);
+  line-height:0.95;
+  color:#f5f0e8;
+  margin-bottom:12px;
+}
+.d-hero-title em { color:#C9A96E; font-style:italic; }
+.d-hero-sub {
+  font-size:16px; color:#555;
+  max-width:420px; line-height:1.6;
+  margin-bottom:36px;
+}
+.d-hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+
+.d-btn-gold {
+  padding:14px 36px;
+  background:#C9A96E; color:#000;
+  font-family:'Inter',sans-serif;
+  font-weight:700; font-size:12px;
+  letter-spacing:0.16em; text-transform:uppercase;
+  border:none; cursor:pointer;
+  transition:transform 0.2s, background 0.2s;
+}
+.d-btn-gold:hover { transform:translateY(-2px); background:#dfc07e; }
+
+.d-btn-outline {
+  padding:14px 36px;
+  background:transparent; color:#f5f0e8;
+  font-family:'Inter',sans-serif;
+  font-weight:600; font-size:12px;
+  letter-spacing:0.16em; text-transform:uppercase;
+  border:1px solid #2a2a2a; cursor:pointer;
+  transition:border-color 0.2s, color 0.2s;
+}
+.d-btn-outline:hover { border-color:#C9A96E; color:#C9A96E; }
+
+/* Hero BG text */
+.d-hero-bg {
+  position:absolute; right:-20px; top:50%;
+  transform:translateY(-50%);
+  font-family:'Playfair Display',serif;
+  font-size:clamp(140px,22vw,300px);
+  color:rgba(201,169,110,0.04);
+  line-height:1; user-select:none; pointer-events:none;
+  font-weight:700; font-style:italic;
+}
+
+/* ── HAPPY HOUR BANNER ───────────────────── */
+.d-hh-banner {
+  background:#111;
+  border-top:1px solid #1e1e1e;
+  border-bottom:1px solid #1e1e1e;
+  padding:14px 40px;
+  display:flex; align-items:center; gap:20px;
+  flex-wrap:wrap;
+}
+.d-hh-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:#C9A96E;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.5; transform:scale(0.7); }
+}
+.d-hh-text { font-size:13px; color:#888; }
+.d-hh-text strong { color:#C9A96E; font-weight:700; }
+.d-hh-timer {
+  margin-left:auto;
+  font-family:'Inter',monospace;
+  font-size:22px; font-weight:700;
+  color:#f5f0e8; letter-spacing:0.08em;
+}
+.d-hh-timer span { color:#C9A96E; }
+
+/* ── SPECIALS BOARD ──────────────────────── */
+.d-specials {
+  padding:50px 40px;
+  background:#0a0a0a;
+  border-bottom:1px solid #1e1e1e;
+}
+.d-specials-inner { max-width:1200px; margin:0 auto; }
+.d-board-label {
+  font-size:11px; letter-spacing:0.28em; text-transform:uppercase;
+  color:#C9A96E; font-weight:600; margin-bottom:24px;
+  display:flex; align-items:center; gap:10px;
+}
+.d-board-label::after {
+  content:''; flex:1;
+  height:1px; background:linear-gradient(to right,#2a2a2a,transparent);
+}
+.d-specials-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px; background:#1a1a1a;
+}
+.d-special-card {
+  background:#0a0a0a;
+  padding:32px 28px;
+  position:relative; overflow:hidden;
+}
+.d-special-card::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:2px;
+  background:linear-gradient(to right,#C9A96E,transparent);
+}
+.d-special-tag {
+  font-size:10px; letter-spacing:0.22em; text-transform:uppercase;
+  color:#C9A96E; font-weight:700; margin-bottom:10px;
+}
+.d-special-name {
+  font-family:'Playfair Display',serif;
+  font-size:22px; color:#f5f0e8;
+  margin-bottom:8px; line-height:1.2;
+}
+.d-special-desc { font-size:13px; color:#555; line-height:1.7; }
+.d-special-price {
+  margin-top:16px;
+  font-size:20px; font-weight:700;
+  color:#C9A96E;
+}
+.d-special-price s { font-size:14px; color:#333; margin-right:6px; font-weight:400; }
+
+/* ── MENU ────────────────────────────────── */
+.d-menu { padding:60px 40px; }
+.d-menu-inner { max-width:1200px; margin:0 auto; }
+.d-menu-header {
+  display:flex; justify-content:space-between;
+  align-items:flex-end; margin-bottom:32px;
+  flex-wrap:wrap; gap:20px;
+}
+.d-menu-title {
+  font-family:'Playfair Display',serif;
+  font-size:36px; color:#f5f0e8;
+}
+.d-filters { display:flex; gap:8px; flex-wrap:wrap; }
+.d-filter {
+  padding:7px 16px;
+  background:transparent; color:#555;
+  font-family:'Inter',sans-serif; font-weight:600;
+  font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  border:1px solid #222; cursor:pointer;
+  transition:all 0.2s;
+}
+.d-filter:hover { border-color:#555; color:#888; }
+.d-filter.on { background:#C9A96E; color:#000; border-color:#C9A96E; }
+
+.d-drink-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px; background:#141414;
+}
+.d-drink-card {
+  background:#0d0d0d;
+  padding:32px 28px;
+  cursor:pointer;
+  transition:background 0.25s, transform 0.2s;
+  position:relative;
+}
+.d-drink-card:hover { background:#111; transform:translateY(-3px); }
+.d-drink-card.hidden { display:none; }
+
+.d-drink-num {
+  font-family:'Inter',monospace;
+  font-size:11px; color:#222;
+  margin-bottom:16px;
+}
+.d-drink-name {
+  font-family:'Playfair Display',serif;
+  font-size:22px; color:#f5f0e8;
+  margin-bottom:8px; line-height:1.2;
+}
+.d-drink-desc { font-size:13px; color:#444; line-height:1.75; margin-bottom:16px; }
+.d-drink-footer {
+  display:flex; justify-content:space-between;
+  align-items:center;
+}
+.d-drink-price { font-size:20px; font-weight:700; color:#C9A96E; }
+.d-drink-tags { display:flex; gap:6px; flex-wrap:wrap; }
+.d-tag {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:#333; padding:3px 8px;
+  border:1px solid #222;
+}
+
+/* ── QUIZ MODAL ──────────────────────────── */
+#quiz-modal {
+  display:none;
+  position:fixed; inset:0; z-index:800;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter:blur(8px);
+  align-items:center; justify-content:center;
+}
+#quiz-modal.open { display:flex; }
+
+.quiz-box {
+  background:#111; width:min(600px,90vw);
+  padding:52px 48px;
+  position:relative;
+  border:1px solid #1e1e1e;
+}
+.quiz-close {
+  position:absolute; top:20px; right:20px;
+  background:none; border:none; cursor:pointer;
+  color:#333; font-size:24px; line-height:1;
+  transition:color 0.2s;
+}
+.quiz-close:hover { color:#f5f0e8; }
+
+.quiz-step { display:none; }
+.quiz-step.active { display:block; }
+
+.quiz-label {
+  font-size:11px; letter-spacing:0.28em;
+  text-transform:uppercase; color:#C9A96E;
+  font-weight:600; margin-bottom:16px;
+}
+.quiz-q {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(24px,4vw,34px);
+  color:#f5f0e8; line-height:1.2;
+  margin-bottom:36px;
+}
+.quiz-options { display:flex; flex-direction:column; gap:10px; }
+.quiz-opt {
+  padding:16px 24px;
+  background:#0d0d0d; border:1px solid #1e1e1e;
+  color:#888; text-align:left; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:15px;
+  transition:all 0.2s;
+}
+.quiz-opt:hover { border-color:#C9A96E; color:#f5f0e8; background:#0a0a0a; }
+
+/* Progress bar */
+.quiz-progress { display:flex; gap:6px; margin-bottom:36px; }
+.quiz-pip { flex:1; height:2px; background:#1e1e1e; }
+.quiz-pip.done { background:#C9A96E; }
+
+/* Result */
+.quiz-result { display:none; text-align:center; }
+.quiz-result.show { display:block; animation: fadeUp 0.5s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+.quiz-result-label {
+  font-size:11px; letter-spacing:0.28em;
+  text-transform:uppercase; color:#C9A96E;
+  font-weight:600; margin-bottom:12px;
+}
+.quiz-result-name {
+  font-family:'Playfair Display',serif;
+  font-size:42px; color:#f5f0e8;
+  margin-bottom:12px; line-height:1.1;
+}
+.quiz-result-desc { font-size:15px; color:#555; line-height:1.8; margin-bottom:8px; }
+.quiz-result-ingredients {
+  font-size:13px; color:#444; font-style:italic;
+  margin-bottom:28px;
+}
+.quiz-result-price { font-size:28px; font-weight:700; color:#C9A96E; margin-bottom:28px; }
+.quiz-result-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+/* ── FOOTER ──────────────────────────────── */
+.d-footer {
+  background:#080808;
+  border-top:1px solid #141414;
+  padding:32px 40px;
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:12px;
+}
+.d-footer-logo {
+  font-family:'Playfair Display',serif;
+  font-size:18px; color:#C9A96E;
+  font-style:italic;
+}
+.d-footer-info { font-size:12px; color:#2a2a2a; line-height:1.8; }
+
+/* ── SECTION VISIBILITY ──────────────────── */
+.d-section {
+  opacity:0; transform:translateY(24px);
+  transition:opacity 0.65s ease, transform 0.65s ease;
+}
+.d-section.visible { opacity:1; transform:translateY(0); }
+
+/* ── PAGE SECTIONS ───────────────────────── */
+#pg-cocktails, #pg-beer, #pg-food { display:none; }
+#pg-overview { display:block; }
+
+/* ── RESPONSIVE ──────────────────────────── */
+@media(max-width:900px) {
+  .d-nav { padding:0 20px; }
+  .d-nav-logo { font-size:18px; }
+  .d-tab { padding:0 14px; font-size:11px; }
+  .d-hero, .d-hh-banner, .d-specials, .d-menu, .d-footer { padding-left:20px; padding-right:20px; }
+  .d-specials-grid { grid-template-columns:1fr; }
+  .d-drink-grid { grid-template-columns:1fr 1fr; }
+  .d-hero-bg { display:none; }
+}
+@media(max-width:600px) {
+  .d-drink-grid { grid-template-columns:1fr; }
+  .d-menu-header { flex-direction:column; align-items:flex-start; }
+  .b-header h1 { font-size:22px; }
+  .quiz-box { padding:32px 24px; }
+  .d-hh-timer { font-size:18px; }
+}
+</style>
+</head>
+<body id="body">
+
+<div id="flash"></div>
+<canvas id="cvs"></canvas>
+<button id="apply-btn" onclick="toggle()">✦ Apply The 6%</button>
+
+
+<!-- ════════════════════════════════════════
+     BORING SITE
+════════════════════════════════════════ -->
+<div id="boring">
+  <div class="b-header">
+    <h1>OAK &amp; IVY BAR &amp; GRILL</h1>
+    <p>🍺 Charlotte's Favorite Neighborhood Bar Since 2011 🍺</p>
+  </div>
+
+  <div class="b-nav-strip">
+    <a href="#">Home</a>
+    <a href="#">Menu</a>
+    <a href="#">Specials</a>
+    <a href="#">About Us</a>
+    <a href="#">Contact</a>
+  </div>
+
+  <div class="b-body">
+    <div class="b-welcome">
+      <strong>*** WELCOME TO OAK &amp; IVY ***</strong>
+      <span class="b-blink">▶ NOW SERVING HAPPY HOUR 5PM–8PM ◀</span>
+      <br><br>
+      Check out our updated menu below. Prices subject to change.<br>
+      <em>We accept cash and most major credit cards.</em>
+    </div>
+
+    <div class="b-specials">
+      <strong>TONIGHT'S SPECIALS</strong>
+      <ul>
+        <li>Happy Hour: 1/2 off all drafts 5pm–8pm</li>
+        <li>Live Jazz with Marcus Dean starting at 9pm</li>
+        <li>Chef's Special: Truffle Parmesan Fries – $8</li>
+        <li>Punch card: Buy 10 drinks get 1 free (ask bartender)</li>
+      </ul>
+    </div>
+
+    <div class="b-divider">— ✦ —</div>
+
+    <div class="b-section-title">COCKTAILS</div>
+    <div class="b-menu-item"><div><strong>The Southsider</strong><span>Bourbon, honey, lemon, thyme</span></div><div class="b-price">$14</div></div>
+    <div class="b-menu-item"><div><strong>Garden Party</strong><span>Gin, elderflower, cucumber, mint</span></div><div class="b-price">$13</div></div>
+    <div class="b-menu-item"><div><strong>Smoke &amp; Mirror</strong><span>Mezcal, chocolate bitters, smoked orange</span></div><div class="b-price">$15</div></div>
+    <div class="b-menu-item"><div><strong>Sweet Charlotte</strong><span>Vodka, peach, basil, prosecco</span></div><div class="b-price">$12</div></div>
+    <div class="b-menu-item"><div><strong>The Diplomat</strong><span>Dark rum, lime, ginger beer, angostura</span></div><div class="b-price">$13</div></div>
+    <div class="b-menu-item"><div><strong>Velvet Underground</strong><span>Bourbon, blackberry, sage, soda</span></div><div class="b-price">$14</div></div>
+
+    <div class="b-divider">— ✦ —</div>
+
+    <div class="b-section-title">BEER &amp; WINE</div>
+    <div class="b-menu-item"><div><strong>NoDa Hop Drop IPA</strong><span>Charlotte, NC · 7.2% ABV</span></div><div class="b-price">$7</div></div>
+    <div class="b-menu-item"><div><strong>Resident Culture Pils</strong><span>Charlotte, NC · 4.8% ABV</span></div><div class="b-price">$7</div></div>
+    <div class="b-menu-item"><div><strong>Catawba White Zombie</strong><span>Morganton, NC · 5.1% ABV</span></div><div class="b-price">$8</div></div>
+    <div class="b-menu-item"><div><strong>Pinot Noir</strong><span>Glass</span></div><div class="b-price">$12</div></div>
+    <div class="b-menu-item"><div><strong>Sauvignon Blanc</strong><span>Glass</span></div><div class="b-price">$11</div></div>
+
+    <div class="b-divider">— ✦ —</div>
+
+    <div class="b-section-title">FOOD</div>
+    <div class="b-menu-item"><div><strong>Truffle Parmesan Fries</strong><span>Chef's special tonight!</span></div><div class="b-price">$8</div></div>
+    <div class="b-menu-item"><div><strong>Charcuterie Board</strong><span>Seasonal selection</span></div><div class="b-price">$18</div></div>
+    <div class="b-menu-item"><div><strong>Smash Burger</strong><span>Cheddar, pickles, special sauce, fries</span></div><div class="b-price">$16</div></div>
+    <div class="b-menu-item"><div><strong>Flatbread of the Day</strong><span>Ask your server</span></div><div class="b-price">$14</div></div>
+  </div>
+
+  <div class="b-footer-b">
+    <p>© 2024 Oak &amp; Ivy Bar &amp; Grill | 1432 South Blvd, Charlotte NC 28203 | (704) 555-0182</p>
+    <p>Hours: Mon–Thu 4pm–2am | Fri–Sat 2pm–2am | Sun 2pm–12am</p>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     DOPE SITE
+════════════════════════════════════════ -->
+<div id="dope">
+
+  <!-- NAV -->
+  <nav class="d-nav">
+    <div class="d-nav-logo">Oak &amp; <em>Ivy</em></div>
+    <div class="d-tabs">
+      <button class="d-tab active" data-tab="overview" onclick="switchTab(this,'overview')">Tonight</button>
+      <button class="d-tab" data-tab="cocktails" onclick="switchTab(this,'cocktails')">Cocktails</button>
+      <button class="d-tab" data-tab="beer" onclick="switchTab(this,'beer')">Beer &amp; Wine</button>
+      <button class="d-tab" data-tab="food" onclick="switchTab(this,'food')">Food</button>
+    </div>
+  </nav>
+
+  <!-- ── OVERVIEW PAGE ── -->
+  <div id="pg-overview">
+
+    <!-- HERO -->
+    <section class="d-hero d-section">
+      <div class="d-hero-inner">
+        <p class="d-hero-label">South End · Charlotte, NC · Est. 2011</p>
+        <h1 class="d-hero-title">Oak &amp;<br><em>Ivy</em></h1>
+        <p class="d-hero-sub">Good drinks. Local craft. A room worth staying in. Welcome to tonight.</p>
+        <div class="d-hero-actions">
+          <button class="d-btn-gold" onclick="openQuiz()">Find Your Drink ✦</button>
+          <button class="d-btn-outline" onclick="switchTabByName('cocktails')">View Full Menu →</button>
+        </div>
+      </div>
+      <div class="d-hero-bg">O&amp;I</div>
+    </section>
+
+    <!-- HAPPY HOUR BANNER -->
+    <div class="d-hh-banner d-section">
+      <div class="d-hh-dot"></div>
+      <div class="d-hh-text"><strong>HAPPY HOUR</strong> — Half off all drafts. 5pm to 8pm.</div>
+      <div class="d-hh-timer">Ends in <span id="hh-countdown">--:--:--</span></div>
+    </div>
+
+    <!-- SPECIALS BOARD -->
+    <section class="d-specials d-section">
+      <div class="d-specials-inner">
+        <div class="d-board-label">Tonight's Specials</div>
+        <div class="d-specials-grid">
+          <div class="d-special-card">
+            <div class="d-special-tag">🍺 Happy Hour</div>
+            <div class="d-special-name">Half Off All Drafts</div>
+            <div class="d-special-desc">Every draft pour at half price. NoDa, Resident Culture, Catawba — all of them. 5pm to 8pm only.</div>
+            <div class="d-special-price"><s>$7–8</s> $3.50–4</div>
+          </div>
+          <div class="d-special-card">
+            <div class="d-special-tag">🎷 Live Music</div>
+            <div class="d-special-name">Marcus Dean Quartet</div>
+            <div class="d-special-desc">Live jazz starting at 9pm. No cover. Settle in, order another round, and let the music do what music does.</div>
+            <div class="d-special-price">Free · 9pm</div>
+          </div>
+          <div class="d-special-card">
+            <div class="d-special-tag">🍟 Chef's Special</div>
+            <div class="d-special-name">Truffle Parm Fries</div>
+            <div class="d-special-desc">House-cut fries, black truffle oil, aged parmesan, rosemary salt. The best $8 you'll spend tonight.</div>
+            <div class="d-special-price">$8 tonight only</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED COCKTAILS -->
+    <section class="d-menu d-section" style="padding-bottom:80px;">
+      <div class="d-menu-inner">
+        <div class="d-menu-header">
+          <div class="d-menu-title">Featured Tonight</div>
+          <button class="d-btn-gold" style="padding:10px 24px;font-size:11px;" onclick="openQuiz()">✦ Find My Drink</button>
+        </div>
+        <div class="d-drink-grid">
+          <div class="d-drink-card">
+            <div class="d-drink-num">Featured 01</div>
+            <div class="d-drink-name">The Southsider</div>
+            <div class="d-drink-desc">Bourbon, wildflower honey, fresh lemon, thyme. A Charlotte original that hits like a warm handshake.</div>
+            <div class="d-drink-footer">
+              <div class="d-drink-price">$14</div>
+              <div class="d-drink-tags"><span class="d-tag">Strong</span><span class="d-tag">Local</span></div>
+            </div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Featured 02</div>
+            <div class="d-drink-name">Sweet Charlotte</div>
+            <div class="d-drink-desc">Vodka, fresh peach, basil, a splash of prosecco. Light, summery, impossible to order just one.</div>
+            <div class="d-drink-footer">
+              <div class="d-drink-price">$12</div>
+              <div class="d-drink-tags"><span class="d-tag">Sweet</span><span class="d-tag">Bubbly</span></div>
+            </div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Featured 03</div>
+            <div class="d-drink-name">Smoke &amp; Mirror</div>
+            <div class="d-drink-desc">Mezcal, house-made chocolate bitters, smoked orange peel. For the table's adventurous one.</div>
+            <div class="d-drink-footer">
+              <div class="d-drink-price">$15</div>
+              <div class="d-drink-tags"><span class="d-tag">Bold</span><span class="d-tag">Smoky</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /pg-overview -->
+
+  <!-- ── COCKTAILS PAGE ── -->
+  <div id="pg-cocktails">
+    <section class="d-menu d-section visible" style="padding-top:60px; padding-bottom:80px;">
+      <div class="d-menu-inner">
+        <div class="d-menu-header">
+          <div class="d-menu-title">Cocktails</div>
+          <div class="d-filters">
+            <button class="d-filter on" onclick="filter(this,'all')">All</button>
+            <button class="d-filter" onclick="filter(this,'sweet')">Sweet</button>
+            <button class="d-filter" onclick="filter(this,'strong')">Strong</button>
+            <button class="d-filter" onclick="filter(this,'refreshing')">Refreshing</button>
+            <button class="d-filter" onclick="filter(this,'bold')">Bold</button>
+          </div>
+        </div>
+        <div class="d-drink-grid" id="cocktail-grid">
+          <div class="d-drink-card" data-tags="strong local">
+            <div class="d-drink-num">01 —</div>
+            <div class="d-drink-name">The Southsider</div>
+            <div class="d-drink-desc">Bourbon, wildflower honey, fresh lemon, thyme. A Charlotte original that hits like a warm handshake from someone you trust.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$14</div><div class="d-drink-tags"><span class="d-tag">Strong</span><span class="d-tag">Local</span></div></div>
+          </div>
+          <div class="d-drink-card" data-tags="refreshing light">
+            <div class="d-drink-num">02 —</div>
+            <div class="d-drink-name">Garden Party</div>
+            <div class="d-drink-desc">Gin, St-Germain elderflower, fresh cucumber ribbon, garden mint. Poured cold. Drunk slow.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$13</div><div class="d-drink-tags"><span class="d-tag">Refreshing</span><span class="d-tag">Light</span></div></div>
+          </div>
+          <div class="d-drink-card" data-tags="bold smoky adventurous">
+            <div class="d-drink-num">03 —</div>
+            <div class="d-drink-name">Smoke &amp; Mirror</div>
+            <div class="d-drink-desc">Del Maguey mezcal, house chocolate bitters, smoked orange peel. For the table's adventurous one.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$15</div><div class="d-drink-tags"><span class="d-tag">Bold</span><span class="d-tag">Smoky</span></div></div>
+          </div>
+          <div class="d-drink-card" data-tags="sweet bubbly">
+            <div class="d-drink-num">04 —</div>
+            <div class="d-drink-name">Sweet Charlotte</div>
+            <div class="d-drink-desc">Vodka, ripe peach, fresh basil, a crown of prosecco. Light, summery, impossible to order just one.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$12</div><div class="d-drink-tags"><span class="d-tag">Sweet</span><span class="d-tag">Bubbly</span></div></div>
+          </div>
+          <div class="d-drink-card" data-tags="refreshing classic">
+            <div class="d-drink-num">05 —</div>
+            <div class="d-drink-name">The Diplomat</div>
+            <div class="d-drink-desc">Appleton dark rum, fresh lime, ginger beer, house Angostura bitters. A mule with manners.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$13</div><div class="d-drink-tags"><span class="d-tag">Refreshing</span><span class="d-tag">Classic</span></div></div>
+          </div>
+          <div class="d-drink-card" data-tags="sweet complex">
+            <div class="d-drink-num">06 —</div>
+            <div class="d-drink-name">Velvet Underground</div>
+            <div class="d-drink-desc">Bourbon, house blackberry shrub, fresh sage, a splash of soda. Complicated in all the right ways.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$14</div><div class="d-drink-tags"><span class="d-tag">Sweet</span><span class="d-tag">Complex</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── BEER & WINE PAGE ── -->
+  <div id="pg-beer">
+    <section class="d-menu d-section visible" style="padding-top:60px; padding-bottom:80px;">
+      <div class="d-menu-inner">
+        <div class="d-menu-header" style="margin-bottom:40px;">
+          <div class="d-menu-title">Beer &amp; Wine</div>
+        </div>
+
+        <div class="d-board-label" style="margin-bottom:24px;">Local Drafts <span style="color:#333;font-size:10px;margin-left:8px;font-weight:normal;letter-spacing:normal;text-transform:none;">— Half off 5–8pm tonight</span></div>
+        <div class="d-drink-grid" style="margin-bottom:4px;">
+          <div class="d-drink-card">
+            <div class="d-drink-num">Draft 01</div>
+            <div class="d-drink-name">NoDa Hop Drop IPA</div>
+            <div class="d-drink-desc">Charlotte's flagship IPA. Tropical hop aroma, clean bitter finish. 7.2% ABV. NoDa Brewing Co.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$7</div><div class="d-drink-tags"><span class="d-tag">IPA</span><span class="d-tag">Local</span></div></div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Draft 02</div>
+            <div class="d-drink-name">Resident Culture Pils</div>
+            <div class="d-drink-desc">Crisp, clean, crushable. German-style pilsner brewed right here in CLT. 4.8% ABV.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$7</div><div class="d-drink-tags"><span class="d-tag">Pilsner</span><span class="d-tag">Local</span></div></div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Draft 03</div>
+            <div class="d-drink-name">Catawba White Zombie</div>
+            <div class="d-drink-desc">White ale with hints of coriander and citrus. Easy on the palate, hard to put down. 5.1% ABV.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$8</div><div class="d-drink-tags"><span class="d-tag">Wheat</span><span class="d-tag">NC</span></div></div>
+          </div>
+        </div>
+
+        <div class="d-board-label" style="margin:40px 0 24px;">Wine by the Glass</div>
+        <div class="d-drink-grid">
+          <div class="d-drink-card">
+            <div class="d-drink-num">Wine 01</div>
+            <div class="d-drink-name">Pinot Noir</div>
+            <div class="d-drink-desc">Willamette Valley, Oregon. Dark cherry, forest floor, silky tannins. The one you came for.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$12</div><div class="d-drink-tags"><span class="d-tag">Red</span></div></div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Wine 02</div>
+            <div class="d-drink-name">Sauvignon Blanc</div>
+            <div class="d-drink-desc">Marlborough, New Zealand. Bright citrus, fresh cut grass, a clean dry finish. Made for a Friday.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$11</div><div class="d-drink-tags"><span class="d-tag">White</span><span class="d-tag">Crisp</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── FOOD PAGE ── -->
+  <div id="pg-food">
+    <section class="d-menu d-section visible" style="padding-top:60px; padding-bottom:80px;">
+      <div class="d-menu-inner">
+        <div class="d-menu-header" style="margin-bottom:40px;">
+          <div class="d-menu-title">Food</div>
+          <span style="font-size:13px;color:#444;">Kitchen open until 1am</span>
+        </div>
+        <div class="d-drink-grid">
+          <div class="d-drink-card" style="position:relative;">
+            <div style="position:absolute;top:16px;right:16px;background:#C9A96E;color:#000;font-size:10px;font-weight:700;letter-spacing:0.1em;padding:3px 8px;">TONIGHT ONLY</div>
+            <div class="d-drink-num">Chef's Special</div>
+            <div class="d-drink-name">Truffle Parm Fries</div>
+            <div class="d-drink-desc">House-cut fries tossed in black truffle oil, aged parmesan, rosemary salt. The best $8 decision you'll make tonight.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$8</div><div class="d-drink-tags"><span class="d-tag">Special</span></div></div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Small Plates 01</div>
+            <div class="d-drink-name">Charcuterie Board</div>
+            <div class="d-drink-desc">Rotating selection of cured meats, artisan cheeses, house-made jam, toasted baguette. Built to share. Or not.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$18</div><div class="d-drink-tags"><span class="d-tag">Share</span></div></div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Mains 01</div>
+            <div class="d-drink-name">Smash Burger</div>
+            <div class="d-drink-desc">Double smash patty, white cheddar, bread &amp; butter pickles, special sauce, toasted brioche bun. Fries included.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$16</div><div class="d-drink-tags"><span class="d-tag">Hearty</span></div></div>
+          </div>
+          <div class="d-drink-card">
+            <div class="d-drink-num">Mains 02</div>
+            <div class="d-drink-name">Flatbread of the Day</div>
+            <div class="d-drink-desc">Ask your bartender what's on tonight. We keep it interesting. Never the same thing twice.</div>
+            <div class="d-drink-footer"><div class="d-drink-price">$14</div><div class="d-drink-tags"><span class="d-tag">Ask Us</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="d-footer">
+    <div class="d-footer-logo">Oak &amp; Ivy</div>
+    <div class="d-footer-info">
+      1432 South Blvd · Charlotte, NC 28203<br>
+      Mon–Thu 4pm–2am · Fri–Sat 2pm–2am · Sun 2pm–12am
+    </div>
+  </footer>
+
+</div><!-- /dope -->
+
+
+<!-- ── QUIZ MODAL ─────────────────────────── -->
+<div id="quiz-modal">
+  <div class="quiz-box">
+    <button class="quiz-close" onclick="closeQuiz()">✕</button>
+
+    <!-- Step 1 -->
+    <div class="quiz-step active" id="qstep-1">
+      <div class="quiz-progress">
+        <div class="quiz-pip done"></div>
+        <div class="quiz-pip"></div>
+        <div class="quiz-pip"></div>
+      </div>
+      <div class="quiz-label">Question 1 of 3</div>
+      <div class="quiz-q">What's the energy tonight?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(1,'starting')">Just getting started — easing into it 🥂</button>
+        <button class="quiz-opt" onclick="answer(1,'swing')">In full swing — the night is young ✨</button>
+        <button class="quiz-opt" onclick="answer(1,'lastcall')">Last call vibes — one more great one 🌙</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="quiz-step" id="qstep-2">
+      <div class="quiz-progress">
+        <div class="quiz-pip done"></div>
+        <div class="quiz-pip done"></div>
+        <div class="quiz-pip"></div>
+      </div>
+      <div class="quiz-label">Question 2 of 3</div>
+      <div class="quiz-q">What are you feeling?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(2,'sweet')">Something sweet and easy 🍑</button>
+        <button class="quiz-opt" onclick="answer(2,'strong')">Strong and smooth — I mean business 🥃</button>
+        <button class="quiz-opt" onclick="answer(2,'refreshing')">Crisp and refreshing 🌿</button>
+        <button class="quiz-opt" onclick="answer(2,'wild')">Wild card — just surprise me 🃏</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="quiz-step" id="qstep-3">
+      <div class="quiz-progress">
+        <div class="quiz-pip done"></div>
+        <div class="quiz-pip done"></div>
+        <div class="quiz-pip done"></div>
+      </div>
+      <div class="quiz-label">Question 3 of 3</div>
+      <div class="quiz-q">Classic or adventurous?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(3,'classic')">Keep it classic — trusted and proven</button>
+        <button class="quiz-opt" onclick="answer(3,'adventure')">Take me somewhere new</button>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div class="quiz-result" id="quiz-result">
+      <div class="quiz-result-label">Your drink tonight is —</div>
+      <div class="quiz-result-name" id="res-name"></div>
+      <div class="quiz-result-desc" id="res-desc"></div>
+      <div class="quiz-result-ingredients" id="res-ing"></div>
+      <div class="quiz-result-price" id="res-price"></div>
+      <div class="quiz-result-btns">
+        <button class="d-btn-gold" onclick="closeQuiz()">I'll Take It ✦</button>
+        <button class="d-btn-outline" onclick="resetQuiz()">Try Again</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+/* ─── DRINK DATA ───────────────────────────────────── */
+const drinks = {
+  southsider:   { name:'The Southsider',     desc:'A Charlotte original that hits like a warm handshake from someone you trust.',      ing:'Bourbon · Wildflower Honey · Fresh Lemon · Thyme',          price:'$14' },
+  garden:       { name:'Garden Party',        desc:'Light, botanical, refreshingly crisp. The drink that makes the room feel like a garden.',  ing:'Gin · St-Germain Elderflower · Cucumber · Mint',            price:'$13' },
+  smoke:        { name:'Smoke & Mirror',      desc:'Complex, smoky, and bold. For the person at the table everyone is curious about.',   ing:'Mezcal · Chocolate Bitters · Smoked Orange',                price:'$15' },
+  charlotte:    { name:'Sweet Charlotte',     desc:'Easy, summery, impossible to order just one of. Named for good reason.',              ing:'Vodka · Fresh Peach · Basil · Prosecco',                    price:'$12' },
+  diplomat:     { name:'The Diplomat',        desc:'Balanced, reliable, never shows off. A perfect mule with a little more manners.',    ing:'Dark Rum · Fresh Lime · Ginger Beer · Angostura',           price:'$13' },
+  velvet:       { name:'Velvet Underground',  desc:'Complicated in the best way. You\'ll keep thinking about it on the way home.',        ing:'Bourbon · Blackberry Shrub · Fresh Sage · Soda',            price:'$14' },
+};
+
+/* ─── QUIZ LOGIC ───────────────────────────────────── */
+const answers = {};
+
+function answer(step, val) {
+  answers[step] = val;
+  document.getElementById('qstep-' + step).classList.remove('active');
+  if (step < 3) {
+    document.getElementById('qstep-' + (step+1)).classList.add('active');
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const r = recommend(answers[1], answers[2], answers[3]);
+  const d = drinks[r];
+  document.getElementById('res-name').textContent  = d.name;
+  document.getElementById('res-desc').textContent  = d.desc;
+  document.getElementById('res-ing').textContent   = d.ing;
+  document.getElementById('res-price').textContent = d.price;
+
+  document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+  const res = document.getElementById('quiz-result');
+  res.style.display = 'block';
+  setTimeout(() => res.classList.add('show'), 10);
+}
+
+function recommend(e, mood, style) {
+  if (mood === 'wild')      return 'smoke';
+  if (mood === 'sweet')     return style === 'classic' ? 'charlotte' : 'velvet';
+  if (mood === 'strong')    return style === 'classic' ? 'southsider' : 'smoke';
+  if (mood === 'refreshing') return style === 'classic' ? 'diplomat' : 'garden';
+  return 'southsider';
+}
+
+function openQuiz() {
+  resetQuiz();
+  document.getElementById('quiz-modal').classList.add('open');
+}
+function closeQuiz() {
+  document.getElementById('quiz-modal').classList.remove('open');
+}
+function resetQuiz() {
+  for (let k in answers) delete answers[k];
+  document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('qstep-1').classList.add('active');
+  const res = document.getElementById('quiz-result');
+  res.style.display = 'none';
+  res.classList.remove('show');
+}
+document.getElementById('quiz-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeQuiz();
+});
+
+/* ─── TABS ─────────────────────────────────────────── */
+function switchTab(btn, name) {
+  document.querySelectorAll('.d-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['overview','cocktails','beer','food'].forEach(n => {
+    document.getElementById('pg-' + n).style.display = n === name ? 'block' : 'none';
+  });
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+function switchTabByName(name) {
+  const btn = document.querySelector('[data-tab="' + name + '"]');
+  if (btn) switchTab(btn, name);
+}
+
+/* ─── FILTER ───────────────────────────────────────── */
+function filter(btn, tag) {
+  document.querySelectorAll('.d-filter').forEach(f => f.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('#cocktail-grid .d-drink-card').forEach(card => {
+    if (tag === 'all') {
+      card.classList.remove('hidden');
+    } else {
+      const tags = card.dataset.tags || '';
+      card.classList.toggle('hidden', !tags.includes(tag));
+    }
+  });
+}
+
+/* ─── HAPPY HOUR COUNTDOWN ─────────────────────────── */
+function updateHH() {
+  const el = document.getElementById('hh-countdown');
+  if (!el) return;
+  const now = new Date();
+  const end = new Date(now);
+  end.setHours(20, 0, 0, 0); // 8pm
+  if (now >= end) {
+    el.parentElement.textContent = 'Happy hour has ended for tonight.';
+    return;
+  }
+  const diff = end - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+setInterval(updateHH, 1000);
+updateHH();
+
+/* ─── PARTICLES ────────────────────────────────────── */
+const cvs = document.getElementById('cvs');
+const ctx = cvs.getContext('2d');
+let pts = [];
+function sizeC() { cvs.width = innerWidth; cvs.height = innerHeight; }
+window.addEventListener('resize', sizeC); sizeC();
+
+function burst() {
+  const W = innerWidth, H = innerHeight;
+  const cols = ['#C9A96E','#E8D5A8','#ffffff','#8B6914','#C9A96E'];
+  [[W/2,H/2],[W*.3,H*.35],[W*.7,H*.35],[W*.25,H*.65],[W*.75,H*.65]].forEach(([ox,oy]) => {
+    for (let i = 0; i < 22; i++) {
+      const a = Math.random()*Math.PI*2, spd = 3 + Math.random()*12;
+      pts.push({ x:ox, y:oy, vx:Math.cos(a)*spd, vy:Math.sin(a)*spd,
+        life:1, decay:0.012+Math.random()*0.018,
+        r:2+Math.random()*8, col:cols[Math.floor(Math.random()*cols.length)],
+        sq:Math.random()>.5 });
+    }
+  });
+  drawP();
+}
+function drawP() {
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  pts = pts.filter(p => p.life > 0);
+  pts.forEach(p => {
+    ctx.globalAlpha = Math.max(0,p.life);
+    ctx.fillStyle = p.col;
+    if (p.sq) {
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate((1-p.life)*5);
+      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r); ctx.restore();
+    } else {
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r/2,0,Math.PI*2); ctx.fill();
+    }
+    p.x+=p.vx; p.y+=p.vy; p.vy+=0.18; p.vx*=.97; p.life-=p.decay;
+  });
+  ctx.globalAlpha=1;
+  if (pts.length) requestAnimationFrame(drawP);
+}
+
+/* ─── TOGGLE ───────────────────────────────────────── */
+function toggle() {
+  const body = document.getElementById('body');
+  const fl   = document.getElementById('flash');
+  const btn  = document.getElementById('apply-btn');
+  const going = !body.classList.contains('dope');
+
+  btn.disabled = true;
+  fl.classList.add('on');
+
+  setTimeout(() => {
+    fl.classList.remove('on');
+    if (going) {
+      body.classList.add('dope');
+      document.getElementById('pg-title').textContent = 'Oak & Ivy — Charlotte, NC';
+      document.querySelectorAll('#dope .d-section').forEach((el,i) => {
+        setTimeout(() => el.classList.add('visible'), 80 + i*90);
+      });
+      burst();
+      btn.textContent = '← Undo The 6%';
+    } else {
+      body.classList.remove('dope');
+      document.getElementById('pg-title').textContent = 'Oak & Ivy Bar & Grill - Menu';
+      document.querySelectorAll('#dope .d-section').forEach(el => el.classList.remove('visible'));
+      btn.textContent = '✦ Apply The 6%';
+    }
+    btn.disabled = false;
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }, 220);
+}
+
+/* ─── SCROLL OBSERVER ──────────────────────────────── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold:0.1 });
+document.querySelectorAll('#dope .d-section').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

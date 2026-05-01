@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIX PERCENT — We Make It Twice As Dope</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── TOKENS ─────────────────────────────── */
+:root {
+  --bg:         #08050f;
+  --surface:    #0d0818;
+  --surface2:   #130d22;
+  --border:     rgba(139,92,246,.1);
+  --border-hi:  rgba(139,92,246,.36);
+  --purple:     #8B5CF6;
+  --purple-hi:  #a78bfa;
+  --purple-dk:  #7C3AED;
+  --yellow:     #E8FF00;
+  --text:       #ddd4f5;
+  --text-dim:   #7c6fa0;
+  --text-muted: #33284d;
+}
+
+/* ─── RESET ──────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Space Grotesk',sans-serif;
+  overflow-x:hidden;cursor:none;
+}
+
+/* Film grain overlay */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9996;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.032;mix-blend-mode:overlay;
+}
+
+/* ─── CURSOR ─────────────────────────────── */
+#cur{
+  position:fixed;z-index:9998;pointer-events:none;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--yellow);
+  transform:translate(-50%,-50%);
+  transition:width .3s,height .3s,border-radius .3s;
+  mix-blend-mode:difference;
+}
+#cur.big{width:48px;height:48px;border-radius:0;}
+#cur-trail{
+  position:fixed;z-index:9997;pointer-events:none;
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid rgba(139,92,246,.35);
+  transform:translate(-50%,-50%);
+  transition:all .12s ease;
+}
+body *{cursor:none;}
+
+/* ─── FLASH ──────────────────────────────── */
+#flash{
+  position:fixed;inset:0;z-index:10000;
+  background:var(--purple);opacity:0;
+  pointer-events:none;transition:opacity .18s;
+}
+#flash.on{opacity:1;}
+
+/* ─── NAV ────────────────────────────────── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:0 52px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:transparent;
+  border-bottom:1px solid transparent;
+  transition:background .4s,border-color .4s,backdrop-filter .4s;
+}
+#nav.scrolled{
+  background:rgba(8,5,15,.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom-color:var(--border);
+}
+.nav-logo{
+  font-weight:700;font-size:15px;
+  letter-spacing:.26em;color:var(--yellow);
+  text-decoration:none;
+}
+.nav-logo span{color:var(--text-dim);}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{
+  color:var(--text-muted);font-size:11px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover{color:var(--purple-hi);}
+.nav-cta{
+  padding:10px 24px;
+  background:transparent;color:var(--purple-hi);
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid var(--border-hi);
+  text-decoration:none;display:inline-block;
+  transition:background .2s,color .2s,border-color .2s;
+}
+.nav-cta:hover{background:var(--purple-dk);color:#fff;border-color:var(--purple-dk);}
+
+/* ─── REVEAL ─────────────────────────────── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .8s ease,transform .8s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .8s ease,transform .8s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+
+/* ─── HERO ───────────────────────────────── */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:120px 52px 80px;
+  position:relative;overflow:hidden;
+}
+
+/* Gallery radial spotlight */
+#hero::before{
+  content:'';position:absolute;
+  top:-20%;left:55%;
+  width:900px;height:900px;
+  background:radial-gradient(ellipse at center,
+    rgba(139,92,246,.12) 0%,
+    rgba(124,58,237,.06) 35%,
+    transparent 70%
+  );
+  pointer-events:none;
+  animation:pulse-glow 6s ease-in-out infinite alternate;
+}
+@keyframes pulse-glow{
+  from{opacity:.7;transform:scale(1);}
+  to{opacity:1;transform:scale(1.08);}
+}
+
+/* Diagonal stripe (Off-White ref) */
+#hero::after{
+  content:'';position:absolute;
+  top:-100px;right:-80px;
+  width:600px;height:800px;
+  background:repeating-linear-gradient(
+    -55deg,
+    rgba(139,92,246,.022) 0px,
+    rgba(139,92,246,.022) 1px,
+    transparent 1px,
+    transparent 32px
+  );
+  pointer-events:none;
+}
+
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:2;}
+
+.hero-eyebrow{
+  font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--purple-hi);margin-bottom:32px;font-weight:600;
+  display:flex;align-items:center;gap:14px;
+}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--purple);}
+
+.hero-headline{
+  font-size:clamp(68px,10.5vw,176px);
+  font-weight:700;line-height:.88;
+  letter-spacing:-.03em;color:#fff;
+}
+.hero-headline .y{color:var(--yellow);}
+.hero-headline .p{color:var(--purple-hi);}
+.hero-headline .dim{color:#1a1128;}
+
+.hero-sub-row{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  margin-top:52px;gap:40px;flex-wrap:wrap;
+}
+.hero-sub{
+  font-size:clamp(15px,2vw,20px);
+  color:var(--text-dim);max-width:460px;
+  line-height:1.65;font-weight:400;
+}
+.hero-sub em{color:var(--text-muted);font-style:normal;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;flex-shrink:0;}
+
+.btn-pri{
+  padding:18px 44px;
+  background:var(--purple-dk);color:#fff;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;
+  border:none;text-decoration:none;display:inline-block;
+  transition:transform .2s,background .2s,box-shadow .2s;
+  box-shadow:0 0 0 0 rgba(139,92,246,0);
+}
+.btn-pri:hover{
+  transform:translateY(-3px);
+  background:var(--purple);
+  box-shadow:0 12px 40px rgba(139,92,246,.4);
+}
+.btn-ghost{
+  padding:18px 44px;
+  background:transparent;color:var(--text-dim);
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid var(--border);
+  text-decoration:none;display:inline-block;
+  transition:border-color .2s,color .2s;
+}
+.btn-ghost:hover{border-color:var(--border-hi);color:var(--purple-hi);}
+
+/* bg "6%" watermark */
+.hero-bg-num{
+  position:absolute;right:-60px;top:50%;transform:translateY(-50%);
+  font-size:clamp(200px,32vw,480px);
+  font-weight:700;color:rgba(139,92,246,.025);
+  line-height:1;user-select:none;pointer-events:none;letter-spacing:-.05em;
+}
+
+.scroll-hint{
+  position:absolute;bottom:40px;left:52px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--text-muted);
+  display:flex;align-items:center;gap:10px;
+}
+.scroll-hint::before{
+  content:'';width:1px;height:40px;
+  background:linear-gradient(to bottom,var(--purple),transparent);
+}
+
+/* ─── MARQUEE ────────────────────────────── */
+.marquee-wrap{
+  overflow:hidden;
+  background:var(--surface);
+  padding:14px 0;white-space:nowrap;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.marquee-track{display:inline-block;animation:march 26s linear infinite;}
+.marquee-track span{
+  font-size:11px;font-weight:700;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:var(--text-muted);
+}
+.marquee-track .sep{
+  display:inline-block;
+  width:4px;height:4px;
+  background:var(--purple);opacity:.6;
+  border-radius:50%;vertical-align:middle;margin:0 22px;
+}
+@keyframes march{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ─── SECTION SHELL ──────────────────────── */
+.section{padding:130px 52px;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-label{
+  font-size:10px;letter-spacing:.36em;text-transform:uppercase;
+  color:var(--purple);font-weight:700;margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+  font-family:'Space Mono',monospace;
+}
+.section-label::before{content:'';width:20px;height:1px;background:var(--purple);}
+.section-title{
+  font-size:clamp(34px,5vw,60px);
+  font-weight:700;line-height:1.05;
+  color:#fff;letter-spacing:-.025em;
+  margin-bottom:60px;
+}
+
+/* ─── DISCIPLINES ────────────────────────── */
+#sectors{
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.sectors-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+}
+.sector-card{
+  background:var(--surface);
+  padding:44px 32px;position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.sector-card:hover{background:var(--surface2);}
+.sector-card::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:1px;
+  background:var(--purple);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s ease;
+}
+.sector-card:hover::after{transform:scaleX(1);}
+
+.sector-icon{
+  font-size:26px;margin-bottom:18px;display:block;
+  filter:grayscale(1);opacity:.35;
+  transition:filter .3s,opacity .3s,transform .3s;
+}
+.sector-card:hover .sector-icon{filter:none;opacity:1;transform:scale(1.08);}
+
+.sector-num{
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:var(--text-muted);
+  margin-bottom:12px;letter-spacing:.1em;
+}
+.sector-name{
+  font-size:20px;font-weight:700;
+  color:var(--text);margin-bottom:12px;
+  transition:color .2s;
+}
+.sector-card:hover .sector-name{color:var(--purple-hi);}
+.sector-hook{
+  font-size:13px;color:var(--text-muted);line-height:1.75;
+  margin-bottom:14px;
+  max-height:0;overflow:hidden;
+  transition:max-height .5s ease,opacity .4s;
+  opacity:0;
+}
+.sector-card:hover .sector-hook{max-height:130px;opacity:1;}
+.sector-example{
+  font-size:10px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--purple);opacity:0;
+  transition:opacity .4s .1s;
+  font-family:'Space Mono',monospace;
+}
+.sector-card:hover .sector-example{opacity:1;}
+
+/* ─── FEATURED INSTALLATION ──────────────── */
+#featured{
+  background:var(--bg);
+  padding:100px 52px;
+  border-bottom:1px solid var(--border);
+}
+.feat-inner{max-width:1200px;margin:0 auto;}
+.feat-plaque-top{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:40px;
+  flex-wrap:wrap;gap:20px;
+}
+.feat-label-block{}
+.feat-exhibit-num{
+  font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--purple);font-weight:700;margin-bottom:8px;
+}
+.feat-title{
+  font-size:clamp(32px,4.5vw,56px);
+  font-weight:700;color:#fff;
+  line-height:1.05;letter-spacing:-.02em;
+}
+.feat-title em{color:var(--purple-hi);font-style:normal;}
+.feat-meta{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-muted);margin-top:10px;
+  font-family:'Space Mono',monospace;
+}
+.feat-cta-block{display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
+.feat-cta-note{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--text-muted);font-family:'Space Mono',monospace;
+}
+
+/* The exhibit "canvas" */
+.feat-canvas{
+  width:100%;
+  height:420px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .4s;
+}
+.feat-canvas:hover{border-color:var(--border-hi);}
+.feat-canvas-num{
+  position:absolute;
+  font-size:clamp(120px,20vw,260px);
+  font-weight:700;
+  color:rgba(139,92,246,.04);
+  letter-spacing:-.05em;
+  line-height:1;
+  user-select:none;pointer-events:none;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.feat-canvas-glow{
+  position:absolute;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(139,92,246,.18) 0%,transparent 65%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:pulse-glow 4s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+.feat-canvas-label{
+  position:relative;z-index:2;text-align:center;
+}
+.feat-canvas-title{
+  font-size:clamp(22px,3vw,36px);
+  font-weight:700;color:#fff;
+  margin-bottom:12px;letter-spacing:-.01em;
+}
+.feat-canvas-sub{
+  font-size:14px;color:var(--text-dim);
+  max-width:440px;line-height:1.7;
+  margin:0 auto 28px;
+}
+.feat-enter{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 36px;
+  background:var(--purple-dk);color:#fff;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:11px;
+  letter-spacing:.2em;text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s,box-shadow .2s,transform .2s;
+  box-shadow:0 0 0 0 rgba(139,92,246,0);
+}
+.feat-enter:hover{
+  background:var(--purple);
+  box-shadow:0 0 40px rgba(139,92,246,.5);
+  transform:translateY(-2px);
+}
+.feat-bottom{
+  margin-top:28px;
+  display:flex;gap:32px;
+  font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-muted);font-family:'Space Mono',monospace;
+  flex-wrap:wrap;
+}
+.feat-tag{
+  display:flex;align-items:center;gap:8px;
+}
+.feat-tag::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--purple);opacity:.6;flex-shrink:0;
+}
+
+/* ─── GALLERY ────────────────────────────── */
+#portfolio{
+  background:var(--bg);
+  padding:100px 52px 130px;
+  border-top:1px solid var(--border);
+}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--border);
+}
+
+/* Exhibit card */
+.exhibit-card{
+  background:var(--bg);
+  text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.exhibit-card:hover{background:var(--surface);}
+
+/* Artwork area */
+.exhibit-art{
+  height:240px;
+  background:var(--surface);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--border);
+  transition:border-color .4s;
+}
+.exhibit-card:hover .exhibit-art{border-bottom-color:var(--border-hi);}
+.exhibit-art-num{
+  position:absolute;
+  font-size:clamp(80px,12vw,130px);
+  font-weight:700;
+  color:rgba(139,92,246,.04);
+  letter-spacing:-.04em;
+  user-select:none;pointer-events:none;
+  transition:color .4s;
+}
+.exhibit-card:hover .exhibit-art-num{color:rgba(139,92,246,.09);}
+.exhibit-art-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 40%,rgba(139,92,246,0) 0%,transparent 70%);
+  transition:background .4s;
+}
+.exhibit-card.live:hover .exhibit-art-glow{
+  background:radial-gradient(circle at 50% 40%,rgba(139,92,246,.14) 0%,transparent 70%);
+}
+.exhibit-art-icon{
+  font-size:40px;
+  position:relative;z-index:2;
+  filter:grayscale(1);opacity:.2;
+  transition:filter .4s,opacity .4s,transform .4s;
+}
+.exhibit-card:hover .exhibit-art-icon{
+  filter:none;opacity:.7;transform:scale(1.1);
+}
+.exhibit-live-badge{
+  position:absolute;top:18px;right:18px;
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--purple);
+  border:1px solid var(--border);
+  padding:5px 10px;
+  background:rgba(8,5,15,.8);
+  opacity:0;transition:opacity .3s;
+}
+.exhibit-card.live:hover .exhibit-live-badge{opacity:1;}
+.exhibit-soon-badge{
+  position:absolute;top:18px;right:18px;
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--text-muted);
+  border:1px solid var(--text-muted);
+  padding:5px 10px;opacity:.4;
+}
+
+/* Plaque area */
+.exhibit-plaque{
+  padding:32px 36px 40px;
+  flex:1;display:flex;flex-direction:column;
+}
+.exhibit-plaque-num{
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:.3em;text-transform:uppercase;
+  color:var(--purple);margin-bottom:10px;
+  opacity:.7;
+}
+.exhibit-plaque-title{
+  font-size:clamp(20px,2.5vw,28px);
+  font-weight:700;color:var(--text);
+  line-height:1.15;margin-bottom:8px;
+  transition:color .2s;
+}
+.exhibit-card.live:hover .exhibit-plaque-title{color:var(--purple-hi);}
+.exhibit-card.soon .exhibit-plaque-title{color:var(--text-muted);}
+.exhibit-plaque-medium{
+  font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:18px;
+  border-left:2px solid var(--border-hi);
+  padding-left:10px;
+}
+.exhibit-card.soon .exhibit-plaque-medium{border-left-color:var(--border);color:#2a2044;}
+.exhibit-plaque-desc{
+  font-size:13px;color:var(--text-muted);
+  line-height:1.8;flex:1;
+}
+.exhibit-card.soon .exhibit-plaque-desc{color:#1e172e;}
+.exhibit-before-after{
+  margin-top:20px;
+  display:flex;gap:10px;align-items:center;
+  font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  font-family:'Space Mono',monospace;
+}
+.ex-before{color:var(--text-muted);}
+.ex-arrow{color:var(--border-hi);}
+.ex-after{color:var(--text-dim);}
+.exhibit-card.live:hover .ex-after{color:var(--purple-hi);}
+.exhibit-card.soon .ex-before,
+.exhibit-card.soon .ex-arrow,
+.exhibit-card.soon .ex-after{color:#1e172e;}
+
+/* gallery floor line at card bottom */
+.exhibit-floor{
+  height:1px;
+  background:var(--border);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s ease;
+}
+.exhibit-card.live:hover .exhibit-floor{
+  transform:scaleX(1);
+  background:var(--purple);
+}
+
+/* ─── PHILOSOPHY ─────────────────────────── */
+#philosophy{
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:130px 52px;
+}
+.phil-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:100px;align-items:center;
+  max-width:1200px;margin:0 auto;
+}
+.phil-numbers{
+  height:180px;display:flex;align-items:center;gap:16px;
+}
+.big-num{
+  font-size:clamp(72px,10vw,128px);
+  font-weight:700;line-height:1;
+  transition:color .3s;
+}
+.big-num.dim{color:#1a1128;}
+.big-num.lit{color:var(--purple);}
+.phil-arrow{font-size:36px;color:var(--text-muted);}
+
+.phil-copy h2{
+  font-size:clamp(26px,3.2vw,38px);
+  font-weight:700;line-height:1.25;
+  color:#fff;margin-bottom:20px;
+}
+.phil-copy h2 em{color:var(--yellow);font-style:normal;}
+.phil-copy p{color:var(--text-muted);font-size:14px;line-height:1.95;margin-bottom:14px;}
+.phil-quote{
+  margin-top:30px;
+  border-left:2px solid var(--purple);
+  padding-left:16px;
+  font-size:13px;color:var(--text-muted);
+  font-style:italic;line-height:1.85;
+  opacity:.7;
+}
+.phil-names{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;}
+.phil-name-tag{
+  font-size:10px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-muted);
+  padding:6px 12px;
+  border:1px solid var(--border);
+  font-family:'Space Mono',monospace;
+  transition:color .2s,border-color .2s;
+}
+.phil-name-tag:hover{color:var(--purple-hi);border-color:var(--border-hi);}
+
+/* ─── PROCESS ────────────────────────────── */
+#process{background:var(--bg);padding:130px 52px;}
+.process-steps{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  margin-top:60px;
+}
+.process-step{
+  background:var(--bg);
+  padding:52px 40px;
+  transition:background .3s;
+}
+.process-step:hover{background:var(--surface);}
+.step-n{
+  font-family:'Space Mono',monospace;
+  font-size:48px;font-weight:700;
+  color:var(--text-muted);line-height:1;
+  margin-bottom:24px;
+  opacity:.15;
+  transition:opacity .3s,color .3s;
+}
+.process-step:hover .step-n{opacity:1;color:var(--purple);}
+.step-title{
+  font-size:19px;font-weight:700;
+  color:var(--text);margin-bottom:12px;
+  transition:color .2s;
+}
+.process-step:hover .step-title{color:var(--purple-hi);}
+.step-body{color:var(--text-muted);font-size:14px;line-height:1.85;}
+
+/* ─── CLIENT STRIP ───────────────────────── */
+#clients{
+  padding:80px 52px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.clients-label{
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--text-muted);font-weight:700;margin-bottom:36px;
+  font-family:'Space Mono',monospace;
+}
+.client-types{
+  display:flex;gap:0;justify-content:center;
+  flex-wrap:wrap;
+  border:1px solid var(--border);
+  display:inline-flex;
+}
+.client-type{
+  padding:18px 32px;
+  font-size:11px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-muted);
+  border-right:1px solid var(--border);
+  font-family:'Space Mono',monospace;
+  transition:color .2s,background .2s;
+}
+.client-type:last-child{border-right:none;}
+.client-type:hover{color:var(--purple-hi);background:var(--surface2);}
+
+/* ─── CTA ────────────────────────────────── */
+#cta{
+  padding:150px 52px;
+  background:var(--surface2);
+  text-align:center;
+  position:relative;overflow:hidden;
+  border-top:1px solid var(--border);
+}
+#cta::before{
+  content:'';position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  width:800px;height:800px;
+  background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 65%);
+  pointer-events:none;
+}
+#cta::after{
+  content:'6%';
+  position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:clamp(160px,36vw,480px);
+  font-weight:700;
+  color:rgba(139,92,246,.03);
+  letter-spacing:-.05em;line-height:1;
+  pointer-events:none;user-select:none;
+  font-family:inherit;
+}
+.cta-inner{position:relative;z-index:2;}
+.cta-tag{
+  font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--purple);font-weight:700;
+  margin-bottom:24px;display:block;
+}
+.cta-title{
+  font-size:clamp(44px,7.5vw,100px);
+  font-weight:700;color:#fff;
+  line-height:.92;letter-spacing:-.03em;
+  margin-bottom:28px;
+}
+.cta-title span{color:var(--yellow);}
+.cta-sub{
+  font-size:17px;color:var(--text-dim);
+  margin-bottom:52px;
+  max-width:480px;margin-left:auto;margin-right:auto;
+  line-height:1.7;
+}
+.cta-btn{
+  display:inline-block;
+  padding:22px 68px;
+  background:var(--purple-dk);color:#fff;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:13px;
+  letter-spacing:.2em;text-transform:uppercase;
+  text-decoration:none;border:none;
+  transition:transform .25s,background .2s,box-shadow .2s;
+  box-shadow:0 0 0 0 rgba(139,92,246,0);
+}
+.cta-btn:hover{
+  transform:translateY(-4px);
+  background:var(--purple);
+  box-shadow:0 16px 60px rgba(139,92,246,.45);
+}
+.cta-note{margin-top:24px;font-size:13px;color:var(--text-muted);letter-spacing:.04em;}
+.cta-email{
+  display:block;margin-top:8px;
+  font-size:14px;font-weight:700;
+  color:var(--text-dim);text-decoration:none;letter-spacing:.06em;
+  transition:color .2s;
+}
+.cta-email:hover{color:var(--purple-hi);}
+
+/* ─── FOOTER ─────────────────────────────── */
+footer{
+  background:var(--bg);
+  padding:40px 52px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--border);
+  flex-wrap:wrap;gap:16px;
+}
+.footer-logo{font-weight:700;font-size:14px;letter-spacing:.26em;color:var(--yellow);}
+.footer-links{display:flex;gap:28px;}
+.footer-links a{
+  font-size:10px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-muted);text-decoration:none;
+  font-family:'Space Mono',monospace;
+  transition:color .2s;
+}
+.footer-links a:hover{color:var(--purple-hi);}
+.footer-copy{font-size:11px;color:var(--text-muted);letter-spacing:.04em;font-family:'Space Mono',monospace;}
+
+/* ─── RESPONSIVE ─────────────────────────── */
+@media(max-width:900px){
+  #nav{padding:0 24px;}
+  .nav-links{display:none;}
+  .section,#hero,#featured,#portfolio,#philosophy,#process,#clients,#cta,footer{
+    padding-left:24px;padding-right:24px;
+  }
+  #hero{padding-top:100px;padding-bottom:60px;}
+  .sectors-grid{grid-template-columns:1fr 1fr;}
+  .phil-grid{grid-template-columns:1fr;gap:44px;}
+  .gallery-grid{grid-template-columns:1fr;}
+  .process-steps{grid-template-columns:1fr;}
+  .hero-bg-num{display:none;}
+  footer{padding:28px 24px;flex-direction:column;text-align:center;}
+  .footer-links{flex-wrap:wrap;justify-content:center;}
+  #cta{padding:80px 24px;}
+  .client-types{flex-direction:column;display:flex;}
+  .client-type{border-right:none;border-bottom:1px solid var(--border);}
+  .client-type:last-child{border-bottom:none;}
+}
+@media(max-width:600px){
+  .sectors-grid{grid-template-columns:1fr;}
+  .hero-sub-row{flex-direction:column;align-items:flex-start;}
+  .feat-plaque-top{flex-direction:column;}
+  .feat-cta-block{align-items:flex-start;}
+}
+
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cur"></div>
+<div id="cur-trail"></div>
+<div id="flash"></div>
+
+
+<!-- ── NAV ───────────────────────────────── -->
+<nav id="nav">
+  <a href="#" class="nav-logo">SIX<span> PERCENT</span></a>
+  <ul class="nav-links">
+    <li><a href="#sectors">Disciplines</a></li>
+    <li><a href="#portfolio">The Gallery</a></li>
+    <li><a href="#philosophy">Manifesto</a></li>
+    <li><a href="#cta">Contact</a></li>
+  </ul>
+  <a href="#portfolio" class="nav-cta">Enter The Gallery</a>
+</nav>
+
+
+<!-- ── HERO ──────────────────────────────── -->
+<section id="hero">
+  <div class="hero-inner">
+
+    <p class="hero-eyebrow reveal">Charlotte, NC · Remote Worldwide · Est. 2025</p>
+
+    <h1 class="hero-headline reveal">
+      WE<br>
+      MAKE<br>
+      IT <span class="y">TWICE</span><br>
+      AS <span class="p">DOPE.</span>
+    </h1>
+
+    <div class="hero-sub-row reveal">
+      <p class="hero-sub">
+        Interactive experiences. Web toys. Gamified tools.
+        Physical-digital installations.<br>
+        <em>Your thing — six percent better. Twice as memorable.</em>
+      </p>
+      <div class="hero-actions">
+        <a href="#portfolio" class="btn-pri">Enter The Gallery →</a>
+        <a href="#cta" class="btn-ghost">Start A Project</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="hero-bg-num">6%</div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+
+<!-- ── MARQUEE ────────────────────────────── -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>WEB TOYS</span><span class="sep"></span>
+    <span>GAMIFICATION</span><span class="sep"></span>
+    <span>INTERACTIVE EXPERIENCES</span><span class="sep"></span>
+    <span>PHYSICAL-DIGITAL</span><span class="sep"></span>
+    <span>ARDUINO &amp; HARDWARE</span><span class="sep"></span>
+    <span>AR / VR</span><span class="sep"></span>
+    <span>BRAND ACTIVATIONS</span><span class="sep"></span>
+    <span>MUSEUM INSTALLATIONS</span><span class="sep"></span>
+    <span>ENTERPRISE UX</span><span class="sep"></span>
+    <span>CHARLOTTE NC</span><span class="sep"></span>
+    <span>REMOTE WORLDWIDE</span><span class="sep"></span>
+    <span>WEB TOYS</span><span class="sep"></span>
+    <span>GAMIFICATION</span><span class="sep"></span>
+    <span>INTERACTIVE EXPERIENCES</span><span class="sep"></span>
+    <span>PHYSICAL-DIGITAL</span><span class="sep"></span>
+    <span>ARDUINO &amp; HARDWARE</span><span class="sep"></span>
+    <span>AR / VR</span><span class="sep"></span>
+    <span>BRAND ACTIVATIONS</span><span class="sep"></span>
+    <span>MUSEUM INSTALLATIONS</span><span class="sep"></span>
+    <span>ENTERPRISE UX</span><span class="sep"></span>
+    <span>CHARLOTTE NC</span><span class="sep"></span>
+    <span>REMOTE WORLDWIDE</span><span class="sep"></span>
+  </div>
+</div>
+
+
+<!-- ── DISCIPLINES ───────────────────────── -->
+<section class="section" id="sectors">
+  <div class="section-inner">
+    <div class="section-label reveal">Disciplines</div>
+    <h2 class="section-title reveal">If it's boring,<br>we fix it.</h2>
+    <div class="sectors-grid">
+
+      <div class="sector-card reveal">
+        <span class="sector-icon">🍸</span>
+        <div class="sector-num">01 —</div>
+        <div class="sector-name">Bars &amp; Hospitality</div>
+        <div class="sector-hook">Dead menus become interactive experiences. Your specials board actually makes people excited. The room you built deserves a digital experience that matches it.</div>
+        <div class="sector-example">See: Oak &amp; Ivy Demo ↓</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="sector-icon">🏢</span>
+        <div class="sector-num">02 —</div>
+        <div class="sector-name">Corporations &amp; Enterprise</div>
+        <div class="sector-hook">Boring dashboards. Clunky onboarding. Workflows nobody wants to use. We add the 6% that turns a tool people endure into one they actually enjoy — and that shows up in your retention numbers.</div>
+        <div class="sector-example">Productivity · Onboarding · Training</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="sector-icon">🖼️</span>
+        <div class="sector-num">03 —</div>
+        <div class="sector-name">Museums &amp; Galleries</div>
+        <div class="sector-hook">Static display screens become interactive moments. Artifacts people walk past become things they stop and photograph. We build the touchscreen installation that makes a Tuesday feel like opening night.</div>
+        <div class="sector-example">Kiosks · Touchscreens · Installations</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="sector-icon">🎓</span>
+        <div class="sector-num">04 —</div>
+        <div class="sector-name">Education</div>
+        <div class="sector-hook">Lectures become games. Curriculums become adventures. A hall display becomes something students stop to read. The boring stuff becomes the part they actually remember.</div>
+        <div class="sector-example">K–12 · Higher Ed · Corporate Training</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="sector-icon">🎤</span>
+        <div class="sector-num">05 —</div>
+        <div class="sector-name">Creators &amp; Brands</div>
+        <div class="sector-hook">Your portfolio, your drop page, your newsletter — elevated from "fine" to "wait, send me that link again." We build the web presence that makes people feel your brand before they read a word.</div>
+        <div class="sector-example">Portfolios · Drop Pages · Web Toys</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="sector-icon">🎉</span>
+        <div class="sector-num">06 —</div>
+        <div class="sector-name">Events &amp; Activations</div>
+        <div class="sector-hook">Pop-ups. Concerts. Brand launches. Trade shows. We build the interactive moment that becomes the thing everyone posts about — and the reason your brand lives in people's camera rolls.</div>
+        <div class="sector-example">IRL · AR/VR · Physical-Digital</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── FEATURED INSTALLATION ─────────────── -->
+<section id="featured">
+  <div class="feat-inner">
+
+    <div class="feat-plaque-top reveal">
+      <div class="feat-label-block">
+        <div class="feat-exhibit-num">Featured Installation — Exhibit 003</div>
+        <h2 class="feat-title">Interactive <em>Physics</em> Playground</h2>
+        <div class="feat-meta">Matter.js · Web Audio API · Canvas 2D · Gamification</div>
+      </div>
+      <div class="feat-cta-block">
+        <div class="feat-cta-note">Live &amp; Playable</div>
+        <a href="six-percent-playground.html" target="_blank" class="btn-pri">Open Exhibit →</a>
+      </div>
+    </div>
+
+    <a href="six-percent-playground.html" target="_blank" class="feat-canvas reveal">
+      <div class="feat-canvas-num">003</div>
+      <div class="feat-canvas-glow"></div>
+      <div class="feat-canvas-label">
+        <div class="feat-canvas-title">SIX PERCENT STUDIO · Physics Engine</div>
+        <div class="feat-canvas-sub">
+          Physics-based blocks. Synthesized audio on collision. Score system, combo multiplier, CHAOS MODE. A live demo of what happens when gamification meets creative code.
+        </div>
+        <span class="feat-enter">
+          <span>▶</span>
+          <span>Launch The Playground</span>
+        </span>
+      </div>
+    </a>
+
+    <div class="feat-bottom reveal">
+      <div class="feat-tag">Real-time Physics Simulation</div>
+      <div class="feat-tag">Synthesized Web Audio</div>
+      <div class="feat-tag">Score &amp; Combo System</div>
+      <div class="feat-tag">CHAOS MODE Unlock</div>
+      <div class="feat-tag">Zero-Gravity Toggle</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ── THE GALLERY ────────────────────────── -->
+<section id="portfolio">
+  <div class="section-inner">
+    <div class="section-label reveal">The Gallery</div>
+    <h2 class="section-title reveal">The 6% in action.</h2>
+
+    <div class="gallery-grid">
+
+      <!-- Exhibit 001 -->
+      <a href="oak-and-ivy-demo.html" target="_blank" class="exhibit-card live reveal">
+        <div class="exhibit-art">
+          <div class="exhibit-art-num">001</div>
+          <div class="exhibit-art-glow"></div>
+          <div class="exhibit-art-icon">🍸</div>
+          <div class="exhibit-live-badge">Live Demo →</div>
+        </div>
+        <div class="exhibit-plaque">
+          <div class="exhibit-plaque-num">Exhibit 001 · Bars &amp; Hospitality</div>
+          <div class="exhibit-plaque-title">The Bar Upgrade</div>
+          <div class="exhibit-plaque-medium">Interactive Menu · Web · Tablet</div>
+          <div class="exhibit-plaque-desc">
+            A static menu PDF becomes a full interactive experience — live happy hour countdown, cocktail quiz, animated specials board, category filtering. Built to run on a tablet at the bar.
+          </div>
+          <div class="exhibit-before-after">
+            <span class="ex-before">Boring PDF Menu</span>
+            <span class="ex-arrow">→</span>
+            <span class="ex-after">Interactive Bar Experience</span>
+          </div>
+        </div>
+        <div class="exhibit-floor"></div>
+      </a>
+
+      <!-- Exhibit 002 -->
+      <a href="six-percent-demo.html" target="_blank" class="exhibit-card live reveal">
+        <div class="exhibit-art">
+          <div class="exhibit-art-num">002</div>
+          <div class="exhibit-art-glow"></div>
+          <div class="exhibit-art-icon">✦</div>
+          <div class="exhibit-live-badge">Live Demo →</div>
+        </div>
+        <div class="exhibit-plaque">
+          <div class="exhibit-plaque-num">Exhibit 002 · Brand Experience</div>
+          <div class="exhibit-plaque-title">The Concept Demo</div>
+          <div class="exhibit-plaque-medium">Before/After Toggle · Brand · Web</div>
+          <div class="exhibit-plaque-desc">
+            The SIX PERCENT philosophy made clickable — watch a generic ACME Solutions corporate site transform into a full branded experience with one click. The pitch that sells itself.
+          </div>
+          <div class="exhibit-before-after">
+            <span class="ex-before">Generic Corporate Site</span>
+            <span class="ex-arrow">→</span>
+            <span class="ex-after">SIX PERCENT Experience</span>
+          </div>
+        </div>
+        <div class="exhibit-floor"></div>
+      </a>
+
+      <!-- Exhibit 004 - live -->
+      <a href="enterprise-dashboard-demo.html" target="_blank" class="exhibit-card live reveal">
+        <div class="exhibit-art">
+          <div class="exhibit-art-num">004</div>
+          <div class="exhibit-art-glow"></div>
+          <div class="exhibit-art-icon">📊</div>
+          <div class="exhibit-live-badge">Live Demo →</div>
+        </div>
+        <div class="exhibit-plaque">
+          <div class="exhibit-plaque-num">Exhibit 004 · Enterprise</div>
+          <div class="exhibit-plaque-title">The Dashboard Upgrade</div>
+          <div class="exhibit-plaque-medium">Gamified Analytics · XP System · Enterprise UX</div>
+          <div class="exhibit-plaque-desc">
+            A boring enterprise analytics dashboard gets the 6% treatment — progress rings, streak mechanics, level-up moments, and a UI that makes people actually open the app on Monday morning.
+          </div>
+          <div class="exhibit-before-after">
+            <span class="ex-before">Clunky Dashboard</span>
+            <span class="ex-arrow">→</span>
+            <span class="ex-after">Gamified Experience</span>
+          </div>
+        </div>
+        <div class="exhibit-floor"></div>
+      </a>
+
+      <!-- Exhibit 005 - coming soon -->
+      <div class="exhibit-card soon reveal">
+        <div class="exhibit-art">
+          <div class="exhibit-art-num">005</div>
+          <div class="exhibit-art-glow"></div>
+          <div class="exhibit-art-icon">🏛️</div>
+          <div class="exhibit-soon-badge">In Production</div>
+        </div>
+        <div class="exhibit-plaque">
+          <div class="exhibit-plaque-num">Exhibit 005 · Museums &amp; Galleries</div>
+          <div class="exhibit-plaque-title">The Museum Kiosk</div>
+          <div class="exhibit-plaque-medium">Touchscreen Installation · Large Format</div>
+          <div class="exhibit-plaque-desc">
+            A static artifact display becomes a touchscreen exploration — timeline navigation, audio cues, hidden details that reward curiosity. Built for tablets and large-format displays.
+          </div>
+          <div class="exhibit-before-after">
+            <span class="ex-before">Static Info Screen</span>
+            <span class="ex-arrow">→</span>
+            <span class="ex-after">Interactive Installation</span>
+          </div>
+        </div>
+        <div class="exhibit-floor"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── CLIENT STRIP ───────────────────────── -->
+<div id="clients" class="reveal">
+  <div class="clients-label">We've upgraded things for</div>
+  <div class="client-types">
+    <div class="client-type">Bars</div>
+    <div class="client-type">Agencies</div>
+    <div class="client-type">Startups</div>
+    <div class="client-type">Museums</div>
+    <div class="client-type">Schools</div>
+    <div class="client-type">Creators</div>
+    <div class="client-type">Corporations</div>
+    <div class="client-type">Anyone Boring</div>
+  </div>
+</div>
+
+
+<!-- ── PHILOSOPHY ─────────────────────────── -->
+<section id="philosophy">
+  <div class="phil-grid">
+
+    <div class="phil-numbers reveal-left">
+      <div class="big-num dim">3%</div>
+      <div class="phil-arrow">→</div>
+      <div class="big-num lit">6%</div>
+    </div>
+
+    <div class="phil-copy reveal-right">
+      <div class="section-label" style="margin-bottom:18px;">The Manifesto</div>
+      <h2>Virgil said <em>3%</em> was enough to make it good.</h2>
+      <p>Virgil Abloh famously said you only need to change 3% of something to make a great design. One detail. One edit. One shift in perspective. That's all it takes.</p>
+      <p>We take that seriously. Then we double it — because we have taste, AI-augmented speed, and a deep obsession with making things people actually remember. Not just working. <em style="color:var(--text-dim);font-style:normal;">Memorable.</em></p>
+      <p>We don't rebuild from scratch. We find the proven thing — the tool, the website, the space, the experience — and apply the 6% that transforms functional into unforgettable.</p>
+      <div class="phil-quote">
+        "Curation is not about adding more — it's about knowing exactly what to change."<br>
+        Inspired by Virgil Abloh, Rick Rubin, and Donald Norman.
+      </div>
+      <div class="phil-names">
+        <div class="phil-name-tag">Rick Rubin — The Ear</div>
+        <div class="phil-name-tag">Virgil Abloh — The Edit</div>
+        <div class="phil-name-tag">Donald Norman — The Rigor</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ── PROCESS ────────────────────────────── -->
+<section class="section" id="process">
+  <div class="section-inner">
+    <div class="section-label reveal">How It Works</div>
+    <h2 class="section-title reveal">Three moves.<br>One upgrade.</h2>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-n">01</div>
+        <div class="step-title">Show Me The Boring Thing</div>
+        <div class="step-body">Bring what you have — the website, the tool, the dashboard, the display, the event. We audit what's already working and identify exactly where the 6% lives. No rebuilding. Just finding the lever.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-n">02</div>
+        <div class="step-title">We Design The Upgrade</div>
+        <div class="step-body">AI-assisted, taste-driven design and development. We prototype the interactive moments, the delightful details — the layer that transforms functional into memorable. You react, we refine, fast.</div>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-n">03</div>
+        <div class="step-title">Ship It Twice As Dope</div>
+        <div class="step-body">We build and deploy. Web toy, physical installation, gamified tool, brand activation — it ships ready to use and ready to impress. The before/after story tells itself.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── CTA ────────────────────────────────── -->
+<section id="cta">
+  <div class="cta-inner reveal">
+    <span class="cta-tag">// Open For Commissions</span>
+    <h2 class="cta-title">READY TO<br>GET <span>DOPE?</span></h2>
+    <p class="cta-sub">Charlotte, NC based. Working with anyone, anywhere, who wants their thing to hit harder. Bars, corporations, museums, schools, creators — if it's boring, we fix it.</p>
+    <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation</a>
+    <p class="cta-note">No decks required. Just tell me what's boring.</p>
+    <a href="mailto:heymrlb@gmail.com" class="cta-email">heymrlb@gmail.com</a>
+  </div>
+</section>
+
+
+<!-- ── FOOTER ─────────────────────────────── -->
+<footer>
+  <div class="footer-logo">SIX PERCENT</div>
+  <div class="footer-links">
+    <a href="#sectors">Disciplines</a>
+    <a href="#portfolio">Gallery</a>
+    <a href="#philosophy">Manifesto</a>
+    <a href="#cta">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 SIX PERCENT STUDIO · CHARLOTTE, NC</div>
+</footer>
+
+
+<script>
+/* ─── CURSOR ────────────────────────────────── */
+const cur   = document.getElementById('cur');
+const trail = document.getElementById('cur-trail');
+let mx = 0, my = 0, tx = 0, ty = 0;
+
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+(function loop() {
+  tx += (mx - tx) * 0.15;
+  ty += (my - ty) * 0.15;
+  cur.style.left   = mx + 'px';
+  cur.style.top    = my + 'px';
+  trail.style.left = tx + 'px';
+  trail.style.top  = ty + 'px';
+  requestAnimationFrame(loop);
+})();
+
+document.querySelectorAll(
+  'a, button, .sector-card, .exhibit-card, .phil-name-tag, .client-type, .process-step'
+).forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+/* ─── NAV SCROLL ────────────────────────────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ─── SCROLL REVEAL ─────────────────────────── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach((el, i) => {
+  el.style.transitionDelay = (i % 8 * 0.07) + 's';
+  obs.observe(el);
+});
+
+/* ─── FLASH ON LOAD ─────────────────────────── */
+window.addEventListener('load', () => {
+  const fl = document.getElementById('flash');
+  fl.style.opacity = '0.5';
+  fl.style.transition = 'opacity 0.7s ease';
+  setTimeout(() => { fl.style.opacity = '0'; }, 60);
+});
+
+/* ─── SMOOTH ANCHOR SCROLL ──────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+/* ─── MOBILE: show sector text always ──────── */
+if (window.innerWidth < 600) {
+  document.querySelectorAll('.sector-hook,.sector-example').forEach(el => {
+    el.style.maxHeight = '200px';
+    el.style.opacity = '1';
+  });
+}
+</script>
+</body>
+</html>

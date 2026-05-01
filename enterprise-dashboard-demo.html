@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUANTUM CORP — Analytics Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── TOKENS ──────────────────────────────── */
+:root {
+  --dp-bg:       #09070f;
+  --dp-surf:     #110d1e;
+  --dp-surf2:    #1a1330;
+  --dp-border:   rgba(139,92,246,.14);
+  --dp-border-hi:rgba(139,92,246,.42);
+  --dp-purple:   #8B5CF6;
+  --dp-purple-hi:#a78bfa;
+  --dp-green:    #22c55e;
+  --dp-yellow:   #E8FF00;
+  --dp-red:      #f87171;
+  --dp-text:     #e2d9f3;
+  --dp-muted:    #6b5e8a;
+  --dp-dim:      #2e2448;
+}
+
+/* ─── RESET ──────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: Arial, sans-serif; overflow-x:hidden; }
+
+/* ─── TOGGLE BUTTON ──────────────────────── */
+#apply-btn {
+  position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
+  z-index:9000;
+  background:#E8FF00; color:#000;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700; font-size:12px;
+  letter-spacing:.18em; text-transform:uppercase;
+  border:none; padding:16px 40px;
+  cursor:pointer;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  transition:transform .2s, background .2s, box-shadow .2s;
+  white-space:nowrap;
+}
+#apply-btn:hover { transform:translateX(-50%) translateY(-3px); box-shadow:0 14px 44px rgba(232,255,0,.35); }
+#apply-btn:disabled { opacity:.5; }
+
+/* ─── FLASH ──────────────────────────────── */
+#flash {
+  position:fixed; inset:0; z-index:8999;
+  background:#8B5CF6; opacity:0; pointer-events:none;
+  transition:opacity .18s;
+}
+#flash.on { opacity:1; }
+
+/* ═══════════════════════════════════════════
+   BORING STATE — classic enterprise dashboard
+═══════════════════════════════════════════ */
+#boring-site {
+  display:block; min-height:100vh;
+  background:#f2f3f5;
+  font-family:Arial,sans-serif;
+  color:#333;
+}
+#dope-site { display:none; }
+
+body.dope #boring-site { display:none; }
+body.dope #dope-site   { display:flex; flex-direction:column; min-height:100vh; }
+
+/* boring nav */
+.b-nav {
+  background:#1a4b8c; color:#fff;
+  padding:0 24px; height:52px;
+  display:flex; align-items:center; gap:32px;
+  border-bottom:3px solid #0f3266;
+}
+.b-nav-logo { font-size:16px; font-weight:bold; letter-spacing:.05em; white-space:nowrap; }
+.b-nav-logo span { font-weight:normal; color:#8badd4; font-size:13px; }
+.b-nav-links { display:flex; gap:0; flex:1; }
+.b-nav-link {
+  color:#8badd4; font-size:13px; padding:0 16px; height:52px;
+  display:flex; align-items:center;
+  border-bottom:3px solid transparent; margin-bottom:-3px;
+  text-decoration:none;
+  transition:color .15s;
+}
+.b-nav-link:hover, .b-nav-link.active { color:#fff; border-bottom-color:#fff; }
+.b-nav-user { margin-left:auto; font-size:12px; color:#8badd4; white-space:nowrap; }
+
+/* boring layout */
+.b-layout { display:flex; flex:1; }
+.b-sidebar {
+  width:200px; flex-shrink:0;
+  background:#fff; border-right:1px solid #ddd;
+  padding-top:8px;
+}
+.b-sidebar-item {
+  display:block; padding:10px 16px;
+  font-size:13px; color:#444; text-decoration:none;
+  border-left:3px solid transparent;
+  transition:background .1s;
+}
+.b-sidebar-item:hover { background:#f5f5f5; }
+.b-sidebar-item.active { background:#e8f0fb; color:#1a4b8c; border-left-color:#1a4b8c; font-weight:bold; }
+.b-sidebar-section {
+  font-size:10px; font-weight:bold; color:#999;
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:16px 16px 6px;
+}
+
+/* boring main */
+.b-main { flex:1; padding:24px; overflow-y:auto; }
+.b-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px; flex-wrap:wrap; gap:8px;
+}
+.b-header h1 { font-size:20px; color:#222; font-weight:bold; }
+.b-header-meta { font-size:12px; color:#888; }
+.b-header-actions { display:flex; gap:8px; }
+.b-btn {
+  padding:7px 16px; font-size:12px;
+  border:1px solid #ccc; background:#fff; color:#333;
+  cursor:pointer;
+}
+.b-btn:hover { background:#f5f5f5; }
+.b-btn.pri { background:#1a4b8c; color:#fff; border-color:#1a4b8c; }
+.b-btn.pri:hover { background:#0f3266; }
+
+/* boring KPI cards */
+.b-kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:20px; }
+.b-kpi {
+  background:#fff; border:1px solid #ddd;
+  padding:16px;
+}
+.b-kpi-label { font-size:11px; color:#888; margin-bottom:6px; text-transform:uppercase; letter-spacing:.05em; }
+.b-kpi-value { font-size:24px; font-weight:bold; color:#222; }
+.b-kpi-sub { font-size:11px; color:#888; margin-top:4px; }
+.b-kpi-change { font-size:11px; margin-top:4px; }
+.b-kpi-change.up { color:#2a7d4f; }
+.b-kpi-change.dn { color:#b91c1c; }
+
+/* boring charts row */
+.b-charts-row { display:grid; grid-template-columns:1.6fr 1fr; gap:16px; margin-bottom:20px; }
+.b-panel {
+  background:#fff; border:1px solid #ddd;
+  padding:16px;
+}
+.b-panel-title {
+  font-size:13px; font-weight:bold; color:#333;
+  border-bottom:1px solid #eee; padding-bottom:10px; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.b-panel-title span { font-size:11px; font-weight:normal; color:#888; }
+
+/* boring bar chart */
+.b-chart { display:flex; align-items:flex-end; gap:8px; height:140px; padding-top:8px; }
+.b-bar-col { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; }
+.b-bar {
+  background:#4a7fcb; width:100%;
+  transition:none;
+}
+.b-bar-label { font-size:10px; color:#999; }
+.b-bar-val { font-size:10px; color:#666; }
+
+/* boring table */
+.b-table { width:100%; border-collapse:collapse; font-size:13px; }
+.b-table th {
+  background:#f5f5f5; padding:8px 12px; text-align:left;
+  font-size:11px; color:#666; font-weight:bold;
+  border-bottom:2px solid #ddd; text-transform:uppercase; letter-spacing:.05em;
+}
+.b-table td { padding:8px 12px; border-bottom:1px solid #eee; color:#333; }
+.b-table tr:last-child td { border-bottom:none; }
+.b-table tr:hover td { background:#fafafa; }
+.b-pct { color:#2a7d4f; }
+
+/* boring goals */
+.b-goals { margin-bottom:20px; }
+.b-goals-list { background:#fff; border:1px solid #ddd; }
+.b-goal-item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-bottom:1px solid #eee; font-size:13px;
+}
+.b-goal-item:last-child { border-bottom:none; }
+.b-goal-check { width:14px; height:14px; border:1px solid #ccc; flex-shrink:0; }
+.b-goal-check.done { background:#2a7d4f; border-color:#2a7d4f; }
+.b-goal-text { flex:1; }
+.b-goal-status { font-size:11px; color:#888; }
+
+/* boring footer */
+.b-footer {
+  background:#fff; border-top:1px solid #ddd;
+  padding:10px 24px;
+  font-size:11px; color:#999;
+  display:flex; justify-content:space-between;
+}
+
+/* boring notice bar */
+.b-notice {
+  background:#fff9e6; border-bottom:1px solid #ffd57e;
+  padding:8px 24px;
+  font-size:12px; color:#7a5800;
+  display:flex; align-items:center; gap:8px;
+}
+.b-notice a { color:#1a4b8c; }
+
+/* ═══════════════════════════════════════════
+   DOPE STATE — SIX PERCENT treatment
+═══════════════════════════════════════════ */
+#dope-site {
+  background:var(--dp-bg);
+  color:var(--dp-text);
+  font-family:'Space Grotesk',sans-serif;
+}
+
+/* dope nav */
+.d-nav {
+  background:rgba(9,7,15,.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--dp-border);
+  padding:0 28px; height:60px;
+  display:flex; align-items:center; gap:20px;
+  position:sticky; top:0; z-index:100;
+}
+.d-nav-logo {
+  font-weight:700; font-size:14px;
+  letter-spacing:.2em; color:var(--dp-purple-hi);
+  flex-shrink:0;
+}
+.d-nav-separator {
+  width:1px; height:24px; background:var(--dp-border); flex-shrink:0;
+}
+.d-nav-brand {
+  font-size:13px; font-weight:600; color:var(--dp-text);
+  letter-spacing:.06em; flex-shrink:0;
+}
+.d-level-badge {
+  display:flex; align-items:center; gap:8px;
+  background:var(--dp-surf2);
+  border:1px solid var(--dp-border);
+  padding:5px 12px;
+  font-family:'Space Mono',monospace;
+  font-size:10px; color:var(--dp-purple-hi);
+  letter-spacing:.12em; text-transform:uppercase;
+  transition:box-shadow .3s;
+}
+.d-level-badge.glow { box-shadow:0 0 20px rgba(139,92,246,.6); }
+#d-level-num { transition:color .3s; }
+
+.d-xp-nav {
+  display:flex; align-items:center; gap:8px;
+  font-family:'Space Mono',monospace; font-size:10px;
+  color:var(--dp-muted);
+}
+.d-xp-star { color:var(--dp-yellow); }
+#d-xp-display { color:var(--dp-text-dim); transition:color .3s; }
+
+.d-nav-links { display:flex; gap:28px; margin-left:20px; }
+.d-nav-link {
+  font-size:11px; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--dp-dim);
+  text-decoration:none; transition:color .2s;
+}
+.d-nav-link:hover { color:var(--dp-purple-hi); }
+.d-nav-link.active { color:var(--dp-purple); }
+
+.d-nav-user {
+  margin-left:auto; font-size:12px;
+  color:var(--dp-muted); display:flex; align-items:center; gap:8px;
+}
+.d-avatar {
+  width:28px; height:28px; border-radius:50%;
+  background:linear-gradient(135deg,var(--dp-purple),var(--dp-purple-hi));
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:#fff;
+}
+
+/* dope main */
+.d-main { padding:28px; max-width:1300px; margin:0 auto; flex:1; }
+
+/* Page header */
+.d-page-header {
+  display:flex; align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:28px; flex-wrap:wrap; gap:12px;
+}
+.d-page-title {
+  font-size:11px; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--dp-purple); font-family:'Space Mono',monospace;
+  font-weight:700; margin-bottom:6px;
+}
+.d-page-headline {
+  font-size:clamp(20px,2.5vw,28px);
+  font-weight:700; color:#fff;
+  letter-spacing:-.01em; line-height:1.1;
+}
+.d-page-sub { font-size:13px; color:var(--dp-muted); margin-top:4px; }
+.d-header-actions { display:flex; gap:10px; }
+.d-btn {
+  padding:10px 20px;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600; font-size:11px;
+  letter-spacing:.14em; text-transform:uppercase;
+  border:1px solid var(--dp-border);
+  background:transparent; color:var(--dp-muted);
+  cursor:pointer; transition:all .2s;
+}
+.d-btn:hover { border-color:var(--dp-border-hi); color:var(--dp-purple-hi); }
+.d-btn.pri {
+  background:var(--dp-purple); color:#fff;
+  border-color:var(--dp-purple);
+  box-shadow:0 0 0 0 rgba(139,92,246,0);
+  transition:all .2s;
+}
+.d-btn.pri:hover { background:var(--dp-purple-hi); box-shadow:0 6px 24px rgba(139,92,246,.4); }
+
+/* KPI cards row */
+.d-kpi-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:2px; background:var(--dp-border);
+  border:1px solid var(--dp-border);
+  margin-bottom:20px;
+}
+.d-kpi {
+  background:var(--dp-surf);
+  padding:24px; position:relative; overflow:hidden;
+  transition:background .3s;
+}
+.d-kpi:hover { background:var(--dp-surf2); }
+.d-kpi-label {
+  font-family:'Space Mono',monospace;
+  font-size:9px; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--dp-muted); margin-bottom:12px; font-weight:700;
+}
+.d-kpi-value {
+  font-size:clamp(28px,3.5vw,42px);
+  font-weight:700; color:#fff; line-height:1;
+}
+.d-kpi-value.green { color:var(--dp-green); }
+.d-kpi-value.purple { color:var(--dp-purple-hi); }
+.d-kpi-value.yellow { color:var(--dp-yellow); }
+.d-kpi-sub {
+  font-size:11px; color:var(--dp-muted);
+  margin-top:6px; display:flex; align-items:center; gap:6px;
+}
+.d-kpi-badge {
+  font-size:9px; font-weight:700; letter-spacing:.1em;
+  padding:2px 8px; border-radius:2px;
+  background:rgba(34,197,94,.12); color:var(--dp-green);
+  text-transform:uppercase;
+}
+.d-kpi-badge.purple {
+  background:rgba(139,92,246,.15); color:var(--dp-purple-hi);
+}
+
+/* Progress ring KPI */
+.d-ring-wrap {
+  display:flex; align-items:center; gap:16px;
+}
+.d-ring-info { flex:1; }
+#d-ring-canvas { flex-shrink:0; }
+
+/* Streak KPI */
+.d-streak-fire { font-size:28px; line-height:1; margin-bottom:6px; }
+.d-streak-calendar {
+  display:flex; gap:4px; margin-top:8px;
+}
+.d-streak-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:var(--dp-dim);
+}
+.d-streak-dot.done { background:var(--dp-green); }
+.d-streak-dot.today { background:var(--dp-yellow); box-shadow:0 0 6px rgba(232,255,0,.5); }
+
+/* Goal progress KPI */
+.d-goal-bar-wrap { margin-top:10px; }
+.d-goal-bar-track {
+  height:6px; background:var(--dp-dim);
+  border-radius:3px; overflow:hidden;
+  margin-bottom:6px;
+}
+.d-goal-bar-fill {
+  height:100%; border-radius:3px;
+  background:linear-gradient(to right, var(--dp-purple), var(--dp-purple-hi));
+  transition:width 1.5s cubic-bezier(.16,1,.3,1);
+  width:0%;
+}
+.d-goal-pct { font-size:11px; color:var(--dp-muted); }
+
+/* Rank KPI */
+.d-rank-indicator {
+  display:flex; align-items:center; gap:6px;
+  margin-top:6px; font-size:11px; color:var(--dp-green);
+}
+.d-rank-mini {
+  margin-top:10px; display:flex; flex-direction:column; gap:4px;
+}
+.d-rank-row {
+  display:flex; align-items:center; gap:8px;
+  font-size:11px; color:var(--dp-muted); font-family:'Space Mono',monospace;
+}
+.d-rank-row.you { color:var(--dp-purple-hi); font-weight:700; }
+.d-rank-num { width:14px; text-align:right; font-size:10px; }
+.d-rank-bar {
+  flex:1; height:3px; background:var(--dp-dim); border-radius:2px; overflow:hidden;
+}
+.d-rank-fill { height:100%; background:var(--dp-muted); border-radius:2px; }
+.d-rank-row.you .d-rank-fill { background:var(--dp-purple); }
+
+/* bottom panels */
+.d-panels { display:grid; grid-template-columns:1.5fr 1fr; gap:20px; margin-bottom:20px; }
+
+/* Activity feed */
+.d-panel {
+  background:var(--dp-surf);
+  border:1px solid var(--dp-border);
+}
+.d-panel-header {
+  padding:18px 22px; border-bottom:1px solid var(--dp-border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.d-panel-title {
+  font-size:11px; font-weight:700; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--dp-purple);
+  font-family:'Space Mono',monospace;
+}
+.d-panel-tag {
+  font-size:9px; color:var(--dp-muted);
+  font-family:'Space Mono',monospace; letter-spacing:.1em;
+}
+.d-feed { padding:4px 0; max-height:260px; overflow:hidden; }
+.d-feed-item {
+  display:flex; align-items:center; gap:14px;
+  padding:13px 22px; border-bottom:1px solid var(--dp-border);
+  transition:background .2s;
+}
+.d-feed-item:last-child { border-bottom:none; }
+.d-feed-item:hover { background:var(--dp-surf2); }
+.d-feed-check {
+  width:20px; height:20px; border-radius:50%;
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; flex-shrink:0; color:var(--dp-green);
+}
+.d-feed-text { flex:1; font-size:13px; color:var(--dp-text); }
+.d-feed-time { font-size:10px; color:var(--dp-muted); font-family:'Space Mono',monospace; }
+.d-feed-xp {
+  font-size:10px; font-weight:700; color:var(--dp-purple-hi);
+  font-family:'Space Mono',monospace; letter-spacing:.06em;
+  white-space:nowrap;
+}
+
+/* Achievements panel */
+.d-achievements { padding:16px; display:flex; flex-direction:column; gap:12px; }
+.d-badge-card {
+  background:var(--dp-surf2);
+  border:1px solid var(--dp-border);
+  padding:14px 16px;
+  display:flex; align-items:center; gap:14px;
+  transition:border-color .2s;
+}
+.d-badge-card:hover { border-color:var(--dp-border-hi); }
+.d-badge-icon {
+  width:40px; height:40px; flex-shrink:0;
+  background:var(--dp-dim);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px;
+}
+.d-badge-label {
+  font-size:9px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--dp-muted); font-family:'Space Mono',monospace;
+  margin-bottom:4px; font-weight:700;
+}
+.d-badge-name { font-size:13px; font-weight:700; color:var(--dp-text); }
+.d-badge-desc { font-size:11px; color:var(--dp-muted); margin-top:2px; }
+
+/* XP bar section */
+.d-xp-section {
+  background:var(--dp-surf);
+  border:1px solid var(--dp-border);
+  padding:20px 24px;
+  margin-bottom:20px;
+}
+.d-xp-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:12px; flex-wrap:wrap; gap:8px;
+}
+.d-xp-level {
+  font-family:'Space Mono',monospace;
+  font-size:11px; color:var(--dp-purple-hi);
+  letter-spacing:.1em;
+}
+#d-xp-label {
+  font-size:11px; color:var(--dp-muted);
+  font-family:'Space Mono',monospace;
+}
+.d-xp-track {
+  height:8px; background:var(--dp-dim);
+  border-radius:4px; overflow:visible;
+  position:relative; margin-bottom:16px;
+}
+.d-xp-fill {
+  height:100%; border-radius:4px;
+  background:linear-gradient(to right, var(--dp-purple), var(--dp-purple-hi));
+  width:0%;
+  transition:width 1s cubic-bezier(.16,1,.3,1);
+  position:relative;
+}
+.d-xp-fill::after {
+  content:'';
+  position:absolute; right:-1px; top:50%;
+  transform:translateY(-50%);
+  width:12px; height:12px; border-radius:50%;
+  background:var(--dp-purple-hi);
+  box-shadow:0 0 12px rgba(167,139,250,.8);
+}
+
+/* Complete task button */
+.d-complete-btn {
+  width:100%; padding:18px;
+  background:var(--dp-purple); color:#fff;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700; font-size:13px;
+  letter-spacing:.2em; text-transform:uppercase;
+  border:none; cursor:pointer;
+  position:relative; overflow:hidden;
+  transition:background .2s, box-shadow .2s, transform .1s;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.d-complete-btn:hover {
+  background:var(--dp-purple-hi);
+  box-shadow:0 8px 32px rgba(139,92,246,.45);
+}
+.d-complete-btn:active { transform:scale(.99); }
+.d-complete-btn::before {
+  content:''; position:absolute;
+  width:100px; height:100%;
+  background:rgba(255,255,255,.08);
+  transform:skewX(-20deg) translateX(-150px);
+  transition:transform .5s;
+}
+.d-complete-btn:hover::before { transform:skewX(-20deg) translateX(400px); }
+
+/* ─── TOAST ──────────────────────────────── */
+.toast {
+  position:fixed; bottom:96px; right:28px; z-index:9999;
+  background:var(--dp-surf);
+  border:1px solid var(--dp-border);
+  padding:14px 20px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:13px; color:var(--dp-text);
+  box-shadow:0 12px 40px rgba(0,0,0,.6);
+  min-width:280px; max-width:360px;
+  opacity:0; transform:translateY(16px);
+  transition:opacity .3s, transform .3s;
+}
+.toast.show { opacity:1; transform:translateY(0); }
+.toast.levelup {
+  border-color:var(--dp-yellow);
+  background:linear-gradient(135deg, var(--dp-surf2), #1a1100);
+}
+.toast-title {
+  font-weight:700; margin-bottom:4px;
+  display:flex; align-items:center; gap:8px;
+}
+.toast-sub { font-size:11px; color:var(--dp-muted); }
+.toast-xp {
+  font-family:'Space Mono',monospace;
+  font-size:11px; color:var(--dp-purple-hi);
+  margin-top:4px; font-weight:700;
+}
+
+/* ─── BRAND MARK ─────────────────────────── */
+.d-brand-mark {
+  position:fixed; bottom:96px; left:28px; z-index:8000;
+  font-family:'Space Mono',monospace;
+  font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--dp-muted); border:1px solid var(--dp-border);
+  padding:6px 10px; background:rgba(9,7,15,.8);
+}
+
+/* ─── CONFETTI ───────────────────────────── */
+.c-dot {
+  position:fixed; border-radius:50%;
+  pointer-events:none; z-index:9998;
+}
+
+/* ─── NEW FEED ITEM ANIMATION ────────────── */
+@keyframes slideInFeed {
+  from { opacity:0; transform:translateX(-20px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+.d-feed-item.new { animation:slideInFeed .4s ease forwards; }
+
+/* ─── RESPONSIVE ─────────────────────────── */
+@media(max-width:960px){
+  .d-kpi-row { grid-template-columns:repeat(2,1fr); }
+  .d-panels  { grid-template-columns:1fr; }
+  .b-kpi-row { grid-template-columns:repeat(2,1fr); }
+  .b-charts-row { grid-template-columns:1fr; }
+  .b-sidebar { display:none; }
+  .d-nav-links { display:none; }
+}
+@media(max-width:600px){
+  .d-kpi-row { grid-template-columns:1fr 1fr; }
+  .d-main    { padding:16px; }
+  .b-main    { padding:16px; }
+}
+</style>
+</head>
+<body>
+
+<div id="flash"></div>
+<button id="apply-btn">✦ Apply The 6% →</button>
+
+
+<!-- ══════════════════════════════════════════
+     BORING STATE
+══════════════════════════════════════════ -->
+<div id="boring-site">
+
+  <!-- notice bar -->
+  <div class="b-notice">
+    ⚠ Your session will expire in 15 minutes.
+    <a href="#">Click here to extend</a> &nbsp;|&nbsp;
+    The Q2 data sync is in progress. Some figures may be delayed. Last sync: 11:34 AM
+  </div>
+
+  <!-- nav -->
+  <nav class="b-nav">
+    <div class="b-nav-logo">QUANTUM CORP <span>Analytics Portal</span></div>
+    <div class="b-nav-links">
+      <a href="#" class="b-nav-link active">Dashboard</a>
+      <a href="#" class="b-nav-link">Reports</a>
+      <a href="#" class="b-nav-link">Team</a>
+      <a href="#" class="b-nav-link">Goals</a>
+      <a href="#" class="b-nav-link">Settings</a>
+      <a href="#" class="b-nav-link">Help</a>
+    </div>
+    <div class="b-nav-user">👤 Bruce Davis &nbsp;|&nbsp; <a href="#" style="color:#8badd4;">Logout</a></div>
+  </nav>
+
+  <div class="b-layout">
+    <!-- sidebar -->
+    <nav class="b-sidebar">
+      <div class="b-sidebar-section">Main</div>
+      <a href="#" class="b-sidebar-item active">📊 Overview</a>
+      <a href="#" class="b-sidebar-item">💰 Revenue</a>
+      <a href="#" class="b-sidebar-item">👥 Team Perf.</a>
+      <a href="#" class="b-sidebar-item">🎯 Goals</a>
+      <div class="b-sidebar-section">Reports</div>
+      <a href="#" class="b-sidebar-item">📁 Q2 Reports</a>
+      <a href="#" class="b-sidebar-item">📋 KPI Export</a>
+      <a href="#" class="b-sidebar-item">📈 Forecasting</a>
+      <div class="b-sidebar-section">Admin</div>
+      <a href="#" class="b-sidebar-item">⚙ Settings</a>
+      <a href="#" class="b-sidebar-item">🔒 Permissions</a>
+      <a href="#" class="b-sidebar-item">📞 IT Support</a>
+    </nav>
+
+    <!-- main content -->
+    <main class="b-main">
+      <div class="b-header">
+        <div>
+          <h1>Q2 Performance Dashboard</h1>
+          <div class="b-header-meta">Last updated: May 1, 2025 11:34 AM EST &nbsp;·&nbsp; Data as of: April 30, 2025</div>
+        </div>
+        <div class="b-header-actions">
+          <button class="b-btn">Refresh</button>
+          <button class="b-btn">Schedule Report</button>
+          <button class="b-btn pri">Export PDF ▾</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="b-kpi-row">
+        <div class="b-kpi">
+          <div class="b-kpi-label">Total Revenue (Q2)</div>
+          <div class="b-kpi-value">$2,142,890</div>
+          <div class="b-kpi-sub">Target: $2,900,000</div>
+          <div class="b-kpi-change dn">▼ 4.2% vs Q1</div>
+        </div>
+        <div class="b-kpi">
+          <div class="b-kpi-label">Tasks Completed</div>
+          <div class="b-kpi-value">847</div>
+          <div class="b-kpi-sub">Assigned: 1,257 tasks</div>
+          <div class="b-kpi-change up">▲ 2.1% vs Q1</div>
+        </div>
+        <div class="b-kpi">
+          <div class="b-kpi-label">Team Utilization</div>
+          <div class="b-kpi-value">73.2%</div>
+          <div class="b-kpi-sub">Benchmark: 80%</div>
+          <div class="b-kpi-change dn">▼ 1.8% vs Q1</div>
+        </div>
+        <div class="b-kpi">
+          <div class="b-kpi-label">Goal Completion</div>
+          <div class="b-kpi-value">67.4%</div>
+          <div class="b-kpi-sub">8 of 11 goals met</div>
+          <div class="b-kpi-change up">▲ 5.1% vs Q1</div>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="b-charts-row">
+        <div class="b-panel">
+          <div class="b-panel-title">Revenue Trend — Q2 2025 <span>Monthly breakdown</span></div>
+          <div class="b-chart">
+            <div class="b-bar-col">
+              <div class="b-bar-val">$612k</div>
+              <div class="b-bar" style="height:85px"></div>
+              <div class="b-bar-label">Apr</div>
+            </div>
+            <div class="b-bar-col">
+              <div class="b-bar-val">$738k</div>
+              <div class="b-bar" style="height:102px"></div>
+              <div class="b-bar-label">May</div>
+            </div>
+            <div class="b-bar-col">
+              <div class="b-bar-val">$521k</div>
+              <div class="b-bar" style="height:72px"></div>
+              <div class="b-bar-label">Jun</div>
+            </div>
+            <div class="b-bar-col">
+              <div class="b-bar-val">$271k</div>
+              <div class="b-bar" style="height:37px;background:#a0bbdd"></div>
+              <div class="b-bar-label">Jul*</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:#aaa;margin-top:10px">*Partial month. Data pending final close.</div>
+        </div>
+
+        <div class="b-panel">
+          <div class="b-panel-title">Team Performance <span>Q2 YTD</span></div>
+          <table class="b-table">
+            <thead>
+              <tr><th>Name</th><th>Tasks</th><th>Rate</th><th>Rank</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>S. Johnson</td><td>124</td><td class="b-pct">98.4%</td><td>1</td></tr>
+              <tr><td>M. Chen</td><td>118</td><td class="b-pct">93.7%</td><td>2</td></tr>
+              <tr><td>B. Davis</td><td>91</td><td class="b-pct">72.2%</td><td>3</td></tr>
+              <tr><td>A. Patel</td><td>87</td><td class="b-pct">69.0%</td><td>4</td></tr>
+              <tr><td>T. Williams</td><td>74</td><td class="b-pct">58.7%</td><td>5</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="b-goals">
+        <div class="b-panel">
+          <div class="b-panel-title">Q2 Goals Tracker</div>
+          <div class="b-goals-list">
+            <div class="b-goal-item">
+              <div class="b-goal-check done"></div>
+              <div class="b-goal-text">Reach $2.5M in quarterly revenue</div>
+              <div class="b-goal-status">⚠ In Progress — 73%</div>
+            </div>
+            <div class="b-goal-item">
+              <div class="b-goal-check done" style="background:#2a7d4f"></div>
+              <div class="b-goal-text">Complete onboarding for 3 enterprise clients</div>
+              <div class="b-goal-status">✓ Done</div>
+            </div>
+            <div class="b-goal-item">
+              <div class="b-goal-check"></div>
+              <div class="b-goal-text">Achieve 80% team utilization rate</div>
+              <div class="b-goal-status">⚠ Behind — 73.2%</div>
+            </div>
+            <div class="b-goal-item">
+              <div class="b-goal-check done" style="background:#2a7d4f"></div>
+              <div class="b-goal-text">Submit Q2 forecast to executive team</div>
+              <div class="b-goal-status">✓ Done</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:80px"></div>
+    </main>
+  </div>
+
+  <div class="b-footer">
+    <span>© 2025 Quantum Corp Analytics Portal v3.2.1 — For internal use only</span>
+    <span>Questions? Contact IT Support: ext. 4422 or <a href="#" style="color:#1a4b8c;">it-support@quantumcorp.com</a></span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     DOPE STATE
+══════════════════════════════════════════ -->
+<div id="dope-site">
+
+  <!-- nav -->
+  <nav class="d-nav">
+    <div class="d-nav-logo">QC</div>
+    <div class="d-nav-separator"></div>
+    <div class="d-nav-brand">QUANTUM CORP</div>
+    <div class="d-level-badge" id="d-level-badge">
+      🎮 LEVEL <span id="d-level-num">12</span> · SENIOR CONTRIBUTOR
+    </div>
+    <div class="d-xp-nav">
+      <span class="d-xp-star">★</span>
+      <span id="d-xp-display">2,200 XP</span>
+    </div>
+    <div class="d-nav-links">
+      <a href="#" class="d-nav-link active">Dashboard</a>
+      <a href="#" class="d-nav-link">Team</a>
+      <a href="#" class="d-nav-link">Goals</a>
+      <a href="#" class="d-nav-link">Reports</a>
+    </div>
+    <div class="d-nav-user">
+      <div class="d-avatar">BD</div>
+      Bruce D.
+    </div>
+  </nav>
+
+  <main class="d-main">
+
+    <!-- page header -->
+    <div class="d-page-header reveal">
+      <div>
+        <div class="d-page-title">// Q2 Performance · Live Dashboard</div>
+        <div class="d-page-headline">Your numbers, <span style="color:var(--dp-purple-hi)">made to move.</span></div>
+        <div class="d-page-sub">14-day streak · Rank #2 of 8 · Level 12 · 300 XP to next level</div>
+      </div>
+      <div class="d-header-actions">
+        <button class="d-btn">Export</button>
+        <button class="d-btn pri">Share Report →</button>
+      </div>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="d-kpi-row reveal">
+
+      <!-- Productivity Score ring -->
+      <div class="d-kpi">
+        <div class="d-kpi-label">Productivity Score</div>
+        <div class="d-ring-wrap">
+          <canvas id="d-ring-canvas" width="72" height="72"></canvas>
+          <div class="d-ring-info">
+            <div class="d-kpi-value purple" id="d-score-val">0</div>
+            <div class="d-kpi-sub">
+              <span class="d-kpi-badge purple">Top 25%</span>
+            </div>
+            <div class="d-kpi-sub" style="margin-top:6px">out of 100</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Streak -->
+      <div class="d-kpi">
+        <div class="d-kpi-label">Daily Streak</div>
+        <div class="d-streak-fire">🔥</div>
+        <div class="d-kpi-value green" id="d-streak-val">0</div>
+        <div class="d-kpi-sub">DAYS</div>
+        <div class="d-streak-calendar" id="d-streak-cal"></div>
+      </div>
+
+      <!-- Team Rank -->
+      <div class="d-kpi">
+        <div class="d-kpi-label">Team Rank</div>
+        <div class="d-kpi-value" style="color:var(--dp-yellow)">#<span id="d-rank-val">2</span></div>
+        <div class="d-kpi-sub">of 8 members</div>
+        <div class="d-rank-indicator">↑ Moved up 1 this week</div>
+        <div class="d-rank-mini">
+          <div class="d-rank-row">
+            <div class="d-rank-num">1</div>
+            <div style="font-size:10px;width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">S. Johnson</div>
+            <div class="d-rank-bar"><div class="d-rank-fill" style="width:100%"></div></div>
+          </div>
+          <div class="d-rank-row you">
+            <div class="d-rank-num">2</div>
+            <div style="font-size:10px;width:60px">You</div>
+            <div class="d-rank-bar"><div class="d-rank-fill" style="width:92%"></div></div>
+          </div>
+          <div class="d-rank-row">
+            <div class="d-rank-num">3</div>
+            <div style="font-size:10px;width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">M. Chen</div>
+            <div class="d-rank-bar"><div class="d-rank-fill" style="width:84%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 Goal -->
+      <div class="d-kpi">
+        <div class="d-kpi-label">Q2 Revenue Goal</div>
+        <div class="d-kpi-value" id="d-goal-pct">73%</div>
+        <div class="d-kpi-sub">$2.1M of $2.9M target</div>
+        <div class="d-goal-bar-wrap">
+          <div class="d-goal-bar-track">
+            <div class="d-goal-bar-fill" id="d-goal-bar"></div>
+          </div>
+          <div class="d-goal-pct">
+            <span class="d-kpi-badge">On Track</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- panels row -->
+    <div class="d-panels reveal">
+
+      <!-- Activity feed -->
+      <div class="d-panel">
+        <div class="d-panel-header">
+          <div class="d-panel-title">Today's Wins</div>
+          <div class="d-panel-tag">Tap "Complete Task" to log activity</div>
+        </div>
+        <div class="d-feed" id="d-feed">
+          <div class="d-feed-item">
+            <div class="d-feed-check">✓</div>
+            <div class="d-feed-text">Closed enterprise deal — Miller &amp; Associates</div>
+            <div class="d-feed-time">2m ago</div>
+            <div class="d-feed-xp">+250 XP</div>
+          </div>
+          <div class="d-feed-item">
+            <div class="d-feed-check">✓</div>
+            <div class="d-feed-text">Q2 performance report submitted to exec team</div>
+            <div class="d-feed-time">1h ago</div>
+            <div class="d-feed-xp">+200 XP</div>
+          </div>
+          <div class="d-feed-item">
+            <div class="d-feed-check">✓</div>
+            <div class="d-feed-text">Led team standup &amp; updated sprint board</div>
+            <div class="d-feed-time">3h ago</div>
+            <div class="d-feed-xp">+75 XP</div>
+          </div>
+          <div class="d-feed-item">
+            <div class="d-feed-check">✓</div>
+            <div class="d-feed-text">Onboarded Clearwater Industries — new enterprise account</div>
+            <div class="d-feed-time">Yesterday</div>
+            <div class="d-feed-xp">+300 XP</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="d-panel">
+        <div class="d-panel-header">
+          <div class="d-panel-title">Achievements</div>
+          <div class="d-panel-tag">3 unlocked this month</div>
+        </div>
+        <div class="d-achievements">
+          <div class="d-badge-card">
+            <div class="d-badge-icon">🤝</div>
+            <div>
+              <div class="d-badge-label">Unlocked This Week</div>
+              <div class="d-badge-name">Deal Closer</div>
+              <div class="d-badge-desc">Closed 3 enterprise accounts in Q2</div>
+            </div>
+          </div>
+          <div class="d-badge-card">
+            <div class="d-badge-icon">🔥</div>
+            <div>
+              <div class="d-badge-label">Active Streak</div>
+              <div class="d-badge-name">On Fire</div>
+              <div class="d-badge-desc">14-day consecutive activity streak</div>
+            </div>
+          </div>
+          <div class="d-badge-card" id="d-rank-badge">
+            <div class="d-badge-icon">⬆️</div>
+            <div>
+              <div class="d-badge-label">This Quarter</div>
+              <div class="d-badge-name">Moving Up</div>
+              <div class="d-badge-desc">Climbed 3 positions in team ranking</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- XP bar + button -->
+    <div class="d-xp-section reveal">
+      <div class="d-xp-header">
+        <div class="d-xp-level">Level <span id="d-xp-level-display">12</span> · Senior Contributor</div>
+        <div id="d-xp-label">2,200 / 2,500 XP to Level 13</div>
+      </div>
+      <div class="d-xp-track">
+        <div class="d-xp-fill" id="d-xp-bar"></div>
+      </div>
+      <button class="d-complete-btn" id="d-complete-btn" onclick="completeTask(event)">
+        <span id="d-btn-icon">＋</span>
+        <span id="d-btn-text">Mark Task Complete</span>
+      </button>
+    </div>
+
+    <div style="height:100px"></div>
+
+  </main>
+
+  <!-- brand mark -->
+  <div class="d-brand-mark">Powered by SIX PERCENT STUDIO</div>
+
+</div><!-- end dope-site -->
+
+
+<script>
+/* ─── STATE ──────────────────────────────── */
+let xpCurrent = 2200;
+const xpPerLevel = 2500;
+let level = 12;
+let streak = 14;
+let dopeActive = false;
+let ringsAnimated = false;
+let audioCtx = null;
+
+const taskPool = [
+  { text: 'Responded to 12 client emails & logged CRM notes', xp: 80 },
+  { text: 'Shipped v2.3 hotfix — zero downtime deployment', xp: 300 },
+  { text: 'Budget forecast Q3 updated & sent to finance', xp: 125 },
+  { text: 'Security audit review completed & signed off', xp: 150 },
+  { text: 'Delivered product demo to NorthStar Industries', xp: 175 },
+  { text: 'Mentored junior team member — pair programming session', xp: 100 },
+  { text: 'Closed renewal deal — $240k ARR retained', xp: 250 },
+  { text: 'Ran retrospective & filed sprint post-mortem', xp: 90 },
+  { text: 'Optimized dashboard query — 3x faster load time', xp: 200 },
+  { text: 'Presented to board — Q2 roadmap approved ✓', xp: 220 },
+];
+let taskIdx = 0;
+let completedCount = 0;
+
+/* ─── TOGGLE ─────────────────────────────── */
+const flash = document.getElementById('flash');
+const applyBtn = document.getElementById('apply-btn');
+
+function toggle() {
+  applyBtn.disabled = true;
+  flash.classList.add('on');
+  setTimeout(() => {
+    flash.classList.remove('on');
+    dopeActive = !dopeActive;
+    document.body.classList.toggle('dope', dopeActive);
+    applyBtn.textContent = dopeActive ? '← Undo The 6%' : '✦ Apply The 6% →';
+    window.scrollTo({ top:0, behavior:'smooth' });
+    if (dopeActive && !ringsAnimated) {
+      setTimeout(initDopeAnimations, 300);
+      ringsAnimated = true;
+    }
+    applyBtn.disabled = false;
+  }, 220);
+}
+applyBtn.addEventListener('click', toggle);
+
+/* ─── DOPE ANIMATIONS ON REVEAL ──────────── */
+function initDopeAnimations() {
+  // Reveal classes
+  document.querySelectorAll('#dope-site .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 60 + i * 120);
+  });
+  // Progress ring
+  animateRing(0, 78, 1400);
+  // Score counter
+  animateCount(document.getElementById('d-score-val'), 78, 1400);
+  // Streak counter
+  animateCount(document.getElementById('d-streak-val'), streak, 1000);
+  // Goal bar
+  setTimeout(() => {
+    document.getElementById('d-goal-bar').style.width = '73%';
+  }, 400);
+  // XP bar
+  updateXPBar(0, true);
+  // Streak calendar
+  buildStreakCal();
+}
+
+/* ─── PROGRESS RING ──────────────────────── */
+function animateRing(fromPct, toPct, duration) {
+  const canvas = document.getElementById('d-ring-canvas');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const r = cx - 8;
+  const start = performance.now();
+
+  function frame(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    const pct = fromPct + (toPct - fromPct) * ease;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // track
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(139,92,246,.14)';
+    ctx.lineWidth = 8;
+    ctx.stroke();
+
+    // fill
+    const endAngle = -Math.PI / 2 + (Math.PI * 2 * pct / 100);
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    grad.addColorStop(0, '#7C3AED');
+    grad.addColorStop(1, '#a78bfa');
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, -Math.PI / 2, endAngle);
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = '#8B5CF6';
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ─── NUMBER COUNTER ─────────────────────── */
+function animateCount(el, target, duration) {
+  const start = performance.now();
+  function frame(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(target * ease);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ─── STREAK CALENDAR ────────────────────── */
+function buildStreakCal() {
+  const cal = document.getElementById('d-streak-cal');
+  cal.innerHTML = '';
+  for (let i = 0; i < 14; i++) {
+    const d = document.createElement('div');
+    d.className = 'd-streak-dot' + (i === 13 ? ' today' : ' done');
+    cal.appendChild(d);
+  }
+}
+
+/* ─── XP BAR ─────────────────────────────── */
+function updateXPBar(addXP, instant = false) {
+  let leveledUp = false;
+  if (addXP > 0) {
+    xpCurrent += addXP;
+    document.getElementById('d-xp-display').textContent = xpCurrent.toLocaleString() + ' XP';
+  }
+  if (xpCurrent >= xpPerLevel) {
+    xpCurrent -= xpPerLevel;
+    level += 1;
+    leveledUp = true;
+    document.getElementById('d-level-num').textContent = level;
+    document.getElementById('d-xp-level-display').textContent = level;
+    // level badge glow
+    const badge = document.getElementById('d-level-badge');
+    badge.classList.add('glow');
+    setTimeout(() => badge.classList.remove('glow'), 1500);
+    document.getElementById('d-xp-display').textContent = xpCurrent.toLocaleString() + ' XP';
+  }
+  const pct = (xpCurrent / xpPerLevel) * 100;
+  const bar = document.getElementById('d-xp-bar');
+  if (instant) {
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+    requestAnimationFrame(() => {
+      bar.style.transition = '';
+      setTimeout(() => { bar.style.width = pct + '%'; }, 50);
+    });
+  } else {
+    bar.style.width = pct + '%';
+  }
+  document.getElementById('d-xp-label').textContent =
+    xpCurrent.toLocaleString() + ' / ' + xpPerLevel.toLocaleString() +
+    ' XP to Level ' + (level + 1);
+  return leveledUp;
+}
+
+/* ─── COMPLETE TASK ──────────────────────── */
+function completeTask(evt) {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const btn = document.getElementById('d-complete-btn');
+  btn.disabled = true;
+
+  const task = taskPool[taskIdx % taskPool.length];
+  taskIdx++;
+  completedCount++;
+
+  // update streak
+  streak++;
+  document.getElementById('d-streak-val').textContent = streak;
+  const cal = document.getElementById('d-streak-cal');
+  const dot = document.createElement('div');
+  dot.className = 'd-streak-dot today';
+  if (cal.children.length > 0) cal.children[cal.children.length - 1].classList.replace('today','done');
+  cal.appendChild(dot);
+
+  // add feed item
+  const feed = document.getElementById('d-feed');
+  const item = document.createElement('div');
+  item.className = 'd-feed-item new';
+  item.innerHTML = `
+    <div class="d-feed-check">✓</div>
+    <div class="d-feed-text">${task.text}</div>
+    <div class="d-feed-time">just now</div>
+    <div class="d-feed-xp">+${task.xp} XP</div>
+  `;
+  feed.insertBefore(item, feed.firstChild);
+  if (feed.children.length > 5) feed.removeChild(feed.lastChild);
+
+  // XP
+  const leveledUp = updateXPBar(task.xp);
+
+  // confetti from button
+  const rect = btn.getBoundingClientRect();
+  confettiBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+  // sound
+  if (leveledUp) {
+    playLevelUp();
+    showToast(
+      `<div class="toast-title">⬆ LEVEL UP!</div>
+       <div class="toast-sub">You're now <strong style="color:var(--dp-yellow)">Level ${level} — Senior Contributor</strong></div>
+       <div class="toast-xp">+${task.xp} XP · Achievement unlocked</div>`,
+      'levelup'
+    );
+    btn.textContent = '🎉 Level ' + level + '!';
+    setTimeout(() => {
+      document.getElementById('d-btn-icon').textContent = '＋';
+      document.getElementById('d-btn-text').textContent = 'Mark Task Complete';
+      btn.innerHTML = '<span id="d-btn-icon">＋</span><span id="d-btn-text">Mark Task Complete</span>';
+      btn.disabled = false;
+    }, 1800);
+  } else {
+    playComplete();
+    showToast(
+      `<div class="toast-title">✓ Task Complete</div>
+       <div class="toast-sub">${task.text.substring(0,54)}${task.text.length > 54 ? '…' : ''}</div>
+       <div class="toast-xp">+${task.xp} XP · Keep the streak alive 🔥</div>`
+    );
+    const origHTML = btn.innerHTML;
+    btn.innerHTML = '<span>✓ Done!</span>';
+    setTimeout(() => {
+      btn.innerHTML = '<span id="d-btn-icon">＋</span><span id="d-btn-text">Mark Task Complete</span>';
+      btn.disabled = false;
+    }, 900);
+  }
+}
+
+/* ─── CONFETTI ───────────────────────────── */
+function confettiBurst(x, y) {
+  const colors = ['#8B5CF6','#a78bfa','#E8FF00','#22c55e','#ec4899','#06b6d4','#fff'];
+  for (let i = 0; i < 24; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'c-dot';
+    const size = 5 + Math.random() * 7;
+    dot.style.cssText =
+      `left:${x}px;top:${y}px;width:${size}px;height:${size}px;
+       background:${colors[Math.floor(Math.random()*colors.length)]};`;
+    document.body.appendChild(dot);
+    const angle = Math.random() * Math.PI * 2;
+    const dist  = 60 + Math.random() * 110;
+    const dx = Math.cos(angle) * dist;
+    const dy = Math.sin(angle) * dist - 90;
+    dot.animate([
+      { transform:'translate(-50%,-50%) scale(1)', opacity:1 },
+      { transform:`translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0)`, opacity:0 }
+    ], { duration: 500 + Math.random()*300, easing:'ease-out' })
+    .onfinish = () => dot.remove();
+  }
+}
+
+/* ─── TOAST ──────────────────────────────── */
+function showToast(html, type = '') {
+  const t = document.createElement('div');
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.innerHTML = html;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => {
+    t.classList.add('show');
+    setTimeout(() => {
+      t.classList.remove('show');
+      setTimeout(() => t.remove(), 350);
+    }, 2800);
+  });
+}
+
+/* ─── WEB AUDIO ──────────────────────────── */
+function playComplete() {
+  try {
+    const ac = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99]; // C5 E5 G5
+    notes.forEach((freq, i) => {
+      const osc = ac.createOscillator();
+      const g   = ac.createGain();
+      osc.connect(g); g.connect(ac.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const t = ac.currentTime + i * 0.13;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.22, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.36);
+      osc.start(t); osc.stop(t + 0.4);
+    });
+  } catch(e){}
+}
+
+function playLevelUp() {
+  try {
+    const ac = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5 E5 G5 C6
+    notes.forEach((freq, i) => {
+      const osc = ac.createOscillator();
+      const g   = ac.createGain();
+      osc.connect(g); g.connect(ac.destination);
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      const t = ac.currentTime + i * 0.11;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.28, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.52);
+      osc.start(t); osc.stop(t + 0.6);
+    });
+  } catch(e){}
+}
+
+/* ─── REVEAL (dope sections) ─────────────── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach((el,i) => {
+  el.style.transitionDelay = (i * 0.06) + 's';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>

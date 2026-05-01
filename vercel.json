@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "six-percent-studio",
+  "builds": [
+    { "src": "*.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/bar", "dest": "/oak-and-ivy-demo.html" },
+    { "src": "/concept", "dest": "/six-percent-demo.html" },
+    { "src": "/playground", "dest": "/six-percent-playground.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
