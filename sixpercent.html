@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIX PERCENT — We Make It Twice As Dope</title>
+<title>SIX PERCENT STUDIO — "THE FINISH."</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -153,7 +153,11 @@ body *{cursor:none;}
   color:var(--purple-hi);margin-bottom:32px;font-weight:600;
   display:flex;align-items:center;gap:14px;
 }
-.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--purple);}
+.hero-eyebrow::before{
+  content:'→';width:auto;background:none;height:auto;line-height:1;
+  font-family:'Space Mono',monospace;font-size:14px;
+  color:var(--yellow);letter-spacing:0;
+}
 
 .hero-headline{
   font-size:clamp(68px,10.5vw,176px);
@@ -764,6 +768,51 @@ footer{
 .footer-links a:hover{color:var(--purple-hi);}
 .footer-copy{font-size:11px;color:var(--text-muted);letter-spacing:.04em;font-family:'Space Mono',monospace;}
 
+/* ─── OPERATING LOGIC ────────────────────── */
+.op-tag{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple);opacity:.55;
+  margin-bottom:10px;display:block;
+}
+.annot{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.12em;
+  color:var(--text-muted);
+  display:block;margin-top:24px;margin-bottom:6px;
+  opacity:.6;
+}
+.op-list-label{
+  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--text-muted);font-family:'Space Mono',monospace;
+  margin-bottom:14px;opacity:.5;
+}
+.op-list{
+  display:flex;flex-direction:column;
+  font-family:'Space Mono',monospace;
+  border:1px solid var(--border);
+  border-bottom:none;
+}
+.op-list-item{
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-muted);
+  display:flex;gap:14px;align-items:center;
+  transition:color .2s,background .2s;
+}
+.op-list-item:hover{color:var(--purple-hi);background:var(--surface2);}
+.op-list-item .op-n{color:var(--purple);opacity:.45;font-size:9px;flex-shrink:0;}
+.exhibit-op-tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
+.ex-op-tag{
+  font-family:'Space Mono',monospace;
+  font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--purple);border:1px solid var(--border);
+  padding:4px 8px;opacity:.5;transition:opacity .2s;
+}
+.exhibit-card.live:hover .ex-op-tag{opacity:1;}
+.exhibit-card.soon .ex-op-tag{opacity:.15;}
+
 /* ─── RESPONSIVE ─────────────────────────── */
 @media(max-width:900px){
   #nav{padding:0 24px;}
@@ -818,7 +867,7 @@ footer{
 <section id="hero">
   <div class="hero-inner">
 
-    <p class="hero-eyebrow reveal">Charlotte, NC · Remote Worldwide · Est. 2025</p>
+    <p class="hero-eyebrow reveal">AI-Built Finishing Studio</p>
 
     <h1 class="hero-headline reveal">
       THE GREY<br>
@@ -829,10 +878,11 @@ footer{
 
     <div class="hero-sub-row reveal">
       <p class="hero-sub">
-        There's a flood of AI-built products. They all look the same.
-        We're the 6% of taste and curation that turns yours into
-        the name-brand version.<br>
-        <em>That's the 6%.</em>
+        Your AI built the thing. It functions.
+        It doesn't feel like a brand yet.<br>
+        We apply 6% to each foundational element —
+        simultaneously, with taste.<br>
+        <em>The before/after tells itself.</em>
       </p>
       <div class="hero-actions">
         <a href="#portfolio" class="btn-pri">Enter The Gallery →</a>
@@ -849,28 +899,34 @@ footer{
 <!-- ── MARQUEE ────────────────────────────── -->
 <div class="marquee-wrap">
   <div class="marquee-track">
+    <span>RECOGNIZABLE BASE</span><span class="sep"></span>
+    <span>VISIBLE EDIT</span><span class="sep"></span>
+    <span>LITERAL LABEL</span><span class="sep"></span>
+    <span>ONE INTERRUPTION</span><span class="sep"></span>
+    <span>ONE HARD GRAPHIC</span><span class="sep"></span>
+    <span>INTENTIONAL INCOMPLETION</span><span class="sep"></span>
     <span>BRAND FINISHING</span><span class="sep"></span>
     <span>AI-BUILT PRODUCTS</span><span class="sep"></span>
     <span>IDENTITY SYSTEMS</span><span class="sep"></span>
     <span>SIGNATURE INTERACTIONS</span><span class="sep"></span>
     <span>TASTE EDITING</span><span class="sep"></span>
     <span>THE 6% TREATMENT</span><span class="sep"></span>
-    <span>CREATIVE DIRECTION</span><span class="sep"></span>
     <span>BRAND VOICE</span><span class="sep"></span>
     <span>FINISHING WORK</span><span class="sep"></span>
-    <span>CHARLOTTE NC</span><span class="sep"></span>
-    <span>REMOTE WORLDWIDE</span><span class="sep"></span>
+    <span>RECOGNIZABLE BASE</span><span class="sep"></span>
+    <span>VISIBLE EDIT</span><span class="sep"></span>
+    <span>LITERAL LABEL</span><span class="sep"></span>
+    <span>ONE INTERRUPTION</span><span class="sep"></span>
+    <span>ONE HARD GRAPHIC</span><span class="sep"></span>
+    <span>INTENTIONAL INCOMPLETION</span><span class="sep"></span>
     <span>BRAND FINISHING</span><span class="sep"></span>
     <span>AI-BUILT PRODUCTS</span><span class="sep"></span>
     <span>IDENTITY SYSTEMS</span><span class="sep"></span>
     <span>SIGNATURE INTERACTIONS</span><span class="sep"></span>
     <span>TASTE EDITING</span><span class="sep"></span>
     <span>THE 6% TREATMENT</span><span class="sep"></span>
-    <span>CREATIVE DIRECTION</span><span class="sep"></span>
     <span>BRAND VOICE</span><span class="sep"></span>
     <span>FINISHING WORK</span><span class="sep"></span>
-    <span>CHARLOTTE NC</span><span class="sep"></span>
-    <span>REMOTE WORLDWIDE</span><span class="sep"></span>
   </div>
 </div>
 
@@ -886,14 +942,18 @@ footer{
           <span style="color:var(--text-muted);font-size:.55em;letter-spacing:.02em;">vs.</span><br>
           <span style="color:var(--yellow);">RODEO<br>DRIVE.</span>
         </div>
+        <span class="annot" style="margin-top:20px;">// same product. different finish.</span>
       </div>
       <div class="reveal-right">
+        <span class="annot" style="margin-top:0;">// the flood</span>
         <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
           There's a flood of AI-built apps, sites, content, games, and tools. They're all going to look the same. People will start to recognize the "made with AI" look — bland, templated, generic.
         </p>
+        <span class="annot">// the problem</span>
         <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
-          Six Percent is the 6% of taste and curation that turns an AI-built thing into a name-brand thing. We don't sell AI development — a thousand people do that. We sell the difference between K-Mart and Rodeo Drive.
+          We don't sell AI development — a thousand people do that. We sell the difference between K-Mart and Rodeo Drive. The 6% of taste and curation that turns an AI-built thing into a name-brand thing.
         </p>
+        <span class="annot">// six percent is</span>
         <p style="font-size:clamp(16px,1.8vw,20px);color:var(--purple-hi);line-height:1.85;font-weight:600;">
           We don't compete with AI tools. We finish their work.
         </p>
@@ -912,49 +972,55 @@ footer{
 
       <div class="sector-card reveal">
         <span class="sector-icon">✦</span>
+        <span class="op-tag">// Literal Label</span>
         <div class="sector-num">01 —</div>
         <div class="sector-name">Brand Voice</div>
-        <div class="sector-hook">Your AI wrote the copy. It sounds like everyone else's AI. We give it character — a tone, an attitude, a point of view that makes people feel your brand before they finish the first sentence.</div>
-        <div class="sector-example">Tone · Copy · Personality Systems</div>
+        <div class="sector-hook">Your AI wrote the copy. Correct. Functional. It sounds like everyone else's AI. We replace "Streamline your workflow" with something that sounds like a person meant it.</div>
+        <div class="sector-example">Tone · Copy · Personality</div>
       </div>
 
       <div class="sector-card reveal">
         <span class="sector-icon">⬡</span>
+        <span class="op-tag">// One Hard Graphic</span>
         <div class="sector-num">02 —</div>
         <div class="sector-name">Signature Interactions</div>
-        <div class="sector-hook">The hover state nobody asked for but everyone screenshots. The transition that makes it feel handmade. The moment that separates your product from the thousand built the same week.</div>
+        <div class="sector-hook">One motion gesture that gives the whole product momentum. The hover state nobody asked for but everyone screenshots. Static objects made to feel like they're still in motion.</div>
         <div class="sector-example">Motion · Microinteractions · Delight</div>
       </div>
 
       <div class="sector-card reveal">
         <span class="sector-icon">◈</span>
+        <span class="op-tag">// Visible Edit</span>
         <div class="sector-num">03 —</div>
         <div class="sector-name">Taste Editing</div>
-        <div class="sector-hook">AI adds. We subtract. We find the three things making it look generic and cut them. We find the one thing that would make it unforgettable and double down on it.</div>
+        <div class="sector-hook">Find the three things making it look generic. Remove them. Leave the seam showing — so the edit is legible. The gap between before and after is the product.</div>
         <div class="sector-example">Curation · Reduction · The Edit</div>
       </div>
 
       <div class="sector-card reveal">
         <span class="sector-icon">▣</span>
+        <span class="op-tag">// Recognizable Base</span>
         <div class="sector-num">04 —</div>
         <div class="sector-name">Identity Systems</div>
-        <div class="sector-hook">Type that pairs. Color that means something. Motion that's consistent. The visual language that makes every screen feel like it came from the same mind — not the same prompt.</div>
+        <div class="sector-hook">We don't rebuild. We edit what's already there. The base stays recognizable — because the audience needs to hold before in their head while they see the after. That gap is where the voltage lives.</div>
         <div class="sector-example">Typography · Color · Motion Language</div>
       </div>
 
       <div class="sector-card reveal">
         <span class="sector-icon">◎</span>
+        <span class="op-tag">// Intentional Incompletion</span>
         <div class="sector-num">05 —</div>
         <div class="sector-name">Finishing Work</div>
-        <div class="sector-hook">You shipped v1. It works. It just doesn't feel like anything yet. We come in at the end — or the middle, or wherever you are — and do the work that turns functional into finished.</div>
+        <div class="sector-hook">You shipped v1. It works. We leave it 94% finished on purpose — not sloppy. Suspended. The object that feels like it's still in motion is the one people remember.</div>
         <div class="sector-example">Polish · QA · The Last 6%</div>
       </div>
 
       <div class="sector-card reveal">
         <span class="sector-icon">▲</span>
+        <span class="op-tag">// One Interruption</span>
         <div class="sector-num">06 —</div>
         <div class="sector-name">The Treatment</div>
-        <div class="sector-hook">A documented before/after transformation applied to your AI-built product. See the Gallery for examples. Every Treatment is a case study in what the 6% looks like in your specific category.</div>
+        <div class="sector-hook">One documented before/after applied to your specific category. The proof that a hand touched the thing. The detail that proves the object was rethought. See the Gallery.</div>
         <div class="sector-example">See: The Gallery ↓</div>
       </div>
 
@@ -1034,6 +1100,10 @@ footer{
             <span class="ex-arrow">→</span>
             <span class="ex-after">Signature Brand Experience</span>
           </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// Literal Label</span>
+            <span class="ex-op-tag">// One Interruption</span>
+          </div>
         </div>
         <div class="exhibit-floor"></div>
       </a>
@@ -1057,6 +1127,10 @@ footer{
             <span class="ex-before">AI-Built Generic SaaS</span>
             <span class="ex-arrow">→</span>
             <span class="ex-after">Name-Brand Experience</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// Visible Edit</span>
+            <span class="ex-op-tag">// Recognizable Base</span>
           </div>
         </div>
         <div class="exhibit-floor"></div>
@@ -1082,6 +1156,10 @@ footer{
             <span class="ex-arrow">→</span>
             <span class="ex-after">Gamified Brand Tool</span>
           </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// One Hard Graphic</span>
+            <span class="ex-op-tag">// Intentional Incompletion</span>
+          </div>
         </div>
         <div class="exhibit-floor"></div>
       </a>
@@ -1105,6 +1183,9 @@ footer{
             <span class="ex-before">Generic AI Startup</span>
             <span class="ex-arrow">→</span>
             <span class="ex-after">Name-Brand Platform</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// All Six Applied</span>
           </div>
         </div>
         <div class="exhibit-floor"></div>
@@ -1135,10 +1216,16 @@ footer{
 <section id="philosophy">
   <div class="phil-grid">
 
-    <div class="phil-numbers reveal-left">
-      <div class="big-num dim">3%</div>
-      <div class="phil-arrow">→</div>
-      <div class="big-num lit">6%</div>
+    <div class="reveal-left">
+      <div class="op-list-label">// The Operating Logic</div>
+      <div class="op-list">
+        <div class="op-list-item"><span class="op-n">01</span> Recognizable Base</div>
+        <div class="op-list-item"><span class="op-n">02</span> Visible Edit</div>
+        <div class="op-list-item"><span class="op-n">03</span> Literal Label</div>
+        <div class="op-list-item"><span class="op-n">04</span> One Interruption</div>
+        <div class="op-list-item"><span class="op-n">05</span> One Hard Graphic</div>
+        <div class="op-list-item"><span class="op-n">06</span> Intentional Incompletion</div>
+      </div>
     </div>
 
     <div class="phil-copy reveal-right">
@@ -1165,19 +1252,22 @@ footer{
     <h2 class="section-title reveal">Three moves.<br>One upgrade.</h2>
     <div class="process-steps">
       <div class="process-step reveal">
+        <span class="op-tag">// bring the object</span>
         <div class="step-n">01</div>
-        <div class="step-title">Show Me The Boring Thing</div>
-        <div class="step-body">Bring what you have — the website, the tool, the dashboard, the display, the event. We audit what's already working and identify exactly where the 6% lives. No rebuilding. Just finding the lever.</div>
+        <div class="step-title">Show Us The Thing</div>
+        <div class="step-body">No decks. No briefs. Bring the website, the tool, the dashboard — whatever you built. We find the bones: the 5 or 6 load-bearing decisions that make it what it is.</div>
       </div>
       <div class="process-step reveal">
+        <span class="op-tag">// find the bones</span>
         <div class="step-n">02</div>
-        <div class="step-title">We Design The Upgrade</div>
-        <div class="step-body">AI-assisted, taste-driven design and development. We prototype the interactive moments, the delightful details — the layer that transforms functional into memorable. You react, we refine, fast.</div>
+        <div class="step-title">We Apply The 6%</div>
+        <div class="step-body">We identify what's foundational. We apply 6% to each element — simultaneously, with taste. The result looks effortless because no single change is dramatic. But every bone shifted.</div>
       </div>
       <div class="process-step reveal">
+        <span class="op-tag">// trace of authorship</span>
         <div class="step-n">03</div>
-        <div class="step-title">The Before/After Is Undeniable</div>
-        <div class="step-body">We build and deploy. Same product. Every foundational element shifted just enough. The before/after story tells itself — and nobody can explain exactly why it hits different.</div>
+        <div class="step-title">The Before/After Tells Itself</div>
+        <div class="step-body">Same product. Every foundational element shifted just enough. The before/after story tells itself. You'll know we were there. So will everyone else.</div>
       </div>
     </div>
   </div>
@@ -1189,7 +1279,7 @@ footer{
   <div class="cta-inner reveal">
     <span class="cta-tag">// Open For Treatments</span>
     <h2 class="cta-title">YOU BUILT<br>THE <span>THING.</span><br>WE FINISH IT.</h2>
-    <p class="cta-sub">Charlotte, NC. Remote worldwide. If you shipped something with AI and it doesn't feel like a brand yet — that's the conversation.</p>
+    <p class="cta-sub">You built the product. It works. It doesn't feel like anything yet. That's the conversation.</p>
     <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation →</a>
     <p class="cta-note">No decks. No briefs. Just show us the thing.</p>
     <a href="mailto:heymrlb@gmail.com" class="cta-email">heymrlb@gmail.com</a>
