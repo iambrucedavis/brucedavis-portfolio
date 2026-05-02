@@ -95,16 +95,16 @@ body *{cursor:none;}
 }
 .nav-links a:hover{color:var(--purple-hi);}
 .nav-cta{
-  padding:10px 24px;
+  padding:10px 0;
   background:transparent;color:var(--purple-hi);
   font-family:'Space Grotesk',sans-serif;
   font-weight:700;font-size:11px;
   letter-spacing:.16em;text-transform:uppercase;
-  border:1px solid var(--border-hi);
+  border:none;border-bottom:1px solid transparent;
   text-decoration:none;display:inline-block;
-  transition:background .2s,color .2s,border-color .2s;
+  transition:color .2s,border-color .2s;
 }
-.nav-cta:hover{background:var(--purple-dk);color:#fff;border-color:var(--purple-dk);}
+.nav-cta:hover{color:#fff;border-bottom-color:var(--purple-hi);}
 
 /* ─── REVEAL ─────────────────────────────── */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
@@ -118,26 +118,17 @@ body *{cursor:none;}
 #hero{
   min-height:100vh;
   display:flex;align-items:center;
-  padding:120px 52px 80px;
+  padding:160px 64px 100px;
   position:relative;overflow:hidden;
 }
 
-/* Gallery radial spotlight */
+/* Hero hairline accent — replaces radial glow */
 #hero::before{
   content:'';position:absolute;
-  top:-20%;left:55%;
-  width:900px;height:900px;
-  background:radial-gradient(ellipse at center,
-    rgba(139,92,246,.12) 0%,
-    rgba(124,58,237,.06) 35%,
-    transparent 70%
-  );
+  top:0;right:64px;
+  width:1px;height:100%;
+  background:linear-gradient(to bottom,transparent,rgba(139,92,246,.3) 30%,rgba(232,255,0,.15) 70%,transparent);
   pointer-events:none;
-  animation:pulse-glow 6s ease-in-out infinite alternate;
-}
-@keyframes pulse-glow{
-  from{opacity:.7;transform:scale(1);}
-  to{opacity:1;transform:scale(1.08);}
 }
 
 /* Diagonal stripe (Off-White ref) */
@@ -203,15 +194,15 @@ body *{cursor:none;}
 }
 .btn-ghost{
   padding:18px 44px;
-  background:transparent;color:var(--text-dim);
+  background:transparent;color:var(--text-muted);
   font-family:'Space Grotesk',sans-serif;
   font-weight:600;font-size:12px;
   letter-spacing:.16em;text-transform:uppercase;
-  border:1px solid var(--border);
+  border:none;border-bottom:1px solid transparent;
   text-decoration:none;display:inline-block;
-  transition:border-color .2s,color .2s;
+  transition:border-color .3s,color .3s;
 }
-.btn-ghost:hover{border-color:var(--border-hi);color:var(--purple-hi);}
+.btn-ghost:hover{border-bottom-color:var(--purple-hi);color:var(--purple-hi);}
 
 /* bg "6%" watermark */
 .hero-bg-num{
@@ -255,20 +246,21 @@ body *{cursor:none;}
 @keyframes march{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 /* ─── SECTION SHELL ──────────────────────── */
-.section{padding:130px 52px;}
+.section{padding:160px 64px;}
 .section-inner{max-width:1200px;margin:0 auto;}
 .section-label{
   font-size:10px;letter-spacing:.36em;text-transform:uppercase;
-  color:var(--purple);font-weight:700;margin-bottom:16px;
+  color:var(--purple);font-weight:700;margin-bottom:20px;
   display:flex;align-items:center;gap:12px;
   font-family:'Space Mono',monospace;
 }
-.section-label::before{content:'';width:20px;height:1px;background:var(--purple);}
+.section-label::before{content:'"';width:auto;background:none;color:var(--purple);letter-spacing:0;}
+.section-label::after{content:'"';color:var(--purple);}
 .section-title{
-  font-size:clamp(34px,5vw,60px);
-  font-weight:700;line-height:1.05;
-  color:#fff;letter-spacing:-.025em;
-  margin-bottom:60px;
+  font-size:clamp(44px,6vw,80px);
+  font-weight:700;line-height:1.02;
+  color:#fff;letter-spacing:-.03em;
+  margin-bottom:72px;
 }
 
 /* ─── DISCIPLINES ────────────────────────── */
@@ -297,12 +289,7 @@ body *{cursor:none;}
 }
 .sector-card:hover::after{transform:scaleX(1);}
 
-.sector-icon{
-  font-size:26px;margin-bottom:18px;display:block;
-  filter:grayscale(1);opacity:.35;
-  transition:filter .3s,opacity .3s,transform .3s;
-}
-.sector-card:hover .sector-icon{filter:none;opacity:1;transform:scale(1.08);}
+.sector-icon{display:none;}
 
 .sector-num{
   font-family:'Space Mono',monospace;
@@ -391,10 +378,9 @@ body *{cursor:none;}
 }
 .feat-canvas-glow{
   position:absolute;
-  width:500px;height:500px;
-  background:radial-gradient(circle,rgba(139,92,246,.18) 0%,transparent 65%);
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  animation:pulse-glow 4s ease-in-out infinite alternate;
+  inset:0;
+  background:none;
+  border:1px solid var(--border);
   pointer-events:none;
 }
 .feat-canvas-label{
@@ -484,14 +470,7 @@ body *{cursor:none;}
   transition:color .4s;
 }
 .exhibit-card:hover .exhibit-art-num{color:rgba(139,92,246,.09);}
-.exhibit-art-glow{
-  position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 40%,rgba(139,92,246,0) 0%,transparent 70%);
-  transition:background .4s;
-}
-.exhibit-card.live:hover .exhibit-art-glow{
-  background:radial-gradient(circle at 50% 40%,rgba(139,92,246,.14) 0%,transparent 70%);
-}
+.exhibit-art-glow{display:none;}
 .exhibit-art-icon{
   font-size:40px;
   position:relative;z-index:2;
@@ -705,9 +684,8 @@ body *{cursor:none;}
 }
 #cta::before{
   content:'';position:absolute;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  width:800px;height:800px;
-  background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 65%);
+  top:0;left:64px;right:64px;height:1px;
+  background:linear-gradient(to right,transparent,rgba(139,92,246,.4),transparent);
   pointer-events:none;
 }
 #cta::after{
@@ -825,7 +803,7 @@ footer{
 
 <!-- ── NAV ───────────────────────────────── -->
 <nav id="nav">
-  <a href="#" class="nav-logo">SIX<span> PERCENT</span></a>
+  <a href="#" class="nav-logo">SIX<span> PERCENT</span>™</a>
   <ul class="nav-links">
     <li><a href="#sectors">Disciplines</a></li>
     <li><a href="#portfolio">The Gallery</a></li>
@@ -1165,18 +1143,14 @@ footer{
 
     <div class="phil-copy reveal-right">
       <div class="section-label" style="margin-bottom:18px;">The Manifesto</div>
-      <h2>Virgil said <em>3%</em> was enough to make it good.</h2>
-      <p>Virgil Abloh famously said you only need to change 3% of something to make a great design. One detail. One edit. One shift in perspective. That's all it takes.</p>
-      <p>We take that seriously. Then we double it — because we have taste, AI-augmented speed, and a deep obsession with making things people actually remember. Not just working. <em style="color:var(--text-dim);font-style:normal;">Memorable.</em></p>
-      <p>We don't rebuild from scratch. We find the proven thing — the tool, the website, the space, the experience — and apply the 6% that transforms functional into unforgettable.</p>
-      <div class="phil-quote">
-        "Curation is not about adding more — it's about knowing exactly what to change."<br>
-        Inspired by Virgil Abloh, Rick Rubin, and Donald Norman.
-      </div>
-      <div class="phil-names">
-        <div class="phil-name-tag">Rick Rubin — The Ear</div>
-        <div class="phil-name-tag">Virgil Abloh — The Edit</div>
-        <div class="phil-name-tag">Donald Norman — The Rigor</div>
+      <h2>A new narrative.<br><em>The same product.</em></h2>
+      <p>Six Percent embarks on a new narrative where taste applied to what already exists inspires a pioneering format for the present.</p>
+      <p>The age of AI is the product waiting to be finished.</p>
+      <p style="color:var(--purple-hi);font-weight:600;">We don't compete with the tools. We finish their work.</p>
+      <div class="phil-names" style="margin-top:32px;">
+        <div class="phil-name-tag">The Ear</div>
+        <div class="phil-name-tag">The Edit</div>
+        <div class="phil-name-tag">The Rigor</div>
       </div>
     </div>
 
@@ -1202,8 +1176,8 @@ footer{
       </div>
       <div class="process-step reveal">
         <div class="step-n">03</div>
-        <div class="step-title">Ship It Twice As Dope</div>
-        <div class="step-body">We build and deploy. Web toy, physical installation, gamified tool, brand activation — it ships ready to use and ready to impress. The before/after story tells itself.</div>
+        <div class="step-title">The Before/After Is Undeniable</div>
+        <div class="step-body">We build and deploy. Same product. Every foundational element shifted just enough. The before/after story tells itself — and nobody can explain exactly why it hits different.</div>
       </div>
     </div>
   </div>
@@ -1213,11 +1187,11 @@ footer{
 <!-- ── CTA ────────────────────────────────── -->
 <section id="cta">
   <div class="cta-inner reveal">
-    <span class="cta-tag">// Open For Commissions</span>
-    <h2 class="cta-title">READY TO<br>GET <span>DOPE?</span></h2>
-    <p class="cta-sub">Charlotte, NC based. Working with anyone, anywhere, who wants their thing to hit harder. Bars, corporations, museums, schools, creators — if it's boring, we fix it.</p>
-    <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation</a>
-    <p class="cta-note">No decks required. Just tell me what's boring.</p>
+    <span class="cta-tag">// Open For Treatments</span>
+    <h2 class="cta-title">YOU BUILT<br>THE <span>THING.</span><br>WE FINISH IT.</h2>
+    <p class="cta-sub">Charlotte, NC. Remote worldwide. If you shipped something with AI and it doesn't feel like a brand yet — that's the conversation.</p>
+    <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation →</a>
+    <p class="cta-note">No decks. No briefs. Just show us the thing.</p>
     <a href="mailto:heymrlb@gmail.com" class="cta-email">heymrlb@gmail.com</a>
   </div>
 </section>
@@ -1225,7 +1199,7 @@ footer{
 
 <!-- ── FOOTER ─────────────────────────────── -->
 <footer>
-  <div class="footer-logo">SIX PERCENT</div>
+  <div class="footer-logo">SIX PERCENT™</div>
   <div class="footer-links">
     <a href="#sectors">Disciplines</a>
     <a href="#portfolio">Gallery</a>
