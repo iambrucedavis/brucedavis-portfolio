@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIX PERCENT — We Make It Twice As Dope</title>
+<title>SIX PERCENT STUDIO — Visible logic. Human interruption.</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -95,16 +95,16 @@ body *{cursor:none;}
 }
 .nav-links a:hover{color:var(--purple-hi);}
 .nav-cta{
-  padding:10px 24px;
+  padding:10px 0;
   background:transparent;color:var(--purple-hi);
   font-family:'Space Grotesk',sans-serif;
   font-weight:700;font-size:11px;
   letter-spacing:.16em;text-transform:uppercase;
-  border:1px solid var(--border-hi);
+  border:none;border-bottom:1px solid transparent;
   text-decoration:none;display:inline-block;
-  transition:background .2s,color .2s,border-color .2s;
+  transition:color .2s,border-color .2s;
 }
-.nav-cta:hover{background:var(--purple-dk);color:#fff;border-color:var(--purple-dk);}
+.nav-cta:hover{color:#fff;border-bottom-color:var(--purple-hi);}
 
 /* ─── REVEAL ─────────────────────────────── */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
@@ -118,42 +118,20 @@ body *{cursor:none;}
 #hero{
   min-height:100vh;
   display:flex;align-items:center;
-  padding:120px 52px 80px;
+  padding:160px 64px 100px;
   position:relative;overflow:hidden;
 }
 
-/* Gallery radial spotlight */
+/* Hero hairline accent — replaces radial glow */
 #hero::before{
   content:'';position:absolute;
-  top:-20%;left:55%;
-  width:900px;height:900px;
-  background:radial-gradient(ellipse at center,
-    rgba(139,92,246,.12) 0%,
-    rgba(124,58,237,.06) 35%,
-    transparent 70%
-  );
+  top:0;right:64px;
+  width:1px;height:100%;
+  background:linear-gradient(to bottom,transparent,rgba(139,92,246,.3) 30%,rgba(232,255,0,.15) 70%,transparent);
   pointer-events:none;
-  animation:pulse-glow 6s ease-in-out infinite alternate;
-}
-@keyframes pulse-glow{
-  from{opacity:.7;transform:scale(1);}
-  to{opacity:1;transform:scale(1.08);}
 }
 
-/* Diagonal stripe (Off-White ref) */
-#hero::after{
-  content:'';position:absolute;
-  top:-100px;right:-80px;
-  width:600px;height:800px;
-  background:repeating-linear-gradient(
-    -55deg,
-    rgba(139,92,246,.022) 0px,
-    rgba(139,92,246,.022) 1px,
-    transparent 1px,
-    transparent 32px
-  );
-  pointer-events:none;
-}
+/* Removed: diagonal stripe was a fashion surface reference */
 
 .hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:2;}
 
@@ -162,7 +140,11 @@ body *{cursor:none;}
   color:var(--purple-hi);margin-bottom:32px;font-weight:600;
   display:flex;align-items:center;gap:14px;
 }
-.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--purple);}
+.hero-eyebrow::before{
+  content:'→';width:auto;background:none;height:auto;line-height:1;
+  font-family:'Space Mono',monospace;font-size:14px;
+  color:var(--yellow);letter-spacing:0;
+}
 
 .hero-headline{
   font-size:clamp(68px,10.5vw,176px);
@@ -203,15 +185,15 @@ body *{cursor:none;}
 }
 .btn-ghost{
   padding:18px 44px;
-  background:transparent;color:var(--text-dim);
+  background:transparent;color:var(--text-muted);
   font-family:'Space Grotesk',sans-serif;
   font-weight:600;font-size:12px;
   letter-spacing:.16em;text-transform:uppercase;
-  border:1px solid var(--border);
+  border:none;border-bottom:1px solid transparent;
   text-decoration:none;display:inline-block;
-  transition:border-color .2s,color .2s;
+  transition:border-color .3s,color .3s;
 }
-.btn-ghost:hover{border-color:var(--border-hi);color:var(--purple-hi);}
+.btn-ghost:hover{border-bottom-color:var(--purple-hi);color:var(--purple-hi);}
 
 /* bg "6%" watermark */
 .hero-bg-num{
@@ -255,20 +237,25 @@ body *{cursor:none;}
 @keyframes march{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
 /* ─── SECTION SHELL ──────────────────────── */
-.section{padding:130px 52px;}
+.section{padding:160px 64px;}
 .section-inner{max-width:1200px;margin:0 auto;}
 .section-label{
   font-size:10px;letter-spacing:.36em;text-transform:uppercase;
-  color:var(--purple);font-weight:700;margin-bottom:16px;
+  color:var(--purple);font-weight:700;margin-bottom:20px;
   display:flex;align-items:center;gap:12px;
   font-family:'Space Mono',monospace;
 }
-.section-label::before{content:'';width:20px;height:1px;background:var(--purple);}
+.section-label::before{
+  content:'//';width:auto;background:none;
+  color:var(--purple);letter-spacing:0;
+  font-family:'Space Mono',monospace;
+}
+.section-label::after{content:'';}
 .section-title{
-  font-size:clamp(34px,5vw,60px);
-  font-weight:700;line-height:1.05;
-  color:#fff;letter-spacing:-.025em;
-  margin-bottom:60px;
+  font-size:clamp(44px,6vw,80px);
+  font-weight:700;line-height:1.02;
+  color:#fff;letter-spacing:-.03em;
+  margin-bottom:72px;
 }
 
 /* ─── DISCIPLINES ────────────────────────── */
@@ -297,12 +284,7 @@ body *{cursor:none;}
 }
 .sector-card:hover::after{transform:scaleX(1);}
 
-.sector-icon{
-  font-size:26px;margin-bottom:18px;display:block;
-  filter:grayscale(1);opacity:.35;
-  transition:filter .3s,opacity .3s,transform .3s;
-}
-.sector-card:hover .sector-icon{filter:none;opacity:1;transform:scale(1.08);}
+.sector-icon{display:none;}
 
 .sector-num{
   font-family:'Space Mono',monospace;
@@ -391,10 +373,9 @@ body *{cursor:none;}
 }
 .feat-canvas-glow{
   position:absolute;
-  width:500px;height:500px;
-  background:radial-gradient(circle,rgba(139,92,246,.18) 0%,transparent 65%);
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  animation:pulse-glow 4s ease-in-out infinite alternate;
+  inset:0;
+  background:none;
+  border:1px solid var(--border);
   pointer-events:none;
 }
 .feat-canvas-label{
@@ -484,14 +465,7 @@ body *{cursor:none;}
   transition:color .4s;
 }
 .exhibit-card:hover .exhibit-art-num{color:rgba(139,92,246,.09);}
-.exhibit-art-glow{
-  position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 40%,rgba(139,92,246,0) 0%,transparent 70%);
-  transition:background .4s;
-}
-.exhibit-card.live:hover .exhibit-art-glow{
-  background:radial-gradient(circle at 50% 40%,rgba(139,92,246,.14) 0%,transparent 70%);
-}
+.exhibit-art-glow{display:none;}
 .exhibit-art-icon{
   font-size:40px;
   position:relative;z-index:2;
@@ -505,11 +479,11 @@ body *{cursor:none;}
   position:absolute;top:18px;right:18px;
   font-family:'Space Mono',monospace;
   font-size:9px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;
-  color:var(--purple);
-  border:1px solid var(--border);
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--yellow);
+  border:1px solid rgba(232,255,0,.25);
   padding:5px 10px;
-  background:rgba(8,5,15,.8);
+  background:rgba(232,255,0,.04);
   opacity:0;transition:opacity .3s;
 }
 .exhibit-card.live:hover .exhibit-live-badge{opacity:1;}
@@ -517,10 +491,12 @@ body *{cursor:none;}
   position:absolute;top:18px;right:18px;
   font-family:'Space Mono',monospace;
   font-size:9px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;
+  letter-spacing:.18em;text-transform:uppercase;
   color:var(--text-muted);
-  border:1px solid var(--text-muted);
-  padding:5px 10px;opacity:.4;
+  border:1px solid var(--border);
+  padding:5px 10px;
+  background:rgba(8,5,15,.6);
+  opacity:.6;
 }
 
 /* Plaque area */
@@ -705,9 +681,8 @@ body *{cursor:none;}
 }
 #cta::before{
   content:'';position:absolute;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  width:800px;height:800px;
-  background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 65%);
+  top:0;left:64px;right:64px;height:1px;
+  background:linear-gradient(to right,transparent,rgba(139,92,246,.4),transparent);
   pointer-events:none;
 }
 #cta::after{
@@ -786,6 +761,79 @@ footer{
 .footer-links a:hover{color:var(--purple-hi);}
 .footer-copy{font-size:11px;color:var(--text-muted);letter-spacing:.04em;font-family:'Space Mono',monospace;}
 
+/* ─── COMPUTATIONAL MARKS ───────────────── */
+.version-stamp{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-muted);opacity:.5;
+}
+.state-badge{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple);
+  border:1px solid var(--border);
+  padding:4px 9px;
+  background:rgba(139,92,246,.04);
+  display:inline-block;
+}
+.state-badge.active{color:var(--yellow);border-color:rgba(232,255,0,.25);background:rgba(232,255,0,.04);}
+.state-badge.pending{color:var(--text-muted);border-color:var(--border);}
+.delta-mark{
+  font-family:'Space Mono',monospace;
+  font-size:.42em;font-weight:700;
+  letter-spacing:.05em;
+  display:inline-block;
+  margin-right:8px;
+  opacity:.7;
+}
+.delta-mark.minus{color:var(--text-muted);}
+.delta-mark.plus{color:var(--yellow);}
+
+/* ─── OPERATING LOGIC ────────────────────── */
+.op-tag{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple);opacity:.55;
+  margin-bottom:10px;display:block;
+}
+.annot{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.12em;
+  color:var(--text-muted);
+  display:block;margin-top:24px;margin-bottom:6px;
+  opacity:.6;
+}
+.op-list-label{
+  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--text-muted);font-family:'Space Mono',monospace;
+  margin-bottom:14px;opacity:.5;
+}
+.op-list{
+  display:flex;flex-direction:column;
+  font-family:'Space Mono',monospace;
+  border:1px solid var(--border);
+  border-bottom:none;
+}
+.op-list-item{
+  padding:14px 20px;
+  border-bottom:1px solid var(--border);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-muted);
+  display:flex;gap:14px;align-items:center;
+  transition:color .2s,background .2s;
+}
+.op-list-item:hover{color:var(--purple-hi);background:var(--surface2);}
+.op-list-item .op-n{color:var(--purple);opacity:.45;font-size:9px;flex-shrink:0;}
+.exhibit-op-tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
+.ex-op-tag{
+  font-family:'Space Mono',monospace;
+  font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--purple);border:1px solid var(--border);
+  padding:4px 8px;opacity:.5;transition:opacity .2s;
+}
+.exhibit-card.live:hover .ex-op-tag{opacity:1;}
+.exhibit-card.soon .ex-op-tag{opacity:.15;}
+
 /* ─── RESPONSIVE ─────────────────────────── */
 @media(max-width:900px){
   #nav{padding:0 24px;}
@@ -825,7 +873,7 @@ footer{
 
 <!-- ── NAV ───────────────────────────────── -->
 <nav id="nav">
-  <a href="#" class="nav-logo">SIX<span> PERCENT</span></a>
+  <a href="#" class="nav-logo">SIX<span> PERCENT</span>™</a>
   <ul class="nav-links">
     <li><a href="#sectors">Disciplines</a></li>
     <li><a href="#portfolio">The Gallery</a></li>
@@ -840,20 +888,21 @@ footer{
 <section id="hero">
   <div class="hero-inner">
 
-    <p class="hero-eyebrow reveal">Charlotte, NC · Remote Worldwide · Est. 2025</p>
+    <p class="hero-eyebrow reveal">AI-Built Finishing Studio <span class="version-stamp" style="margin-left:20px;">// build.2026.05</span></p>
 
     <h1 class="hero-headline reveal">
-      WE<br>
-      MAKE<br>
-      IT <span class="y">TWICE</span><br>
-      AS <span class="p">DOPE.</span>
+      THE GREY<br>
+      AREA BETWEEN<br>
+      <span class="p">AI-BUILT</span><br>
+      AND <span class="y">NAME-BRAND.</span>
     </h1>
 
     <div class="hero-sub-row reveal">
       <p class="hero-sub">
-        Interactive experiences. Web toys. Gamified tools.
-        Physical-digital installations.<br>
-        <em>Your thing — six percent better. Twice as memorable.</em>
+        Your AI built the thing. It functions.<br>
+        It doesn't feel like a brand yet.<br>
+        We edit the object — not the idea of it.<br>
+        <em>Visible logic. Human interruption.</em>
       </p>
       <div class="hero-actions">
         <a href="#portfolio" class="btn-pri">Enter The Gallery →</a>
@@ -870,85 +919,129 @@ footer{
 <!-- ── MARQUEE ────────────────────────────── -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span>WEB TOYS</span><span class="sep"></span>
-    <span>GAMIFICATION</span><span class="sep"></span>
-    <span>INTERACTIVE EXPERIENCES</span><span class="sep"></span>
-    <span>PHYSICAL-DIGITAL</span><span class="sep"></span>
-    <span>ARDUINO &amp; HARDWARE</span><span class="sep"></span>
-    <span>AR / VR</span><span class="sep"></span>
-    <span>BRAND ACTIVATIONS</span><span class="sep"></span>
-    <span>MUSEUM INSTALLATIONS</span><span class="sep"></span>
-    <span>ENTERPRISE UX</span><span class="sep"></span>
-    <span>CHARLOTTE NC</span><span class="sep"></span>
-    <span>REMOTE WORLDWIDE</span><span class="sep"></span>
-    <span>WEB TOYS</span><span class="sep"></span>
-    <span>GAMIFICATION</span><span class="sep"></span>
-    <span>INTERACTIVE EXPERIENCES</span><span class="sep"></span>
-    <span>PHYSICAL-DIGITAL</span><span class="sep"></span>
-    <span>ARDUINO &amp; HARDWARE</span><span class="sep"></span>
-    <span>AR / VR</span><span class="sep"></span>
-    <span>BRAND ACTIVATIONS</span><span class="sep"></span>
-    <span>MUSEUM INSTALLATIONS</span><span class="sep"></span>
-    <span>ENTERPRISE UX</span><span class="sep"></span>
-    <span>CHARLOTTE NC</span><span class="sep"></span>
-    <span>REMOTE WORLDWIDE</span><span class="sep"></span>
+    <span>RECOGNIZABLE BASE</span><span class="sep"></span>
+    <span>VISIBLE INTERVENTION</span><span class="sep"></span>
+    <span>LITERAL LANGUAGE</span><span class="sep"></span>
+    <span>CONTROLLED DISRUPTION</span><span class="sep"></span>
+    <span>OPERATIONAL BEAUTY</span><span class="sep"></span>
+    <span>SUSPENDED COMPLETION</span><span class="sep"></span>
+    <span>HUMAN OVERRIDE</span><span class="sep"></span>
+    <span>COMPUTATIONAL OBJECT</span><span class="sep"></span>
+    <span>VISIBLE LOGIC</span><span class="sep"></span>
+    <span>THE 6% TREATMENT</span><span class="sep"></span>
+    <span>TRACE OF AUTHORSHIP</span><span class="sep"></span>
+    <span>THE EDIT</span><span class="sep"></span>
+    <span>SAME OBJECT · DIFFERENT READ</span><span class="sep"></span>
+    <span>AI-BUILT FINISHING</span><span class="sep"></span>
+    <span>RECOGNIZABLE BASE</span><span class="sep"></span>
+    <span>VISIBLE INTERVENTION</span><span class="sep"></span>
+    <span>LITERAL LANGUAGE</span><span class="sep"></span>
+    <span>CONTROLLED DISRUPTION</span><span class="sep"></span>
+    <span>OPERATIONAL BEAUTY</span><span class="sep"></span>
+    <span>SUSPENDED COMPLETION</span><span class="sep"></span>
+    <span>HUMAN OVERRIDE</span><span class="sep"></span>
+    <span>COMPUTATIONAL OBJECT</span><span class="sep"></span>
+    <span>VISIBLE LOGIC</span><span class="sep"></span>
+    <span>THE 6% TREATMENT</span><span class="sep"></span>
+    <span>TRACE OF AUTHORSHIP</span><span class="sep"></span>
+    <span>THE EDIT</span><span class="sep"></span>
+    <span>SAME OBJECT · DIFFERENT READ</span><span class="sep"></span>
+    <span>AI-BUILT FINISHING</span><span class="sep"></span>
   </div>
 </div>
+
+
+<!-- ── WHAT WE DO ──────────────────────────── -->
+<section class="section" id="what-we-do" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-label reveal">What We Do</div>
+    <div class="phil-grid" style="gap:80px;">
+      <div class="reveal-left">
+        <div style="font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1;letter-spacing:-.03em;color:#fff;">
+          <span class="delta-mark minus">—</span>K-MART<br>
+          <span style="color:var(--text-muted);font-size:.55em;letter-spacing:.02em;margin-left:1.6em;">vs.</span><br>
+          <span class="delta-mark plus">+</span><span style="color:var(--yellow);">RODEO<br><span style="margin-left:1.6em;">DRIVE.</span></span>
+        </div>
+        <span class="annot" style="margin-top:20px;">// same object. different read.</span>
+      </div>
+      <div class="reveal-right">
+        <span class="annot" style="margin-top:0;">// the flood</span>
+        <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
+          There's a flood of AI-built apps, sites, content, games, and tools. They're all going to look the same. People will start to recognize the "made with AI" look — bland, templated, generic.
+        </p>
+        <span class="annot">// the problem</span>
+        <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
+          We don't sell AI development — a thousand people do that. We sell the difference between K-Mart and Rodeo Drive. The 6% of taste and curation that turns an AI-built thing into a name-brand thing.
+        </p>
+        <span class="annot">// six percent is</span>
+        <p style="font-size:clamp(16px,1.8vw,20px);color:var(--purple-hi);line-height:1.85;font-weight:600;">
+          We don't compete with AI tools. We finish their work.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 <!-- ── DISCIPLINES ───────────────────────── -->
 <section class="section" id="sectors">
   <div class="section-inner">
     <div class="section-label reveal">Disciplines</div>
-    <h2 class="section-title reveal">If it's boring,<br>we fix it.</h2>
+    <h2 class="section-title reveal">Same object.<br>Different read.</h2>
     <div class="sectors-grid">
 
       <div class="sector-card reveal">
-        <span class="sector-icon">🍸</span>
+        <span class="sector-icon">✦</span>
+        <span class="op-tag">// Literal Label</span>
         <div class="sector-num">01 —</div>
-        <div class="sector-name">Bars &amp; Hospitality</div>
-        <div class="sector-hook">Dead menus become interactive experiences. Your specials board actually makes people excited. The room you built deserves a digital experience that matches it.</div>
-        <div class="sector-example">See: Oak &amp; Ivy Demo ↓</div>
+        <div class="sector-name">Brand Voice</div>
+        <div class="sector-hook">Your AI wrote the copy. Correct. Functional. It sounds like everyone else's AI. We replace "Streamline your workflow" with something that sounds like a person meant it.</div>
+        <div class="sector-example">Tone · Copy · Personality</div>
       </div>
 
       <div class="sector-card reveal">
-        <span class="sector-icon">🏢</span>
+        <span class="sector-icon">⬡</span>
+        <span class="op-tag">// One Hard Graphic</span>
         <div class="sector-num">02 —</div>
-        <div class="sector-name">Corporations &amp; Enterprise</div>
-        <div class="sector-hook">Boring dashboards. Clunky onboarding. Workflows nobody wants to use. We add the 6% that turns a tool people endure into one they actually enjoy — and that shows up in your retention numbers.</div>
-        <div class="sector-example">Productivity · Onboarding · Training</div>
+        <div class="sector-name">Signature Interactions</div>
+        <div class="sector-hook">One motion gesture that gives the whole product momentum. The hover state nobody asked for but everyone screenshots. Static objects made to feel like they're still in motion.</div>
+        <div class="sector-example">Motion · Microinteractions · Delight</div>
       </div>
 
       <div class="sector-card reveal">
-        <span class="sector-icon">🖼️</span>
+        <span class="sector-icon">◈</span>
+        <span class="op-tag">// Visible Edit</span>
         <div class="sector-num">03 —</div>
-        <div class="sector-name">Museums &amp; Galleries</div>
-        <div class="sector-hook">Static display screens become interactive moments. Artifacts people walk past become things they stop and photograph. We build the touchscreen installation that makes a Tuesday feel like opening night.</div>
-        <div class="sector-example">Kiosks · Touchscreens · Installations</div>
+        <div class="sector-name">Taste Editing</div>
+        <div class="sector-hook">Find the three things making it look generic. Remove them. Leave the seam showing — so the edit is legible. The gap between before and after is the product.</div>
+        <div class="sector-example">Curation · Reduction · The Edit</div>
       </div>
 
       <div class="sector-card reveal">
-        <span class="sector-icon">🎓</span>
+        <span class="sector-icon">▣</span>
+        <span class="op-tag">// Recognizable Base</span>
         <div class="sector-num">04 —</div>
-        <div class="sector-name">Education</div>
-        <div class="sector-hook">Lectures become games. Curriculums become adventures. A hall display becomes something students stop to read. The boring stuff becomes the part they actually remember.</div>
-        <div class="sector-example">K–12 · Higher Ed · Corporate Training</div>
+        <div class="sector-name">Identity Systems</div>
+        <div class="sector-hook">We don't rebuild. We edit what's already there. The base stays recognizable — because the audience needs to hold before in their head while they see the after. That gap is where the voltage lives.</div>
+        <div class="sector-example">Typography · Color · Motion Language</div>
       </div>
 
       <div class="sector-card reveal">
-        <span class="sector-icon">🎤</span>
+        <span class="sector-icon">◎</span>
+        <span class="op-tag">// Intentional Incompletion</span>
         <div class="sector-num">05 —</div>
-        <div class="sector-name">Creators &amp; Brands</div>
-        <div class="sector-hook">Your portfolio, your drop page, your newsletter — elevated from "fine" to "wait, send me that link again." We build the web presence that makes people feel your brand before they read a word.</div>
-        <div class="sector-example">Portfolios · Drop Pages · Web Toys</div>
+        <div class="sector-name">Finishing Work</div>
+        <div class="sector-hook">You shipped v1. It works. We leave it 94% finished on purpose — not sloppy. Suspended. The object that feels like it's still in motion is the one people remember.</div>
+        <div class="sector-example">Polish · QA · The Last 6%</div>
       </div>
 
       <div class="sector-card reveal">
-        <span class="sector-icon">🎉</span>
+        <span class="sector-icon">▲</span>
+        <span class="op-tag">// One Interruption</span>
         <div class="sector-num">06 —</div>
-        <div class="sector-name">Events &amp; Activations</div>
-        <div class="sector-hook">Pop-ups. Concerts. Brand launches. Trade shows. We build the interactive moment that becomes the thing everyone posts about — and the reason your brand lives in people's camera rolls.</div>
-        <div class="sector-example">IRL · AR/VR · Physical-Digital</div>
+        <div class="sector-name">The Treatment</div>
+        <div class="sector-hook">One documented before/after applied to your specific category. The proof that a hand touched the thing. The detail that proves the object was rethought. See the Gallery.</div>
+        <div class="sector-example">See: The Gallery ↓</div>
       </div>
 
     </div>
@@ -1007,97 +1100,112 @@ footer{
 
     <div class="gallery-grid">
 
-      <!-- Exhibit 001 -->
+      <!-- Treatment 002 -->
       <a href="oak-and-ivy-demo.html" target="_blank" class="exhibit-card live reveal">
-        <div class="exhibit-art">
-          <div class="exhibit-art-num">001</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">🍸</div>
-          <div class="exhibit-live-badge">Live Demo →</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Exhibit 001 · Bars &amp; Hospitality</div>
-          <div class="exhibit-plaque-title">The Bar Upgrade</div>
-          <div class="exhibit-plaque-medium">Interactive Menu · Web · Tablet</div>
-          <div class="exhibit-plaque-desc">
-            A static menu PDF becomes a full interactive experience — live happy hour countdown, cocktail quiz, animated specials board, category filtering. Built to run on a tablet at the bar.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Boring PDF Menu</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Interactive Bar Experience</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Exhibit 002 -->
-      <a href="six-percent-demo.html" target="_blank" class="exhibit-card live reveal">
         <div class="exhibit-art">
           <div class="exhibit-art-num">002</div>
           <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">✦</div>
-          <div class="exhibit-live-badge">Live Demo →</div>
+          <div class="exhibit-art-icon">🍸</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
         </div>
         <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Exhibit 002 · Brand Experience</div>
-          <div class="exhibit-plaque-title">The Concept Demo</div>
-          <div class="exhibit-plaque-medium">Before/After Toggle · Brand · Web</div>
+          <div class="exhibit-plaque-num">Treatment 002 · Restaurant &amp; Hospitality</div>
+          <div class="exhibit-plaque-title">When AI Built Your Restaurant</div>
+          <div class="exhibit-plaque-medium">Interactive Menu · Web · Tablet</div>
           <div class="exhibit-plaque-desc">
-            The SIX PERCENT philosophy made clickable — watch a generic ACME Solutions corporate site transform into a full branded experience with one click. The pitch that sells itself.
+            An AI-generated menu and site get the 6% applied — live happy hour countdown, cocktail quiz, animated specials board. The food is the same. The experience is now the brand.
           </div>
           <div class="exhibit-before-after">
-            <span class="ex-before">Generic Corporate Site</span>
+            <span class="ex-before">AI-Generated Menu Site</span>
             <span class="ex-arrow">→</span>
-            <span class="ex-after">SIX PERCENT Experience</span>
+            <span class="ex-after">Signature Brand Experience</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// Literal Label</span>
+            <span class="ex-op-tag">// One Interruption</span>
           </div>
         </div>
         <div class="exhibit-floor"></div>
       </a>
 
-      <!-- Exhibit 004 - live -->
+      <!-- Treatment 001 -->
+      <a href="six-percent-demo.html" target="_blank" class="exhibit-card live reveal">
+        <div class="exhibit-art">
+          <div class="exhibit-art-num">001</div>
+          <div class="exhibit-art-glow"></div>
+          <div class="exhibit-art-icon">✦</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
+        </div>
+        <div class="exhibit-plaque">
+          <div class="exhibit-plaque-num">Treatment 001 · SaaS &amp; Startups</div>
+          <div class="exhibit-plaque-title">The Generic SaaS Treatment</div>
+          <div class="exhibit-plaque-medium">Before/After Toggle · Brand · Web</div>
+          <div class="exhibit-plaque-desc">
+            One click. Watch a generic ACME Solutions corporate site — the kind AI builds in seconds — become a full branded experience. The before/after that sells the whole idea.
+          </div>
+          <div class="exhibit-before-after">
+            <span class="ex-before">AI-Built Generic SaaS</span>
+            <span class="ex-arrow">→</span>
+            <span class="ex-after">Name-Brand Experience</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// Visible Edit</span>
+            <span class="ex-op-tag">// Recognizable Base</span>
+          </div>
+        </div>
+        <div class="exhibit-floor"></div>
+      </a>
+
+      <!-- Treatment 004 -->
       <a href="enterprise-dashboard-demo.html" target="_blank" class="exhibit-card live reveal">
         <div class="exhibit-art">
           <div class="exhibit-art-num">004</div>
           <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">📊</div>
-          <div class="exhibit-live-badge">Live Demo →</div>
+          <div class="exhibit-art-icon">▣</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
         </div>
         <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Exhibit 004 · Enterprise</div>
-          <div class="exhibit-plaque-title">The Dashboard Upgrade</div>
+          <div class="exhibit-plaque-num">Treatment 004 · B2B &amp; Enterprise</div>
+          <div class="exhibit-plaque-title">When AI Built Your B2B Tool</div>
           <div class="exhibit-plaque-medium">Gamified Analytics · XP System · Enterprise UX</div>
           <div class="exhibit-plaque-desc">
-            A boring enterprise analytics dashboard gets the 6% treatment — progress rings, streak mechanics, level-up moments, and a UI that makes people actually open the app on Monday morning.
+            An AI-built analytics dashboard gets the 6% — progress rings, streak mechanics, level-up moments. Same data. Now people actually open the app on Monday morning.
           </div>
           <div class="exhibit-before-after">
-            <span class="ex-before">Clunky Dashboard</span>
+            <span class="ex-before">AI-Built Dashboard</span>
             <span class="ex-arrow">→</span>
-            <span class="ex-after">Gamified Experience</span>
+            <span class="ex-after">Gamified Brand Tool</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// One Hard Graphic</span>
+            <span class="ex-op-tag">// Intentional Incompletion</span>
           </div>
         </div>
         <div class="exhibit-floor"></div>
       </a>
 
-      <!-- Exhibit 005 - coming soon -->
+      <!-- Treatment 005 - coming soon -->
       <div class="exhibit-card soon reveal">
         <div class="exhibit-art">
           <div class="exhibit-art-num">005</div>
           <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">🏛️</div>
-          <div class="exhibit-soon-badge">In Production</div>
+          <div class="exhibit-art-icon">▲</div>
+          <div class="exhibit-soon-badge">[ IN TREATMENT ]</div>
         </div>
         <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Exhibit 005 · Museums &amp; Galleries</div>
-          <div class="exhibit-plaque-title">The Museum Kiosk</div>
-          <div class="exhibit-plaque-medium">Touchscreen Installation · Large Format</div>
+          <div class="exhibit-plaque-num">Treatment 005 · AI Platforms</div>
+          <div class="exhibit-plaque-title">When AI Built Your Agent Platform</div>
+          <div class="exhibit-plaque-medium">Brand Identity · Signature Interactions · Web</div>
           <div class="exhibit-plaque-desc">
-            A static artifact display becomes a touchscreen exploration — timeline navigation, audio cues, hidden details that reward curiosity. Built for tablets and large-format displays.
+            The most on-the-nose case study: an AI-built AI product gets the 6% applied. Purple-pink gradient killed. Identity system built. The product that looked like every other agent platform — doesn't anymore.
           </div>
           <div class="exhibit-before-after">
-            <span class="ex-before">Static Info Screen</span>
+            <span class="ex-before">Generic AI Startup</span>
             <span class="ex-arrow">→</span>
-            <span class="ex-after">Interactive Installation</span>
+            <span class="ex-after">Name-Brand Platform</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// All Six Applied</span>
           </div>
         </div>
         <div class="exhibit-floor"></div>
@@ -1110,16 +1218,16 @@ footer{
 
 <!-- ── CLIENT STRIP ───────────────────────── -->
 <div id="clients" class="reveal">
-  <div class="clients-label">We've upgraded things for</div>
+  <div class="clients-label">We finish things built by</div>
   <div class="client-types">
-    <div class="client-type">Bars</div>
+    <div class="client-type">Indie Hackers</div>
+    <div class="client-type">Founders</div>
+    <div class="client-type">Product Teams</div>
+    <div class="client-type">AI Builders</div>
     <div class="client-type">Agencies</div>
-    <div class="client-type">Startups</div>
-    <div class="client-type">Museums</div>
-    <div class="client-type">Schools</div>
     <div class="client-type">Creators</div>
-    <div class="client-type">Corporations</div>
-    <div class="client-type">Anyone Boring</div>
+    <div class="client-type">Startups</div>
+    <div class="client-type">Anyone Shipping</div>
   </div>
 </div>
 
@@ -1128,26 +1236,28 @@ footer{
 <section id="philosophy">
   <div class="phil-grid">
 
-    <div class="phil-numbers reveal-left">
-      <div class="big-num dim">3%</div>
-      <div class="phil-arrow">→</div>
-      <div class="big-num lit">6%</div>
+    <div class="reveal-left">
+      <div class="op-list-label">// The Operating Logic</div>
+      <div class="op-list">
+        <div class="op-list-item"><span class="op-n">01</span> Recognizable Base</div>
+        <div class="op-list-item"><span class="op-n">02</span> Visible Edit</div>
+        <div class="op-list-item"><span class="op-n">03</span> Literal Label</div>
+        <div class="op-list-item"><span class="op-n">04</span> One Interruption</div>
+        <div class="op-list-item"><span class="op-n">05</span> One Hard Graphic</div>
+        <div class="op-list-item"><span class="op-n">06</span> Intentional Incompletion</div>
+      </div>
     </div>
 
     <div class="phil-copy reveal-right">
       <div class="section-label" style="margin-bottom:18px;">The Manifesto</div>
-      <h2>Virgil said <em>3%</em> was enough to make it good.</h2>
-      <p>Virgil Abloh famously said you only need to change 3% of something to make a great design. One detail. One edit. One shift in perspective. That's all it takes.</p>
-      <p>We take that seriously. Then we double it — because we have taste, AI-augmented speed, and a deep obsession with making things people actually remember. Not just working. <em style="color:var(--text-dim);font-style:normal;">Memorable.</em></p>
-      <p>We don't rebuild from scratch. We find the proven thing — the tool, the website, the space, the experience — and apply the 6% that transforms functional into unforgettable.</p>
-      <div class="phil-quote">
-        "Curation is not about adding more — it's about knowing exactly what to change."<br>
-        Inspired by Virgil Abloh, Rick Rubin, and Donald Norman.
-      </div>
-      <div class="phil-names">
-        <div class="phil-name-tag">Rick Rubin — The Ear</div>
-        <div class="phil-name-tag">Virgil Abloh — The Edit</div>
-        <div class="phil-name-tag">Donald Norman — The Rigor</div>
+      <h2>A new narrative.<br><em>The same product.</em></h2>
+      <p>Six Percent embarks on a new narrative where taste applied to what already exists inspires a pioneering format for the present.</p>
+      <p>The age of AI is the product waiting to be finished.</p>
+      <p style="color:var(--purple-hi);font-weight:600;">We don't compete with the tools. We finish their work.</p>
+      <div class="phil-names" style="margin-top:32px;">
+        <div class="phil-name-tag">The Ear</div>
+        <div class="phil-name-tag">The Edit</div>
+        <div class="phil-name-tag">The Rigor</div>
       </div>
     </div>
 
@@ -1162,19 +1272,22 @@ footer{
     <h2 class="section-title reveal">Three moves.<br>One upgrade.</h2>
     <div class="process-steps">
       <div class="process-step reveal">
+        <span class="op-tag">// bring the object</span>
         <div class="step-n">01</div>
-        <div class="step-title">Show Me The Boring Thing</div>
-        <div class="step-body">Bring what you have — the website, the tool, the dashboard, the display, the event. We audit what's already working and identify exactly where the 6% lives. No rebuilding. Just finding the lever.</div>
+        <div class="step-title">Show Us The Thing</div>
+        <div class="step-body">No decks. No briefs. Bring the website, the tool, the dashboard — whatever you built. We find the bones: the 5 or 6 load-bearing decisions that make it what it is.</div>
       </div>
       <div class="process-step reveal">
+        <span class="op-tag">// find the bones</span>
         <div class="step-n">02</div>
-        <div class="step-title">We Design The Upgrade</div>
-        <div class="step-body">AI-assisted, taste-driven design and development. We prototype the interactive moments, the delightful details — the layer that transforms functional into memorable. You react, we refine, fast.</div>
+        <div class="step-title">We Apply The 6%</div>
+        <div class="step-body">We identify what's foundational. We apply 6% to each element — simultaneously, with taste. The result looks effortless because no single change is dramatic. But every bone shifted.</div>
       </div>
       <div class="process-step reveal">
+        <span class="op-tag">// trace of authorship</span>
         <div class="step-n">03</div>
-        <div class="step-title">Ship It Twice As Dope</div>
-        <div class="step-body">We build and deploy. Web toy, physical installation, gamified tool, brand activation — it ships ready to use and ready to impress. The before/after story tells itself.</div>
+        <div class="step-title">The Before/After Tells Itself</div>
+        <div class="step-body">Same product. Every foundational element shifted just enough. The before/after story tells itself. You'll know we were there. So will everyone else.</div>
       </div>
     </div>
   </div>
@@ -1184,11 +1297,11 @@ footer{
 <!-- ── CTA ────────────────────────────────── -->
 <section id="cta">
   <div class="cta-inner reveal">
-    <span class="cta-tag">// Open For Commissions</span>
-    <h2 class="cta-title">READY TO<br>GET <span>DOPE?</span></h2>
-    <p class="cta-sub">Charlotte, NC based. Working with anyone, anywhere, who wants their thing to hit harder. Bars, corporations, museums, schools, creators — if it's boring, we fix it.</p>
-    <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation</a>
-    <p class="cta-note">No decks required. Just tell me what's boring.</p>
+    <span class="cta-tag">// Open For Treatments</span>
+    <h2 class="cta-title">YOU BUILT<br>THE <span>THING.</span><br>WE FINISH IT.</h2>
+    <p class="cta-sub">You built the product. It works. It doesn't feel like anything yet. That's the conversation.</p>
+    <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation →</a>
+    <p class="cta-note">No decks. No briefs. Just show us the thing.</p>
     <a href="mailto:heymrlb@gmail.com" class="cta-email">heymrlb@gmail.com</a>
   </div>
 </section>
@@ -1196,14 +1309,14 @@ footer{
 
 <!-- ── FOOTER ─────────────────────────────── -->
 <footer>
-  <div class="footer-logo">SIX PERCENT</div>
+  <div class="footer-logo">SIX PERCENT™</div>
   <div class="footer-links">
     <a href="#sectors">Disciplines</a>
     <a href="#portfolio">Gallery</a>
     <a href="#philosophy">Manifesto</a>
     <a href="#cta">Contact</a>
   </div>
-  <div class="footer-copy">© 2025 SIX PERCENT STUDIO · CHARLOTTE, NC</div>
+  <div class="footer-copy">© 2026 SIX PERCENT STUDIO · CHARLOTTE, NC <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
 </footer>
 
 
