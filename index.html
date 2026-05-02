@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIX PERCENT STUDIO — "THE FINISH."</title>
+<title>SIX PERCENT STUDIO — Visible logic. Human interruption.</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -131,20 +131,7 @@ body *{cursor:none;}
   pointer-events:none;
 }
 
-/* Diagonal stripe (Off-White ref) */
-#hero::after{
-  content:'';position:absolute;
-  top:-100px;right:-80px;
-  width:600px;height:800px;
-  background:repeating-linear-gradient(
-    -55deg,
-    rgba(139,92,246,.022) 0px,
-    rgba(139,92,246,.022) 1px,
-    transparent 1px,
-    transparent 32px
-  );
-  pointer-events:none;
-}
+/* Removed: diagonal stripe was a fashion surface reference */
 
 .hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:2;}
 
@@ -258,8 +245,12 @@ body *{cursor:none;}
   display:flex;align-items:center;gap:12px;
   font-family:'Space Mono',monospace;
 }
-.section-label::before{content:'"';width:auto;background:none;color:var(--purple);letter-spacing:0;}
-.section-label::after{content:'"';color:var(--purple);}
+.section-label::before{
+  content:'//';width:auto;background:none;
+  color:var(--purple);letter-spacing:0;
+  font-family:'Space Mono',monospace;
+}
+.section-label::after{content:'';}
 .section-title{
   font-size:clamp(44px,6vw,80px);
   font-weight:700;line-height:1.02;
@@ -488,11 +479,11 @@ body *{cursor:none;}
   position:absolute;top:18px;right:18px;
   font-family:'Space Mono',monospace;
   font-size:9px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;
-  color:var(--purple);
-  border:1px solid var(--border);
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--yellow);
+  border:1px solid rgba(232,255,0,.25);
   padding:5px 10px;
-  background:rgba(8,5,15,.8);
+  background:rgba(232,255,0,.04);
   opacity:0;transition:opacity .3s;
 }
 .exhibit-card.live:hover .exhibit-live-badge{opacity:1;}
@@ -500,10 +491,12 @@ body *{cursor:none;}
   position:absolute;top:18px;right:18px;
   font-family:'Space Mono',monospace;
   font-size:9px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;
+  letter-spacing:.18em;text-transform:uppercase;
   color:var(--text-muted);
-  border:1px solid var(--text-muted);
-  padding:5px 10px;opacity:.4;
+  border:1px solid var(--border);
+  padding:5px 10px;
+  background:rgba(8,5,15,.6);
+  opacity:.6;
 }
 
 /* Plaque area */
@@ -768,6 +761,34 @@ footer{
 .footer-links a:hover{color:var(--purple-hi);}
 .footer-copy{font-size:11px;color:var(--text-muted);letter-spacing:.04em;font-family:'Space Mono',monospace;}
 
+/* ─── COMPUTATIONAL MARKS ───────────────── */
+.version-stamp{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-muted);opacity:.5;
+}
+.state-badge{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple);
+  border:1px solid var(--border);
+  padding:4px 9px;
+  background:rgba(139,92,246,.04);
+  display:inline-block;
+}
+.state-badge.active{color:var(--yellow);border-color:rgba(232,255,0,.25);background:rgba(232,255,0,.04);}
+.state-badge.pending{color:var(--text-muted);border-color:var(--border);}
+.delta-mark{
+  font-family:'Space Mono',monospace;
+  font-size:.42em;font-weight:700;
+  letter-spacing:.05em;
+  display:inline-block;
+  margin-right:8px;
+  opacity:.7;
+}
+.delta-mark.minus{color:var(--text-muted);}
+.delta-mark.plus{color:var(--yellow);}
+
 /* ─── OPERATING LOGIC ────────────────────── */
 .op-tag{
   font-family:'Space Mono',monospace;
@@ -867,7 +888,7 @@ footer{
 <section id="hero">
   <div class="hero-inner">
 
-    <p class="hero-eyebrow reveal">AI-Built Finishing Studio</p>
+    <p class="hero-eyebrow reveal">AI-Built Finishing Studio <span class="version-stamp" style="margin-left:20px;">// build.2026.05</span></p>
 
     <h1 class="hero-headline reveal">
       THE GREY<br>
@@ -878,11 +899,10 @@ footer{
 
     <div class="hero-sub-row reveal">
       <p class="hero-sub">
-        Your AI built the thing. It functions.
+        Your AI built the thing. It functions.<br>
         It doesn't feel like a brand yet.<br>
-        We apply 6% to each foundational element —
-        simultaneously, with taste.<br>
-        <em>The before/after tells itself.</em>
+        We edit the object — not the idea of it.<br>
+        <em>Visible logic. Human interruption.</em>
       </p>
       <div class="hero-actions">
         <a href="#portfolio" class="btn-pri">Enter The Gallery →</a>
@@ -900,33 +920,33 @@ footer{
 <div class="marquee-wrap">
   <div class="marquee-track">
     <span>RECOGNIZABLE BASE</span><span class="sep"></span>
-    <span>VISIBLE EDIT</span><span class="sep"></span>
-    <span>LITERAL LABEL</span><span class="sep"></span>
-    <span>ONE INTERRUPTION</span><span class="sep"></span>
-    <span>ONE HARD GRAPHIC</span><span class="sep"></span>
-    <span>INTENTIONAL INCOMPLETION</span><span class="sep"></span>
-    <span>BRAND FINISHING</span><span class="sep"></span>
-    <span>AI-BUILT PRODUCTS</span><span class="sep"></span>
-    <span>IDENTITY SYSTEMS</span><span class="sep"></span>
-    <span>SIGNATURE INTERACTIONS</span><span class="sep"></span>
-    <span>TASTE EDITING</span><span class="sep"></span>
+    <span>VISIBLE INTERVENTION</span><span class="sep"></span>
+    <span>LITERAL LANGUAGE</span><span class="sep"></span>
+    <span>CONTROLLED DISRUPTION</span><span class="sep"></span>
+    <span>OPERATIONAL BEAUTY</span><span class="sep"></span>
+    <span>SUSPENDED COMPLETION</span><span class="sep"></span>
+    <span>HUMAN OVERRIDE</span><span class="sep"></span>
+    <span>COMPUTATIONAL OBJECT</span><span class="sep"></span>
+    <span>VISIBLE LOGIC</span><span class="sep"></span>
     <span>THE 6% TREATMENT</span><span class="sep"></span>
-    <span>BRAND VOICE</span><span class="sep"></span>
-    <span>FINISHING WORK</span><span class="sep"></span>
+    <span>TRACE OF AUTHORSHIP</span><span class="sep"></span>
+    <span>THE EDIT</span><span class="sep"></span>
+    <span>SAME OBJECT · DIFFERENT READ</span><span class="sep"></span>
+    <span>AI-BUILT FINISHING</span><span class="sep"></span>
     <span>RECOGNIZABLE BASE</span><span class="sep"></span>
-    <span>VISIBLE EDIT</span><span class="sep"></span>
-    <span>LITERAL LABEL</span><span class="sep"></span>
-    <span>ONE INTERRUPTION</span><span class="sep"></span>
-    <span>ONE HARD GRAPHIC</span><span class="sep"></span>
-    <span>INTENTIONAL INCOMPLETION</span><span class="sep"></span>
-    <span>BRAND FINISHING</span><span class="sep"></span>
-    <span>AI-BUILT PRODUCTS</span><span class="sep"></span>
-    <span>IDENTITY SYSTEMS</span><span class="sep"></span>
-    <span>SIGNATURE INTERACTIONS</span><span class="sep"></span>
-    <span>TASTE EDITING</span><span class="sep"></span>
+    <span>VISIBLE INTERVENTION</span><span class="sep"></span>
+    <span>LITERAL LANGUAGE</span><span class="sep"></span>
+    <span>CONTROLLED DISRUPTION</span><span class="sep"></span>
+    <span>OPERATIONAL BEAUTY</span><span class="sep"></span>
+    <span>SUSPENDED COMPLETION</span><span class="sep"></span>
+    <span>HUMAN OVERRIDE</span><span class="sep"></span>
+    <span>COMPUTATIONAL OBJECT</span><span class="sep"></span>
+    <span>VISIBLE LOGIC</span><span class="sep"></span>
     <span>THE 6% TREATMENT</span><span class="sep"></span>
-    <span>BRAND VOICE</span><span class="sep"></span>
-    <span>FINISHING WORK</span><span class="sep"></span>
+    <span>TRACE OF AUTHORSHIP</span><span class="sep"></span>
+    <span>THE EDIT</span><span class="sep"></span>
+    <span>SAME OBJECT · DIFFERENT READ</span><span class="sep"></span>
+    <span>AI-BUILT FINISHING</span><span class="sep"></span>
   </div>
 </div>
 
@@ -938,11 +958,11 @@ footer{
     <div class="phil-grid" style="gap:80px;">
       <div class="reveal-left">
         <div style="font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1;letter-spacing:-.03em;color:#fff;">
-          K-MART<br>
-          <span style="color:var(--text-muted);font-size:.55em;letter-spacing:.02em;">vs.</span><br>
-          <span style="color:var(--yellow);">RODEO<br>DRIVE.</span>
+          <span class="delta-mark minus">—</span>K-MART<br>
+          <span style="color:var(--text-muted);font-size:.55em;letter-spacing:.02em;margin-left:1.6em;">vs.</span><br>
+          <span class="delta-mark plus">+</span><span style="color:var(--yellow);">RODEO<br><span style="margin-left:1.6em;">DRIVE.</span></span>
         </div>
-        <span class="annot" style="margin-top:20px;">// same product. different finish.</span>
+        <span class="annot" style="margin-top:20px;">// same object. different read.</span>
       </div>
       <div class="reveal-right">
         <span class="annot" style="margin-top:0;">// the flood</span>
@@ -967,7 +987,7 @@ footer{
 <section class="section" id="sectors">
   <div class="section-inner">
     <div class="section-label reveal">Disciplines</div>
-    <h2 class="section-title reveal">The 6% lives<br>in the details.</h2>
+    <h2 class="section-title reveal">Same object.<br>Different read.</h2>
     <div class="sectors-grid">
 
       <div class="sector-card reveal">
@@ -1086,7 +1106,7 @@ footer{
           <div class="exhibit-art-num">002</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">🍸</div>
-          <div class="exhibit-live-badge">Live Demo →</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
         </div>
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Treatment 002 · Restaurant &amp; Hospitality</div>
@@ -1114,7 +1134,7 @@ footer{
           <div class="exhibit-art-num">001</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">✦</div>
-          <div class="exhibit-live-badge">Live Demo →</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
         </div>
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Treatment 001 · SaaS &amp; Startups</div>
@@ -1142,7 +1162,7 @@ footer{
           <div class="exhibit-art-num">004</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">▣</div>
-          <div class="exhibit-live-badge">Live Demo →</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
         </div>
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Treatment 004 · B2B &amp; Enterprise</div>
@@ -1170,7 +1190,7 @@ footer{
           <div class="exhibit-art-num">005</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">▲</div>
-          <div class="exhibit-soon-badge">In Production</div>
+          <div class="exhibit-soon-badge">[ IN TREATMENT ]</div>
         </div>
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Treatment 005 · AI Platforms</div>
@@ -1296,7 +1316,7 @@ footer{
     <a href="#philosophy">Manifesto</a>
     <a href="#cta">Contact</a>
   </div>
-  <div class="footer-copy">© 2025 SIX PERCENT STUDIO · CHARLOTTE, NC</div>
+  <div class="footer-copy">© 2026 SIX PERCENT STUDIO · CHARLOTTE, NC <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
 </footer>
 
 
