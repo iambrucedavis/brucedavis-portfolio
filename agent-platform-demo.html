@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">FlowAgent — Build AI Agents That Actually Work</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── RESET ──────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; }
+
+/* ─── FLASH ──────────────────────────────────── */
+#flash {
+  position: fixed; inset: 0;
+  background: #E8601C;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+#flash.on { opacity: 1; }
+
+/* ─── APPLY BUTTON ───────────────────────────── */
+#apply-btn {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  z-index: 500;
+  padding: 16px 28px;
+  background: #8B5CF6;
+  background: linear-gradient(135deg, #8B5CF6, #EC4899);
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 24px rgba(139,92,246,.5);
+}
+#apply-btn:hover { transform: scale(1.05); }
+body.dope #apply-btn {
+  background: #141410;
+  color: #E8601C;
+  border: 1px solid rgba(232,96,28,.3);
+  box-shadow: none;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: .18em;
+}
+
+/* ─── TREATMENT BADGE ────────────────────────── */
+#treatment-badge {
+  position: fixed;
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: #fff;
+  background: rgba(0,0,0,.6);
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 6px 16px;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+body.dope #treatment-badge {
+  background: rgba(20,20,16,.85);
+  border-color: rgba(232,96,28,.3);
+  color: rgba(232,96,28,.8);
+}
+
+/* ════════════════════════════════════════════
+   BEFORE — Generic AI Startup
+════════════════════════════════════════════ */
+#before-site {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  color: #1a1a2e;
+  background: #fff;
+}
+body.dope #before-site { display: none; }
+
+/* Before: Nav */
+.b-nav {
+  background: linear-gradient(135deg, #6B21A8, #EC4899);
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.b-logo {
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -.01em;
+}
+.b-logo span { opacity: .7; font-weight: 400; }
+.b-nav-links { display: flex; gap: 32px; }
+.b-nav-links a {
+  color: rgba(255,255,255,.8);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+.b-nav-cta {
+  background: #fff;
+  color: #7C3AED;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+/* Before: Hero */
+.b-hero {
+  background: linear-gradient(135deg, #6B21A8 0%, #EC4899 50%, #F97316 100%);
+  padding: 100px 48px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.b-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,.08) 0%, transparent 70%);
+}
+.b-hero-eyebrow {
+  font-size: 12px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+.b-hero-title {
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  position: relative;
+}
+.b-hero-sub {
+  font-size: 18px;
+  color: rgba(255,255,255,.8);
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.b-hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.b-btn-pri {
+  background: #fff;
+  color: #7C3AED;
+  padding: 16px 36px;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 24px rgba(0,0,0,.2);
+}
+.b-btn-sec {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  padding: 16px 36px;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.3);
+}
+.b-hero-trust {
+  margin-top: 48px;
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .1em;
+}
+
+/* Before: Features */
+.b-features {
+  padding: 80px 48px;
+  background: #fafafa;
+}
+.b-section-label {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: #7C3AED;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.b-section-title {
+  text-align: center;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 56px;
+}
+.b-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.b-feature-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 36px 28px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.b-feature-icon {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, #EDE9FE, #FCE7F3);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+.b-feature-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 10px;
+}
+.b-feature-body {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.7;
+}
+
+/* Before: Logos */
+.b-logos {
+  padding: 48px;
+  text-align: center;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.b-logos-label {
+  font-size: 12px;
+  color: #9ca3af;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.b-logos-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.b-logo-item {
+  font-size: 16px;
+  font-weight: 700;
+  color: #d1d5db;
+  letter-spacing: .05em;
+}
+
+/* Before: CTA banner */
+.b-cta-banner {
+  background: linear-gradient(135deg, #6B21A8, #EC4899);
+  padding: 80px 48px;
+  text-align: center;
+  color: #fff;
+}
+.b-cta-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.b-cta-sub {
+  font-size: 18px;
+  color: rgba(255,255,255,.75);
+  margin-bottom: 40px;
+  max-width: 480px;
+  margin-left: auto; margin-right: auto;
+}
+.b-cta-note {
+  margin-top: 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+}
+
+/* Before: Footer */
+.b-footer {
+  background: #111;
+  color: rgba(255,255,255,.4);
+  padding: 32px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+/* ════════════════════════════════════════════
+   AFTER — The 6% Applied
+════════════════════════════════════════════ */
+#after-site {
+  display: none;
+  font-family: 'Space Grotesk', sans-serif;
+  background: #141410;
+  color: #C8BEA0;
+}
+body.dope #after-site { display: block; }
+
+/* After: Nav */
+.a-nav {
+  background: #141410;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding: 20px 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky; top: 0; z-index: 100;
+}
+.a-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  letter-spacing: .1em;
+  color: #fff;
+  font-weight: 700;
+}
+.a-logo-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .2em;
+  color: rgba(139,92,246,.6);
+  margin-left: 12px;
+  vertical-align: middle;
+}
+.a-nav-links { display: flex; gap: 36px; align-items: center; }
+.a-nav-links a {
+  color: rgba(255,255,255,.35);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color .2s;
+}
+.a-nav-links a:hover { color: rgba(255,255,255,.7); }
+.a-nav-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .18em;
+  color: rgba(232,96,28,.7);
+  border: 1px solid rgba(232,96,28,.2);
+  padding: 5px 12px;
+}
+
+/* After: Hero */
+.a-hero {
+  padding: 120px 52px 100px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.a-hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .25em;
+  color: rgba(139,92,246,.6);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.a-hero-eyebrow::before {
+  content: '→';
+  color: rgba(232,96,28,.8);
+  font-size: 13px;
+}
+.a-state-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .18em;
+  color: rgba(34,197,94,.7);
+  border: 1px solid rgba(34,197,94,.2);
+  padding: 3px 10px;
+}
+.a-hero-title {
+  font-size: clamp(52px, 7vw, 108px);
+  font-weight: 700;
+  line-height: .92;
+  letter-spacing: -.03em;
+  color: #fff;
+  margin-bottom: 48px;
+}
+.a-hero-title em {
+  color: #E8601C;
+  font-style: normal;
+}
+.a-hero-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  padding-top: 48px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.a-hero-copy {
+  color: rgba(200,190,160,.7);
+  font-size: 15px;
+  line-height: 1.85;
+}
+.a-hero-copy p { margin-bottom: 16px; }
+.a-hero-copy .hi {
+  color: rgba(139,92,246,.9);
+  font-weight: 600;
+}
+.a-annot {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: rgba(139,92,246,.35);
+  display: block;
+  margin-bottom: 12px;
+}
+.a-hero-actions { display: flex; flex-direction: column; gap: 16px; }
+.a-btn-pri {
+  display: inline-block;
+  background: #E8601C;
+  color: #fff;
+  padding: 18px 36px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: background .2s;
+  width: fit-content;
+}
+.a-btn-pri:hover { background: #c44e12; }
+.a-btn-ghost {
+  display: inline-block;
+  color: rgba(255,255,255,.3);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  padding-bottom: 2px;
+  width: fit-content;
+}
+
+/* After: Trace block */
+.a-trace {
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.05);
+  padding: 28px 32px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  color: rgba(139,92,246,.5);
+  margin-top: 16px;
+}
+.a-trace-line { display: flex; gap: 16px; }
+.a-trace-key { color: rgba(232,96,28,.5); min-width: 140px; }
+.a-trace-val { color: rgba(200,190,160,.5); }
+.a-trace-val.active { color: rgba(34,197,94,.7); }
+.a-trace-val.processing { color: rgba(232,96,28,.7); }
+
+/* After: Features */
+.a-features {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 100px 52px;
+}
+.a-features-inner { max-width: 1200px; margin: 0 auto; }
+.a-section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: rgba(139,92,246,.5);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.a-section-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  margin-bottom: 64px;
+}
+.a-section-title em { color: #E8601C; font-style: normal; }
+.a-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(255,255,255,.06);
+}
+.a-feature-card {
+  padding: 40px 36px;
+  border-right: 1px solid rgba(255,255,255,.06);
+  position: relative;
+}
+.a-feature-card:last-child { border-right: none; }
+.a-feature-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .15em;
+  color: rgba(139,92,246,.4);
+  margin-bottom: 20px;
+  display: block;
+}
+.a-feature-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.12);
+  margin-bottom: 12px;
+}
+.a-feature-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -.01em;
+}
+.a-feature-body {
+  font-size: 14px;
+  color: rgba(200,190,160,.5);
+  line-height: 1.75;
+}
+.a-feature-delta {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: rgba(34,197,94,.4);
+  margin-top: 20px;
+  display: block;
+  letter-spacing: .08em;
+}
+
+/* After: Diff strip */
+.a-diff {
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding: 80px 52px;
+  background: rgba(255,255,255,.01);
+}
+.a-diff-inner { max-width: 1200px; margin: 0 auto; }
+.a-diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: rgba(255,255,255,.06);
+  margin-top: 48px;
+}
+.a-diff-col {
+  background: #141410;
+  padding: 40px;
+}
+.a-diff-col.removed { border-top: 2px solid rgba(239,68,68,.3); }
+.a-diff-col.added { border-top: 2px solid rgba(34,197,94,.3); }
+.a-diff-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .18em;
+  margin-bottom: 24px;
+  display: block;
+}
+.a-diff-col.removed .a-diff-label { color: rgba(239,68,68,.5); }
+.a-diff-col.added .a-diff-label { color: rgba(34,197,94,.5); }
+.a-diff-item {
+  font-size: 13px;
+  line-height: 2;
+  color: rgba(200,190,160,.4);
+  padding-left: 20px;
+  position: relative;
+}
+.a-diff-item::before {
+  position: absolute; left: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+.a-diff-col.removed .a-diff-item::before { content: '—'; color: rgba(239,68,68,.5); }
+.a-diff-col.added .a-diff-item::before { content: '+'; color: rgba(34,197,94,.5); }
+.a-diff-col.added .a-diff-item { color: rgba(200,190,160,.7); }
+
+/* After: CTA */
+.a-cta {
+  padding: 120px 52px;
+  text-align: center;
+}
+.a-cta-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: rgba(139,92,246,.4);
+  display: block;
+  margin-bottom: 24px;
+}
+.a-cta-title {
+  font-size: clamp(36px, 6vw, 80px);
+  font-weight: 700;
+  color: #fff;
+  line-height: .95;
+  letter-spacing: -.03em;
+  margin-bottom: 32px;
+}
+.a-cta-title em { color: #E8601C; font-style: normal; }
+.a-cta-sub {
+  font-size: 16px;
+  color: rgba(200,190,160,.5);
+  max-width: 460px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+}
+
+/* After: Footer */
+.a-footer {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 32px 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.a-footer-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.2);
+}
+.a-footer-sys {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .12em;
+  color: rgba(139,92,246,.25);
+}
+.a-footer-back {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: rgba(232,96,28,.5);
+  text-decoration: none;
+}
+.a-footer-back:hover { color: rgba(232,96,28,.8); }
+
+/* ─── MOBILE ──────────────────────────────── */
+@media(max-width: 768px) {
+  .b-features-grid, .a-features-grid { grid-template-columns: 1fr; }
+  .b-hero, .a-hero { padding: 80px 24px 60px; }
+  .b-features, .a-features, .a-diff { padding: 60px 24px; }
+  .a-hero-body { grid-template-columns: 1fr; gap: 40px; }
+  .a-diff-grid { grid-template-columns: 1fr; }
+  .b-nav { padding: 14px 24px; }
+  .b-nav-links { display: none; }
+  .a-nav { padding: 16px 24px; }
+  .a-feature-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .a-footer { flex-direction: column; gap: 16px; text-align: center; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="flash"></div>
+<div id="treatment-badge">TREATMENT 005 · AI PLATFORMS // SIX PERCENT STUDIO</div>
+
+<!-- Apply button -->
+<button id="apply-btn" onclick="applyThe6()">Apply The 6% →</button>
+
+
+<!-- ══════════════════════════════════════════
+     BEFORE — Generic AI Startup
+══════════════════════════════════════════ -->
+<div id="before-site">
+
+  <nav class="b-nav">
+    <div class="b-logo">Flow<span>Agent</span></div>
+    <div class="b-nav-links">
+      <a href="#">Product</a>
+      <a href="#">Pricing</a>
+      <a href="#">Docs</a>
+      <a href="#">Blog</a>
+    </div>
+    <a href="#" class="b-nav-cta">Get Started Free</a>
+  </nav>
+
+  <section class="b-hero">
+    <p class="b-hero-eyebrow">Trusted by 500+ teams worldwide</p>
+    <h1 class="b-hero-title">Build AI Agents That<br>Actually Work</h1>
+    <p class="b-hero-sub">Deploy intelligent agents in minutes. No ML experience required. Scale effortlessly with our enterprise-grade infrastructure.</p>
+    <div class="b-hero-actions">
+      <a href="#" class="b-btn-pri">Start Building Free</a>
+      <a href="#" class="b-btn-sec">Watch Demo</a>
+    </div>
+    <p class="b-hero-trust">No credit card required · Free up to 1,000 runs/month · SOC 2 Compliant</p>
+  </section>
+
+  <div class="b-logos">
+    <p class="b-logos-label">Trusted by innovative teams at</p>
+    <div class="b-logos-row">
+      <span class="b-logo-item">ACME CORP</span>
+      <span class="b-logo-item">TECHFLOW</span>
+      <span class="b-logo-item">NEXUS AI</span>
+      <span class="b-logo-item">BUILDFAST</span>
+      <span class="b-logo-item">GRIDWORKS</span>
+    </div>
+  </div>
+
+  <section class="b-features">
+    <p class="b-section-label">Why FlowAgent</p>
+    <h2 class="b-section-title">Everything you need to build<br>powerful AI agents</h2>
+    <div class="b-features-grid">
+      <div class="b-feature-card">
+        <div class="b-feature-icon">⚡</div>
+        <div class="b-feature-title">Lightning Fast Deployment</div>
+        <div class="b-feature-body">Get your agents running in production in under 5 minutes. Our streamlined deployment pipeline handles all the complexity so you can focus on building.</div>
+      </div>
+      <div class="b-feature-card">
+        <div class="b-feature-icon">🔒</div>
+        <div class="b-feature-title">Enterprise-Grade Security</div>
+        <div class="b-feature-body">Bank-level encryption, SOC 2 Type II compliance, and role-based access controls keep your data safe at every layer of the stack.</div>
+      </div>
+      <div class="b-feature-card">
+        <div class="b-feature-icon">📈</div>
+        <div class="b-feature-title">Scales With You</div>
+        <div class="b-feature-body">From prototype to production, FlowAgent scales automatically to meet your needs. Pay only for what you use with transparent, predictable pricing.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="b-cta-banner">
+    <h2 class="b-cta-title">Ready to supercharge<br>your workflow?</h2>
+    <p class="b-cta-sub">Join thousands of developers building the future with FlowAgent.</p>
+    <a href="#" class="b-btn-pri" style="display:inline-block;">Get Started Free →</a>
+    <p class="b-cta-note">No credit card required. Cancel anytime.</p>
+  </section>
+
+  <footer class="b-footer">
+    <div>© 2024 FlowAgent, Inc. All rights reserved.</div>
+    <div>Privacy · Terms · Contact</div>
+  </footer>
+
+</div><!-- /before-site -->
+
+
+<!-- ══════════════════════════════════════════
+     AFTER — The 6% Applied
+══════════════════════════════════════════ -->
+<div id="after-site">
+
+  <nav class="a-nav">
+    <div class="a-logo">FLOWAGENT<span class="a-logo-tag">// v2.1</span></div>
+    <div class="a-nav-links">
+      <a href="#">System</a>
+      <a href="#">Traces</a>
+      <a href="#">Deployments</a>
+    </div>
+    <div class="a-nav-status">[ AGENT: RUNNING ]</div>
+  </nav>
+
+  <section class="a-hero">
+    <p class="a-hero-eyebrow">
+      FlowAgent · AI Decision Infrastructure
+      <span class="a-state-badge">[ BUILD: ACTIVE ]</span>
+    </p>
+    <h1 class="a-hero-title">
+      YOUR DECISIONS<br>
+      HAVE <em>LATENCY.</em><br>
+      WE FIND IT.
+    </h1>
+
+    <div class="a-hero-body">
+      <div class="a-hero-copy">
+        <span class="a-annot">// the condition</span>
+        <p>Your agents are already running. Dispatching tasks, parsing responses, making calls. The infrastructure works. The decisions it makes — those are still inside the default. Unread.</p>
+        <span class="a-annot">// the edit</span>
+        <p>We instrument the decision layer. Not the model — the logic around it. Where the latency lives. Where the wrong branch gets taken. We read it the same way we read source code.</p>
+        <p class="hi">Same agents. Now they feel like yours.</p>
+      </div>
+      <div>
+        <div class="a-hero-actions" style="margin-bottom:24px;">
+          <a href="#" class="a-btn-pri">Start A Deployment →</a>
+          <a href="#" class="a-btn-ghost">Read The Trace Docs</a>
+        </div>
+        <div class="a-trace">
+          <div class="a-trace-line"><span class="a-trace-key">agent_id</span><span class="a-trace-val">fa_prod_0x3f2a</span></div>
+          <div class="a-trace-line"><span class="a-trace-key">status</span><span class="a-trace-val active">RUNNING</span></div>
+          <div class="a-trace-line"><span class="a-trace-key">decisions/min</span><span class="a-trace-val processing">847</span></div>
+          <div class="a-trace-line"><span class="a-trace-key">latency_p99</span><span class="a-trace-val">0.34ms</span></div>
+          <div class="a-trace-line"><span class="a-trace-key">human_override</span><span class="a-trace-val active">ACTIVE</span></div>
+          <div class="a-trace-line"><span class="a-trace-key">// delta applied</span><span class="a-trace-val">+6%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="a-features">
+    <div class="a-features-inner">
+      <div class="a-section-label">// The System</div>
+      <h2 class="a-section-title">Infrastructure that reads<br>like it was <em>written.</em></h2>
+      <div class="a-features-grid">
+        <div class="a-feature-card">
+          <span class="a-feature-tag">// Operational Beauty</span>
+          <div class="a-feature-num">01 —</div>
+          <div class="a-feature-title">Decision Tracing</div>
+          <div class="a-feature-body">Every branch your agent takes is logged with context. Not just the output — the logic that produced it. When something goes wrong, you read the trace, not the docs.</div>
+          <span class="a-feature-delta">+ latency visible · + decisions auditable</span>
+        </div>
+        <div class="a-feature-card">
+          <span class="a-feature-tag">// Human Override</span>
+          <div class="a-feature-num">02 —</div>
+          <div class="a-feature-title">Interrupt Points</div>
+          <div class="a-feature-body">The machine doesn't get the final word. Set checkpoints where human judgment enters the loop. The agent runs at full speed until the decision matters.</div>
+          <span class="a-feature-delta">+ control surface added · + automation preserved</span>
+        </div>
+        <div class="a-feature-card">
+          <span class="a-feature-tag">// Visible Edit</span>
+          <div class="a-feature-num">03 —</div>
+          <div class="a-feature-title">Diff Deployments</div>
+          <div class="a-feature-body">Every deployment shows the diff. What changed, what didn't, what the delta means for downstream decisions. The edit is the deliverable. You'll know we were there.</div>
+          <span class="a-feature-delta">+ changes auditable · + regressions visible</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="a-diff">
+    <div class="a-diff-inner">
+      <div class="a-section-label">// What Changed</div>
+      <h2 class="a-section-title">Six percent of the product.<br>All of the <em>feel.</em></h2>
+      <div class="a-diff-grid">
+        <div class="a-diff-col removed">
+          <span class="a-diff-label">— REMOVED</span>
+          <div class="a-diff-item">Purple-pink gradient hero</div>
+          <div class="a-diff-item">"Build AI Agents That Actually Work"</div>
+          <div class="a-diff-item">Lightning bolt feature icons</div>
+          <div class="a-diff-item">Generic trust badge row</div>
+          <div class="a-diff-item">Glow animations on CTA buttons</div>
+          <div class="a-diff-item">"Supercharge your workflow" copy</div>
+        </div>
+        <div class="a-diff-col added">
+          <span class="a-diff-label">+ ADDED</span>
+          <div class="a-diff-item">Dark signal identity — no gradient</div>
+          <div class="a-diff-item">"Your decisions have latency. We find it."</div>
+          <div class="a-diff-item">Live decision trace panel in hero</div>
+          <div class="a-diff-item">[ AGENT: RUNNING ] state badge in nav</div>
+          <div class="a-diff-item">Diff deployment view as the product</div>
+          <div class="a-diff-item">Interrupt Points — the human override feature</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="a-cta">
+    <span class="a-cta-tag">// Open For Deployments</span>
+    <h2 class="a-cta-title">YOUR AGENTS<br>ARE ALREADY<br><em>RUNNING.</em></h2>
+    <p class="a-cta-sub">You built the infrastructure. It works. It doesn't feel like anything yet. That's the conversation.</p>
+    <a href="mailto:heymrlb@gmail.com" class="a-btn-pri">Start A Deployment →</a>
+  </section>
+
+  <footer class="a-footer">
+    <div class="a-footer-logo">FLOWAGENT™</div>
+    <div class="a-footer-sys">// DECISION_LAYER: ACTIVE · v2.1 · DELTA: +6%</div>
+    <a href="sixpercent.html" class="a-footer-back">← Back to Six Percent Studio</a>
+  </footer>
+
+</div><!-- /after-site -->
+
+
+<script>
+let applied = false;
+
+function applyThe6() {
+  if (applied) {
+    // Revert
+    const flash = document.getElementById('flash');
+    flash.classList.add('on');
+    setTimeout(() => {
+      document.body.classList.remove('dope');
+      document.getElementById('apply-btn').textContent = 'Apply The 6% →';
+      document.getElementById('page-title').textContent = 'FlowAgent — Build AI Agents That Actually Work';
+      flash.classList.remove('on');
+      applied = false;
+      window.scrollTo({top: 0, behavior: 'instant'});
+    }, 160);
+  } else {
+    // Apply
+    const flash = document.getElementById('flash');
+    flash.classList.add('on');
+    setTimeout(() => {
+      document.body.classList.add('dope');
+      document.getElementById('apply-btn').textContent = '// REVERT ←';
+      document.getElementById('page-title').textContent = 'FlowAgent — Decision Infrastructure // v2.1';
+      flash.classList.remove('on');
+      applied = true;
+      window.scrollTo({top: 0, behavior: 'instant'});
+    }, 160);
+  }
+}
+</script>
+</body>
+</html>
