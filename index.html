@@ -1236,6 +1236,106 @@ body.layout-h #page-wrapper > div::after {
   content: none;
 }
 
+/* ─── GLITCH SYSTEM ──────────────────────── */
+@keyframes rgb-split{
+  0%,88%,100%{text-shadow:none;transform:none;}
+  90%{text-shadow:-4px 0 rgba(255,0,80,.85),4px 0 rgba(0,200,255,.85);transform:translateX(-2px);}
+  92%{text-shadow:3px 0 rgba(255,0,80,.6),-3px 0 rgba(0,200,255,.6);transform:translateX(1px);}
+  94%{text-shadow:none;transform:none;}
+}
+.glitch-word{animation:rgb-split 7s ease-in-out infinite;display:inline-block;}
+
+@keyframes err-blink{
+  0%,49%{opacity:1;}50%,99%{opacity:.15;}100%{opacity:1;}
+}
+.hero-build-state{
+  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;
+  color:rgba(232,96,28,.85);border:1px solid rgba(232,96,28,.22);
+  padding:4px 10px;margin-left:16px;
+  animation:err-blink 4s step-end infinite;
+}
+
+/* Override hero flex to stack hero-inner + hero-argument vertically */
+#hero{flex-direction:column;align-items:stretch;justify-content:center;}
+.hero-inner{width:100%;}
+
+/* Hero argument (absorbed What We Do) */
+.hero-argument{border-top:1px solid var(--border);margin-top:80px;padding:80px 0 120px;}
+.hero-arg-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.hero-arg-visual{font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1;letter-spacing:-.03em;color:#fff;}
+.hero-arg-vs{color:var(--text-muted);font-size:.55em;letter-spacing:.02em;margin-left:1.6em;display:block;}
+.hero-arg-copy p{font-size:clamp(15px,1.7vw,18px);color:var(--text-dim);line-height:1.85;margin-bottom:16px;}
+.hero-arg-copy .hi{color:var(--purple-hi);font-weight:600;}
+@media(max-width:900px){
+  .hero-argument{padding:60px 0 80px;}
+  .hero-arg-inner{grid-template-columns:1fr;gap:44px;}
+}
+
+/* Gallery section */
+#gallery{background:var(--bg);padding:100px 52px 60px;border-top:1px solid var(--border);}
+
+/* Gallery featured card (full-width) */
+.exhibit-card.feat{grid-column:1/-1;flex-direction:row;}
+.exhibit-card.feat .exhibit-art{width:340px;flex-shrink:0;height:auto;min-height:280px;border-bottom:none;border-right:1px solid var(--border);}
+.exhibit-card.feat .exhibit-plaque{padding:48px 52px;}
+.exhibit-card.feat .exhibit-plaque-title{font-size:clamp(24px,3vw,36px);}
+@media(max-width:900px){
+  #gallery{padding-left:24px;padding-right:24px;}
+  .exhibit-card.feat{flex-direction:column;}
+  .exhibit-card.feat .exhibit-art{width:100%;height:240px;border-right:none;border-bottom:1px solid var(--border);}
+  .exhibit-card.feat .exhibit-plaque{padding:32px 28px;}
+}
+
+/* Error card — Treatment 005 corrupted state */
+.exhibit-card.err .exhibit-art{background:var(--surface2);}
+.exhibit-card.err .exhibit-art::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0px,rgba(0,0,0,.14) 1px,transparent 1px,transparent 4px);
+  z-index:3;pointer-events:none;
+}
+.err-badge{
+  position:absolute;top:18px;right:18px;
+  font-family:'Space Mono',monospace;font-size:9px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(232,96,28,.9);border:1px solid rgba(232,96,28,.35);
+  padding:5px 10px;background:rgba(232,96,28,.06);
+  animation:err-blink 2.4s step-end infinite;
+  z-index:4;
+}
+.err-noise{
+  position:absolute;inset:0;z-index:2;
+  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.05em;
+  color:rgba(139,92,246,.2);padding:14px;line-height:1.55;
+  overflow:hidden;pointer-events:none;white-space:pre;
+}
+.exhibit-card.err .exhibit-plaque-title{color:var(--text-muted)!important;}
+.exhibit-card.err .exhibit-plaque-desc{color:rgba(124,111,160,.3);}
+.exhibit-card.err .exhibit-before-after{opacity:.2;}
+.exhibit-card.err:hover .exhibit-before-after{opacity:.45;}
+
+/* Gallery client strip (inline) */
+.gallery-clients{padding:56px 52px 80px;border-top:1px solid var(--border);text-align:center;}
+@media(max-width:900px){.gallery-clients{padding:40px 24px 60px;}}
+
+/* Method section (disciplines + philosophy merged) */
+#method{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:130px 52px;}
+.method-inner{max-width:1200px;margin:0 auto;}
+.method-intro{display:grid;grid-template-columns:280px 1fr;gap:80px;align-items:start;margin-bottom:80px;}
+.method-copy h2{font-size:clamp(26px,3.2vw,38px);font-weight:700;line-height:1.25;color:#fff;margin-bottom:20px;letter-spacing:-.02em;}
+.method-copy h2 em{color:var(--yellow);font-style:normal;}
+.method-copy p{color:var(--text-muted);font-size:14px;line-height:1.95;margin-bottom:14px;}
+.method-copy .hi{color:var(--purple-hi);font-weight:600;}
+@media(max-width:900px){
+  #method{padding:80px 24px;}
+  .method-intro{grid-template-columns:1fr;gap:44px;}
+}
+
+/* Process trace mark */
+.step-trace{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.1em;color:rgba(139,92,246,.22);margin-top:10px;display:block;}
+
+/* Sys status — footer */
+.sys-status{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:rgba(139,92,246,.28);margin-top:3px;}
+
 </style>
 </head>
 <body>
@@ -1250,10 +1350,9 @@ body.layout-h #page-wrapper > div::after {
 <nav id="nav">
   <a href="#" class="nav-logo">SIX<span> PERCENT</span>™</a>
   <ul class="nav-links">
-    <li><a href="#sectors">Disciplines</a></li>
-    <li><a href="#portfolio">The Gallery</a></li>
-    <li><a href="#philosophy">Manifesto</a></li>
-    <li><a href="#cta">Contact</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#process">Process</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:24px;">
     <button id="layout-toggle" title="Toggle scroll direction" aria-label="Toggle scroll direction">
@@ -1261,7 +1360,7 @@ body.layout-h #page-wrapper > div::after {
       <span style="opacity:.3;">/</span>
       <span class="lt-h">↔ H</span>
     </button>
-    <a href="#portfolio" class="nav-cta">Enter The Gallery</a>
+    <a href="#cta" class="nav-cta">Start A Project</a>
   </div>
 </nav>
 
@@ -1272,12 +1371,15 @@ body.layout-h #page-wrapper > div::after {
 <section id="hero">
   <div class="hero-inner">
 
-    <p class="hero-eyebrow reveal">Six Percent Studio <span class="version-stamp" style="margin-left:20px;">// build.2026.05</span></p>
+    <p class="hero-eyebrow reveal">Six Percent Studio
+      <span class="version-stamp" style="margin-left:20px;">// build.2026.05</span>
+      <span class="hero-build-state">[ BUILD: 94% ]</span>
+    </p>
 
     <h1 class="hero-headline reveal">
       THE<br>
       EDIT IS<br>
-      THE <span class="y">WORK.</span>
+      THE <span class="y glitch-word">WORK.</span>
     </h1>
 
     <div class="hero-sub-row reveal">
@@ -1288,12 +1390,34 @@ body.layout-h #page-wrapper > div::after {
         <em>6% changed. Structure still visible.</em>
       </p>
       <div class="hero-actions">
-        <a href="#portfolio" class="btn-pri">Enter The Gallery →</a>
+        <a href="#gallery" class="btn-pri">Enter The Gallery →</a>
         <a href="#cta" class="btn-ghost">Start A Project</a>
       </div>
     </div>
 
   </div>
+
+  <!-- The Argument — absorbed from What We Do -->
+  <div class="hero-argument">
+    <div class="hero-arg-inner">
+      <div class="reveal-left">
+        <div class="hero-arg-visual">
+          <span class="delta-mark minus">—</span>K-MART<br>
+          <span class="hero-arg-vs">vs.</span>
+          <span class="delta-mark plus">+</span><span style="color:var(--yellow);">RODEO<br><span style="margin-left:1.6em;">DRIVE.</span></span>
+        </div>
+        <span class="annot" style="margin-top:20px;">// same object. different read.</span>
+      </div>
+      <div class="hero-arg-copy reveal-right">
+        <span class="annot" style="margin-top:0;">// the condition</span>
+        <p>AI built the site. The app. The copy. All of it, fast, on default. Every tool pulling from the same training data. The output converges. That's not an opinion — that's how the system works.</p>
+        <span class="annot">// the read</span>
+        <p>I have a CS degree and a master's in computer graphics technology. When I look at AI-built work, I read it the same way I read code that runs but hasn't been refactored. It works. The decisions are still inside it, unedited.</p>
+        <p class="hi">We don't compete with the tools. We finish their work.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="hero-bg-num">6%</div>
   <div class="scroll-hint">Scroll</div>
 </section>
@@ -1334,154 +1458,41 @@ body.layout-h #page-wrapper > div::after {
 </div>
 
 
-<!-- ── WHAT WE DO ──────────────────────────── -->
-<section class="section" id="what-we-do" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="section-inner">
-    <div class="section-label reveal">What We Do</div>
-    <div class="phil-grid" style="gap:80px;">
-      <div class="reveal-left">
-        <div style="font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1;letter-spacing:-.03em;color:#fff;">
-          <span class="delta-mark minus">—</span>K-MART<br>
-          <span style="color:var(--text-muted);font-size:.55em;letter-spacing:.02em;margin-left:1.6em;">vs.</span><br>
-          <span class="delta-mark plus">+</span><span style="color:var(--yellow);">RODEO<br><span style="margin-left:1.6em;">DRIVE.</span></span>
-        </div>
-        <span class="annot" style="margin-top:20px;">// same object. different read.</span>
-      </div>
-      <div class="reveal-right">
-        <span class="annot" style="margin-top:0;">// the condition</span>
-        <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
-          AI built the site. The app. The copy. All of it, fast, on default. Every tool pulling from the same training data. The output converges. That's not an opinion — that's how the system works.
-        </p>
-        <span class="annot">// the read</span>
-        <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
-          I have a CS degree and a master's in computer graphics technology. When I look at AI-built work, I read it the same way I read code that runs but hasn't been refactored. It works. The decisions are still inside it, unedited.
-        </p>
-        <span class="annot">// six percent is</span>
-        <p style="font-size:clamp(16px,1.8vw,20px);color:var(--purple-hi);line-height:1.85;font-weight:600;">
-          We don't compete with the tools. We finish their work.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ── DISCIPLINES ───────────────────────── -->
-<section class="section" id="sectors">
-  <div class="section-inner">
-    <div class="section-label reveal">Disciplines</div>
-    <h2 class="section-title reveal">Same object.<br>Different read.</h2>
-    <div class="sectors-grid">
-
-      <div class="sector-card reveal">
-        <span class="sector-icon">✦</span>
-        <span class="op-tag">// Literal Label</span>
-        <div class="sector-num">01 —</div>
-        <div class="sector-name">Brand Voice</div>
-        <div class="sector-hook">Your AI wrote the copy. Functional. Sounds like every other AI. We replace "Streamline your workflow" with something that sounds like a person meant it.</div>
-        <div class="sector-example">Tone · Copy · Personality</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="sector-icon">⬡</span>
-        <span class="op-tag">// One Hard Graphic</span>
-        <div class="sector-num">02 —</div>
-        <div class="sector-name">Signature Interactions</div>
-        <div class="sector-hook">One motion that gives the whole product momentum. The hover state nobody asked for but everyone screenshots. Objects that feel like they're still in motion.</div>
-        <div class="sector-example">Motion · Microinteractions · Delight</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="sector-icon">◈</span>
-        <span class="op-tag">// Visible Edit</span>
-        <div class="sector-num">03 —</div>
-        <div class="sector-name">Taste Editing</div>
-        <div class="sector-hook">Find the three things making it generic. Remove them. Leave the seam showing — so the edit is legible. The gap between before and after is the work.</div>
-        <div class="sector-example">Curation · Reduction · The Edit</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="sector-icon">▣</span>
-        <span class="op-tag">// Recognizable Base</span>
-        <div class="sector-num">04 —</div>
-        <div class="sector-name">Identity Systems</div>
-        <div class="sector-hook">We don't rebuild. We edit what's already there. The base stays recognizable — the audience holds before while they see after. That gap is where the voltage lives.</div>
-        <div class="sector-example">Typography · Color · Motion Language</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="sector-icon">◎</span>
-        <span class="op-tag">// Intentional Incompletion</span>
-        <div class="sector-num">05 —</div>
-        <div class="sector-name">Finishing Work</div>
-        <div class="sector-hook">You shipped v1. It works. We leave it 94% finished on purpose. Not sloppy — suspended. The object still in motion is the one people remember.</div>
-        <div class="sector-example">Polish · QA · The Last 6%</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="sector-icon">▲</span>
-        <span class="op-tag">// One Interruption</span>
-        <div class="sector-num">06 —</div>
-        <div class="sector-name">The Treatment</div>
-        <div class="sector-hook">One documented before/after applied to your specific category. Proof that a hand touched the thing. See the Gallery.</div>
-        <div class="sector-example">See: The Gallery ↓</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- ── FEATURED INSTALLATION ─────────────── -->
-<section id="featured">
-  <div class="feat-inner">
-
-    <div class="feat-plaque-top reveal">
-      <div class="feat-label-block">
-        <div class="feat-exhibit-num">Featured Installation — Exhibit 003</div>
-        <h2 class="feat-title">Interactive <em>Physics</em> Playground</h2>
-        <div class="feat-meta">Matter.js · Web Audio API · Canvas 2D · Gamification</div>
-      </div>
-      <div class="feat-cta-block">
-        <div class="feat-cta-note">Live &amp; Playable</div>
-        <a href="six-percent-playground.html" target="_blank" class="btn-pri">Open Exhibit →</a>
-      </div>
-    </div>
-
-    <a href="six-percent-playground.html" target="_blank" class="feat-canvas reveal">
-      <div class="feat-canvas-num">003</div>
-      <div class="feat-canvas-glow"></div>
-      <div class="feat-canvas-label">
-        <div class="feat-canvas-title">SIX PERCENT STUDIO · Physics Engine</div>
-        <div class="feat-canvas-sub">
-          Real-time physics. Synthesized audio on collision. Score mechanics, combo multiplier, CHAOS MODE. The question was: what if the demo was the product.
-        </div>
-        <span class="feat-enter">
-          <span>▶</span>
-          <span>Launch The Playground</span>
-        </span>
-      </div>
-    </a>
-
-    <div class="feat-bottom reveal">
-      <div class="feat-tag">Real-time Physics Simulation</div>
-      <div class="feat-tag">Synthesized Web Audio</div>
-      <div class="feat-tag">Score &amp; Combo System</div>
-      <div class="feat-tag">CHAOS MODE Unlock</div>
-      <div class="feat-tag">Zero-Gravity Toggle</div>
-    </div>
-
-  </div>
-</section>
-
-
 <!-- ── THE GALLERY ────────────────────────── -->
-<section id="portfolio">
+<section id="gallery">
   <div class="section-inner">
     <div class="section-label reveal">The Gallery</div>
     <h2 class="section-title reveal">The 6% in action.</h2>
 
     <div class="gallery-grid">
+
+      <!-- Featured — Exhibit 003 -->
+      <a href="six-percent-playground.html" target="_blank" class="exhibit-card live feat reveal">
+        <div class="exhibit-art">
+          <div class="exhibit-art-num">003</div>
+          <div class="exhibit-art-icon">⚛</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
+        </div>
+        <div class="exhibit-plaque">
+          <div class="exhibit-plaque-num">Featured Installation — Treatment 003 · Interactive</div>
+          <div class="exhibit-plaque-title">Interactive <span style="color:var(--purple-hi);">Physics</span> Playground</div>
+          <div class="exhibit-plaque-medium">Matter.js · Web Audio API · Canvas 2D · Gamification</div>
+          <div class="exhibit-plaque-desc">
+            Real-time physics. Synthesized audio on collision. Score mechanics, combo multiplier, CHAOS MODE. The question was: what if the demo was the product.
+          </div>
+          <div class="exhibit-before-after">
+            <span class="ex-before">Static Demo Page</span>
+            <span class="ex-arrow">→</span>
+            <span class="ex-after">Playable Product Experience</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// Signature Interactions</span>
+            <span class="ex-op-tag">// Operational Beauty</span>
+            <span class="ex-op-tag">// Live &amp; Playable</span>
+          </div>
+        </div>
+        <div class="exhibit-floor"></div>
+      </a>
 
       <!-- Treatment 002 -->
       <a href="oak-and-ivy-demo.html" target="_blank" class="exhibit-card live reveal">
@@ -1567,13 +1578,19 @@ body.layout-h #page-wrapper > div::after {
         <div class="exhibit-floor"></div>
       </a>
 
-      <!-- Treatment 005 - coming soon -->
-      <div class="exhibit-card soon reveal">
+      <!-- Treatment 005 — Error State -->
+      <div class="exhibit-card err reveal">
         <div class="exhibit-art">
           <div class="exhibit-art-num">005</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">▲</div>
-          <div class="exhibit-soon-badge">[ IN TREATMENT ]</div>
+          <div class="err-noise">0xDEAD_OBJECT · null · undefined
+ERR :: load failed at 0x3f2a
+STDERR: identity_system not found
+STATUS: SUSPENDED · awaiting_input
+██▓▓░░ 0% ················· 0%
+seg_fault: unexpected_taste @ line 47
+// treatment :: [ COMPILING ]
+// human_override: ACTIVE</div>
+          <div class="err-badge">ERR_LOADING</div>
         </div>
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Treatment 005 · AI Platforms</div>
@@ -1585,7 +1602,7 @@ body.layout-h #page-wrapper > div::after {
           <div class="exhibit-before-after">
             <span class="ex-before">Generic AI Startup</span>
             <span class="ex-arrow">→</span>
-            <span class="ex-after">Name-Brand Platform</span>
+            <span class="ex-after">[ STATUS: UNDEFINED ]</span>
           </div>
           <div class="exhibit-op-tags">
             <span class="ex-op-tag">// All Six Applied</span>
@@ -1595,55 +1612,106 @@ body.layout-h #page-wrapper > div::after {
       </div>
 
     </div>
+
+    <!-- Client strip — inline at gallery close -->
+    <div class="gallery-clients reveal">
+      <div class="clients-label">// finishes work built by</div>
+      <div class="client-types">
+        <div class="client-type">Indie Hackers</div>
+        <div class="client-type">Founders</div>
+        <div class="client-type">Product Teams</div>
+        <div class="client-type">AI Builders</div>
+        <div class="client-type">Agencies</div>
+        <div class="client-type">Creators</div>
+        <div class="client-type">Startups</div>
+        <div class="client-type">Anyone Shipping</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
 
-<!-- ── CLIENT STRIP ───────────────────────── -->
-<div id="clients" class="reveal">
-  <div class="clients-label">We finish things built by</div>
-  <div class="client-types">
-    <div class="client-type">Indie Hackers</div>
-    <div class="client-type">Founders</div>
-    <div class="client-type">Product Teams</div>
-    <div class="client-type">AI Builders</div>
-    <div class="client-type">Agencies</div>
-    <div class="client-type">Creators</div>
-    <div class="client-type">Startups</div>
-    <div class="client-type">Anyone Shipping</div>
-  </div>
-</div>
+<!-- ── METHOD ──────────────────────────────── -->
+<section id="method">
+  <div class="method-inner">
+    <div class="section-label reveal">Method</div>
+    <h2 class="section-title reveal">System logic.<br><span style="color:var(--yellow);">Applied with taste.</span></h2>
 
-
-<!-- ── PHILOSOPHY ─────────────────────────── -->
-<section id="philosophy">
-  <div class="phil-grid">
-
-    <div class="reveal-left">
-      <div class="op-list-label">// The Operating Logic</div>
-      <div class="op-list">
-        <div class="op-list-item"><span class="op-n">01</span> Recognizable Base</div>
-        <div class="op-list-item"><span class="op-n">02</span> Visible Edit</div>
-        <div class="op-list-item"><span class="op-n">03</span> Literal Label</div>
-        <div class="op-list-item"><span class="op-n">04</span> One Interruption</div>
-        <div class="op-list-item"><span class="op-n">05</span> One Hard Graphic</div>
-        <div class="op-list-item"><span class="op-n">06</span> Intentional Incompletion</div>
+    <div class="method-intro">
+      <!-- Operating Logic list -->
+      <div class="reveal-left">
+        <div class="op-list-label">// The Operating Logic</div>
+        <div class="op-list">
+          <div class="op-list-item"><span class="op-n">01</span> Recognizable Base</div>
+          <div class="op-list-item"><span class="op-n">02</span> Visible Edit</div>
+          <div class="op-list-item"><span class="op-n">03</span> Literal Label</div>
+          <div class="op-list-item"><span class="op-n">04</span> One Interruption</div>
+          <div class="op-list-item"><span class="op-n">05</span> One Hard Graphic</div>
+          <div class="op-list-item"><span class="op-n">06</span> Intentional Incompletion</div>
+        </div>
+      </div>
+      <!-- Philosophy copy -->
+      <div class="method-copy reveal-right">
+        <h2>I built systems before I designed them.</h2>
+        <p>CS degree. Master's in computer graphics technology. The work that felt alive was always the work where decisions were still visible — the edit legible, the structure exposed.</p>
+        <p>The vocabulary I use comes from that background — version control, system states, annotation syntax, diff marks. Not borrowed from anywhere else. When I apply it to what AI builds, the result is something that feels authored. Not just assembled.</p>
+        <p class="hi">We don't compete with the tools. We finish their work.</p>
       </div>
     </div>
 
-    <div class="phil-copy reveal-right">
-      <div class="section-label" style="margin-bottom:18px;">The Manifesto</div>
-      <h2>System logic.<br><em>Applied with taste.</em></h2>
-      <p>I built systems before I designed them. CS degree. Master's in computer graphics technology. The work that felt alive was always the work where decisions were still visible — the edit legible, the structure exposed.</p>
-      <p>The vocabulary I use comes from that background — version control, system states, annotation syntax, diff marks. Not borrowed from anywhere else. When I apply it to what AI builds, the result is something that feels authored. Not just assembled.</p>
-      <p style="color:var(--purple-hi);font-weight:600;">We don't compete with the tools. We finish their work.</p>
-      <div class="phil-names" style="margin-top:32px;">
-        <div class="phil-name-tag">The Ear</div>
-        <div class="phil-name-tag">The Edit</div>
-        <div class="phil-name-tag">The Rigor</div>
-      </div>
-    </div>
+    <!-- Disciplines grid -->
+    <div class="sectors-grid">
 
+      <div class="sector-card reveal">
+        <span class="op-tag">// Literal Label</span>
+        <div class="sector-num">01 —</div>
+        <div class="sector-name">Brand Voice</div>
+        <div class="sector-hook">Your AI wrote the copy. Functional. Sounds like every other AI. We replace "Streamline your workflow" with something that sounds like a person meant it.</div>
+        <div class="sector-example">Tone · Copy · Personality</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="op-tag">// One Hard Graphic</span>
+        <div class="sector-num">02 —</div>
+        <div class="sector-name">Signature Interactions</div>
+        <div class="sector-hook">One motion that gives the whole product momentum. The hover state nobody asked for but everyone screenshots. Objects that feel like they're still in motion.</div>
+        <div class="sector-example">Motion · Microinteractions · Delight</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="op-tag">// Visible Edit</span>
+        <div class="sector-num">03 —</div>
+        <div class="sector-name">Taste Editing</div>
+        <div class="sector-hook">Find the three things making it generic. Remove them. Leave the seam showing — so the edit is legible. The gap between before and after is the work.</div>
+        <div class="sector-example">Curation · Reduction · The Edit</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="op-tag">// Recognizable Base</span>
+        <div class="sector-num">04 —</div>
+        <div class="sector-name">Identity Systems</div>
+        <div class="sector-hook">We don't rebuild. We edit what's already there. The base stays recognizable — the audience holds before while they see after. That gap is where the voltage lives.</div>
+        <div class="sector-example">Typography · Color · Motion Language</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="op-tag">// Intentional Incompletion</span>
+        <div class="sector-num">05 —</div>
+        <div class="sector-name">Finishing Work</div>
+        <div class="sector-hook">You shipped v1. It works. We leave it 94% finished on purpose. Not sloppy — suspended. The object still in motion is the one people remember.</div>
+        <div class="sector-example">Polish · QA · The Last 6%</div>
+      </div>
+
+      <div class="sector-card reveal">
+        <span class="op-tag">// One Interruption</span>
+        <div class="sector-num">06 —</div>
+        <div class="sector-name">The Treatment</div>
+        <div class="sector-hook">One documented before/after applied to your specific category. Proof that a hand touched the thing. See the Gallery.</div>
+        <div class="sector-example">See: The Gallery ↑</div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -1671,6 +1739,7 @@ body.layout-h #page-wrapper > div::after {
         <div class="step-n">03</div>
         <div class="step-title">The Diff Is The Deliverable</div>
         <div class="step-body">Same object. Every structural decision shifted just enough. The diff is the deliverable — the before/after tells itself. You'll know we were there. So will everyone else.</div>
+        <span class="step-trace">// trace_id: 0x3f2a · delta: +6% · status: COMPLETE</span>
       </div>
     </div>
   </div>
@@ -1694,12 +1763,15 @@ body.layout-h #page-wrapper > div::after {
 <footer>
   <div class="footer-logo">SIX PERCENT™</div>
   <div class="footer-links">
-    <a href="#sectors">Disciplines</a>
-    <a href="#portfolio">Gallery</a>
-    <a href="#philosophy">Manifesto</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#method">Method</a>
+    <a href="#process">Process</a>
     <a href="#cta">Contact</a>
   </div>
-  <div class="footer-copy">© 2026 SIX PERCENT STUDIO · CHARLOTTE, NC <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
+  <div>
+    <div class="footer-copy">© 2026 SIX PERCENT STUDIO · CHARLOTTE, NC <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
+    <div class="sys-status">// BUILD STATUS: SUSPENDED · 94% ·· HUMAN OVERRIDE: ACTIVE</div>
+  </div>
 </footer>
 
 </div><!-- end #page-wrapper -->
