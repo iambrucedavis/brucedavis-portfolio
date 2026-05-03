@@ -23,6 +23,95 @@
   --text-muted: #33284d;
 }
 
+/* ─── THEMES ─────────────────────────────── */
+
+/* Palette 02 — Chicago */
+[data-theme="chicago"] {
+  --bg:         #0a0a0a;
+  --surface:    #141414;
+  --surface2:   #1c1010;
+  --border:     rgba(200,16,46,.12);
+  --border-hi:  rgba(200,16,46,.4);
+  --purple:     #C8102E;
+  --purple-hi:  #e8254a;
+  --purple-dk:  #9e0c23;
+  --yellow:     #C4935A;
+  --text:       #EDE8D9;
+  --text-dim:   #a8a090;
+  --text-muted: #4a4038;
+}
+
+/* Palette 01 — Off-White Core */
+[data-theme="off-white"] {
+  --bg:         #F0EAD6;
+  --surface:    #E6DFC8;
+  --surface2:   #DDD5BA;
+  --border:     rgba(17,17,17,.1);
+  --border-hi:  rgba(17,17,17,.32);
+  --purple:     #111111;
+  --purple-hi:  #333333;
+  --purple-dk:  #000000;
+  --yellow:     #E8601C;
+  --text:       #111111;
+  --text-dim:   #555550;
+  --text-muted: #999880;
+}
+
+/* Palette 03 — Field / Olive */
+[data-theme="field"] {
+  --bg:         #141410;
+  --surface:    #1e1e18;
+  --surface2:   #282820;
+  --border:     rgba(45,90,61,.2);
+  --border-hi:  rgba(45,90,61,.5);
+  --purple:     #2D5A3D;
+  --purple-hi:  #3d7a52;
+  --purple-dk:  #1f3f2a;
+  --yellow:     #E8601C;
+  --text:       #C8BEA0;
+  --text-dim:   #8a8060;
+  --text-muted: #4a4430;
+}
+
+/* Palette 04 — Ice / Technical */
+[data-theme="ice"] {
+  --bg:         #F5F5F0;
+  --surface:    #EAEAE5;
+  --surface2:   #E0E0DA;
+  --border:     rgba(10,10,10,.1);
+  --border-hi:  rgba(10,10,10,.3);
+  --purple:     #0a0a0a;
+  --purple-hi:  #333333;
+  --purple-dk:  #000000;
+  --yellow:     #5B9BD5;
+  --text:       #0a0a0a;
+  --text-dim:   #555558;
+  --text-muted: #b0b0b8;
+}
+
+/* Palette 05 — Dark Signal */
+[data-theme="dark-signal"] {
+  --bg:         #0f0f0f;
+  --surface:    #181818;
+  --surface2:   #202020;
+  --border:     rgba(232,96,28,.1);
+  --border-hi:  rgba(232,96,28,.32);
+  --purple:     #E8601C;
+  --purple-hi:  #ff7a3a;
+  --purple-dk:  #c44e14;
+  --yellow:     #C4935A;
+  --text:       #d4cec0;
+  --text-dim:   #8a8478;
+  --text-muted: #4a4440;
+}
+
+/* ─── THEME TRANSITIONS ──────────────────── */
+html { transition: background .35s, color .35s; }
+body, .exhibit-card, .sector-card, #nav, footer,
+.section, #hero, #cta {
+  transition: background .35s, border-color .35s, color .35s;
+}
+
 /* ─── RESET ──────────────────────────────── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -861,6 +950,65 @@ footer{
   .feat-cta-block{align-items:flex-start;}
 }
 
+/* ─── THEME SWITCHER ─────────────────────── */
+#theme-switcher {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.theme-switcher-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .18em;
+  color: var(--text-dim);
+  opacity: .5;
+  user-select: none;
+}
+.theme-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.theme-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--dot-color);
+  border: 1px solid rgba(255,255,255,.08);
+  cursor: none;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  position: relative;
+  padding: 0;
+}
+.theme-dot::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--dot-signal);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.theme-dot:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px var(--dot-color);
+}
+.theme-dot-active {
+  border-color: var(--dot-color);
+  box-shadow: 0 0 0 2px var(--dot-color);
+}
+.theme-dot-active::after {
+  opacity: 1;
+}
+@media(max-width:600px){
+  #theme-switcher { bottom: 20px; right: 20px; }
+}
+
 </style>
 </head>
 <body>
@@ -1389,6 +1537,60 @@ if (window.innerWidth < 600) {
     el.style.opacity = '1';
   });
 }
+
+/* ─── THEME SWITCHER ────────────────────────── */
+const THEMES = [
+  { id: 'studio',      label: 'Studio',         dot: '#8B5CF6', signal: '#E8FF00' },
+  { id: 'chicago',     label: 'Chicago',         dot: '#C8102E', signal: '#C4935A' },
+  { id: 'off-white',   label: 'Off-White Core',  dot: '#E8601C', signal: '#F0EAD6' },
+  { id: 'field',       label: 'Field / Olive',   dot: '#2D5A3D', signal: '#E8601C' },
+  { id: 'ice',         label: 'Ice / Technical', dot: '#5B9BD5', signal: '#F5F5F0' },
+  { id: 'dark-signal', label: 'Dark Signal',     dot: '#E8601C', signal: '#C4935A' },
+];
+
+function applyTheme(id) {
+  if (id === 'studio') {
+    document.documentElement.removeAttribute('data-theme');
+  } else {
+    document.documentElement.setAttribute('data-theme', id);
+  }
+  document.querySelectorAll('.theme-dot').forEach(btn => {
+    const active = btn.dataset.themeId === id;
+    btn.classList.toggle('theme-dot-active', active);
+    btn.setAttribute('aria-pressed', active);
+  });
+  try { localStorage.setItem('6pct-theme', id); } catch(e) {}
+}
+
+// Build switcher HTML
+const switcher = document.createElement('div');
+switcher.id = 'theme-switcher';
+switcher.innerHTML = `
+  <div class="theme-switcher-label">// PALETTE</div>
+  <div class="theme-dots">
+    ${THEMES.map(t => `
+      <button
+        class="theme-dot"
+        data-theme-id="${t.id}"
+        title="${t.label}"
+        aria-label="Switch to ${t.label} palette"
+        aria-pressed="false"
+        style="--dot-color:${t.dot};--dot-signal:${t.signal};"
+      ></button>
+    `).join('')}
+  </div>
+`;
+document.body.appendChild(switcher);
+
+document.querySelectorAll('.theme-dot').forEach(btn => {
+  btn.addEventListener('click', () => applyTheme(btn.dataset.themeId));
+  btn.addEventListener('mouseenter', () => cur.classList.add('big'));
+  btn.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+// Restore saved theme
+const saved = (() => { try { return localStorage.getItem('6pct-theme'); } catch(e) { return null; } })();
+applyTheme(saved || 'studio');
 </script>
 </body>
 </html>
