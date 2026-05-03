@@ -105,6 +105,64 @@
   --text-muted: #4a4440;
 }
 
+/* Palette 06 — AM97 Serena */
+[data-theme="am97-serena"] {
+  --bg:         #111111;
+  --surface:    #1a1a1a;
+  --surface2:   #222222;
+  --border:     rgba(245,194,0,.12);
+  --border-hi:  rgba(245,194,0,.42);
+  --purple:     #F5C200;
+  --purple-hi:  #FFD84A;
+  --purple-dk:  #C4A000;
+  --yellow:     #E8601C;
+  --text:       #F0EAD6;
+  --text-dim:   #b0a890;
+  --text-muted: #5a5040;
+}
+
+/* Palette 07 — MoMa */
+[data-theme="moma"] {
+  --bg:         #F5F5F0;
+  --surface:    #EAEAE5;
+  --surface2:   #E0E0DA;
+  --border:     rgba(17,17,17,.1);
+  --border-hi:  rgba(227,30,36,.38);
+  --purple:     #E31E24;
+  --purple-hi:  #ff3a40;
+  --purple-dk:  #B81820;
+  --yellow:     #C4935A;
+  --text:       #111111;
+  --text-dim:   #444440;
+  --text-muted: #888878;
+}
+
+/* Palette 08 — VaporMax */
+[data-theme="vapormax"] {
+  --bg:         #0a0a14;
+  --surface:    #111122;
+  --surface2:   #181830;
+  --border:     rgba(74,144,217,.12);
+  --border-hi:  rgba(74,144,217,.42);
+  --purple:     #4A90D9;
+  --purple-hi:  #6aA8E8;
+  --purple-dk:  #2E70B5;
+  --yellow:     #E8601C;
+  --text:       #d4e4f5;
+  --text-dim:   #8a9ab0;
+  --text-muted: #3a4858;
+}
+
+/* ─── A11Y — COLORBLIND OVERRIDE ─────────── */
+html[data-a11y="colorblind"] {
+  --purple:     #0066CC;
+  --purple-hi:  #3388EE;
+  --purple-dk:  #004499;
+  --yellow:     #FFD700;
+  --border-hi:  rgba(0,102,204,.5);
+  --border:     rgba(0,102,204,.16);
+}
+
 /* ─── THEME TRANSITIONS ──────────────────── */
 html { transition: background .35s, color .35s; }
 body, .exhibit-card, .sector-card, #nav, footer,
@@ -1008,6 +1066,30 @@ footer{
 @media(max-width:600px){
   #theme-switcher { bottom: 20px; right: 20px; }
 }
+#a11y-toggle {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 4px 9px;
+  cursor: none;
+  transition: color .2s, border-color .2s, opacity .2s;
+  opacity: .45;
+  align-self: flex-end;
+}
+#a11y-toggle:hover {
+  opacity: 1;
+  color: var(--purple-hi);
+  border-color: var(--border-hi);
+}
+html[data-a11y="colorblind"] #a11y-toggle {
+  opacity: 1;
+  color: #FFD700;
+  border-color: rgba(255,215,0,.45);
+}
 
 </style>
 </head>
@@ -1398,9 +1480,9 @@ footer{
 
     <div class="phil-copy reveal-right">
       <div class="section-label" style="margin-bottom:18px;">The Manifesto</div>
-      <h2>Not a rebuild.<br><em>An edit.</em></h2>
-      <p>AI built the thing. The decisions inside it — the tone, the type, the motion — were made on default. Correct. Bland. Generic by accident.</p>
-      <p>Six Percent applies pressure to those decisions. The base stays recognizable — the audience needs to hold the before in their head while they see the after. That gap is where the work lives.</p>
+      <h2>System logic.<br><em>Applied with taste.</em></h2>
+      <p>I built things before I designed them. CS degree. Master's in computer graphics technology. The work that felt alive was always the work where the decisions were still visible — the edit legible, the structure exposed.</p>
+      <p>Six Percent is that instinct applied to what AI builds. Not fashion theory. Computational behavior as design material. System logic with a human hand on it.</p>
       <p style="color:var(--purple-hi);font-weight:600;">We don't compete with the tools. We finish their work.</p>
       <div class="phil-names" style="margin-top:32px;">
         <div class="phil-name-tag">The Ear</div>
@@ -1546,6 +1628,9 @@ const THEMES = [
   { id: 'field',       label: 'Field / Olive',   dot: '#2D5A3D', signal: '#E8601C' },
   { id: 'ice',         label: 'Ice / Technical', dot: '#5B9BD5', signal: '#F5F5F0' },
   { id: 'dark-signal', label: 'Dark Signal',     dot: '#E8601C', signal: '#C4935A' },
+  { id: 'am97-serena', label: 'AM97 Serena',     dot: '#F5C200', signal: '#E8601C' },
+  { id: 'moma',        label: 'MoMa',            dot: '#E31E24', signal: '#C4935A' },
+  { id: 'vapormax',    label: 'VaporMax',        dot: '#4A90D9', signal: '#E8601C' },
 ];
 
 function applyTheme(id) {
@@ -1579,6 +1664,7 @@ switcher.innerHTML = `
       ></button>
     `).join('')}
   </div>
+  <button id="a11y-toggle" title="Colorblind accessibility mode" aria-label="Toggle colorblind accessibility mode" aria-pressed="false">A11Y</button>
 `;
 document.body.appendChild(switcher);
 
@@ -1588,9 +1674,31 @@ document.querySelectorAll('.theme-dot').forEach(btn => {
   btn.addEventListener('mouseleave', () => cur.classList.remove('big'));
 });
 
+// A11Y toggle
+const a11yBtn = document.getElementById('a11y-toggle');
+function applyA11y(active) {
+  if (active) {
+    document.documentElement.setAttribute('data-a11y', 'colorblind');
+    a11yBtn.setAttribute('aria-pressed', 'true');
+  } else {
+    document.documentElement.removeAttribute('data-a11y');
+    a11yBtn.setAttribute('aria-pressed', 'false');
+  }
+  try { localStorage.setItem('6pct-a11y', active ? 'colorblind' : ''); } catch(e) {}
+}
+a11yBtn.addEventListener('click', () => {
+  applyA11y(document.documentElement.getAttribute('data-a11y') !== 'colorblind');
+});
+a11yBtn.addEventListener('mouseenter', () => cur.classList.add('big'));
+a11yBtn.addEventListener('mouseleave', () => cur.classList.remove('big'));
+
 // Restore saved theme
 const saved = (() => { try { return localStorage.getItem('6pct-theme'); } catch(e) { return null; } })();
 applyTheme(saved || 'studio');
+
+// Restore saved a11y
+const savedA11y = (() => { try { return localStorage.getItem('6pct-a11y'); } catch(e) { return null; } })();
+if (savedA11y === 'colorblind') applyA11y(true);
 </script>
 </body>
 </html>
