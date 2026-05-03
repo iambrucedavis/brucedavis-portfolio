@@ -356,12 +356,9 @@ body *{cursor:none;}
 .nav-cta:hover{color:#fff;border-bottom-color:var(--purple-hi);}
 
 /* ─── REVEAL ─────────────────────────────── */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .8s ease,transform .8s ease;}
-.reveal-left.visible{opacity:1;transform:translateX(0);}
-.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .8s ease,transform .8s ease;}
-.reveal-right.visible{opacity:1;transform:translateX(0);}
+/* No entry animation — content is visible immediately */
+.reveal,.reveal-left,.reveal-right { opacity: 1; }
+.reveal.visible,.reveal-left.visible,.reveal-right.visible { opacity: 1; }
 
 /* ─── HERO ───────────────────────────────── */
 #hero{
@@ -428,9 +425,8 @@ body *{cursor:none;}
   box-shadow:0 0 0 0 rgba(139,92,246,0);
 }
 .btn-pri:hover{
-  transform:translateY(-3px);
+  transform:translateY(-1px);
   background:var(--purple);
-  box-shadow:0 12px 40px rgba(139,92,246,.4);
 }
 .btn-ghost{
   padding:18px 44px;
@@ -549,11 +545,7 @@ body *{cursor:none;}
 .sector-hook{
   font-size:13px;color:var(--text-muted);line-height:1.75;
   margin-bottom:14px;
-  max-height:0;overflow:hidden;
-  transition:max-height .5s ease,opacity .4s;
-  opacity:0;
 }
-.sector-card:hover .sector-hook{max-height:130px;opacity:1;}
 .sector-example{
   font-size:10px;font-weight:700;
   letter-spacing:.14em;text-transform:uppercase;
@@ -653,8 +645,7 @@ body *{cursor:none;}
 }
 .feat-enter:hover{
   background:var(--purple);
-  box-shadow:0 0 40px rgba(139,92,246,.5);
-  transform:translateY(-2px);
+  transform:translateY(-1px);
 }
 .feat-bottom{
   margin-top:28px;
@@ -877,10 +868,10 @@ body *{cursor:none;}
   font-size:48px;font-weight:700;
   color:var(--text-muted);line-height:1;
   margin-bottom:24px;
-  opacity:.15;
-  transition:opacity .3s,color .3s;
+  opacity:.35;
+  transition:color .2s;
 }
-.process-step:hover .step-n{opacity:1;color:var(--purple);}
+.process-step:hover .step-n{color:var(--purple);opacity:1;}
 .step-title{
   font-size:19px;font-weight:700;
   color:var(--text);margin-bottom:12px;
@@ -977,9 +968,8 @@ body *{cursor:none;}
   box-shadow:0 0 0 0 rgba(139,92,246,0);
 }
 .cta-btn:hover{
-  transform:translateY(-4px);
+  transform:translateY(-1px);
   background:var(--purple);
-  box-shadow:0 16px 60px rgba(139,92,246,.45);
 }
 .cta-note{margin-top:24px;font-size:13px;color:var(--text-muted);letter-spacing:.04em;}
 .cta-email{
@@ -1193,6 +1183,59 @@ html[data-a11y="colorblind"] #a11y-toggle {
   border-color: rgba(255,215,0,.45);
 }
 
+/* ─── LAYOUT TOGGLE ──────────────────────── */
+#layout-toggle {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: none;
+  opacity: .45;
+  transition: opacity .2s, color .2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#layout-toggle:hover { opacity: 1; color: var(--purple-hi); }
+#layout-toggle .lt-active { color: var(--yellow); opacity: 1; }
+
+/* ─── HORIZONTAL LAYOUT ──────────────────── */
+body.layout-h {
+  overflow: hidden;
+  height: 100vh;
+}
+body.layout-h #page-wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+body.layout-h #page-wrapper > section,
+body.layout-h #page-wrapper > div,
+body.layout-h #page-wrapper > footer {
+  flex: 0 0 100vw;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+}
+body.layout-h .marquee-wrap { display: none; }
+/* horizontal scroll indicator */
+body.layout-h #page-wrapper > section::after,
+body.layout-h #page-wrapper > div::after {
+  content: none;
+}
+
 </style>
 </head>
 <body>
@@ -1212,29 +1255,37 @@ html[data-a11y="colorblind"] #a11y-toggle {
     <li><a href="#philosophy">Manifesto</a></li>
     <li><a href="#cta">Contact</a></li>
   </ul>
-  <a href="#portfolio" class="nav-cta">Enter The Gallery</a>
+  <div style="display:flex;align-items:center;gap:24px;">
+    <button id="layout-toggle" title="Toggle scroll direction" aria-label="Toggle scroll direction">
+      <span class="lt-v">↕ V</span>
+      <span style="opacity:.3;">/</span>
+      <span class="lt-h">↔ H</span>
+    </button>
+    <a href="#portfolio" class="nav-cta">Enter The Gallery</a>
+  </div>
 </nav>
+
+<div id="page-wrapper">
 
 
 <!-- ── HERO ──────────────────────────────── -->
 <section id="hero">
   <div class="hero-inner">
 
-    <p class="hero-eyebrow reveal">AI-Built Finishing Studio <span class="version-stamp" style="margin-left:20px;">// build.2026.05</span></p>
+    <p class="hero-eyebrow reveal">Six Percent Studio <span class="version-stamp" style="margin-left:20px;">// build.2026.05</span></p>
 
     <h1 class="hero-headline reveal">
-      THE GREY<br>
-      AREA BETWEEN<br>
-      <span class="p">AI-BUILT</span><br>
-      AND <span class="y">NAME-BRAND.</span>
+      THE<br>
+      EDIT IS<br>
+      THE <span class="y">WORK.</span>
     </h1>
 
     <div class="hero-sub-row reveal">
       <p class="hero-sub">
-        Your AI built the thing. It works.<br>
-        It doesn't feel like anything yet.<br>
-        We edit the object — not the idea of it.<br>
-        <em>Visible logic. Human interruption.</em>
+        Not a rebuild. Not a redesign.<br>
+        I read AI-built objects like source code —<br>
+        find the load-bearing decisions, apply precision.<br>
+        <em>6% changed. Structure still visible.</em>
       </p>
       <div class="hero-actions">
         <a href="#portfolio" class="btn-pri">Enter The Gallery →</a>
@@ -1297,13 +1348,13 @@ html[data-a11y="colorblind"] #a11y-toggle {
         <span class="annot" style="margin-top:20px;">// same object. different read.</span>
       </div>
       <div class="reveal-right">
-        <span class="annot" style="margin-top:0;">// the flood</span>
+        <span class="annot" style="margin-top:0;">// the condition</span>
         <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
-          AI built the site. The app. The copy. All of it, fast, on default. Now it looks the same. The AI look is already recognizable. That's the problem.
+          AI built the site. The app. The copy. All of it, fast, on default. Every tool pulling from the same training data. The output converges. That's not an opinion — that's how the system works.
         </p>
-        <span class="annot">// the difference</span>
+        <span class="annot">// the read</span>
         <p style="font-size:clamp(16px,1.8vw,20px);color:var(--text-dim);line-height:1.85;margin-bottom:20px;">
-          We don't sell AI development. A thousand people do that. We sell the difference between K-Mart and Rodeo Drive. The 6% that turns it into a name-brand thing.
+          I have a CS degree and a master's in computer graphics technology. When I look at AI-built work, I read it the same way I read code that runs but hasn't been refactored. It works. The decisions are still inside it, unedited.
         </p>
         <span class="annot">// six percent is</span>
         <p style="font-size:clamp(16px,1.8vw,20px);color:var(--purple-hi);line-height:1.85;font-weight:600;">
@@ -1584,7 +1635,7 @@ html[data-a11y="colorblind"] #a11y-toggle {
       <div class="section-label" style="margin-bottom:18px;">The Manifesto</div>
       <h2>System logic.<br><em>Applied with taste.</em></h2>
       <p>I built systems before I designed them. CS degree. Master's in computer graphics technology. The work that felt alive was always the work where decisions were still visible — the edit legible, the structure exposed.</p>
-      <p>Six Percent is that instinct applied to what AI builds. Not fashion. Not surface aesthetics. Computational behavior as design material. System logic with a human hand on it.</p>
+      <p>The vocabulary I use comes from that background — version control, system states, annotation syntax, diff marks. Not borrowed from anywhere else. When I apply it to what AI builds, the result is something that feels authored. Not just assembled.</p>
       <p style="color:var(--purple-hi);font-weight:600;">We don't compete with the tools. We finish their work.</p>
       <div class="phil-names" style="margin-top:32px;">
         <div class="phil-name-tag">The Ear</div>
@@ -1606,20 +1657,20 @@ html[data-a11y="colorblind"] #a11y-toggle {
       <div class="process-step reveal">
         <span class="op-tag">// bring the object</span>
         <div class="step-n">01</div>
-        <div class="step-title">Show Us The Thing</div>
-        <div class="step-body">No decks. No briefs. Bring the website, the app, the dashboard — whatever you built. We find the load-bearing decisions. The 5 or 6 things that make it what it is.</div>
+        <div class="step-title">Show Me The Object</div>
+        <div class="step-body">No decks. No briefs. Bring the object — site, app, dashboard, whatever. I read it like source code. Find the 5 or 6 load-bearing decisions that make it what it is.</div>
       </div>
       <div class="process-step reveal">
         <span class="op-tag">// find the bones</span>
         <div class="step-n">02</div>
         <div class="step-title">We Apply The 6%</div>
-        <div class="step-body">We identify what's foundational. Apply 6% to each element — simultaneously, with taste. No single change is dramatic. But every bone shifts.</div>
+        <div class="step-body">I identify what's structural. Apply the edit — simultaneously, with precision. No single change is dramatic on its own. The sum of them is. Every bone shifts.</div>
       </div>
       <div class="process-step reveal">
         <span class="op-tag">// trace of authorship</span>
         <div class="step-n">03</div>
-        <div class="step-title">The Before/After Tells Itself</div>
-        <div class="step-body">Same product. Every foundational element shifted just enough. The before/after tells itself. You'll know we were there. So will everyone else.</div>
+        <div class="step-title">The Diff Is The Deliverable</div>
+        <div class="step-body">Same object. Every structural decision shifted just enough. The diff is the deliverable — the before/after tells itself. You'll know we were there. So will everyone else.</div>
       </div>
     </div>
   </div>
@@ -1651,6 +1702,7 @@ html[data-a11y="colorblind"] #a11y-toggle {
   <div class="footer-copy">© 2026 SIX PERCENT STUDIO · CHARLOTTE, NC <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
 </footer>
 
+</div><!-- end #page-wrapper -->
 
 <script>
 /* ─── CURSOR ────────────────────────────────── */
@@ -1709,7 +1761,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const target = document.querySelector(a.getAttribute('href'));
     if (target) {
       e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (currentLayout === 'horizontal') {
+        target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   });
 });
@@ -1807,6 +1863,40 @@ applyTheme(saved || 'aj1-chi');
 // Restore saved a11y
 const savedA11y = (() => { try { return localStorage.getItem('6pct-a11y'); } catch(e) { return null; } })();
 if (savedA11y === 'colorblind') applyA11y(true);
+
+/* ─── LAYOUT TOGGLE ─────────────────────────── */
+const layoutBtn = document.getElementById('layout-toggle');
+const pageWrapper = document.getElementById('page-wrapper');
+let currentLayout = 'vertical';
+
+function applyLayout(mode) {
+  currentLayout = mode;
+  if (mode === 'horizontal') {
+    document.body.classList.add('layout-h');
+    layoutBtn.querySelector('.lt-h').classList.add('lt-active');
+    layoutBtn.querySelector('.lt-v').classList.remove('lt-active');
+  } else {
+    document.body.classList.remove('layout-h');
+    layoutBtn.querySelector('.lt-v').classList.add('lt-active');
+    layoutBtn.querySelector('.lt-h').classList.remove('lt-active');
+  }
+  try { localStorage.setItem('6pct-layout', mode); } catch(e) {}
+}
+
+layoutBtn.addEventListener('click', () => {
+  applyLayout(currentLayout === 'vertical' ? 'horizontal' : 'vertical');
+});
+
+// Arrow key navigation in horizontal mode
+document.addEventListener('keydown', e => {
+  if (currentLayout !== 'horizontal' || !pageWrapper) return;
+  if (e.key === 'ArrowRight') pageWrapper.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+  if (e.key === 'ArrowLeft')  pageWrapper.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+});
+
+// Restore saved layout
+const savedLayout = (() => { try { return localStorage.getItem('6pct-layout'); } catch(e) { return null; } })();
+applyLayout(savedLayout === 'horizontal' ? 'horizontal' : 'vertical');
 </script>
 </body>
 </html>
