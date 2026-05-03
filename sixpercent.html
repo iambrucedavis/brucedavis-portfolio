@@ -153,6 +153,108 @@
   --text-muted: #3a4858;
 }
 
+/* ─── AJ1 CHICAGO — Flat ─────────────────── */
+/* Palette: Chicago Red + Off-White + Black + Orange zip-tie */
+[data-theme="aj1-chi"] {
+  --bg:         #0D0A0A;
+  --surface:    #1A1010;
+  --surface2:   #221515;
+  --border:     rgba(200,16,46,.12);
+  --border-hi:  rgba(200,16,46,.42);
+  --purple:     #C8102E;
+  --purple-hi:  #E82545;
+  --purple-dk:  #9E0C23;
+  --yellow:     #E8601C;
+  --text:       #F5F0E8;
+  --text-dim:   #B0A898;
+  --text-muted: #4A3830;
+}
+
+/* ─── AJ1 CHICAGO — Leather/Texture ──────── */
+/* Environment: inside red leather, aged cream rubber, suede grain */
+[data-theme="aj1-chi-tx"] {
+  --bg:         #1C0808;
+  --surface:    #2A0F0F;
+  --surface2:   #361515;
+  --border:     rgba(180,20,40,.18);
+  --border-hi:  rgba(220,30,55,.48);
+  --purple:     #D41830;
+  --purple-hi:  #E83045;
+  --purple-dk:  #9E0C23;
+  --yellow:     #C4935A;
+  --text:       #F0E8D4;
+  --text-dim:   #9A8070;
+  --text-muted: #3A2018;
+}
+
+/* ─── AJ1 UNC — Flat ─────────────────────── */
+/* Palette: Powder Blue + White leather + Red zip-tie + Cream midsole */
+[data-theme="aj1-unc"] {
+  --bg:         #080E1C;
+  --surface:    #0E1828;
+  --surface2:   #141E32;
+  --border:     rgba(67,149,211,.12);
+  --border-hi:  rgba(67,149,211,.42);
+  --purple:     #4395D3;
+  --purple-hi:  #5AAAE8;
+  --purple-dk:  #2872AA;
+  --yellow:     #E84830;
+  --text:       #EDE8E0;
+  --text-dim:   #8898B0;
+  --text-muted: #2A3848;
+}
+
+/* ─── AJ1 UNC — Leather/Texture ──────────── */
+/* Environment: deep inside powder blue leather, indigo grain, white canvas */
+[data-theme="aj1-unc-tx"] {
+  --bg:         #061422;
+  --surface:    #0C2038;
+  --surface2:   #12284A;
+  --border:     rgba(40,100,170,.18);
+  --border-hi:  rgba(65,140,205,.48);
+  --purple:     #3A82C4;
+  --purple-hi:  #5298D8;
+  --purple-dk:  #1C5A96;
+  --yellow:     #E84830;
+  --text:       #EEF4F8;
+  --text-dim:   #7898B8;
+  --text-muted: #1A3050;
+}
+
+/* ─── AJ1 CANARY — Flat ───────────────────── */
+/* Palette: Canary Yellow + White leather + Black tag + Orange-red accent */
+[data-theme="aj1-can"] {
+  --bg:         #111008;
+  --surface:    #1A1808;
+  --surface2:   #222010;
+  --border:     rgba(245,192,0,.12);
+  --border-hi:  rgba(245,192,0,.42);
+  --purple:     #F0BC00;
+  --purple-hi:  #FFD020;
+  --purple-dk:  #C09600;
+  --yellow:     #E85030;
+  --text:       #F5F0E0;
+  --text-dim:   #B0A878;
+  --text-muted: #484030;
+}
+
+/* ─── AJ1 CANARY — Wax/Texture ───────────── */
+/* Environment: yellow wax leather as canvas, black construction marks, natural gum */
+[data-theme="aj1-can-tx"] {
+  --bg:         #F0BC00;
+  --surface:    #E8B200;
+  --surface2:   #D8A400;
+  --border:     rgba(17,17,17,.12);
+  --border-hi:  rgba(17,17,17,.32);
+  --purple:     #111111;
+  --purple-hi:  #2A2A2A;
+  --purple-dk:  #000000;
+  --yellow:     #E85030;
+  --text:       #0D0D0D;
+  --text-dim:   #3A3020;
+  --text-muted: #6A5820;
+}
+
 /* ─── A11Y — COLORBLIND OVERRIDE ─────────── */
 html[data-a11y="colorblind"] {
   --purple:     #0066CC;
@@ -1622,15 +1724,21 @@ if (window.innerWidth < 600) {
 
 /* ─── THEME SWITCHER ────────────────────────── */
 const THEMES = [
-  { id: 'studio',      label: 'Studio',         dot: '#8B5CF6', signal: '#E8FF00' },
-  { id: 'chicago',     label: 'Chicago',         dot: '#C8102E', signal: '#C4935A' },
-  { id: 'off-white',   label: 'Off-White Core',  dot: '#E8601C', signal: '#F0EAD6' },
-  { id: 'field',       label: 'Field / Olive',   dot: '#2D5A3D', signal: '#E8601C' },
-  { id: 'ice',         label: 'Ice / Technical', dot: '#5B9BD5', signal: '#F5F5F0' },
-  { id: 'dark-signal', label: 'Dark Signal',     dot: '#E8601C', signal: '#C4935A' },
-  { id: 'am97-serena', label: 'AM97 Serena',     dot: '#F5C200', signal: '#E8601C' },
-  { id: 'moma',        label: 'MoMa',            dot: '#E31E24', signal: '#C4935A' },
-  { id: 'vapormax',    label: 'VaporMax',        dot: '#4A90D9', signal: '#E8601C' },
+  { id: 'studio',       label: 'Studio',              dot: '#8B5CF6', signal: '#E8FF00' },
+  { id: 'chicago',      label: 'Chicago',              dot: '#C8102E', signal: '#C4935A' },
+  { id: 'off-white',    label: 'Off-White Core',       dot: '#E8601C', signal: '#F0EAD6' },
+  { id: 'field',        label: 'Field / Olive',        dot: '#2D5A3D', signal: '#E8601C' },
+  { id: 'ice',          label: 'Ice / Technical',      dot: '#5B9BD5', signal: '#F5F5F0' },
+  { id: 'dark-signal',  label: 'Dark Signal',          dot: '#E8601C', signal: '#C4935A' },
+  { id: 'am97-serena',  label: 'AM97 Serena',          dot: '#F5C200', signal: '#E8601C' },
+  { id: 'moma',         label: 'MoMa',                 dot: '#E31E24', signal: '#C4935A' },
+  { id: 'vapormax',     label: 'VaporMax',             dot: '#4A90D9', signal: '#E8601C' },
+  { id: 'aj1-chi',      label: 'AJ1 Chicago',          dot: '#C8102E', signal: '#E8601C' },
+  { id: 'aj1-chi-tx',   label: 'Chicago // Leather',   dot: '#8E1020', signal: '#C4935A' },
+  { id: 'aj1-unc',      label: 'AJ1 UNC',              dot: '#4395D3', signal: '#E84830' },
+  { id: 'aj1-unc-tx',   label: 'UNC // Deep',          dot: '#1C5A96', signal: '#E84830' },
+  { id: 'aj1-can',      label: 'AJ1 Canary',           dot: '#F0BC00', signal: '#E85030' },
+  { id: 'aj1-can-tx',   label: 'Canary // Wax',        dot: '#C09000', signal: '#E85030' },
 ];
 
 function applyTheme(id) {
@@ -1694,7 +1802,7 @@ a11yBtn.addEventListener('mouseleave', () => cur.classList.remove('big'));
 
 // Restore saved theme
 const saved = (() => { try { return localStorage.getItem('6pct-theme'); } catch(e) { return null; } })();
-applyTheme(saved || 'studio');
+applyTheme(saved || 'aj1-chi');
 
 // Restore saved a11y
 const savedA11y = (() => { try { return localStorage.getItem('6pct-a11y'); } catch(e) { return null; } })();
