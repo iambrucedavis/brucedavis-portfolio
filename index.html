@@ -1237,6 +1237,198 @@ body.layout-h #page-wrapper > div::after {
   content: none;
 }
 
+/* ─── H-MODE EXHIBIT PANES ───────────────── */
+.h-exhibit-pane { display: none; }
+
+body.layout-h #gallery { display: none; }
+
+body.layout-h .h-exhibit-pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 60px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.h-pane-label {
+  display: none;
+  position: absolute;
+  top: 80px; left: 60px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: .5;
+}
+body.layout-h .h-pane-label { display: block; }
+
+body.layout-h .h-exhibit-pane .exhibit-card {
+  flex-direction: row;
+  width: min(1200px, 100%);
+  height: min(600px, 72vh);
+  border: 1px solid var(--border);
+}
+
+body.layout-h .h-exhibit-pane .exhibit-card:hover {
+  border-color: var(--border-hi);
+}
+
+body.layout-h .h-exhibit-pane .exhibit-art {
+  width: 360px;
+  flex-shrink: 0;
+  height: 100%;
+  border-bottom: none;
+  border-right: 1px solid var(--border);
+  transition: border-color .4s;
+}
+
+body.layout-h .h-exhibit-pane .exhibit-card:hover .exhibit-art {
+  border-right-color: var(--border-hi);
+}
+
+body.layout-h .h-exhibit-pane .exhibit-art-num {
+  font-size: clamp(120px, 14vw, 180px);
+}
+
+body.layout-h .h-exhibit-pane .exhibit-art-icon { font-size: 56px; }
+
+body.layout-h .h-exhibit-pane .exhibit-live-badge { opacity: 1; }
+
+body.layout-h .h-exhibit-pane .exhibit-plaque {
+  padding: 52px 60px;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+body.layout-h .h-exhibit-pane .exhibit-plaque-title {
+  font-size: clamp(24px, 2.8vw, 38px);
+  margin-bottom: 14px;
+}
+
+body.layout-h .h-exhibit-pane .exhibit-plaque-desc {
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+body.layout-h .h-exhibit-pane .exhibit-floor { display: none; }
+
+.h-pane-open-btn { display: none; }
+
+body.layout-h .h-pane-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 11px 18px;
+  text-decoration: none;
+  transition: background .2s, color .2s, border-color .2s;
+}
+
+body.layout-h .h-pane-open-btn:hover {
+  background: var(--surface);
+  color: var(--yellow);
+  border-color: var(--border-hi);
+}
+
+/* ─── H-MODE SECTION OVERRIDES ──────────── */
+body.layout-h #hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 100px 60px 60px;
+}
+
+body.layout-h #hero .hero-argument { display: none; }
+body.layout-h #hero .scroll-hint { display: none; }
+body.layout-h #hero .hero-bg-num { opacity: .02; }
+
+body.layout-h #hero .hero-inner {
+  max-width: 900px;
+  width: 100%;
+}
+
+body.layout-h #hero::after {
+  content: '← swipe →';
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: var(--text-muted);
+  opacity: .3;
+  pointer-events: none;
+}
+
+body.layout-h #method {
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+}
+
+body.layout-h #method .method-inner {
+  max-width: 1200px;
+  width: 100%;
+  padding: 80px;
+  margin: 0 auto;
+}
+
+body.layout-h #method .sectors-grid { display: none; }
+
+body.layout-h #process {
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+}
+
+body.layout-h #process .section-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+body.layout-h #cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.layout-h footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+}
+
+/* ─── H-MODE PANEL INDICATOR ─────────────── */
+#h-panel-indicator {
+  display: none;
+  position: fixed;
+  bottom: 28px;
+  right: 40px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: var(--text-muted);
+  opacity: .45;
+  z-index: 200;
+  pointer-events: none;
+  user-select: none;
+}
+body.layout-h #h-panel-indicator { display: block; }
+
 /* ─── GLITCH SYSTEM ──────────────────────── */
 @keyframes rgb-split{
   0%,88%,100%{text-shadow:none;transform:none;}
@@ -1629,6 +1821,146 @@ body.layout-h #page-wrapper > div::after {
 </section>
 
 
+<!-- ── H-MODE GALLERY PANES ─────────────────── -->
+
+<section class="h-exhibit-pane" id="h-pane-003">
+  <div class="h-pane-label">// The Gallery · 01 / 05</div>
+  <a href="six-percent-playground.html" target="_blank" class="exhibit-card live">
+    <div class="exhibit-art">
+      <div class="exhibit-art-num">003</div>
+      <div class="exhibit-art-icon">⚛</div>
+      <div class="exhibit-live-badge">[ ACTIVE ]</div>
+    </div>
+    <div class="exhibit-plaque">
+      <div class="exhibit-plaque-num">Featured Installation — Treatment 003 · Interactive</div>
+      <div class="exhibit-plaque-title">Interactive <span style="color:var(--purple-hi);">Physics</span> Playground</div>
+      <div class="exhibit-plaque-medium">Matter.js · Web Audio API · Canvas 2D · Gamification</div>
+      <div class="exhibit-plaque-desc">Real-time physics. Synthesized audio on collision. Score mechanics, combo multiplier, CHAOS MODE. The question was: what if the demo was the product.</div>
+      <div class="exhibit-before-after">
+        <span class="ex-before">Static Demo Page</span>
+        <span class="ex-arrow">→</span>
+        <span class="ex-after">Playable Product Experience</span>
+      </div>
+      <div class="exhibit-op-tags">
+        <span class="ex-op-tag">// Signature Interactions</span>
+        <span class="ex-op-tag">// Operational Beauty</span>
+        <span class="ex-op-tag">// Live &amp; Playable</span>
+      </div>
+      <span class="h-pane-open-btn">Open Treatment →</span>
+    </div>
+  </a>
+</section>
+
+<section class="h-exhibit-pane" id="h-pane-002">
+  <div class="h-pane-label">// The Gallery · 02 / 05</div>
+  <a href="oak-and-ivy-demo.html" target="_blank" class="exhibit-card live">
+    <div class="exhibit-art">
+      <div class="exhibit-art-num">002</div>
+      <div class="exhibit-art-icon">🍸</div>
+      <div class="exhibit-live-badge">[ ACTIVE ]</div>
+    </div>
+    <div class="exhibit-plaque">
+      <div class="exhibit-plaque-num">Treatment 002 · Restaurant &amp; Hospitality</div>
+      <div class="exhibit-plaque-title">When AI Built Your Restaurant</div>
+      <div class="exhibit-plaque-medium">Interactive Menu · Web · Tablet</div>
+      <div class="exhibit-plaque-desc">An AI-built menu site gets the 6%. Live happy hour countdown, cocktail quiz, animated specials board. The food is the same. The experience is the brand now.</div>
+      <div class="exhibit-before-after">
+        <span class="ex-before">AI-Generated Menu Site</span>
+        <span class="ex-arrow">→</span>
+        <span class="ex-after">Signature Brand Experience</span>
+      </div>
+      <div class="exhibit-op-tags">
+        <span class="ex-op-tag">// Literal Label</span>
+        <span class="ex-op-tag">// One Interruption</span>
+      </div>
+      <a href="oak-and-ivy-demo.html" target="_blank" class="h-pane-open-btn">Open Treatment →</a>
+    </div>
+  </a>
+</section>
+
+<section class="h-exhibit-pane" id="h-pane-001">
+  <div class="h-pane-label">// The Gallery · 03 / 05</div>
+  <a href="six-percent-demo.html" target="_blank" class="exhibit-card live">
+    <div class="exhibit-art">
+      <div class="exhibit-art-num">001</div>
+      <div class="exhibit-art-icon">✦</div>
+      <div class="exhibit-live-badge">[ ACTIVE ]</div>
+    </div>
+    <div class="exhibit-plaque">
+      <div class="exhibit-plaque-num">Treatment 001 · SaaS &amp; Startups</div>
+      <div class="exhibit-plaque-title">The Generic SaaS Treatment</div>
+      <div class="exhibit-plaque-medium">Before/After Toggle · Brand · Web</div>
+      <div class="exhibit-plaque-desc">One click. A generic ACME corporate site — the kind AI builds in seconds — becomes a full branded experience. The before/after that sells the whole concept.</div>
+      <div class="exhibit-before-after">
+        <span class="ex-before">AI-Built Generic SaaS</span>
+        <span class="ex-arrow">→</span>
+        <span class="ex-after">Name-Brand Experience</span>
+      </div>
+      <div class="exhibit-op-tags">
+        <span class="ex-op-tag">// Visible Edit</span>
+        <span class="ex-op-tag">// Recognizable Base</span>
+      </div>
+      <a href="six-percent-demo.html" target="_blank" class="h-pane-open-btn">Open Treatment →</a>
+    </div>
+  </a>
+</section>
+
+<section class="h-exhibit-pane" id="h-pane-004">
+  <div class="h-pane-label">// The Gallery · 04 / 05</div>
+  <a href="enterprise-dashboard-demo.html" target="_blank" class="exhibit-card live">
+    <div class="exhibit-art">
+      <div class="exhibit-art-num">004</div>
+      <div class="exhibit-art-icon">▣</div>
+      <div class="exhibit-live-badge">[ ACTIVE ]</div>
+    </div>
+    <div class="exhibit-plaque">
+      <div class="exhibit-plaque-num">Treatment 004 · B2B &amp; Enterprise</div>
+      <div class="exhibit-plaque-title">When AI Built Your B2B Tool</div>
+      <div class="exhibit-plaque-medium">Gamified Analytics · XP System · Enterprise UX</div>
+      <div class="exhibit-plaque-desc">An AI-built analytics dashboard gets the 6% — progress rings, streak mechanics, level-up moments. Same data. Now people actually open the app on Monday morning.</div>
+      <div class="exhibit-before-after">
+        <span class="ex-before">AI-Built Dashboard</span>
+        <span class="ex-arrow">→</span>
+        <span class="ex-after">Gamified Brand Tool</span>
+      </div>
+      <div class="exhibit-op-tags">
+        <span class="ex-op-tag">// One Hard Graphic</span>
+        <span class="ex-op-tag">// Intentional Incompletion</span>
+      </div>
+      <a href="enterprise-dashboard-demo.html" target="_blank" class="h-pane-open-btn">Open Treatment →</a>
+    </div>
+  </a>
+</section>
+
+<section class="h-exhibit-pane" id="h-pane-005">
+  <div class="h-pane-label">// The Gallery · 05 / 05</div>
+  <a href="agent-platform-demo.html" target="_blank" class="exhibit-card live">
+    <div class="exhibit-art">
+      <div class="exhibit-art-num">005</div>
+      <div class="exhibit-art-icon">◈</div>
+      <div class="exhibit-live-badge">[ ACTIVE ]</div>
+    </div>
+    <div class="exhibit-plaque">
+      <div class="exhibit-plaque-num">Treatment 005 · AI Platforms</div>
+      <div class="exhibit-plaque-title">When AI Built Your Agent Platform</div>
+      <div class="exhibit-plaque-medium">Brand Identity · Decision Trace UI · Web</div>
+      <div class="exhibit-plaque-desc">An AI-built AI product gets the 6%. Purple-pink gradient: killed. "Build AI agents that actually work" → "Your decisions have latency. We find it." One live trace panel in the hero. The product is now the proof.</div>
+      <div class="exhibit-before-after">
+        <span class="ex-before">Generic AI Startup</span>
+        <span class="ex-arrow">→</span>
+        <span class="ex-after">Decision Infrastructure</span>
+      </div>
+      <div class="exhibit-op-tags">
+        <span class="ex-op-tag">// All Six Applied</span>
+        <span class="ex-op-tag">// Human Override</span>
+        <span class="ex-op-tag">// Operational Beauty</span>
+      </div>
+      <a href="agent-platform-demo.html" target="_blank" class="h-pane-open-btn">Open Treatment →</a>
+    </div>
+  </a>
+</section>
+
+
 <!-- ── METHOD ──────────────────────────────── -->
 <section id="method">
   <div class="method-inner">
@@ -1773,6 +2105,8 @@ body.layout-h #page-wrapper > div::after {
 
 </div><!-- end #page-wrapper -->
 
+<div id="h-panel-indicator">// <span id="h-panel-cur">01</span> <span style="opacity:.3">/ </span><span id="h-panel-tot">10</span></div>
+
 <script>
 /* ─── CURSOR ────────────────────────────────── */
 const cur   = document.getElementById('cur');
@@ -1800,9 +2134,14 @@ document.querySelectorAll(
 
 /* ─── NAV SCROLL ────────────────────────────── */
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
-}, { passive: true });
+function updateNavScrolled() {
+  if (currentLayout === 'horizontal') {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }
+}
+window.addEventListener('scroll', updateNavScrolled, { passive: true });
 
 /* ─── SCROLL REVEAL ─────────────────────────── */
 const obs = new IntersectionObserver(entries => {
@@ -1827,11 +2166,13 @@ window.addEventListener('load', () => {
 /* ─── SMOOTH ANCHOR SCROLL ──────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    const target = document.querySelector(a.getAttribute('href'));
+    let href = a.getAttribute('href');
+    if (currentLayout === 'horizontal' && href === '#gallery') href = '#h-pane-003';
+    const target = document.querySelector(href);
     if (target) {
       e.preventDefault();
       if (currentLayout === 'horizontal') {
-        target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+        pageWrapper.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
       } else {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -1938,17 +2279,33 @@ const layoutBtn = document.getElementById('layout-toggle');
 const pageWrapper = document.getElementById('page-wrapper');
 let currentLayout = 'vertical';
 
+/* ─── H-MODE PANEL INDICATOR ────────────────── */
+const hPanelCur = document.getElementById('h-panel-cur');
+const hPanelTot = document.getElementById('h-panel-tot');
+
+function updateHPanelIndicator() {
+  if (currentLayout !== 'horizontal') return;
+  const total = Math.round(pageWrapper.scrollWidth / window.innerWidth);
+  const current = Math.round(pageWrapper.scrollLeft / window.innerWidth) + 1;
+  hPanelTot.textContent = String(total).padStart(2, '0');
+  hPanelCur.textContent = String(Math.min(current, total)).padStart(2, '0');
+}
+
+pageWrapper.addEventListener('scroll', updateHPanelIndicator, { passive: true });
+
 function applyLayout(mode) {
   currentLayout = mode;
   if (mode === 'horizontal') {
     document.body.classList.add('layout-h');
     layoutBtn.querySelector('.lt-h').classList.add('lt-active');
     layoutBtn.querySelector('.lt-v').classList.remove('lt-active');
+    setTimeout(updateHPanelIndicator, 80);
   } else {
     document.body.classList.remove('layout-h');
     layoutBtn.querySelector('.lt-v').classList.add('lt-active');
     layoutBtn.querySelector('.lt-h').classList.remove('lt-active');
   }
+  updateNavScrolled();
   try { localStorage.setItem('6pct-layout', mode); } catch(e) {}
 }
 
