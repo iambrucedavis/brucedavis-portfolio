@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion + Interaction — Six Percent Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── TOKENS ─────────────────────────────── */
+:root {
+  --bg:         #0F0F0F;
+  --surface:    #161616;
+  --border:     rgba(255,255,255,.07);
+  --border-hi:  rgba(255,255,255,.16);
+  --text:       #EBEBEB;
+  --text-dim:   #666666;
+  --text-muted: #2a2a2a;
+  --signal:     #E8601C;
+  --signal-rgb: 232,96,28;
+}
+
+/* ─── SIGNAL THEMES ─────────────────────── */
+[data-theme="og"]    { --signal:#E8601C; --signal-rgb:232,96,28; }
+[data-theme="solar"] { --signal:#D42B2B; --signal-rgb:212,43,43; }
+[data-theme="wave"]  { --signal:#1A8A7A; --signal-rgb:26,138,122; }
+[data-theme="volt"]  { --signal:#B8E02A; --signal-rgb:184,224,42; }
+[data-theme="haze"]  { --signal:#2AA8C4; --signal-rgb:42,168,196; }
+[data-theme="noir"]  { --signal:#C0C0C0; --signal-rgb:192,192,192; }
+
+/* ─── RESET ──────────────────────────────── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:auto; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+a { color:inherit; text-decoration:none; }
+
+/* ─── CURSOR ─────────────────────────────── */
+#cur {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--text);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  display: flex; align-items:center; justify-content:center;
+  transition: width .18s, height .18s, border-color .15s, background .15s;
+}
+#cur.big {
+  width: 60px; height: 60px;
+  background: rgba(var(--signal-rgb),.1);
+  border-color: var(--signal);
+}
+#cur.click {
+  width: 20px; height: 20px;
+  background: var(--signal);
+  border-color: var(--signal);
+}
+#cur-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: .06em;
+  color: var(--signal);
+  opacity: 0;
+  transition: opacity .15s;
+  pointer-events: none;
+}
+#cur.big #cur-label { opacity:1; }
+#cur-trail {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: rgba(var(--signal-rgb),.35);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+}
+@media (pointer:coarse) {
+  #cur,#cur-trail { display:none; }
+  body { cursor:auto; }
+}
+
+/* ─── PROGRESS ───────────────────────────── */
+#progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--signal);
+  z-index: 9900;
+  pointer-events: none;
+}
+
+/* ─── NAV ────────────────────────────────── */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 8000;
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .3s, backdrop-filter .3s;
+}
+#nav.scrolled {
+  background: rgba(15,15,15,.88);
+  backdrop-filter: blur(16px);
+}
+.nav-back {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--text-dim);
+  transition: color .2s;
+}
+.nav-back:hover { color: var(--signal); }
+.nav-center {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--text-dim);
+}
+.nav-state {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ─── SHARED ─────────────────────────────── */
+.annot {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--text-dim);
+}
+.sig { color: var(--signal); }
+
+/* ─── 01 · HERO ──────────────────────────── */
+#hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 60px;
+  overflow: hidden;
+}
+#hero-eyebrow {
+  margin-bottom: 32px;
+  opacity: 0;
+}
+#hero-headline {
+  font-size: clamp(72px, 11vw, 160px);
+  font-weight: 700;
+  line-height: .9;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+}
+.h-line { overflow: hidden; display: block; }
+.h-char { display: inline-block; will-change: transform; }
+.h-space { display: inline-block; width: .28em; }
+#hero-sub {
+  margin-top: 48px;
+  font-size: 15px;
+  color: var(--text-dim);
+  max-width: 380px;
+  line-height: 1.7;
+  opacity: 0;
+}
+#hero-foot-l {
+  position: absolute;
+  bottom: 52px; left: 60px;
+}
+#hero-foot-r {
+  position: absolute;
+  bottom: 52px; right: 60px;
+}
+#hero-bg {
+  position: absolute;
+  right: -.05em; bottom: -.15em;
+  font-size: 44vw;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255,255,255,.012);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─── 02 · SCROLL SCRUB ──────────────────── */
+#scrub {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 60px;
+  border-top: 1px solid var(--border);
+}
+#scrub-annot { margin-bottom: 56px; }
+#scrub-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 .25em;
+  align-items: baseline;
+}
+.sw {
+  font-size: clamp(44px, 6.5vw, 96px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  opacity: .1;
+  will-change: opacity;
+  display: inline-block;
+}
+.sw-b { color: var(--signal); }
+#scrub-foot { margin-top: 56px; }
+
+/* ─── 03 · MAGNETIC ──────────────────────── */
+#magnetic {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 60px;
+  border-top: 1px solid var(--border);
+}
+#mag-annot { margin-bottom: 40px; }
+#mag-headline {
+  font-size: clamp(52px, 7.5vw, 110px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  line-height: .92;
+  margin-bottom: 80px;
+}
+.mag-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  max-width: 860px;
+}
+.mag-card {
+  position: relative;
+  aspect-ratio: 2.8 / 1;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  will-change: transform;
+  transition: border-color .2s, background .2s;
+  overflow: visible;
+}
+.mag-card:hover {
+  border-color: rgba(var(--signal-rgb),.5);
+  background: rgba(var(--signal-rgb),.04);
+}
+.mag-inner {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--text-dim);
+  pointer-events: none;
+  will-change: transform;
+  transition: color .2s;
+}
+.mag-card:hover .mag-inner { color: var(--signal); }
+#mag-note { margin-top: 48px; }
+
+/* ─── 04 · STAGGER ───────────────────────── */
+#stagger {
+  padding: 120px 60px;
+  border-top: 1px solid var(--border);
+}
+#stagger-annot { margin-bottom: 40px; }
+#stagger-headline {
+  font-size: clamp(44px, 6vw, 88px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  line-height: .92;
+  margin-bottom: 80px;
+}
+.cap-list {
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+}
+.cap-item {
+  display: grid;
+  grid-template-columns: 40px 1fr 140px;
+  align-items: center;
+  gap: 32px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(18px);
+  will-change: opacity, transform;
+}
+.cap-n {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.cap-name {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.cap-tag {
+  display: block;
+  margin-top: 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: .04em;
+}
+.cap-bar-wrap {
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.cap-bar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--signal);
+  will-change: width;
+}
+
+/* ─── 05 · KINETIC ───────────────────────── */
+#kinetic {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 60px;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+#kinetic-annot { margin-bottom: 64px; }
+#k-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.k-wrap { overflow: hidden; }
+#k-line1,
+#k-line2 {
+  font-size: clamp(64px, 10.5vw, 152px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  line-height: .92;
+  display: block;
+  will-change: transform;
+}
+#k-line3 {
+  font-size: clamp(48px, 7.5vw, 108px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  line-height: .92;
+  color: var(--signal);
+  display: block;
+  margin-top: .18em;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* ─── FOOTER ─────────────────────────────── */
+#footer {
+  padding: 80px 60px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+.footer-logo {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  margin-bottom: 16px;
+}
+.footer-note { line-height: 2; }
+.footer-cta {
+  text-align: right;
+  flex-shrink: 0;
+}
+.footer-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--signal);
+  border-bottom: 1px solid var(--signal);
+  padding-bottom: 3px;
+  transition: gap .2s;
+  cursor: none;
+}
+.footer-back:hover { gap: 18px; }
+.footer-stack {
+  margin-top: 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: .04em;
+}
+
+/* ─── REDUCED MOTION ─────────────────────── */
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  #cur,#cur-trail { display:none; }
+  body { cursor:auto; }
+}
+
+/* ─── RESPONSIVE ─────────────────────────── */
+@media (max-width:900px) {
+  #hero,#scrub,#kinetic { padding:0 28px; }
+  #magnetic,#stagger { padding:80px 28px; }
+  #nav { padding:20px 28px; }
+  .mag-grid { grid-template-columns:repeat(2,1fr); }
+  #hero-foot-l,#hero-foot-r { display:none; }
+  #footer { flex-direction:column; align-items:flex-start; padding:60px 28px; }
+  .footer-cta { text-align:left; }
+  .cap-item { grid-template-columns:32px 1fr; gap:16px; }
+  .cap-bar-wrap { display:none; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── CURSOR ──────────────────────────────── -->
+<div id="cur"><span id="cur-label"></span></div>
+<div id="cur-trail"></div>
+
+<!-- ── PROGRESS ─────────────────────────────── -->
+<div id="progress"></div>
+
+<!-- ── NAV ────────────────────────────────── -->
+<nav id="nav">
+  <a href="index.html" class="nav-back">← Six Percent Studio</a>
+  <div class="nav-center">Motion + Interaction <span style="opacity:.35">// 004</span></div>
+  <div class="nav-state annot">[ IN BUILD ]</div>
+</nav>
+
+
+<!-- ── 01 · HERO ─────────────────────────── -->
+<section id="hero">
+
+  <div class="annot" id="hero-eyebrow">// PROJECT 004 · MOTION &amp; INTERACTION SHOWCASE</div>
+
+  <h1 id="hero-headline">MOTION IS<br>THE MEDIUM.</h1>
+
+  <p id="hero-sub">
+    Interaction craft designed and built by a Design Engineer.<br>
+    Five techniques. One file. No framework.
+  </p>
+
+  <div id="hero-foot-l" class="annot">// technique: gsap · stagger · split text</div>
+  <div id="hero-foot-r" class="annot" id="hero-scroll-hint">scroll to explore ↓</div>
+
+  <div id="hero-bg" aria-hidden="true">004</div>
+
+</section>
+
+
+<!-- ── 02 · SCROLL SCRUB ─────────────────── -->
+<section id="scrub">
+
+  <div class="annot" id="scrub-annot">// TECHNIQUE 02 · SCROLL SCRUB · gsap scrolltrigger · scrub</div>
+
+  <div id="scrub-words">
+    <span class="sw">The</span>
+    <span class="sw">interaction</span>
+    <span class="sw">is</span>
+    <span class="sw">the</span>
+    <span class="sw">product.</span>
+    <span class="sw sw-b">Design</span>
+    <span class="sw sw-b">and</span>
+    <span class="sw sw-b">build.</span>
+  </div>
+
+  <div class="annot" id="scrub-foot">// each word reveals on scroll · spotlight advances with scroll position</div>
+
+</section>
+
+
+<!-- ── 03 · MAGNETIC ─────────────────────── -->
+<section id="magnetic">
+
+  <div class="annot" id="mag-annot">// TECHNIQUE 03 · MAGNETIC HOVER · move cursor over each card</div>
+
+  <h2 id="mag-headline">Attention<br>is <span class="sig">attracted.</span></h2>
+
+  <div class="mag-grid" id="mag-grid">
+    <div class="mag-card"><div class="mag-inner">INTERACTION DESIGN</div></div>
+    <div class="mag-card"><div class="mag-inner">MOTION + ANIMATION</div></div>
+    <div class="mag-card"><div class="mag-inner">AI INTERFACES</div></div>
+    <div class="mag-card"><div class="mag-inner">DESIGN SYSTEMS</div></div>
+    <div class="mag-card"><div class="mag-inner">DATA VISUALIZATION</div></div>
+    <div class="mag-card"><div class="mag-inner">WEB TOYS</div></div>
+  </div>
+
+  <div class="annot" id="mag-note">// gsap magnetic pattern · elastic.out spring on release</div>
+
+</section>
+
+
+<!-- ── 04 · STAGGER ──────────────────────── -->
+<section id="stagger">
+
+  <div class="annot" id="stagger-annot">// TECHNIQUE 04 · STAGGER REVEAL · scrolltrigger · stagger</div>
+
+  <h2 id="stagger-headline">The <span class="sig">stack.</span></h2>
+
+  <div class="cap-list">
+
+    <div class="cap-item">
+      <span class="cap-n">01</span>
+      <div>
+        <div class="cap-name">GSAP + ScrollTrigger</div>
+        <span class="cap-tag">// orchestration · sequencing · scroll-driven animation</span>
+      </div>
+      <div class="cap-bar-wrap"><div class="cap-bar" data-w="95"></div></div>
+    </div>
+
+    <div class="cap-item">
+      <span class="cap-n">02</span>
+      <div>
+        <div class="cap-name">CSS Animations</div>
+        <span class="cap-tag">// keyframes · custom easing · no dependencies</span>
+      </div>
+      <div class="cap-bar-wrap"><div class="cap-bar" data-w="92"></div></div>
+    </div>
+
+    <div class="cap-item">
+      <span class="cap-n">03</span>
+      <div>
+        <div class="cap-name">Framer Motion</div>
+        <span class="cap-tag">// react component motion · layout animations · presence</span>
+      </div>
+      <div class="cap-bar-wrap"><div class="cap-bar" data-w="85"></div></div>
+    </div>
+
+    <div class="cap-item">
+      <span class="cap-n">04</span>
+      <div>
+        <div class="cap-name">Web Animations API</div>
+        <span class="cap-tag">// native browser · precise · zero overhead</span>
+      </div>
+      <div class="cap-bar-wrap"><div class="cap-bar" data-w="78"></div></div>
+    </div>
+
+    <div class="cap-item">
+      <span class="cap-n">05</span>
+      <div>
+        <div class="cap-name">Canvas + requestAnimationFrame</div>
+        <span class="cap-tag">// physics · particles · custom rendering loops</span>
+      </div>
+      <div class="cap-bar-wrap"><div class="cap-bar" data-w="82"></div></div>
+    </div>
+
+    <div class="cap-item">
+      <span class="cap-n">06</span>
+      <div>
+        <div class="cap-name">Three.js + WebGL</div>
+        <span class="cap-tag">// 3d · shaders · immersive experiences</span>
+      </div>
+      <div class="cap-bar-wrap"><div class="cap-bar" data-w="68"></div></div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ── 05 · KINETIC ───────────────────────── -->
+<section id="kinetic">
+
+  <div class="annot" id="kinetic-annot">// TECHNIQUE 05 · KINETIC TYPE · scroll through this section</div>
+
+  <div id="k-stack">
+    <div class="k-wrap"><span id="k-line1">DESIGN</span></div>
+    <div class="k-wrap"><span id="k-line2">AND BUILD</span></div>
+    <span id="k-line3">SHIPPED.</span>
+  </div>
+
+</section>
+
+
+<!-- ── FOOTER ─────────────────────────────── -->
+<footer id="footer">
+  <div>
+    <div class="footer-logo">SIX PERCENT™</div>
+    <div class="footer-note annot">
+      Project 004 — Motion + Interaction Showcase<br>
+      // GSAP 3.x · ScrollTrigger · CSS animations · pure JS<br>
+      // techniques: entrance · scrub · magnetic · stagger · kinetic
+    </div>
+  </div>
+  <div class="footer-cta">
+    <a href="index.html" class="footer-back">Back to portfolio →</a>
+    <div class="footer-stack">// build.2026.05 · v1.0</div>
+  </div>
+</footer>
+
+
+<!-- ── SCRIPTS ────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ─── MOTION PREFERENCE ─────────────────── */
+const motionOK = !window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ─── THEME SYNC ────────────────────────── */
+try {
+  const t = localStorage.getItem('6pct-theme') || 'og';
+  document.documentElement.setAttribute('data-theme', t);
+} catch(e) {}
+
+/* ─── CURSOR ────────────────────────────── */
+const cur      = document.getElementById('cur');
+const trail    = document.getElementById('cur-trail');
+const curLabel = document.getElementById('cur-label');
+let mx = 0, my = 0, tx = 0, ty = 0;
+
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+(function tick() {
+  tx += (mx - tx) * .13;
+  ty += (my - ty) * .13;
+  cur.style.left   = mx + 'px';
+  cur.style.top    = my + 'px';
+  trail.style.left = tx + 'px';
+  trail.style.top  = ty + 'px';
+  requestAnimationFrame(tick);
+})();
+
+document.addEventListener('mousedown', () => cur.classList.add('click'));
+document.addEventListener('mouseup',   () => cur.classList.remove('click'));
+
+function setCursor(big, label) {
+  curLabel.textContent = label || '';
+  cur.classList.toggle('big', big);
+}
+
+document.querySelectorAll('a, .footer-back').forEach(el => {
+  el.addEventListener('mouseenter', () => setCursor(true, '→'));
+  el.addEventListener('mouseleave', () => setCursor(false, ''));
+});
+
+/* ─── NAV ────────────────────────────────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive:true });
+
+/* ─── PROGRESS BAR ──────────────────────── */
+const progressEl = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  progressEl.style.width = Math.min(pct, 100) + '%';
+}, { passive:true });
+
+/* ─────────────────────────────────────────
+   01 · HERO ENTRANCE
+   Split headline into characters. Stagger
+   each from y:110% (below overflow:hidden
+   line wrappers) for a clean wipe-in.
+───────────────────────────────────────── */
+(function initHero() {
+  const hl = document.getElementById('hero-headline');
+  const rawLines = hl.innerHTML.split('<br>');
+
+  hl.innerHTML = rawLines.map(line =>
+    `<span class="h-line">${
+      line.split('').map(ch =>
+        ch === ' '
+          ? '<span class="h-space"> </span>'
+          : `<span class="h-char">${ch}</span>`
+      ).join('')
+    }</span>`
+  ).join('');
+
+  if (!motionOK) {
+    gsap.set(['#hero-eyebrow','#hero-sub'], { opacity:1 });
+    return;
+  }
+
+  const chars = hl.querySelectorAll('.h-char');
+  const tl = gsap.timeline({ defaults:{ ease:'power3.out' } });
+
+  tl.from(chars, { yPercent:110, duration:.8, stagger:.022, delay:.15 })
+    .to('#hero-eyebrow', { opacity:1, duration:.4 }, '-=.5')
+    .to('#hero-sub',     { opacity:1, duration:.5 }, '-=.3')
+    .from('#hero-foot-l, #hero-foot-r', { opacity:0, duration:.4 }, '-=.2');
+
+  // Scroll hint fades as hero exits
+  ScrollTrigger.create({
+    trigger: '#hero',
+    start: 'top top',
+    end: 'bottom 60%',
+    onUpdate: s => {
+      const el = document.getElementById('hero-foot-r');
+      if (el) el.style.opacity = 1 - s.progress * 2.5;
+    }
+  });
+})();
+
+
+/* ─────────────────────────────────────────
+   02 · SCROLL SCRUB
+   Sentence stays pinned on screen. As you
+   scroll through the section, each word
+   lights up in sequence — spotlight effect.
+   Previous words dim back to .3 opacity.
+───────────────────────────────────────── */
+(function initScrub() {
+  const words = gsap.utils.toArray('.sw');
+
+  if (!motionOK) {
+    gsap.set(words, { opacity:1 });
+    return;
+  }
+
+  const tl = gsap.timeline();
+  words.forEach((w, i) => {
+    tl.to(w, { opacity:1, duration:.4 }, i * .42);
+    if (i < words.length - 1) {
+      tl.to(w, { opacity:.28, duration:.25 }, i * .42 + .5);
+    }
+  });
+
+  ScrollTrigger.create({
+    animation: tl,
+    trigger: '#scrub',
+    pin: true,
+    scrub: .7,
+    start: 'top top',
+    end: `+=${words.length * 190}`,
+  });
+})();
+
+
+/* ─────────────────────────────────────────
+   03 · MAGNETIC HOVER
+   Cards are pulled toward cursor on
+   mousemove. On leave, spring back with
+   elastic easing. Inner label moves more
+   than the card for a parallax depth feel.
+───────────────────────────────────────── */
+(function initMagnetic() {
+  // Reveal headline on scroll
+  if (motionOK) {
+    ScrollTrigger.create({
+      trigger: '#magnetic',
+      start: 'top 72%',
+      onEnter: () => gsap.from('#mag-headline', {
+        opacity:0, y:28, duration:.65, ease:'power3.out'
+      })
+    });
+
+    // Stagger cards in
+    ScrollTrigger.create({
+      trigger: '#mag-grid',
+      start: 'top 80%',
+      onEnter: () => gsap.from('.mag-card', {
+        opacity:0, y:20, stagger:.06, duration:.45, ease:'power2.out'
+      })
+    });
+  }
+
+  // Magnetic only on fine pointer (desktop)
+  if (!window.matchMedia('(pointer:fine)').matches) return;
+
+  const cards = document.querySelectorAll('.mag-card');
+
+  cards.forEach(card => {
+    const inner = card.querySelector('.mag-inner');
+
+    card.addEventListener('mouseenter', () => setCursor(true, 'PULL'));
+    card.addEventListener('mouseleave', () => {
+      setCursor(false, '');
+      gsap.to([card, inner], {
+        x:0, y:0, duration:1.1,
+        ease:'elastic.out(1,.45)',
+        overwrite:'auto'
+      });
+    });
+
+    card.addEventListener('mousemove', e => {
+      const r  = card.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+      const dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
+      gsap.to(card,  { x:dx*13, y:dy*10, duration:.35, ease:'power2.out', overwrite:'auto' });
+      gsap.to(inner, { x:dx*22, y:dy*16, duration:.35, ease:'power2.out', overwrite:'auto' });
+    });
+  });
+})();
+
+
+/* ─────────────────────────────────────────
+   04 · STAGGER REVEAL
+   List items appear from below with stagger
+   on scroll entry. Bars animate width after
+   items are visible.
+───────────────────────────────────────── */
+(function initStagger() {
+  if (!motionOK) {
+    gsap.set('.cap-item', { opacity:1, y:0 });
+    document.querySelectorAll('.cap-bar').forEach(b => {
+      b.style.width = b.dataset.w + '%';
+    });
+    return;
+  }
+
+  ScrollTrigger.create({
+    trigger: '#stagger',
+    start: 'top 68%',
+    onEnter: () => {
+      gsap.from('#stagger-headline', {
+        opacity:0, y:20, duration:.55, ease:'power3.out'
+      });
+      gsap.to('.cap-item', {
+        opacity:1, y:0,
+        stagger:.08, duration:.48, ease:'power2.out',
+        delay:.15,
+        onComplete() {
+          document.querySelectorAll('.cap-bar').forEach((bar, i) => {
+            gsap.to(bar, {
+              width: bar.dataset.w + '%',
+              duration:.75, ease:'power2.out',
+              delay: i * .04
+            });
+          });
+        }
+      });
+    }
+  });
+})();
+
+
+/* ─────────────────────────────────────────
+   05 · KINETIC TYPE
+   Section is pinned. Scrolling through it
+   plays a GSAP timeline:
+   — line 2 ("AND BUILD") wipes up from behind
+     overflow:hidden mask on its wrapper
+   — line 3 ("SHIPPED.") fades in with offset
+   Each .k-wrap clips its line at the bottom.
+───────────────────────────────────────── */
+(function initKinetic() {
+  if (!motionOK) {
+    gsap.set(['#k-line2','#k-line3'], { yPercent:0, opacity:1 });
+    return;
+  }
+
+  // Start with line 2 hidden below its clip
+  gsap.set('#k-line2', { yPercent:105 });
+
+  const kTl = gsap.timeline();
+  kTl
+    .to('#k-line2', {
+      yPercent:0, duration:.8, ease:'power3.out'
+    }, .2)
+    .to('#k-line3', {
+      opacity:1, y:0, duration:.6, ease:'power2.out'
+    }, 1.1);
+
+  // Start k-line3 slightly low
+  gsap.set('#k-line3', { y:24 });
+
+  ScrollTrigger.create({
+    animation: kTl,
+    trigger: '#kinetic',
+    pin: true,
+    scrub: 1.1,
+    start: 'top top',
+    end: '+=280%',
+  });
+})();
+
+
+/* ─── FOOTER ENTRANCE ───────────────────── */
+if (motionOK) {
+  ScrollTrigger.create({
+    trigger: '#footer',
+    start: 'top 88%',
+    onEnter: () => gsap.from('#footer > *', {
+      opacity:0, y:18, stagger:.12, duration:.55, ease:'power2.out'
+    })
+  });
+}
+
+document.querySelectorAll('.footer-back').forEach(el => {
+  el.addEventListener('mouseenter', () => setCursor(true, '→'));
+  el.addEventListener('mouseleave', () => setCursor(false, ''));
+});
+
+/* ─── REFRESH ───────────────────────────── */
+window.addEventListener('load', () => ScrollTrigger.refresh());
+
+</script>
+</body>
+</html>
