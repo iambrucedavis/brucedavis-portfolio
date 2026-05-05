@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Interface Design System — Six Percent Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── TOKENS ──────────────────────────────────── */
+:root {
+  --bg:         #0F0F0F;
+  --surface:    #161616;
+  --surface-hi: #1E1E1E;
+  --border:     rgba(255,255,255,.07);
+  --border-hi:  rgba(255,255,255,.16);
+  --text:       #EBEBEB;
+  --text-dim:   #666666;
+  --text-muted: #2a2a2a;
+  --signal:     #E8601C;
+  --signal-rgb: 232,96,28;
+  --error:      #D42B2B;
+  --warn:       #B8860B;
+  --mono:       'Space Mono', monospace;
+}
+
+[data-theme="og"]    { --signal:#E8601C; --signal-rgb:232,96,28; }
+[data-theme="solar"] { --signal:#D42B2B; --signal-rgb:212,43,43; }
+[data-theme="wave"]  { --signal:#1A8A7A; --signal-rgb:26,138,122; }
+[data-theme="volt"]  { --signal:#B8E02A; --signal-rgb:184,224,42; }
+[data-theme="haze"]  { --signal:#2AA8C4; --signal-rgb:42,168,196; }
+[data-theme="noir"]  { --signal:#C0C0C0; --signal-rgb:192,192,192; }
+
+/* ─── RESET ───────────────────────────────────── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:auto; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+a { color:inherit; text-decoration:none; }
+
+/* ─── CURSOR ──────────────────────────────────── */
+#cur {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--text);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: border-color .15s, transform .15s;
+  mix-blend-mode: exclusion;
+}
+body:has(a:hover) #cur,
+body:has(button:hover) #cur {
+  transform: translate(-50%,-50%) scale(1.6);
+  border-color: var(--signal);
+}
+
+/* ─── NAV ─────────────────────────────────────── */
+#top-nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  display: flex; align-items:center; justify-content:space-between;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(15,15,15,.9);
+  backdrop-filter: blur(12px);
+}
+.nav-back {
+  font-family: var(--mono); font-size:11px; letter-spacing:.06em;
+  color: var(--text-dim); transition: color .2s;
+}
+.nav-back:hover { color: var(--text); }
+.nav-id   { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--text-dim); }
+.nav-build{ font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+
+/* ─── HERO ────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction:column; justify-content:flex-end;
+  padding: 120px 32px 72px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-pre {
+  font-family:var(--mono); font-size:11px; letter-spacing:.12em;
+  color:var(--signal); text-transform:uppercase; margin-bottom:20px;
+}
+#hero-hl {
+  font-size: clamp(44px, 7vw, 88px);
+  font-weight: 700;
+  line-height: .93;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+#hero-hl .h-line { display:block; overflow:hidden; }
+.hero-sub {
+  margin-top: 36px; font-size:15px; color:var(--text-dim);
+  max-width: 500px; line-height:1.65;
+}
+.hero-meta {
+  margin-top:28px; display:flex; gap:20px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--text-muted);
+}
+.hero-meta .live { color:var(--signal); }
+
+/* ─── SECTION SCAFFOLD ────────────────────────── */
+.ds-section {
+  padding: 80px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.sec-inner { max-width: 900px; margin: 0 auto; }
+.ds-hdr {
+  display:flex; align-items:baseline; justify-content:space-between;
+  margin-bottom: 6px;
+}
+.ds-label   { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); }
+.ds-version { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+.ds-title   { font-size:26px; font-weight:600; letter-spacing:-.01em; margin-bottom:6px; margin-top:2px; }
+.ds-desc    { font-size:13px; color:var(--text-dim); margin-bottom:40px; max-width:540px; line-height:1.65; }
+
+/* ─── COMPONENT FRAME ─────────────────────────── */
+.c-frame { background:var(--surface); border:1px solid var(--border); border-radius:3px; overflow:visible; }
+.c-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 3px 3px 0 0;
+}
+.c-bar-name   { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
+.c-bar-status { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+.c-bar-status.on { color:var(--signal); }
+.c-body { padding:24px; }
+
+/* ─── ANNOTATION ──────────────────────────────── */
+.c-ann {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-left: 2px solid var(--border-hi);
+}
+.ann-lbl { display:block; font-family:var(--mono); font-size:10px; color:var(--signal); letter-spacing:.06em; margin-bottom:6px; }
+.ann-txt { font-family:var(--mono); font-size:11px; color:var(--text-dim); line-height:1.75; }
+
+/* ─── STREAMING COMPONENT ─────────────────────── */
+.stream-out {
+  min-height: 100px;
+  font-size: 15px;
+  line-height: 1.8;
+  padding-bottom: 4px;
+}
+.s-cursor {
+  display: inline-block;
+  width: 2px; height: 1.1em;
+  background: var(--signal);
+  margin-left: 1px;
+  vertical-align: text-bottom;
+}
+.s-cursor.blink { animation: blink .9s step-end infinite; }
+.s-cursor.off   { opacity: 0; }
+@keyframes blink { 50% { opacity:0; } }
+
+.stream-foot {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:16px; padding-top:14px;
+  border-top: 1px solid var(--border);
+}
+.sf-left { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
+.sf-left strong { color:var(--text); }
+.sf-btns { display:flex; gap:6px; }
+.s-btn {
+  font-family:var(--mono); font-size:10px; letter-spacing:.04em;
+  color:var(--text-dim); background:none;
+  border:1px solid var(--border); padding:5px 10px; cursor:none;
+  transition: color .2s, border-color .2s;
+}
+.s-btn:hover { color:var(--text); border-color:var(--border-hi); }
+.s-btn:disabled { opacity:.3; pointer-events:none; }
+
+/* PROMPT AREA */
+.prompt-divider { border-top: 1px solid var(--border); }
+.prompt-samples {
+  display:flex; flex-wrap:wrap; gap:6px;
+  padding: 16px 24px 0;
+}
+.p-sample {
+  font-family:var(--mono); font-size:10px; letter-spacing:.03em;
+  color:var(--text-dim); border:1px solid var(--border);
+  padding:4px 9px; cursor:none; background:none;
+  transition: color .2s, border-color .2s; text-align:left;
+}
+.p-sample:hover { color:var(--text); border-color:var(--border-hi); }
+.p-sample.sel   { color:var(--signal); border-color:var(--signal); }
+.prompt-row {
+  display:flex; gap:10px; align-items:flex-end;
+  padding: 12px 24px 8px;
+}
+.p-ta {
+  flex:1; background:var(--bg);
+  border:1px solid var(--border); padding:10px 12px;
+  font-family:'Space Grotesk',sans-serif; font-size:13px;
+  color:var(--text); resize:none; outline:none;
+  min-height:42px; line-height:1.5; cursor:none;
+  transition: border-color .2s;
+}
+.p-ta:focus { border-color:var(--border-hi); }
+.p-ta::placeholder { color:var(--text-dim); }
+.p-send {
+  font-family:var(--mono); font-size:10px; letter-spacing:.06em;
+  color:var(--bg); background:var(--signal); border:none;
+  padding:10px 16px; cursor:none; flex-shrink:0;
+  align-self:flex-end; transition:opacity .2s;
+}
+.p-send:hover    { opacity:.8; }
+.p-send:disabled { opacity:.3; pointer-events:none; }
+.prompt-foot {
+  display:flex; justify-content:space-between;
+  padding: 0 24px 16px;
+  font-family:var(--mono); font-size:10px; color:var(--text-muted);
+}
+.p-char.warn { color:var(--error); }
+
+/* ─── STATE MACHINE ───────────────────────────── */
+.state-stage {
+  height: 120px;
+  display: flex; align-items:center; justify-content:center;
+}
+.s-dots-anim { display:flex; gap:7px; align-items:center; }
+.s-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--text-dim);
+  animation: db 1.4s ease-in-out infinite;
+}
+.s-dot:nth-child(2) { animation-delay:.2s; }
+.s-dot:nth-child(3) { animation-delay:.4s; }
+@keyframes db {
+  0%,60%,100% { transform:translateY(0); opacity:.25; }
+  30%          { transform:translateY(-9px); opacity:1; }
+}
+.s-idle-lbl  { font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+.s-gen-lbl   { font-family:var(--mono); font-size:12px; letter-spacing:.10em; color:var(--signal); }
+.s-check     { font-size:30px; color:var(--signal); }
+.s-err-disp  { text-align:center; }
+.s-err-code  { font-family:var(--mono); font-size:11px; color:var(--error); margin-bottom:10px; }
+.state-foot  {
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:12px; border-top:1px solid var(--border);
+}
+.s-pips      { display:flex; gap:5px; }
+.s-pip {
+  width:6px; height:6px; border-radius:50%;
+  border:1px solid var(--border-hi); cursor:none;
+}
+.s-pip.on { background:var(--signal); border-color:var(--signal); }
+
+/* ─── CONFIDENCE LAYER ────────────────────────── */
+.conf-block { font-size:15px; line-height:2.2; }
+.cw {
+  display:inline; padding:0 1px;
+  position:relative; cursor:default;
+  transition: opacity .15s;
+}
+.cw[data-c="H"] { opacity:1; }
+.cw[data-c="M"] { opacity:.58; }
+.cw[data-c="L"] {
+  opacity:.3;
+  text-decoration: underline dotted rgba(255,255,255,.2);
+  text-underline-offset:3px;
+}
+.cw[data-c="U"] {
+  opacity:.18;
+  text-decoration: underline dotted var(--error);
+  text-underline-offset:3px;
+}
+.cw-tip {
+  position:absolute; bottom:calc(100% + 5px); left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
+  background:var(--surface-hi); border:1px solid var(--border-hi);
+  padding:3px 8px;
+  font-family:var(--mono); font-size:9px; letter-spacing:.04em; color:var(--text);
+  opacity:0; pointer-events:none; transition:opacity .15s;
+  z-index:50;
+}
+.cw:hover .cw-tip { opacity:1; }
+.conf-legend {
+  display:flex; gap:14px;
+  margin-top:18px; padding-top:14px;
+  border-top:1px solid var(--border);
+  font-family:var(--mono); font-size:10px; color:var(--text-dim);
+}
+.cl-item { display:flex; align-items:center; gap:5px; }
+.cl-dot  { width:7px; height:7px; border-radius:50%; background:var(--text); }
+.cl-dot.m { opacity:.58; }
+.cl-dot.l { opacity:.3; }
+.cl-dot.u { background:var(--error); opacity:.5; }
+
+/* ─── TOKEN METER ─────────────────────────────── */
+.t-row {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:10px;
+}
+.t-lbl   { font-family:var(--mono); font-size:10px; color:var(--text-dim); width:88px; flex-shrink:0; }
+.t-track { flex:1; height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
+.t-fill  {
+  height:100%; border-radius:2px;
+  background:var(--signal);
+  transition: width .5s cubic-bezier(.4,0,.2,1), background .4s;
+}
+.t-fill.total { background:rgba(var(--signal-rgb),.35); }
+.t-val   { font-family:var(--mono); font-size:10px; color:var(--text-dim); width:56px; text-align:right; flex-shrink:0; }
+.t-foot  {
+  display:flex; justify-content:space-between;
+  padding-top:12px; border-top:1px solid var(--border); margin-top:4px;
+  font-family:var(--mono); font-size:10px; color:var(--text-dim);
+}
+.t-foot strong { color:var(--text); }
+.t-sim {
+  display:flex; align-items:center; gap:12px;
+  margin-top:16px;
+  font-family:var(--mono); font-size:10px; color:var(--text-muted);
+}
+.t-slider {
+  flex:1; appearance:none;
+  background:var(--border); height:3px; border-radius:2px;
+  outline:none; cursor:none;
+}
+.t-slider::-webkit-slider-thumb {
+  appearance:none; width:12px; height:12px;
+  border-radius:50%; background:var(--signal); cursor:none;
+}
+
+/* ─── ERROR STATES ────────────────────────────── */
+.err-stack { display:flex; flex-direction:column; gap:12px; }
+.err-card  {
+  border:1px solid var(--border);
+  padding:16px;
+  display:flex; align-items:flex-start; gap:14px;
+}
+.err-icon   { font-family:var(--mono); font-size:16px; flex-shrink:0; margin-top:1px; }
+.err-icon.e { color:var(--error); }
+.err-icon.w { color:var(--warn); }
+.err-body   { flex:1; }
+.err-code   { font-family:var(--mono); font-size:10px; letter-spacing:.06em; margin-bottom:5px; }
+.err-code.e { color:var(--error); }
+.err-code.w { color:var(--warn); }
+.err-msg    { font-size:13px; color:var(--text-dim); line-height:1.55; margin-bottom:10px; }
+.err-act    {
+  font-family:var(--mono); font-size:10px; letter-spacing:.04em;
+  color:var(--text-dim); background:none;
+  border:1px solid var(--border); padding:4px 10px; cursor:none;
+  transition: color .2s, border-color .2s;
+}
+.err-act:hover { color:var(--text); border-color:var(--border-hi); }
+
+/* ─── COMPONENT INDEX ─────────────────────────── */
+#comp-index {
+  padding: 80px 32px 100px;
+  border-bottom: 1px solid var(--border);
+}
+.ci-inner { max-width:900px; margin:0 auto; }
+.ci-head {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding-bottom:14px; border-bottom:1px solid var(--border);
+  margin-bottom:0;
+}
+.ci-title { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); }
+.ci-count { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+.ci-grid  {
+  display:grid; grid-template-columns:repeat(5,1fr);
+  background:var(--border); gap:1px;
+}
+.ci-item  { background:var(--bg); padding:20px 18px; }
+.ci-num   { font-family:var(--mono); font-size:10px; color:var(--signal); margin-bottom:10px; }
+.ci-name  { font-size:13px; font-weight:500; line-height:1.35; margin-bottom:6px; }
+.ci-st    { font-family:var(--mono); font-size:9px; letter-spacing:.05em; color:var(--text-dim); }
+.ci-st.stable { color:var(--signal); }
+.ci-st.exp    { color:var(--warn); }
+
+/* ─── FOOTER ──────────────────────────────────── */
+#page-footer {
+  padding:48px 32px;
+  border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center;
+  max-width:900px; margin:0 auto;
+}
+.pf-back { font-family:var(--mono); font-size:11px; color:var(--text-dim); transition:color .2s; }
+.pf-back:hover { color:var(--text); }
+.pf-id   { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+
+/* ─── PALETTE ─────────────────────────────────── */
+#palette-ctrl {
+  position:fixed; bottom:24px; right:24px; z-index:200;
+  font-family:var(--mono); font-size:10px;
+  display:flex; flex-direction:column; align-items:flex-end; gap:6px;
+}
+.p-lbl { color:var(--text-muted); letter-spacing:.08em; margin-bottom:2px; }
+.p-swatches { display:flex; gap:6px; }
+.p-sw {
+  width:18px; height:18px; border-radius:50%;
+  border:1px solid transparent; cursor:none;
+  transition: transform .2s;
+}
+.p-sw:hover { transform:scale(1.25); }
+.p-sw.on    { border-color:var(--text); }
+.p-sw[data-theme="og"]    { background:#E8601C; }
+.p-sw[data-theme="solar"] { background:#D42B2B; }
+.p-sw[data-theme="wave"]  { background:#1A8A7A; }
+.p-sw[data-theme="volt"]  { background:#B8E02A; }
+.p-sw[data-theme="haze"]  { background:#2AA8C4; }
+.p-sw[data-theme="noir"]  { background:#C0C0C0; }
+
+/* ─── REVEAL ──────────────────────────────────── */
+.reveal { opacity:0; transform:translateY(20px); }
+
+@media (max-width: 640px) {
+  .ci-grid { grid-template-columns:repeat(2,1fr); }
+  #hero, .ds-section, #comp-index { padding-left:20px; padding-right:20px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- NAV -->
+<nav id="top-nav">
+  <a href="index.html" class="nav-back">← Studio</a>
+  <span class="nav-id">// Project 002</span>
+  <span class="nav-build">v1.0.0 · build.2026.05</span>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-pre">// 002 — AI Interface Design System</div>
+  <h1 id="hero-hl">COMPONENTS THAT<br>KNOW WHAT THE<br>MODEL IS DOING.</h1>
+  <p class="hero-sub">
+    A design system for model-powered products. Each component treats AI state as interface state — not an edge case to hide, but a system behavior to design.
+  </p>
+  <div class="hero-meta">
+    <span>build.2026.05</span>
+    <span>v1.0.0</span>
+    <span>5 components</span>
+    <span class="live">[ IN BUILD ]</span>
+  </div>
+</section>
+
+<!-- ── 01 STREAMING ───────────────────────────── -->
+<div class="ds-section reveal" id="s01">
+  <div class="sec-inner">
+    <div class="ds-hdr">
+      <span class="ds-label">// 01 — Streaming Output</span>
+      <span class="ds-version">v1.0.0 · [ STABLE ]</span>
+    </div>
+    <h2 class="ds-title">StreamingResponse</h2>
+    <p class="ds-desc">The primary output pattern. Text arrives character by character — each arrival is a render event. The cursor shows the model is present. Connected to the prompt input below.</p>
+
+    <div class="c-frame">
+      <div class="c-bar">
+        <span class="c-bar-name">StreamingResponse</span>
+        <span class="c-bar-status on" id="stream-status">[ IDLE ]</span>
+      </div>
+      <div class="c-body">
+        <div class="stream-out" id="stream-out">
+          <span id="s-text"></span><span class="s-cursor blink" id="s-cur"></span>
+        </div>
+        <div class="stream-foot">
+          <span class="sf-left">tokens: <strong id="tok-n">0</strong> / 4096</span>
+          <div class="sf-btns">
+            <button class="s-btn" id="btn-replay" disabled>↺ Replay</button>
+            <button class="s-btn" id="btn-next">Next →</button>
+          </div>
+        </div>
+      </div>
+      <div class="prompt-divider">
+        <div class="prompt-samples" id="prompt-samples"></div>
+        <div class="prompt-row">
+          <textarea class="p-ta" id="p-input" placeholder="Or type your own prompt…" rows="1"></textarea>
+          <button class="p-send" id="p-send">Send ↵</button>
+        </div>
+        <div class="prompt-foot">
+          <span>⌘ ↵ to send</span>
+          <span class="p-char" id="p-char">0 / 4096</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-ann">
+      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-txt">Character-level streaming creates presence — the model feels active rather than blocked. The blinking cursor is the only animation needed. Token counter surfaces system metadata as a UI element rather than hiding it.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 02 STATE MACHINE ───────────────────────── -->
+<div class="ds-section reveal" id="s02">
+  <div class="sec-inner">
+    <div class="ds-hdr">
+      <span class="ds-label">// 02 — System States</span>
+      <span class="ds-version">v1.0.0 · [ STABLE ]</span>
+    </div>
+    <h2 class="ds-title">ModelStateIndicator</h2>
+    <p class="ds-desc">Five states. Each a design decision. Idle, thinking, generating, done, error — none of these should look the same. Click advance to step through the machine.</p>
+
+    <div class="c-frame">
+      <div class="c-bar">
+        <span class="c-bar-name">ModelStateIndicator</span>
+        <span class="c-bar-status on" id="state-badge">[ IDLE ]</span>
+      </div>
+      <div class="c-body">
+        <div class="state-stage" id="state-stage"></div>
+        <div class="state-foot">
+          <div class="s-pips" id="s-pips"></div>
+          <button class="s-btn" id="state-adv">Advance state →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-ann">
+      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-txt">AI states are not loading spinners. Thinking, generating, done, and error each carry different meaning. Design them differently. Show the machine's intent — the user reads confidence from the state before they read the output.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 03 CONFIDENCE ──────────────────────────── -->
+<div class="ds-section reveal" id="s03">
+  <div class="sec-inner">
+    <div class="ds-hdr">
+      <span class="ds-label">// 03 — Confidence Layer</span>
+      <span class="ds-version">v0.9.0 · [ EXPERIMENTAL ]</span>
+    </div>
+    <h2 class="ds-title">ConfidenceAnnotation</h2>
+    <p class="ds-desc">Token-level confidence mapped to visual weight. High renders full. Medium dims. Low underlines. Uncertain goes red. Hover any word for its score.</p>
+
+    <div class="c-frame">
+      <div class="c-bar">
+        <span class="c-bar-name">ConfidenceAnnotation</span>
+        <span class="c-bar-status on">[ EXPERIMENTAL ]</span>
+      </div>
+      <div class="c-body">
+        <div class="conf-block" id="conf-block"></div>
+        <div class="conf-legend">
+          <div class="cl-item"><div class="cl-dot"></div>high confidence</div>
+          <div class="cl-item"><div class="cl-dot m"></div>medium</div>
+          <div class="cl-item"><div class="cl-dot l"></div>low</div>
+          <div class="cl-item"><div class="cl-dot u"></div>uncertain</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-ann">
+      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-txt">Model uncertainty is real signal. Showing confidence at the word level gives users a legibility layer — they can scan for what the model knows vs. guesses. Most products hide this. This exposes it.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 04 TOKEN METER ─────────────────────────── -->
+<div class="ds-section reveal" id="s04">
+  <div class="sec-inner">
+    <div class="ds-hdr">
+      <span class="ds-label">// 04 — Context Meter</span>
+      <span class="ds-version">v1.0.0 · [ STABLE ]</span>
+    </div>
+    <h2 class="ds-title">ContextMeter</h2>
+    <p class="ds-desc">Context window usage as a first-class UI element. Drag the slider to simulate different usage levels and watch the component respond.</p>
+
+    <div class="c-frame">
+      <div class="c-bar">
+        <span class="c-bar-name">ContextMeter · 200k context</span>
+        <span class="c-bar-status on">[ STABLE ]</span>
+      </div>
+      <div class="c-body">
+        <div class="t-row">
+          <span class="t-lbl">Prompt</span>
+          <div class="t-track"><div class="t-fill" id="tf-p" style="width:0"></div></div>
+          <span class="t-val" id="tv-p">0</span>
+        </div>
+        <div class="t-row">
+          <span class="t-lbl">Completion</span>
+          <div class="t-track"><div class="t-fill" id="tf-c" style="width:0"></div></div>
+          <span class="t-val" id="tv-c">0</span>
+        </div>
+        <div class="t-row">
+          <span class="t-lbl">Context used</span>
+          <div class="t-track"><div class="t-fill total" id="tf-t" style="width:0"></div></div>
+          <span class="t-val" id="tv-t">0%</span>
+        </div>
+        <div class="t-foot">
+          <span>Window: 200,000 tokens</span>
+          <span><strong id="t-pct">0%</strong> used</span>
+        </div>
+        <div class="t-sim">
+          <span>// Simulate usage</span>
+          <input type="range" class="t-slider" id="t-slider" min="0" max="100" value="0">
+          <span id="t-val-lbl">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-ann">
+      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-txt">The context window is a finite resource. Surfacing it keeps users oriented — they know how much of the conversation the model can see. Operational reality made legible.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 05 ERROR STATES ────────────────────────── -->
+<div class="ds-section reveal" id="s05">
+  <div class="sec-inner">
+    <div class="ds-hdr">
+      <span class="ds-label">// 05 — Error States</span>
+      <span class="ds-version">v1.0.0 · [ STABLE ]</span>
+    </div>
+    <h2 class="ds-title">ErrorState</h2>
+    <p class="ds-desc">Three classes of AI failure, each with different meaning and different design response. Not generic browser errors — designed AI error states.</p>
+
+    <div class="c-frame">
+      <div class="c-bar">
+        <span class="c-bar-name">ErrorState</span>
+        <span class="c-bar-status on">[ STABLE ]</span>
+      </div>
+      <div class="c-body">
+        <div class="err-stack">
+
+          <div class="err-card">
+            <div class="err-icon w">⚠</div>
+            <div class="err-body">
+              <div class="err-code w">// 429 · Rate Limit Exceeded</div>
+              <div class="err-msg">Too many requests in this window. The model will resume in approximately 30 seconds. Queued requests will be processed automatically.</div>
+              <button class="err-act">View queue →</button>
+            </div>
+          </div>
+
+          <div class="err-card">
+            <div class="err-icon w">⚠</div>
+            <div class="err-body">
+              <div class="err-code w">// 503 · Model Temporarily Unavailable</div>
+              <div class="err-msg">The model is temporarily unavailable due to high demand. This is not a problem with your request. Retry in 15–30 seconds.</div>
+              <button class="err-act">Retry now →</button>
+            </div>
+          </div>
+
+          <div class="err-card">
+            <div class="err-icon e">✕</div>
+            <div class="err-body">
+              <div class="err-code e">// 500 · Inference Failed</div>
+              <div class="err-msg">The model returned an empty or malformed completion. The request did not fail — inference did. Check your prompt for adversarial patterns or try rephrasing.</div>
+              <button class="err-act">Report issue →</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="c-ann">
+      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-txt">Rate limits, service unavailability, and inference failures are different problems. The interface should communicate that difference — not collapse them into a red banner. The user deserves to know what failed and what to do about it.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── COMPONENT INDEX ────────────────────────── -->
+<section id="comp-index" class="reveal">
+  <div class="ci-inner">
+    <div class="ci-head">
+      <span class="ci-title">// Component Index</span>
+      <span class="ci-count">5 components · v1.0.0</span>
+    </div>
+    <div class="ci-grid">
+      <div class="ci-item">
+        <div class="ci-num">001</div>
+        <div class="ci-name">StreamingResponse</div>
+        <div class="ci-st stable">[ STABLE ]</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-num">002</div>
+        <div class="ci-name">ModelStateIndicator</div>
+        <div class="ci-st stable">[ STABLE ]</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-num">003</div>
+        <div class="ci-name">ConfidenceAnnotation</div>
+        <div class="ci-st exp">[ EXPERIMENTAL ]</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-num">004</div>
+        <div class="ci-name">ContextMeter</div>
+        <div class="ci-st stable">[ STABLE ]</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-num">005</div>
+        <div class="ci-name">ErrorState</div>
+        <div class="ci-st stable">[ STABLE ]</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div id="page-footer">
+    <a href="index.html" class="pf-back">← Back to Studio</a>
+    <span class="pf-id">// 002 · AI Interface Design System · build.2026.05</span>
+  </div>
+</footer>
+
+<!-- PALETTE CTRL -->
+<div id="palette-ctrl">
+  <span class="p-lbl">// PALETTE</span>
+  <div class="p-swatches">
+    <div class="p-sw on" data-theme="og"></div>
+    <div class="p-sw" data-theme="solar"></div>
+    <div class="p-sw" data-theme="wave"></div>
+    <div class="p-sw" data-theme="volt"></div>
+    <div class="p-sw" data-theme="haze"></div>
+    <div class="p-sw" data-theme="noir"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+'use strict';
+
+const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const finePntr = window.matchMedia('(pointer:fine)').matches;
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── CURSOR ───────────────────────────────────── */
+if (finePntr) {
+  const cur = document.getElementById('cur');
+  window.addEventListener('mousemove', e => {
+    gsap.to(cur, { x: e.clientX, y: e.clientY, duration: .08, ease: 'none' });
+  });
+}
+
+/* ── THEME ────────────────────────────────────── */
+const root  = document.documentElement;
+let theme   = localStorage.getItem('6pct-theme') || 'og';
+root.setAttribute('data-theme', theme);
+document.querySelectorAll('.p-sw').forEach(sw => {
+  sw.classList.toggle('on', sw.dataset.theme === theme);
+  sw.addEventListener('click', () => {
+    theme = sw.dataset.theme;
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('6pct-theme', theme);
+    document.querySelectorAll('.p-sw').forEach(s => s.classList.toggle('on', s.dataset.theme === theme));
+  });
+});
+
+/* ── HERO ENTRANCE ────────────────────────────── */
+const hl = document.getElementById('hero-hl');
+const rawLines = hl.innerHTML.split('<br>');
+hl.innerHTML = rawLines.map(line =>
+  `<span class="h-line" style="display:block;overflow:hidden">${
+    [...line.trim()].map(ch =>
+      ch === ' '
+        ? `<span style="display:inline-block;min-width:.25em"> </span>`
+        : `<span class="h-char" style="display:inline-block">${ch}</span>`
+    ).join('')
+  }</span>`
+).join('');
+
+if (motionOK) {
+  gsap.from('.h-char', {
+    yPercent: 110,
+    duration: .75,
+    stagger: .018,
+    ease: 'power3.out',
+    delay: .1
+  });
+}
+
+/* ── SCROLL REVEALS ───────────────────────────── */
+document.querySelectorAll('.reveal').forEach(el => {
+  if (!motionOK) { el.style.opacity = 1; el.style.transform = 'none'; return; }
+  gsap.to(el, {
+    opacity: 1, y: 0, duration: .7, ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 82%', once: true }
+  });
+});
+
+/* ══════════════════════════════════════════════════
+   01 — STREAMING RESPONSE
+══════════════════════════════════════════════════ */
+const SAMPLES = [
+  {
+    label: 'What is a design system?',
+    text: 'A design system is a collection of reusable components guided by clear standards. For AI products, that means designing the model\'s states as first-class interface elements — streaming output, loading indicators, error handling, confidence signals. The system codifies how the product responds to what the model does.'
+  },
+  {
+    label: 'Why does streaming matter?',
+    text: 'Streaming changes the perceived latency of the entire experience. A response that arrives in one block after three seconds feels slow. The same response streaming character by character feels immediate. The interaction starts at token zero. That is a design decision — not an engineering detail.'
+  },
+  {
+    label: 'What is the six percent?',
+    text: 'The six percent is the minimum change that shifts the entire read. One interaction that makes it feel alive. One animation that reframes what something is. One AI surface that surfaces the model\'s actual behavior rather than hiding it behind a clean wrapper. Small. Deliberate. Precise.'
+  }
+];
+
+let currentSample = 0;
+let streaming     = false;
+let streamTimers  = [];
+
+const sText       = document.getElementById('s-text');
+const sCur        = document.getElementById('s-cur');
+const tokN        = document.getElementById('tok-n');
+const streamBadge = document.getElementById('stream-status');
+const btnReplay   = document.getElementById('btn-replay');
+const btnNext     = document.getElementById('btn-next');
+const pInput      = document.getElementById('p-input');
+const pSend       = document.getElementById('p-send');
+const pChar       = document.getElementById('p-char');
+
+const STREAM_STATES = {
+  idle:       '[ IDLE ]',
+  thinking:   '[ THINKING ]',
+  streaming:  '[ GENERATING ]',
+  done:       '[ DONE ]',
+};
+
+function setStreamBadge(s) { streamBadge.textContent = STREAM_STATES[s] || s; }
+
+function clearTimers() { streamTimers.forEach(clearTimeout); streamTimers = []; }
+
+function startStream(text) {
+  clearTimers();
+  streaming = true;
+  sText.textContent = '';
+  sCur.className = 's-cursor blink';
+  tokN.textContent = '0';
+  setStreamBadge('streaming');
+  btnReplay.disabled = true;
+  btnNext.disabled   = true;
+  pSend.disabled     = true;
+
+  let i = 0;
+  const tick = () => {
+    if (i < text.length) {
+      sText.textContent += text[i++];
+      tokN.textContent  = Math.round(i * 0.75);
+      const ch = text[i - 1];
+      const pause = (ch === '.' || ch === ',' || ch === '—' || ch === '?' || ch === '!') ? 65 : 0;
+      streamTimers.push(setTimeout(tick, 16 + Math.random() * 22 + pause));
+    } else {
+      streaming = false;
+      sCur.className  = 's-cursor off';
+      setStreamBadge('done');
+      btnReplay.disabled = false;
+      btnNext.disabled   = false;
+      pSend.disabled     = false;
+    }
+  };
+  streamTimers.push(setTimeout(tick, 140));
+}
+
+/* Build sample buttons */
+const samplesEl = document.getElementById('prompt-samples');
+SAMPLES.forEach((s, i) => {
+  const btn = document.createElement('button');
+  btn.className   = 'p-sample' + (i === 0 ? ' sel' : '');
+  btn.textContent = s.label;
+  btn.addEventListener('click', () => {
+    if (streaming) return;
+    currentSample = i;
+    pInput.value  = s.label;
+    updateCharCount(s.label.length);
+    document.querySelectorAll('.p-sample').forEach((b, j) => b.classList.toggle('sel', j === i));
+  });
+  samplesEl.appendChild(btn);
+});
+
+/* Init input */
+pInput.value = SAMPLES[0].label;
+updateCharCount(SAMPLES[0].label.length);
+
+function updateCharCount(n) {
+  pChar.textContent = `${n} / 4096`;
+  pChar.classList.toggle('warn', n > 3800);
+}
+
+pInput.addEventListener('input', () => {
+  const n = pInput.value.length;
+  updateCharCount(n);
+  const match = SAMPLES.findIndex(s => s.label === pInput.value);
+  document.querySelectorAll('.p-sample').forEach((b, i) => b.classList.toggle('sel', i === match));
+  if (match >= 0) currentSample = match;
+});
+
+function doSend() {
+  if (streaming) return;
+  const val = pInput.value.trim();
+  if (!val) return;
+  const match = SAMPLES.findIndex(s => s.label === val);
+  const responseText = match >= 0
+    ? SAMPLES[match].text
+    : 'That\'s an interesting prompt. This component routes it to the model and streams the response — character by character, cursor tracking each token arrival. The connection between input and output is the core interaction pattern.';
+  startStream(responseText);
+}
+
+pSend.addEventListener('click', doSend);
+pInput.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); doSend(); }
+});
+
+btnReplay.addEventListener('click', () => {
+  if (streaming) return;
+  startStream(SAMPLES[currentSample].text);
+});
+
+btnNext.addEventListener('click', () => {
+  if (streaming) return;
+  currentSample = (currentSample + 1) % SAMPLES.length;
+  pInput.value  = SAMPLES[currentSample].label;
+  updateCharCount(SAMPLES[currentSample].label.length);
+  document.querySelectorAll('.p-sample').forEach((b, i) => b.classList.toggle('sel', i === currentSample));
+  startStream(SAMPLES[currentSample].text);
+});
+
+/* Auto-play on load */
+setTimeout(() => startStream(SAMPLES[0].text), 700);
+
+/* ══════════════════════════════════════════════════
+   02 — STATE MACHINE
+══════════════════════════════════════════════════ */
+const STATES = [
+  {
+    badge: '[ IDLE ]',
+    html:  `<span class="s-idle-lbl">Waiting for input.</span>`
+  },
+  {
+    badge: '[ THINKING ]',
+    html:  `<div class="s-dots-anim"><div class="s-dot"></div><div class="s-dot"></div><div class="s-dot"></div></div>`
+  },
+  {
+    badge: '[ GENERATING ]',
+    html:  `<span class="s-gen-lbl">Generating response<span id="gen-ellipsis">…</span></span>`
+  },
+  {
+    badge: '[ DONE ]',
+    html:  `<span class="s-check">✓</span>`
+  },
+  {
+    badge: '[ ERROR ]',
+    html:  `<div class="s-err-disp"><div class="s-err-code">// 429 · Rate limit exceeded</div><button class="s-btn" id="state-retry">↺ Reset</button></div>`
+  }
+];
+
+let stateIdx     = 0;
+const stageEl    = document.getElementById('state-stage');
+const stateBadge = document.getElementById('state-badge');
+const pipsEl     = document.getElementById('s-pips');
+const advBtn     = document.getElementById('state-adv');
+
+function setModelState(idx) {
+  stateIdx = ((idx % STATES.length) + STATES.length) % STATES.length;
+  stageEl.innerHTML  = STATES[stateIdx].html;
+  stateBadge.textContent = STATES[stateIdx].badge;
+  document.querySelectorAll('.s-pip').forEach((p, i) => p.classList.toggle('on', i === stateIdx));
+  advBtn.textContent = stateIdx === STATES.length - 1 ? '↺ Reset →' : 'Advance state →';
+
+  /* Retry button in error state */
+  const retry = document.getElementById('state-retry');
+  if (retry) retry.addEventListener('click', () => setModelState(0));
+}
+
+STATES.forEach((_, i) => {
+  const pip = document.createElement('div');
+  pip.className = 's-pip' + (i === 0 ? ' on' : '');
+  pip.addEventListener('click', () => setModelState(i));
+  pipsEl.appendChild(pip);
+});
+
+advBtn.addEventListener('click', () => setModelState(stateIdx + 1));
+setModelState(0);
+
+/* ══════════════════════════════════════════════════
+   03 — CONFIDENCE ANNOTATION
+══════════════════════════════════════════════════ */
+/* Each entry: [word, confidence (H/M/L/U), optional tooltip override] */
+const CONF_WORDS = [
+  ['The','H'], ['design','H'], ['system','H'], ['treats','H'],
+  ['model','H'], ['uncertainty','M','p=0.71 · medium'], ['as','H'],
+  ['a','H'], ['visible','H'], ['property.','H'],
+  ['\n'],
+  ['When','H'], ['confidence','H'], ['is','H'], ['high,','H'],
+  ['text','H'], ['renders','H'], ['at','H'], ['full','H'], ['weight.','H'],
+  ['\n'],
+  ['When','H'], ['the','H'], ['model','H'], ['is','H'],
+  ['uncertain','M','p=0.58 · medium'], ['—','H'],
+  ['particularly','M','p=0.62 · medium'], ['around','H'],
+  ['specific','M','p=0.54 · medium'], ['technical','L','p=0.38 · low'],
+  ['claims','L','p=0.31 · low'], ['or','H'],
+  ['numerical','U','p=0.14 · uncertain'], ['outputs','U','p=0.11 · uncertain'],
+  ['—','H'], ['those','H'], ['tokens','H'], ['dim.','H'],
+  ['\n'],
+  ['Not','H'], ['hidden.','H'], ['Surfaced.','H']
+];
+
+const confLabels = { H: 'p≥0.85 · high', M: 'p≈0.55–0.84 · medium', L: 'p≈0.25–0.54 · low', U: 'p<0.25 · uncertain' };
+const confBlock  = document.getElementById('conf-block');
+
+confBlock.innerHTML = CONF_WORDS.map(([word, conf, tip]) => {
+  if (!conf) return word === '\n' ? '<br>' : ' ';
+  const label = tip || confLabels[conf];
+  return `<span class="cw" data-c="${conf}">${word}<span class="cw-tip">${label}</span></span> `;
+}).join('');
+
+/* ══════════════════════════════════════════════════
+   04 — TOKEN METER
+══════════════════════════════════════════════════ */
+const CONTEXT_MAX = 200000;
+const tfP      = document.getElementById('tf-p');
+const tfC      = document.getElementById('tf-c');
+const tfT      = document.getElementById('tf-t');
+const tvP      = document.getElementById('tv-p');
+const tvC      = document.getElementById('tv-c');
+const tvT      = document.getElementById('tv-t');
+const tPct     = document.getElementById('t-pct');
+const tSlider  = document.getElementById('t-slider');
+const tValLbl  = document.getElementById('t-val-lbl');
+
+function updateTokenMeter(pct) {
+  const total     = Math.round((pct / 100) * CONTEXT_MAX);
+  const pToks     = Math.round(total * 0.62);
+  const cToks     = total - pToks;
+  const pPct      = (pToks / CONTEXT_MAX) * 100;
+  const cPct      = (cToks / CONTEXT_MAX) * 100;
+  const isWarn    = pct > 75;
+  const isCrit    = pct > 90;
+  const fillColor = isCrit ? 'var(--error)' : isWarn ? 'var(--warn)' : 'var(--signal)';
+
+  tfP.style.width      = pPct + '%';
+  tfC.style.width      = cPct + '%';
+  tfT.style.width      = pct  + '%';
+  tfP.style.background = fillColor;
+  tfC.style.background = fillColor;
+  tvP.textContent      = pToks.toLocaleString();
+  tvC.textContent      = cToks.toLocaleString();
+  tvT.textContent      = pct + '%';
+  tPct.textContent     = pct + '%';
+  tValLbl.textContent  = pct + '%';
+}
+
+tSlider.addEventListener('input', () => updateTokenMeter(parseInt(tSlider.value)));
+updateTokenMeter(0);
+
+/* Animate to 23% on scroll into view */
+ScrollTrigger.create({
+  trigger: '#s04',
+  start: 'top 72%',
+  once: true,
+  onEnter: () => {
+    let v = 0;
+    const target = 23;
+    const step = () => {
+      v = Math.min(v + 1, target);
+      tSlider.value = v;
+      updateTokenMeter(v);
+      if (v < target) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+});
+
+</script>
+</body>
+</html>
