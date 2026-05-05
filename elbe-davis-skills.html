@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elbe Davis — Skills Profile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #fff;
+    color: #111;
+    font-size: 11pt;
+    line-height: 1.6;
+    padding: 48px 64px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    border-bottom: 2px solid #111;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+  .name {
+    font-size: 28pt;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .title {
+    font-size: 11pt;
+    font-weight: 500;
+    color: #444;
+    letter-spacing: .08em;
+    margin-bottom: 10px;
+  }
+  .contact {
+    font-family: 'Space Mono', monospace;
+    font-size: 9pt;
+    color: #666;
+    letter-spacing: .04em;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ── CONTEXT NOTE ── */
+  .context {
+    font-family: 'Space Mono', monospace;
+    font-size: 8.5pt;
+    color: #888;
+    border-left: 3px solid #111;
+    padding: 8px 14px;
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 32px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: #111;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: '//';
+    color: #999;
+    font-size: 9pt;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+    margin-left: 4px;
+  }
+
+  /* ── SKILL ROWS ── */
+  .skill {
+    display: flex;
+    gap: 0;
+    margin-bottom: 8px;
+    line-height: 1.55;
+  }
+  .skill-name {
+    font-weight: 600;
+    font-size: 10.5pt;
+    min-width: 240px;
+    flex-shrink: 0;
+    color: #111;
+  }
+  .skill-sep {
+    color: #ccc;
+    margin: 0 10px;
+    flex-shrink: 0;
+  }
+  .skill-desc {
+    font-size: 10pt;
+    color: #444;
+    flex: 1;
+  }
+
+  /* ── TWO-COL (tools, education) ── */
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 0;
+  }
+  .tool-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 8.5pt;
+    color: #444;
+    border: 1px solid #ddd;
+    padding: 3px 10px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .edu-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .edu-degree {
+    font-weight: 600;
+    font-size: 10.5pt;
+  }
+  .edu-school {
+    font-size: 10pt;
+    color: #555;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .footer-note {
+    margin-top: 36px;
+    border-top: 1px solid #ddd;
+    padding-top: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 8.5pt;
+    color: #999;
+    line-height: 1.7;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { padding: 32px 48px; font-size: 10pt; }
+    .name { font-size: 22pt; }
+    .section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="name">ELBE DAVIS</div>
+  <div class="title">Creative Technologist &nbsp;·&nbsp; Designer &nbsp;·&nbsp; Builder</div>
+  <div class="contact">
+    <span>Charlotte, NC</span>
+    <span>heymrlb@gmail.com</span>
+    <span>six-percent-studio.vercel.app</span>
+  </div>
+</div>
+
+<!-- CONTEXT -->
+<div class="context">
+  Skills derived from active studio build: Six Percent Studio (2026)<br>
+  Built solo — concept, code, design, copy, deployment, methodology — across 5 sessions using Claude Code + custom tooling.
+</div>
+
+
+<!-- AI FORENSICS -->
+<div class="section">
+  <div class="section-title">AI Forensics &amp; AI Collaboration</div>
+
+  <div class="skill">
+    <span class="skill-name">AI Forensics</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Reading and diagnosing AI-generated output; identifying load-bearing design decisions inside AI-built objects; recognizing convergence patterns across AI tools</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">AI Tool Direction</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Directing AI (Claude Code, Claude API) with creative authority and precision; maintaining aesthetic control and voice across the full build</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Prompt Engineering</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Precision prompting for design generation, code output, copy, color extraction, and API integration tasks</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">AI-Assisted Vision</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Extracting color palettes from images using AI computer vision; translating material surfaces (leather, suede, rubber) to CSS color systems</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">AI Collaboration Method</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Knowing when to override, accept, or edit AI output; keeping the work authored rather than assembled</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">AI Output QC</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Catching generic drift; correcting voice; enforcing taste standards; identifying the delta between AI-built and name-brand</span>
+  </div>
+</div>
+
+
+<!-- FRONT-END DEV -->
+<div class="section">
+  <div class="section-title">Front-End Development</div>
+
+  <div class="skill">
+    <span class="skill-name">HTML5</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Semantic structure, accessibility markup, ARIA attributes (aria-label, aria-pressed, role); debugging browser HTML parsing edge cases (nested anchor invalidation)</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Advanced CSS</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Custom properties (design tokens), multi-theme architecture, scroll-snap, CSS Grid, Flexbox, clamp() for fluid typography, keyframe animations, transitions, writing-mode for rotated UI labels</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Vanilla JavaScript</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">DOM manipulation, IntersectionObserver, requestAnimationFrame, localStorage, event-driven architecture, async/Promise patterns, CSSOM inspection for CSS debugging</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">CSS Token Architecture</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Single-variable --signal system: one color token drives all accent, border, glow, and state colors via rgba(var(--signal-rgb), .XX); 6 signal themes; zero hardcoded accent values in components</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Horizontal Scroll Layout</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Full-viewport horizontal snap-pane architecture (scroll-snap-type: x mandatory); 10-pane layout with per-section show/hide logic; panel indicator, layout-aware anchor navigation, localStorage persistence</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Responsive Web Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Mobile breakpoints, viewport units, fluid type scaling, grid and layout adaptation at 900px and 600px; layout-mode-aware responsive rules</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Web Accessibility</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">WCAG-compliant colorblind override system; keyboard navigation; accessible toggle patterns with aria-pressed state</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Performance Animation</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">GPU-composited transforms, passive event listeners, frame-accurate rAF loops, mix-blend-mode cursor effects</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Physics Simulation</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Matter.js engine integration, Canvas 2D rendering, real-time collision and gravity; interactive physics playground exhibit</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Web Audio API</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Synthesized audio on collision events; frequency-based sound design tied to game mechanics</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Node.js &amp; CLI Dev</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Built the Vault CLI tool (vault add, vault save, vault palette commands); global npm package linking; .env config pattern</span>
+  </div>
+</div>
+
+
+<!-- DESIGN SYSTEMS -->
+<div class="section">
+  <div class="section-title">Design Systems &amp; Architecture</div>
+
+  <div class="skill">
+    <span class="skill-name">Design System Architecture</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Built and refactored a multi-file design system from scratch; migrated 6 HTML files from a 15-palette/multi-variable system to a single --signal token architecture in one session</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Theme Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">6 signal themes (OG, Solar, Wave, Volt, Haze, Noir) each defined by a single color + RGB triplet; instant switching with no CSS transitions; vertical dot switcher with active state label</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Color Palette Architecture</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Material-sourced color extraction; sneaker colorways translated to full UI color systems; signal color drives opacity variants via rgba(var(--signal-rgb)) pattern</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Typography Systems</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Type pairing (Space Grotesk + Space Mono); functional sans-serif + monospace for a computational aesthetic</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Component Architecture</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Reusable exhibit cards, sector cards, state badges, annotation marks, delta indicators; consistent CSS class structure; landscape/portrait card variants for H/V layout modes</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Visual Language Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Built a studio-specific design vocabulary: // annotation marks, [ STATE ] labels, version stamps, delta marks (+/—), hairline rules, signal color, glitch/suspended-completion aesthetic</span>
+  </div>
+</div>
+
+
+<!-- UX & INTERACTION -->
+<div class="section">
+  <div class="section-title">UX &amp; Interaction Design</div>
+
+  <div class="skill">
+    <span class="skill-name">Information Architecture</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Restructured a 9-section site to 5 stronger sections; each section designed to work in both vertical scroll and horizontal snap-pane modes</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Navigation Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Fixed nav, smooth anchor scroll, layout-aware navigation (anchor targets remap between H and V modes), panel indicator (01 / 10), localStorage layout persistence</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Dual Layout System Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">H/V toggle: vertical scroll mode and 10-pane full-viewport horizontal snap-pane mode; CSS-only section show/hide per layout; each mode independently designed</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Microinteraction Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Custom cursor + cursor trail, hover state system, flash-on-load, active state indicators, vertical palette switcher with rotated active label</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Gamification Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">XP systems, streak mechanics, score + combo multipliers, CHAOS MODE unlock mechanic (Treatment 003 physics exhibit)</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Accessibility Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Colorblind-accessible toggle with WCAG-safe color override palette; persists across sessions via localStorage</span>
+  </div>
+</div>
+
+
+<!-- BRAND & COPY -->
+<div class="section">
+  <div class="section-title">Brand, Identity &amp; Copywriting</div>
+
+  <div class="skill">
+    <span class="skill-name">Brand Identity Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Developed the Six Percent Studio visual identity from logo to color system to motion language from scratch</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Brand Positioning</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Articulated a differentiation strategy for a post-AI creative market; the K-Mart vs. Rodeo Drive framework as a positioning tool</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Brand Voice Development</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Built and documented a distinct written voice (sharp, CS-grounded, deadpan precision); documented in a style guide for consistency</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Copywriting</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Wrote all site copy in an authored voice: hero headlines, section copy, exhibit descriptions, manifesto, process language</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Manifesto Writing</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Authored the 6% Manifesto: a clear, personal design statement grounded in computational background and creative philosophy</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Methodology Design</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Built the 6% Framework: 7-principle working method (Recognizable Base · Visible Intervention · Literal Language · Controlled Disruption · Operational Beauty · Suspended Completion · Human Override)</span>
+  </div>
+</div>
+
+
+<!-- COMPUTATIONAL DESIGN -->
+<div class="section">
+  <div class="section-title">Computational Design</div>
+
+  <div class="skill">
+    <span class="skill-name">Computational Thinking</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Using system logic (version control, states, diffs, annotations, diagnostics) as aesthetic material — not decoration</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Before/After Methodology</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Structured transformation of existing objects rather than rebuilds; the edit as the deliverable; the diff as the product; 5 live treatment exhibits</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Design Editing</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Identifying what makes AI-built work generic; removing the load-bearing generic decisions; leaving the seam visible</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Operational Aesthetics</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Making system-native marks (// comments, [ STATE ] labels, version stamps) into load-bearing visual design elements</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Suspended Completion</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Intentional 94% finish as a design strategy; glitch, error codes, and system-state language as aesthetic signals</span>
+  </div>
+</div>
+
+
+<!-- VERSION CONTROL & DEPLOYMENT -->
+<div class="section">
+  <div class="section-title">Version Control, Deployment &amp; Tooling</div>
+
+  <div class="skill">
+    <span class="skill-name">Git</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Branching strategy, git worktrees (isolated parallel build environments), annotated release tagging, merge workflow, checkpoint discipline before major changes</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">CI/CD Pipeline</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">GitHub → Vercel auto-deploy; every push to main goes live in ~30 seconds; no manual deploy steps; FORGE branch → main merge workflow</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">MCP Server Configuration</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Configuring, debugging, and resolving conflicts between extension-managed and config-managed MCP servers; reading server logs to isolate crash sources; fixing duplicate server registration</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">API Integration</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Anthropic Claude API (AI features), Notion API (Inspiration Vault + Color Lab database) via MCP tooling</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Release Strategy</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Snapshot tagging before major changes; rollback-ready at any tagged version; session-by-session documentation for clean continuity</span>
+  </div>
+</div>
+
+
+<!-- SOFT SKILLS -->
+<div class="section">
+  <div class="section-title">Soft Skills &amp; Creative Direction</div>
+
+  <div class="skill">
+    <span class="skill-name">Creative Direction</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Maintaining a consistent aesthetic vision and methodology across a complex, multi-session solo build spanning 5 sessions</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Systems Thinking</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Designing methods and frameworks, not just individual outputs; the method is the product</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Design Critique</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Diagnosing what's wrong with existing work; identifying and removing the decisions that make objects feel generic</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Conceptual Development</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Building a studio practice and methodology from first principles, grounded in personal CS and CGT background</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Authored Voice</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Developing and sustaining a distinctive written voice across all copy; the voice never drifts to generic or AI-sounding</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Taste Curation</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Identifying and closing the gap between functional and felt; K-Mart vs. Rodeo Drive as a practical, repeatable test</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Project Management</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Full build from concept to live site, solo; session-by-session documentation; clean handoff notes for continuity across 5 sessions</span>
+  </div>
+  <div class="skill">
+    <span class="skill-name">Client Communication</span>
+    <span class="skill-sep">—</span>
+    <span class="skill-desc">Naming and explaining the gap between AI-built and name-brand for non-technical clients; the before/after as a selling tool</span>
+  </div>
+</div>
+
+
+<!-- TOOLS -->
+<div class="section">
+  <div class="section-title">Tools &amp; Platforms</div>
+  <div style="margin-top: 4px;">
+    <span class="tool-tag">Claude Code</span>
+    <span class="tool-tag">Claude API (Anthropic)</span>
+    <span class="tool-tag">Notion API</span>
+    <span class="tool-tag">Vercel</span>
+    <span class="tool-tag">GitHub</span>
+    <span class="tool-tag">Git</span>
+    <span class="tool-tag">Git Worktrees</span>
+    <span class="tool-tag">MCP Servers</span>
+    <span class="tool-tag">Matter.js</span>
+    <span class="tool-tag">Web Audio API</span>
+    <span class="tool-tag">Canvas 2D</span>
+    <span class="tool-tag">Node.js</span>
+    <span class="tool-tag">npm</span>
+    <span class="tool-tag">VS Code</span>
+    <span class="tool-tag">HTML5</span>
+    <span class="tool-tag">CSS3</span>
+    <span class="tool-tag">Vanilla JS</span>
+    <span class="tool-tag">CSS Custom Properties</span>
+    <span class="tool-tag">Scroll-Snap API</span>
+    <span class="tool-tag">IntersectionObserver API</span>
+    <span class="tool-tag">localStorage API</span>
+    <span class="tool-tag">CSSOM Inspection</span>
+  </div>
+</div>
+
+
+<!-- EDUCATION -->
+<div class="section">
+  <div class="section-title">Education</div>
+  <div class="edu-row">
+    <span class="edu-degree">B.S., Computer Science</span>
+    <span class="edu-school">Lincoln University</span>
+  </div>
+  <div class="edu-row">
+    <span class="edu-degree">M.S., Computer Graphics Technology</span>
+    <span class="edu-school">Purdue University</span>
+  </div>
+</div>
+
+
+<!-- FOOTER NOTE -->
+<div class="footer-note">
+  // The method comes from this background. Not fashion. Not surface aesthetics.<br>
+  // Computational thinking, applied with taste.<br>
+  // build.2026.05 &nbsp;·&nbsp; session.005 &nbsp;·&nbsp; six-percent-studio.vercel.app
+</div>
+
+</body>
+</html>
