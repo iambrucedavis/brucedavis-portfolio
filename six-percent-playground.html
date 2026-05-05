@@ -7,6 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 <style>
+:root { --signal: #E8601C; --signal-rgb: 232,96,28; }
+
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -87,12 +89,12 @@ html, body {
   text-shadow:0 0 24px rgba(124,58,237,0.5);
   transition:color .2s;
 }
-.score-num.flash { color:#E8FF00; text-shadow:0 0 30px rgba(232,255,0,0.7); }
+.score-num.flash { color:var(--signal); text-shadow:0 0 30px rgba(232,96,28,0.7); }
 .combo-row {
   margin-top:6px; font-size:13px; font-weight:700;
-  color:#E8FF00; letter-spacing:.1em;
+  color:var(--signal); letter-spacing:.1em;
   opacity:0; transition:opacity .3s;
-  text-shadow:0 0 12px rgba(232,255,0,0.6);
+  text-shadow:0 0 12px rgba(232,96,28,0.6);
 }
 .combo-row.show { opacity:1; }
 
@@ -111,8 +113,8 @@ html, body {
 .unlock-headline {
   font-size:clamp(36px,7vw,72px);
   font-weight:700; line-height:.92;
-  color:#E8FF00; letter-spacing:-.02em;
-  text-shadow:0 0 60px rgba(232,255,0,.8), 0 0 120px rgba(232,255,0,.4);
+  color:var(--signal); letter-spacing:-.02em;
+  text-shadow:0 0 60px rgba(232,96,28,.8), 0 0 120px rgba(232,96,28,.4);
 }
 .unlock-sub {
   margin-top:10px;
@@ -161,12 +163,12 @@ html, body {
 .ctrl:disabled { opacity:.28; cursor:not-allowed; }
 
 #btn-chaos:not(:disabled) {
-  border-color:#E8FF00; color:#E8FF00;
+  border-color:var(--signal); color:var(--signal);
   animation:chaospulse 1.6s ease-in-out infinite;
 }
 @keyframes chaospulse {
-  0%,100% { box-shadow:0 0 8px rgba(232,255,0,.3); }
-  50%      { box-shadow:0 0 22px rgba(232,255,0,.7); }
+  0%,100% { box-shadow:0 0 8px rgba(232,96,28,.3); }
+  50%      { box-shadow:0 0 22px rgba(232,96,28,.7); }
 }
 
 #btn-audio.on {
@@ -192,7 +194,7 @@ html, body {
   font-size:10px; letter-spacing:.24em; font-weight:700;
   color:#140830; pointer-events:none; z-index:11;
 }
-.wm em { color:#E8FF00; font-style:normal; }
+.wm em { color:var(--signal); font-style:normal; }
 
 </style>
 </head>
@@ -309,12 +311,12 @@ const SERVICES = [
   { label:'INTERACTIVE', col:'#7C3AED' },
   { label:'PHYSICAL',    col:'#06B6D4' },
   { label:'MUSEUMS',     col:'#A78BFA' },
-  { label:'CORPORATE',   col:'#E8FF00' },
+  { label:'CORPORATE',   col:'#E8601C' },
   { label:'AR / VR',     col:'#EC4899' },
   { label:'BRANDS',      col:'#06B6D4' },
   { label:'AUDIO',       col:'#8B5CF6' },
   { label:'VISUAL',      col:'#A78BFA' },
-  { label:'SIX PERCENT', col:'#E8FF00' },
+  { label:'SIX PERCENT', col:'#E8601C' },
   { label:'UPGRADE',     col:'#EC4899' },
 ];
 
@@ -438,7 +440,7 @@ function chaosBurst() {
       y: -0.35 - Math.random() * 0.45,
     });
     b.flashTimer = 22;
-    emitParticles(b.position.x, b.position.y, b.serviceCol || '#E8FF00', 18);
+    emitParticles(b.position.x, b.position.y, b.serviceCol || '#E8601C', 18);
   });
 }
 
@@ -554,7 +556,7 @@ function drawBlock(body) {
   const fl    = body.flashTimer > 0 ? body.flashTimer / 12 : 0;
   const sp    = body.spawnTimer > 0 ? body.spawnTimer / 10 : 0;
   const col   = body.serviceCol || '#8B5CF6';
-  const isGold = col === '#E8FF00';
+  const isGold = col === '#E8601C';
 
   phCtx.save();
 
@@ -573,7 +575,7 @@ function drawBlock(body) {
   phCtx.fill();
 
   // Glow stroke
-  const glowCol = fl > 0 ? '#E8FF00' : col;
+  const glowCol = fl > 0 ? '#E8601C' : col;
   phCtx.shadowColor = glowCol;
   phCtx.shadowBlur  = 10 + fl * 28;
   phCtx.strokeStyle = glowCol;

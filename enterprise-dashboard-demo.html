@@ -9,6 +9,8 @@
 
 /* ─── TOKENS ──────────────────────────────── */
 :root {
+  --signal:      #E8601C;
+  --signal-rgb:  232,96,28;
   --dp-bg:       #09070f;
   --dp-surf:     #110d1e;
   --dp-surf2:    #1a1330;
@@ -17,7 +19,7 @@
   --dp-purple:   #8B5CF6;
   --dp-purple-hi:#a78bfa;
   --dp-green:    #22c55e;
-  --dp-yellow:   #E8FF00;
+  --dp-yellow:   var(--signal);
   --dp-red:      #f87171;
   --dp-text:     #e2d9f3;
   --dp-muted:    #6b5e8a;
@@ -32,7 +34,7 @@ body { font-family: Arial, sans-serif; overflow-x:hidden; }
 #apply-btn {
   position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
   z-index:9000;
-  background:#E8FF00; color:#000;
+  background:var(--signal); color:#000;
   font-family:'Space Grotesk',sans-serif;
   font-weight:700; font-size:12px;
   letter-spacing:.18em; text-transform:uppercase;
@@ -42,7 +44,7 @@ body { font-family: Arial, sans-serif; overflow-x:hidden; }
   transition:transform .2s, background .2s, box-shadow .2s;
   white-space:nowrap;
 }
-#apply-btn:hover { transform:translateX(-50%) translateY(-3px); box-shadow:0 14px 44px rgba(232,255,0,.35); }
+#apply-btn:hover { transform:translateX(-50%) translateY(-3px); box-shadow:0 14px 44px rgba(232,96,28,.35); }
 #apply-btn:disabled { opacity:.5; }
 
 /* ─── FLASH ──────────────────────────────── */
@@ -370,7 +372,7 @@ body.dope #dope-site   { display:flex; flex-direction:column; min-height:100vh; 
   background:var(--dp-dim);
 }
 .d-streak-dot.done { background:var(--dp-green); }
-.d-streak-dot.today { background:var(--dp-yellow); box-shadow:0 0 6px rgba(232,255,0,.5); }
+.d-streak-dot.today { background:var(--dp-yellow); box-shadow:0 0 6px rgba(232,96,28,.5); }
 
 /* Goal progress KPI */
 .d-goal-bar-wrap { margin-top:10px; }
@@ -1241,7 +1243,7 @@ function completeTask(evt) {
 
 /* ─── CONFETTI ───────────────────────────── */
 function confettiBurst(x, y) {
-  const colors = ['#8B5CF6','#a78bfa','#E8FF00','#22c55e','#ec4899','#06b6d4','#fff'];
+  const colors = ['#8B5CF6','#a78bfa','#E8601C','#22c55e','#ec4899','#06b6d4','#fff'];
   for (let i = 0; i < 24; i++) {
     const dot = document.createElement('div');
     dot.className = 'c-dot';

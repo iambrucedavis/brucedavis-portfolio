@@ -6,6 +6,8 @@
 <title id="page-title">ACME Solutions — Trusted Business Partner</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+:root { --signal: #E8601C; --signal-rgb: 232,96,28; }
+
 
 /* ─── RESET ──────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,7 +17,7 @@ body { overflow-x: hidden; }
 /* ─── FLASH OVERLAY ──────────────────────────────────── */
 #flash {
   position: fixed; inset: 0;
-  background: #E8FF00;
+  background: var(--signal);
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
@@ -36,7 +38,7 @@ body { overflow-x: hidden; }
   bottom: 32px; right: 32px;
   z-index: 500;
   padding: 16px 28px;
-  background: #E8FF00;
+  background: var(--signal);
   color: #000;
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
@@ -51,13 +53,13 @@ body { overflow-x: hidden; }
 #apply-btn:hover { transform: scale(1.06); }
 body.dope #apply-btn {
   background: #1a1a1a;
-  color: #E8FF00;
+  color: var(--signal);
   border: 1px solid #333;
   animation: none;
 }
 @keyframes glow {
-  0%,100% { box-shadow: 0 0 20px rgba(232,255,0,0.5); }
-  50%      { box-shadow: 0 0 42px rgba(232,255,0,0.9); }
+  0%,100% { box-shadow: 0 0 20px rgba(232,96,28,0.5); }
+  50%      { box-shadow: 0 0 42px rgba(232,96,28,0.9); }
 }
 
 /* ════════════════════════════════════════════════════════
@@ -185,7 +187,7 @@ body.dope #dope-site { display: block; }
 }
 .d-logo {
   font-weight: 700; font-size: 18px;
-  letter-spacing: 0.18em; color: #E8FF00;
+  letter-spacing: 0.18em; color: var(--signal);
   text-decoration: none;
 }
 .d-logo span { color: #fff; }
@@ -196,7 +198,7 @@ body.dope #dope-site { display: block; }
   text-transform: uppercase;
   transition: color 0.2s;
 }
-.d-nav-links a:hover { color: #E8FF00; }
+.d-nav-links a:hover { color: var(--signal); }
 
 /* Sections – start hidden, fade in */
 .reveal {
@@ -217,7 +219,7 @@ body.dope #dope-site { display: block; }
 
 .d-eyebrow {
   font-size: 11px; letter-spacing: 0.3em;
-  text-transform: uppercase; color: #E8FF00;
+  text-transform: uppercase; color: var(--signal);
   margin-bottom: 28px; font-weight: 600;
 }
 .d-headline {
@@ -227,7 +229,7 @@ body.dope #dope-site { display: block; }
   letter-spacing: -0.025em;
   color: #fff;
 }
-.d-headline .y { color: #E8FF00; }
+.d-headline .y { color: var(--signal); }
 
 .d-sub {
   margin-top: 36px;
@@ -243,7 +245,7 @@ body.dope #dope-site { display: block; }
 
 .d-btn-pri {
   padding: 18px 44px;
-  background: #E8FF00; color: #000;
+  background: var(--signal); color: #000;
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700; font-size: 13px;
   letter-spacing: 0.14em; text-transform: uppercase;
@@ -263,7 +265,7 @@ body.dope #dope-site { display: block; }
   text-decoration: none; display: inline-block;
   transition: border-color 0.2s, color 0.2s;
 }
-.d-btn-ghost:hover { border-color: #E8FF00; color: #E8FF00; }
+.d-btn-ghost:hover { border-color: var(--signal); color: var(--signal); }
 
 /* big BG percent */
 .d-bg-num {
@@ -280,7 +282,7 @@ body.dope #dope-site { display: block; }
 
 /* ── MARQUEE ─────────────────────────────────────────── */
 .d-marquee-wrap {
-  background: #E8FF00;
+  background: var(--signal);
   padding: 15px 0;
   overflow: hidden;
   white-space: nowrap;
@@ -319,7 +321,7 @@ body.dope #dope-site { display: block; }
   font-weight: 700; line-height: 1;
 }
 .d-num-big.dim { color: #1e1e1e; }
-.d-num-big.lit { color: #E8FF00; }
+.d-num-big.lit { color: var(--signal); }
 .d-arr { font-size: 40px; color: #2a2a2a; }
 
 .d-phil-copy h2 {
@@ -327,11 +329,11 @@ body.dope #dope-site { display: block; }
   font-weight: 700; line-height: 1.2;
   color: #fff; margin-bottom: 20px;
 }
-.d-phil-copy h2 em { color: #E8FF00; font-style: normal; }
+.d-phil-copy h2 em { color: var(--signal); font-style: normal; }
 .d-phil-copy p { color: #555; font-size: 15px; line-height: 1.85; margin-bottom: 14px; }
 .d-blockquote {
   margin-top: 28px;
-  border-left: 2px solid #E8FF00;
+  border-left: 2px solid var(--signal);
   padding-left: 18px;
   font-size: 13px;
   color: #3a3a3a;
@@ -345,7 +347,7 @@ body.dope #dope-site { display: block; }
 
 .d-label {
   font-size: 11px; letter-spacing: 0.3em;
-  text-transform: uppercase; color: #E8FF00;
+  text-transform: uppercase; color: var(--signal);
   margin-bottom: 14px; font-weight: 600;
   display: block;
 }
@@ -374,7 +376,7 @@ body.dope #dope-site { display: block; }
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 2px; background: #E8FF00;
+  height: 2px; background: var(--signal);
   transform: scaleX(0); transform-origin: left;
   transition: transform 0.45s ease;
 }
@@ -395,7 +397,7 @@ body.dope #dope-site { display: block; }
   display: inline-block;
   margin-top: 26px;
   font-size: 11px; letter-spacing: 0.16em;
-  text-transform: uppercase; color: #E8FF00;
+  text-transform: uppercase; color: var(--signal);
   font-weight: 600;
 }
 
@@ -424,7 +426,7 @@ body.dope #dope-site { display: block; }
 /* ── CTA ─────────────────────────────────────────────── */
 .d-cta {
   padding: 130px 60px;
-  background: #E8FF00;
+  background: var(--signal);
   text-align: center;
 }
 .d-cta h2 {
@@ -439,7 +441,7 @@ body.dope #dope-site { display: block; }
 .d-cta-btn {
   display: inline-block;
   padding: 22px 64px;
-  background: #000; color: #E8FF00;
+  background: #000; color: var(--signal);
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700; font-size: 14px;
   letter-spacing: 0.18em; text-transform: uppercase;
@@ -463,7 +465,7 @@ body.dope #dope-site { display: block; }
 .d-footer-logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700; font-size: 16px;
-  letter-spacing: 0.2em; color: #E8FF00;
+  letter-spacing: 0.2em; color: var(--signal);
 }
 .d-footer-copy { font-size: 12px; color: #2a2a2a; letter-spacing: 0.06em; }
 
@@ -720,7 +722,7 @@ function burst() {
     [W*0.2,  H*0.7],
     [W*0.8,  H*0.7],
   ];
-  const cols = ['#E8FF00','#ffffff','#ff3d00','#aaaaaa','#E8FF00','#E8FF00'];
+  const cols = ['#E8601C','#ffffff','#ff3d00','#aaaaaa','#E8601C','#E8601C'];
   origins.forEach(([ox, oy]) => {
     for (let i = 0; i < 28; i++) {
       const angle = Math.random() * Math.PI * 2;
