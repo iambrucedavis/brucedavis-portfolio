@@ -207,6 +207,13 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 
 .reveal { opacity:0; transform:translateY(20px); }
 
+
+/* ─── BRIEF ────────────────────────────── */
+#brief { padding:72px 32px; border-bottom:1px solid var(--border); }
+.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
+.brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
+.brief-body p + p { margin-top:16px; }
+
 @media (max-width:640px) {
   #machine, #output-section { padding-left:20px; padding-right:20px; }
   #hero { padding-left:20px; padding-right:20px; }
@@ -234,6 +241,16 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
     <span>streaming output</span>
     <span>6 brief types</span>
     <span class="live">[ ACTIVE ]</span>
+  </div>
+</section>
+
+<!-- BRIEF -->
+<section id="brief" class="reveal">
+  <div class="brief-lbl">// The Brief</div>
+  <div class="brief-body">
+    <p>The brief was constraint. Most brief generators produce expansive lists. This one produces structure: a problem, a user truth, a north star, a success metric. Four outputs. Enough to think from, not enough to hide behind.</p>
+    <p>Six brief types — Error Recovery, First Use, Loading State, Empty State, AI Uncertainty, Destructive Action — because those are the moments where interface design matters most. The happy path doesn't need a brief.</p>
+    <p>The streaming output is intentional. Watching the brief form at character pace slows the designer down. The constraint arrives word by word. By the time it's done, you've already started thinking.</p>
   </div>
 </section>
 

@@ -192,6 +192,13 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 
 .reveal { opacity:0; transform:translateY(20px); }
 
+
+/* ─── BRIEF ────────────────────────────── */
+#brief { padding:72px 32px; border-bottom:1px solid var(--border); }
+.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
+.brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
+.brief-body p + p { margin-top:16px; }
+
 @media (max-width:640px) {
   .stat-grid { grid-template-columns:repeat(2,1fr); }
   #hero, .dv-section { padding-left:20px; padding-right:20px; }
@@ -220,6 +227,16 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
     <span>v1.0.0</span>
     <span>3 live charts · D3.js v7</span>
     <span class="live">[ ACTIVE ]</span>
+  </div>
+</section>
+
+<!-- BRIEF -->
+<section id="brief" class="reveal">
+  <div class="brief-lbl">// The Brief</div>
+  <div class="brief-body">
+    <p>D3.js is a decision engine disguised as a charting library. Every visual property — axis color, label size, transition timing — is a manual call. The brief forced the question: three chart types, live data, one visual language. What are the actual decisions?</p>
+    <p>The constraint: D3 uses presentation attributes, not CSS. Design tokens don't inherit. Every color, every opacity, every stroke width had to be applied at the render layer — not the style sheet. The result is a tighter coupling between data and design than most component libraries allow.</p>
+    <p>The force graph was the hardest. Nodes, links, labels, and drag state updating at 60fps while staying legible. That's the one worth looking at.</p>
   </div>
 </section>
 

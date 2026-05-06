@@ -326,6 +326,13 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 .pf-id { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
 
 .reveal { opacity:0; transform:translateY(20px); }
+
+/* ─── BRIEF ────────────────────────────── */
+#brief { padding:72px 32px; border-bottom:1px solid var(--border); }
+.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
+.brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
+.brief-body p + p { margin-top:16px; }
+
 @media (max-width:640px) {
   .pricing-grid, .feature-grid { grid-template-columns:1fr; }
   #hero, .saas-section { padding-left:20px; padding-right:20px; }
@@ -353,6 +360,16 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
     <span>SaaS MVP · full stack</span>
     <span>landing + dashboard</span>
     <span class="live">[ ACTIVE ]</span>
+  </div>
+</section>
+
+<!-- BRIEF -->
+<section id="brief" class="reveal">
+  <div class="brief-lbl">// The Brief</div>
+  <div class="brief-body">
+    <p>The brief was credibility. A SaaS product that reads like a product — not a portfolio exercise, not a static screenshot, not a mockup with a stock photo dashboard behind it.</p>
+    <p>The problem with most portfolio SaaS demos: the interactions are faked. The decision: make the state machine the centerpiece. Click deploy. Watch it build. Watch it go live. Real log lines arriving with real timing. A pricing toggle that animates the value change. The product narrative compressed into one interaction.</p>
+    <p>No backend. No real infrastructure. The interface doesn't know that — and neither does the person watching it.</p>
   </div>
 </section>
 

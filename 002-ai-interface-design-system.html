@@ -442,6 +442,13 @@ body:has(button:hover) #cur {
 /* ─── REVEAL ──────────────────────────────────── */
 .reveal { opacity:0; transform:translateY(20px); }
 
+
+/* ─── BRIEF ────────────────────────────── */
+#brief { padding:72px 32px; border-bottom:1px solid var(--border); }
+.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
+.brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
+.brief-body p + p { margin-top:16px; }
+
 @media (max-width: 640px) {
   .ci-grid { grid-template-columns:repeat(2,1fr); }
   #hero, .ds-section, #comp-index { padding-left:20px; padding-right:20px; }
@@ -471,6 +478,16 @@ body:has(button:hover) #cur {
     <span>v1.0.0</span>
     <span>5 components</span>
     <span class="live">[ ACTIVE ]</span>
+  </div>
+</section>
+
+<!-- BRIEF -->
+<section id="brief" class="reveal">
+  <div class="brief-lbl">// The Brief</div>
+  <div class="brief-body">
+    <p>Most AI interfaces design around the output. This one designs around the states between outputs.</p>
+    <p>The problem: five distinct model behaviors — streaming, thinking, done, uncertain, failed — and most products render all of them the same way. The decision was to treat each state as a separate design problem. Different visual contract, different affordance, different meaning for the user.</p>
+    <p>These aren't mockups. Each component connects to the actual behavior it represents. The state machine runs. The confidence scores annotate real output. The error states are real failure classes — not a red banner.</p>
   </div>
 </section>
 
