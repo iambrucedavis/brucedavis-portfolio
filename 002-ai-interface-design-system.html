@@ -15,8 +15,8 @@
   --border:     rgba(255,255,255,.07);
   --border-hi:  rgba(255,255,255,.16);
   --text:       #EBEBEB;
-  --text-dim:   #666666;
-  --text-muted: #2a2a2a;
+  --text-dim:   #999999;
+  --text-muted: #555555;
   --signal:     #E8601C;
   --signal-rgb: 232,96,28;
   --error:      #D42B2B;
@@ -30,6 +30,32 @@
 [data-theme="volt"]  { --signal:#B8E02A; --signal-rgb:184,224,42; }
 [data-theme="haze"]  { --signal:#2AA8C4; --signal-rgb:42,168,196; }
 [data-theme="noir"]  { --signal:#C0C0C0; --signal-rgb:192,192,192; }
+
+/* ─── LIGHT MODE ─────────────────────────── */
+body.light {
+  --bg:         #F5F5F3;
+  --surface:    #EBEBEA;
+  --surface-hi: #E2E2E0;
+  --border:     rgba(0,0,0,.10);
+  --border-hi:  rgba(0,0,0,.22);
+  --text:       #111111;
+  --text-dim:   #444444;
+  --text-muted: #888888;
+}
+body.light #cur { mix-blend-mode: normal; }
+body.light #top-nav { background: rgba(245,245,243,.92); }
+.mode-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  background: transparent;
+  border: 1px solid var(--border-hi);
+  color: var(--text-dim);
+  padding: 4px 8px;
+  cursor: none;
+  transition: color .2s, border-color .2s;
+}
+.mode-btn:hover { color: var(--text); border-color: var(--text); }
 
 /* ─── RESET ───────────────────────────────────── */
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
@@ -712,6 +738,7 @@ body:has(button:hover) #cur {
 
 <!-- PALETTE CTRL -->
 <div id="palette-ctrl">
+  <button class="mode-btn" id="mode-btn">[ LIGHT ]</button>
   <span class="p-lbl">// PALETTE</span>
   <div class="p-swatches">
     <div class="p-sw on" data-theme="og"></div>
@@ -753,6 +780,20 @@ document.querySelectorAll('.p-sw').forEach(sw => {
     document.querySelectorAll('.p-sw').forEach(s => s.classList.toggle('on', s.dataset.theme === theme));
   });
 });
+
+/* ── MODE */
+(function(){
+  const m   = localStorage.getItem('6pct-mode') || 'dark';
+  const btn = document.getElementById('mode-btn');
+  if (m === 'light') document.body.classList.add('light');
+  if (btn) btn.textContent = m === 'light' ? '[ DARK ]' : '[ LIGHT ]';
+  if (btn) btn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    localStorage.setItem('6pct-mode', isLight ? 'light' : 'dark');
+    btn.textContent = isLight ? '[ DARK ]' : '[ LIGHT ]';
+  });
+})();
 
 /* ── HERO ENTRANCE ────────────────────────────── */
 const hl = document.getElementById('hero-hl');
