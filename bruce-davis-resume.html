@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bruce Davis — Design Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --ink:      #0F0F0F;
+  --ink-dim:  #444444;
+  --ink-soft: #888888;
+  --rule:     rgba(0,0,0,.12);
+  --signal:   #E8601C;
+  --mono:     'Space Mono', monospace;
+  --sans:     'Space Grotesk', sans-serif;
+}
+
+html { font-size: 10px; }
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: #ffffff;
+  width: 816px;
+  padding: 56px 72px 56px;
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ─── HEADER ───────────────────────────── */
+.hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 18px;
+  border-bottom: 1.5px solid var(--ink);
+  margin-bottom: 24px;
+}
+.hd-name {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.hd-title {
+  font-family: var(--mono);
+  font-size: 1rem;
+  letter-spacing: .12em;
+  color: var(--signal);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.hd-contact {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: .85rem;
+  color: var(--ink-dim);
+  line-height: 1.9;
+}
+.hd-contact a { color: var(--ink-dim); text-decoration: none; }
+
+/* ─── SUMMARY ──────────────────────────── */
+.summary {
+  font-size: 1.25rem;
+  line-height: 1.65;
+  color: var(--ink-dim);
+  max-width: 600px;
+  margin-bottom: 28px;
+  border-left: 2px solid var(--signal);
+  padding-left: 14px;
+}
+
+/* ─── SECTIONS ─────────────────────────── */
+.section {
+  margin-bottom: 24px;
+}
+.sec-label {
+  font-family: var(--mono);
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sec-label::before { content: '//'; color: var(--signal); }
+.sec-label::after  {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ─── WORK ─────────────────────────────── */
+.roles { display: flex; flex-direction: column; gap: 14px; }
+.role-hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+.role-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.role-co {
+  font-family: var(--mono);
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+.role-dates {
+  font-family: var(--mono);
+  font-size: .82rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.role-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.role-bullets li {
+  font-size: 1rem;
+  color: var(--ink-dim);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+.role-bullets li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--signal);
+  font-size: .82rem;
+}
+.role-condensed {
+  font-family: var(--mono);
+  font-size: .85rem;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  padding-top: 4px;
+  border-top: 1px solid var(--rule);
+  margin-top: 6px;
+}
+
+/* ─── PORTFOLIO ────────────────────────── */
+.projects { display: flex; flex-direction: column; gap: 10px; }
+.project {
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  gap: 0 18px;
+}
+.proj-id {
+  font-family: var(--mono);
+  font-size: .82rem;
+  color: var(--signal);
+  letter-spacing: .06em;
+  padding-top: 1px;
+  white-space: nowrap;
+}
+.proj-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin-bottom: 1px;
+}
+.proj-desc {
+  font-size: .98rem;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+
+/* ─── STACK ────────────────────────────── */
+.stack {
+  font-family: var(--mono);
+  font-size: .9rem;
+  color: var(--ink-dim);
+  line-height: 2;
+  letter-spacing: .02em;
+}
+
+/* ─── EDUCATION + CERTS ────────────────── */
+.edu-certs { display: flex; gap: 40px; }
+.edu { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.certs { display: flex; flex-direction: column; gap: 6px; }
+.edu-row, .cert-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.edu-degree, .cert-name {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+.edu-school, .cert-body {
+  font-family: var(--mono);
+  font-size: .85rem;
+  color: var(--ink-soft);
+}
+
+/* ─── FOOTER ───────────────────────────── */
+.foot {
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.foot-mark {
+  font-family: var(--mono);
+  font-size: .82rem;
+  color: var(--ink-soft);
+  letter-spacing: .06em;
+}
+.foot-url {
+  font-family: var(--mono);
+  font-size: .82rem;
+  color: var(--signal);
+  letter-spacing: .04em;
+}
+
+/* ─── PRINT ────────────────────────────── */
+@media print {
+  body { padding: 48px 64px 48px; }
+  @page { size: letter; margin: 0; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hd">
+  <div>
+    <div class="hd-name">Bruce Davis</div>
+    <div class="hd-title">Design Engineer</div>
+  </div>
+  <div class="hd-contact">
+    <div>heymrlb@gmail.com</div>
+    <div>Charlotte, NC</div>
+    <div><a href="https://six-percent-studio.vercel.app">six-percent-studio.vercel.app</a></div>
+    <div><a href="https://github.com/heylb">github.com/heylb</a></div>
+  </div>
+</header>
+
+<!-- SUMMARY -->
+<p class="summary">
+  Fifteen years building and shipping systems — identity platforms, infrastructure tooling, AI-assisted automation. CS degree, Master's in Computer Graphics Technology. Now I design and build interactive products and AI-powered interfaces through Six Percent Studio. Same instinct, different medium. The seam between design and engineering doesn't exist in my work.
+</p>
+
+<!-- PORTFOLIO -->
+<section class="section">
+  <div class="sec-label">Portfolio — Six Percent Studio</div>
+  <div class="projects">
+
+    <div class="project">
+      <div class="proj-id">001 · Physics Playground</div>
+      <div>
+        <div class="proj-name">Interactive Physics Playground</div>
+        <div class="proj-desc">Real-time physics with Matter.js, synthesized audio on collision via Web Audio API, score mechanics and CHAOS MODE. Designed the interactions, built the simulation, tuned the feel.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="proj-id">002 · AI Design System</div>
+      <div>
+        <div class="proj-name">AI Interface Design System</div>
+        <div class="proj-desc">Five production components for model-powered interfaces: streaming chat, model state machine, token pressure meter, confidence annotator, error recovery. Designed and built.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="proj-id">003 · Data Viz</div>
+      <div>
+        <div class="proj-name">Interactive Data Viz Dashboard</div>
+        <div class="proj-desc">Three live D3.js v7 charts: FPS monitor, filterable scatter plot, force-directed graph with drag and hover traversal. Designed the system, built the charts, wrote the interaction.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="proj-id">004 · Motion</div>
+      <div>
+        <div class="proj-name">Motion + Interaction Showcase</div>
+        <div class="proj-desc">Five GSAP techniques in one file: split-text entrance, scroll scrub, magnetic hover, stagger reveal, kinetic type. No framework. The motion is the interface.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="proj-id">005 · AI Web Toy</div>
+      <div>
+        <div class="proj-name">The Brief Machine</div>
+        <div class="proj-desc">AI design brief generator. Type a challenge, get a structured brief — constraints, user truth, north star, success metric — streamed character by character. Six brief types.</div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="proj-id">006 · SaaS MVP</div>
+      <div>
+        <div class="proj-name">Signal — Deployment Monitor</div>
+        <div class="proj-desc">Full SaaS landing page and interactive dashboard. Deploy state machine, live log stream, pricing toggle. A complete product — not a mockup.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="section">
+  <div class="sec-label">Work</div>
+  <div class="roles">
+
+    <div class="role">
+      <div class="role-hd">
+        <div>
+          <div class="role-title">Infrastructure Design · Information Security Analyst</div>
+          <div class="role-co">Wells Fargo · Contract</div>
+        </div>
+        <div class="role-dates">Nov 2024–Apr 2025</div>
+      </div>
+      <ul class="role-bullets">
+        <li>Built Python tooling to map network dependencies across SWIFT, CHIPS, and Fedwire payment infrastructure — visualized system flows that hadn't been documented.</li>
+        <li>Designed NIST-compliant documentation architecture for network security controls; became the reference layer for cross-team incident response.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-hd">
+        <div>
+          <div class="role-title">Business Analyst · IAM Analyst</div>
+          <div class="role-co">Microsoft · Contract</div>
+        </div>
+        <div class="role-dates">May–Nov 2024</div>
+      </div>
+      <ul class="role-bullets">
+        <li>Built Python automation on top of the Graph API to streamline Entra ID Governance workflows — reduced manual review cycles significantly.</li>
+        <li>Prototyped an AI-assisted workflow MVP using Microsoft Copilot: designed the flow, built the proof of concept, presented to stakeholders.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-hd">
+        <div>
+          <div class="role-title">Agile PM · Vulnerability Remediation</div>
+          <div class="role-co">Starbucks · Contract</div>
+        </div>
+        <div class="role-dates">Apr–Sept 2023</div>
+      </div>
+      <ul class="role-bullets">
+        <li>Built PowerShell automation that replaced manual remediation work across 60+ domains — wrote the scripts, designed the runbooks, shipped the solution.</li>
+        <li>Shipped 50+ vulnerability tickets per sprint working at the engineering layer, not the ticket layer.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-hd">
+        <div>
+          <div class="role-title">PM — Infrastructure &amp; IAM</div>
+          <div class="role-co">Bank of America · Contract</div>
+        </div>
+        <div class="role-dates">Oct 2021–Nov 2022</div>
+      </div>
+      <ul class="role-bullets">
+        <li>Owned design and execution of HashiCorp Vault cutover for 45+ engineering teams — system architecture, runbooks, stakeholder coordination, zero rollback.</li>
+        <li>Built ServiceNow dashboards that became the operational source of truth for infrastructure state across the program.</li>
+      </ul>
+    </div>
+
+    <div class="role">
+      <div class="role-hd">
+        <div>
+          <div class="role-title">Program Lead — IAM &amp; Compliance</div>
+          <div class="role-co">Veradigm · Full-time</div>
+        </div>
+        <div class="role-dates">Jan 2019–Jul 2021</div>
+      </div>
+      <ul class="role-bullets">
+        <li>Architected and shipped an IAM platform for 16,000+ users — Entra ID, MIM, CyberArk — integrated end to end from design through deployment.</li>
+        <li>Built Power Platform dashboards that surfaced compliance state across the org; moved from 65% to 95% compliance over the engagement.</li>
+      </ul>
+    </div>
+
+    <div class="role-condensed">
+      Earlier: Business Systems Consultant · Wells Fargo (2017–2018) &nbsp;·&nbsp;
+      IAM Project Consultant · Cognizant (2016–2017) &nbsp;·&nbsp;
+      Support Escalation Engineer · Microsoft (2012–2015)
+    </div>
+
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="section">
+  <div class="sec-label">Stack</div>
+  <div class="stack">
+    Figma · HTML · CSS · JavaScript · TypeScript · React · Next.js · Svelte ·
+    GSAP · Framer Motion · Three.js · WebGL · Canvas API · D3.js · Matter.js ·
+    Vercel AI SDK · Anthropic SDK · OpenAI SDK · Web Audio API ·
+    Tailwind · Radix UI · Storybook · Python · PowerShell · Vercel · Git
+  </div>
+</section>
+
+<!-- EDUCATION + CERTS -->
+<section class="section">
+  <div class="sec-label">Education &amp; Certifications</div>
+  <div class="edu-certs">
+    <div class="edu">
+      <div class="edu-row">
+        <div class="edu-degree">Master of Science — Computer Graphics Technology</div>
+        <div class="edu-school">Purdue University</div>
+      </div>
+      <div class="edu-row">
+        <div class="edu-degree">Bachelor of Science — Computer Science</div>
+        <div class="edu-school">Lincoln University</div>
+      </div>
+    </div>
+    <div class="certs">
+      <div class="cert-row">
+        <div class="cert-name">Project Management Professional (PMP)</div>
+        <div class="cert-body">PMI</div>
+      </div>
+      <div class="cert-row">
+        <div class="cert-name">Professional Scrum Master I (PSM I)</div>
+        <div class="cert-body">Scrum.org</div>
+      </div>
+      <div class="cert-row">
+        <div class="cert-name">Certified in Cybersecurity (CC)</div>
+        <div class="cert-body">ISC2</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="foot-mark">// First sketch to production. One hand the whole way.</div>
+  <div class="foot-url">six-percent-studio.vercel.app</div>
+</footer>
+
+</body>
+</html>
