@@ -333,6 +333,16 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 .brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
 .brief-body p + p { margin-top:16px; }
 
+/* ─── REVIEW ───────────────────────────── */
+#review { padding:72px 32px; border-bottom:1px solid var(--border); }
+.review-body { max-width:640px; }
+.review-block + .review-block { margin-top:40px; }
+.review-sub { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
+.review-list li { font-size:15px; color:var(--text-dim); line-height:1.7; padding-left:28px; position:relative; }
+.review-list li::before { content:'//'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:12px; color:var(--text-muted); line-height:1.7; }
+.review-list code { font-family:var(--mono); font-size:13px; color:var(--text); padding:0 1px; }
+
 @media (max-width:640px) {
   .pricing-grid, .feature-grid { grid-template-columns:1fr; }
   #hero, .saas-section { padding-left:20px; padding-right:20px; }
@@ -600,6 +610,34 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
     <p class="cta-desc">Signal gives your team one place to see everything that's running and everything that isn't.</p>
     <a href="#" class="cta-btn">Start Free →</a>
     <div class="cta-note">// No credit card · 5-minute setup · Free forever plan</div>
+  </div>
+</section>
+
+<!-- ── IN REVIEW ──────────────────────────────── -->
+<section id="review" class="reveal">
+  <div class="brief-lbl">// In review</div>
+  <div class="review-body">
+
+    <div class="review-block">
+      <div class="review-sub">// Craft decisions</div>
+      <ul class="review-list">
+        <li>The browser chrome wraps the dashboard. The user reads "this is a product" before they read what the product is. The frame does the positioning work the copy doesn't have to.</li>
+        <li>Deploy state machine has three states with three colors: queued (dim), building (yellow + 2.8s progress bar), live (teal). Not status badges — a real fake of a real build.</li>
+        <li>Log stream caps at 6 lines and shifts as new ones arrive. Each line enters with <code>opacity 0→1</code>, <code>x: -4→0</code> over 250ms. Logs feel arrived, not pasted.</li>
+        <li>Pricing toggle animates the digits: out at <code>opacity 0, y: -6</code>, replace text, in at <code>opacity 1, y: 0</code>. The number changes through the transition — value is the thing, the motion reinforces it.</li>
+      </ul>
+    </div>
+
+    <div class="review-block">
+      <div class="review-sub">// What I'd do differently</div>
+      <ul class="review-list">
+        <li>The dashboard is locked at <code>440px</code>. On a 1440 screen there's room for it to breathe to 600+. Fixed height killed a chance to make the product feel substantial.</li>
+        <li>Log stream is round-robin from a static array. Real production would surface log severity — error lines should look different from info, and recent errors should pin.</li>
+        <li>No empty state on the deploy list. First-time signup would see four <code>[ LIVE ]</code> rows as decoration. The product needs an empty state for new accounts — and I didn't design one.</li>
+        <li>The <code>featured</code> pricing card uses <code>--surface-hi</code> against <code>--surface</code>. The contrast is too close in light mode. Caught text contrast in 008, missed surface differentiation.</li>
+      </ul>
+    </div>
+
   </div>
 </section>
 

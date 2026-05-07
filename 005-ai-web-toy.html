@@ -214,6 +214,16 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 .brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
 .brief-body p + p { margin-top:16px; }
 
+/* ─── REVIEW ───────────────────────────── */
+#review { padding:72px 32px; border-bottom:1px solid var(--border); }
+.review-body { max-width:640px; }
+.review-block + .review-block { margin-top:40px; }
+.review-sub { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
+.review-list li { font-size:15px; color:var(--text-dim); line-height:1.7; padding-left:28px; position:relative; }
+.review-list li::before { content:'//'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:12px; color:var(--text-muted); line-height:1.7; }
+.review-list code { font-family:var(--mono); font-size:13px; color:var(--text); padding:0 1px; }
+
 @media (max-width:640px) {
   #machine, #output-section { padding-left:20px; padding-right:20px; }
   #hero { padding-left:20px; padding-right:20px; }
@@ -294,6 +304,34 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
     </div>
   </div>
 </div>
+
+<!-- ── IN REVIEW ──────────────────────────────── -->
+<section id="review" class="reveal">
+  <div class="brief-lbl">// In review</div>
+  <div class="review-body">
+
+    <div class="review-block">
+      <div class="review-sub">// Craft decisions</div>
+      <ul class="review-list">
+        <li>Streaming is character-paced with adaptive pause: <code>11–25ms</code> baseline, <code>+30ms</code> after newline, <code>+55ms</code> after <code>.,—?!:</code>. The output reads like writing — the model thinks at punctuation.</li>
+        <li>The brief counter starts in the <code>#040</code>s, randomized, and persists in <code>sessionStorage</code>. The product looks lived-in. A static <code>#001</code> would expose the demo.</li>
+        <li>Six sample prompts, six pre-written briefs — and they map. Click "loading state" and you get the loading-state brief. The connection between input and output is part of the design.</li>
+        <li>The <code>// DEMO MODE</code> badge sits beside the action buttons. Honest about what's real. Hiding it would have read as deceptive on inspection.</li>
+      </ul>
+    </div>
+
+    <div class="review-block">
+      <div class="review-sub">// What I'd do differently</div>
+      <ul class="review-list">
+        <li>Briefs are pre-written and pinned to the prompt. A real version routes freeform input to a model with a templated system prompt — different design problem, the latency is real and the structure is generated.</li>
+        <li>The brief streams as one block. Production should render section-by-section as it streams — dim the unsettled sections, full opacity on the settled ones. Section-level confidence.</li>
+        <li>No empty state. Clear the input, click Generate, nothing happens silently. A short message — "give me a challenge to work from" — would be the right correction.</li>
+        <li>The output isn't editable. The point of a brief is to start from it; users will want to mark it up. Click-to-edit on the output would be the next move.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer>

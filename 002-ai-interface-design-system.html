@@ -449,6 +449,16 @@ body:has(button:hover) #cur {
 .brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
 .brief-body p + p { margin-top:16px; }
 
+/* ─── REVIEW ───────────────────────────── */
+#review { padding:72px 32px; border-bottom:1px solid var(--border); }
+.review-body { max-width:640px; }
+.review-block + .review-block { margin-top:40px; }
+.review-sub { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
+.review-list li { font-size:15px; color:var(--text-dim); line-height:1.7; padding-left:28px; position:relative; }
+.review-list li::before { content:'//'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:12px; color:var(--text-muted); line-height:1.7; }
+.review-list code { font-family:var(--mono); font-size:13px; color:var(--text); padding:0 1px; }
+
 @media (max-width: 640px) {
   .ci-grid { grid-template-columns:repeat(2,1fr); }
   #hero, .ds-section, #comp-index { padding-left:20px; padding-right:20px; }
@@ -707,6 +717,34 @@ body:has(button:hover) #cur {
     </div>
   </div>
 </div>
+
+<!-- ── IN REVIEW ──────────────────────────────── -->
+<section id="review" class="reveal">
+  <div class="brief-lbl">// In review</div>
+  <div class="review-body">
+
+    <div class="review-block">
+      <div class="review-sub">// Craft decisions</div>
+      <ul class="review-list">
+        <li>Streaming pauses on punctuation. 65ms after <code>.</code> <code>,</code> <code>—</code> <code>?</code> <code>!</code>. The cursor blinks while writing, goes solid on done. The model finishes a sentence — not a string.</li>
+        <li>Confidence encodes four levels in two visual properties: opacity and underline style. Readable without the legend, inspectable on hover.</li>
+        <li>The token meter is the same component at three meanings — signal under 75%, warn at 75%, error at 90%. The threshold is the design decision, not the bar.</li>
+        <li>Error states are typed by failure class. 429, 503, 500 — different icons, different colors, different actions. Rate limit gets a queue. Inference failure gets a report. Each maps to user agency in the actual failure mode.</li>
+      </ul>
+    </div>
+
+    <div class="review-block">
+      <div class="review-sub">// What I'd do differently</div>
+      <ul class="review-list">
+        <li>Confidence is static here. Production needs streaming logprobs and a debounced rerender. Different design problem — the values change while you read them.</li>
+        <li>Token meter is a single ratio. Real context windows break out system prompt, tools, attached files, history. The bar should be a stack, not a slider.</li>
+        <li>Error codes show on the surface. Real users don't read <code>429</code>. Move the code into a collapse and lead with what to do.</li>
+        <li>No <code>aria-live</code> on the streaming region. A screen reader hears nothing. Day-one regression in a system meant for legibility.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
 
 <!-- ── COMPONENT INDEX ────────────────────────── -->
 <section id="comp-index" class="reveal">

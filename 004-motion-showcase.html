@@ -481,9 +481,19 @@ a { color:inherit; text-decoration:none; }
 
 /* ─── BRIEF ────────────────────────────── */
 #brief { padding:72px 32px; border-bottom:1px solid var(--border); background:var(--bg); }
-.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
+.brief-lbl { font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
 .brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
 .brief-body p + p { margin-top:16px; }
+
+/* ─── REVIEW ───────────────────────────── */
+#review { padding:72px 32px; border-bottom:1px solid var(--border); background:var(--bg); }
+.review-body { max-width:640px; }
+.review-block + .review-block { margin-top:40px; }
+.review-sub { font-family:'Space Mono', monospace; font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
+.review-list li { font-size:15px; color:var(--text-dim); line-height:1.7; padding-left:28px; position:relative; }
+.review-list li::before { content:'//'; position:absolute; left:0; top:0; font-family:'Space Mono', monospace; font-size:12px; color:var(--text-muted); line-height:1.7; }
+.review-list code { font-family:'Space Mono', monospace; font-size:13px; color:var(--text); padding:0 1px; }
 
 @media (max-width:900px) {
   #hero,#scrub,#kinetic { padding:0 28px; }
@@ -667,6 +677,35 @@ a { color:inherit; text-decoration:none; }
     <span id="k-line3">SHIPPED.</span>
   </div>
 
+</section>
+
+
+<!-- ── IN REVIEW ──────────────────────────────── -->
+<section id="review">
+  <div class="brief-lbl">// In review</div>
+  <div class="review-body">
+
+    <div class="review-block">
+      <div class="review-sub">// Craft decisions</div>
+      <ul class="review-list">
+        <li>Hero stagger is <code>22ms</code> per character with <code>power3.out</code>. The mask is an <code>overflow:hidden</code> line wrapper — characters slide up from <code>yPercent: 110</code>. Browser-native CSS clipping. No SVG, no plugin.</li>
+        <li>Magnetic cards pull <code>13/10px</code> on the wrapper and <code>22/16px</code> on the inner label. Inner moves further than outer — parallax depth inside a 2D animation. On exit, both spring back with <code>elastic.out(1, .45)</code>.</li>
+        <li>Scroll scrub pins the section and steps each word on at <code>i × .42s</code>, dimming the previous to 28% opacity. The spotlight moves with reading speed — not animation speed.</li>
+        <li>Kinetic type pins for <code>2.8×</code> the section height. Long pin = slow scrub = the user reads each line at the pace of their own scroll. Pin distance is the design knob.</li>
+      </ul>
+    </div>
+
+    <div class="review-block">
+      <div class="review-sub">// What I'd do differently</div>
+      <ul class="review-list">
+        <li>Hero stagger uses character index. Long headlines create a wave that runs too long. Real implementation would group by word and stagger words, characters within word.</li>
+        <li>Magnetic effect runs on every <code>mousemove</code> with no throttling. Fine on a fresh page; on a heavier page it would jank. <code>gsap.quickTo</code> would smooth the hot path.</li>
+        <li>Kinetic section pins without a scroll prompt. First-time visitors stop, think the page froze. A subtle <code>// scroll to advance</code> annotation would solve it.</li>
+        <li>No <code>prefers-reduced-motion</code> check on the magnetic interaction — the cursor still chases. The check exists at entrance level; it doesn't propagate to the interaction layer.</li>
+      </ul>
+    </div>
+
+  </div>
 </section>
 
 

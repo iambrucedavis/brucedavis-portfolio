@@ -199,6 +199,16 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 .brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
 .brief-body p + p { margin-top:16px; }
 
+/* ─── REVIEW ───────────────────────────── */
+#review { padding:72px 32px; border-bottom:1px solid var(--border); }
+.review-body { max-width:640px; }
+.review-block + .review-block { margin-top:40px; }
+.review-sub { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
+.review-list li { font-size:15px; color:var(--text-dim); line-height:1.7; padding-left:28px; position:relative; }
+.review-list li::before { content:'//'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:12px; color:var(--text-muted); line-height:1.7; }
+.review-list code { font-family:var(--mono); font-size:13px; color:var(--text); padding:0 1px; }
+
 @media (max-width:640px) {
   .stat-grid { grid-template-columns:repeat(2,1fr); }
   #hero, .dv-section { padding-left:20px; padding-right:20px; }
@@ -379,6 +389,34 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
     </div>
   </div>
 </div>
+
+<!-- ── IN REVIEW ──────────────────────────────── -->
+<section id="review" class="reveal">
+  <div class="brief-lbl">// In review</div>
+  <div class="review-body">
+
+    <div class="review-block">
+      <div class="review-sub">// Craft decisions</div>
+      <ul class="review-list">
+        <li>The FPS line changes color at <code>45fps</code> and <code>52fps</code>. Same data, three meanings — green lane, yellow lane, red lane. You read the health from the color, not the number.</li>
+        <li>Scatter dots size by <code>√loc × 1.4</code>. Linear sizing buries small items; log sizing exaggerates. Square-root keeps hierarchy readable across 16 points.</li>
+        <li>Force-graph hover dims unconnected nodes to 12% fill and 20% stroke. The connected subgraph stays full opacity. Highlighting by suppression — easier to read than highlighting by addition.</li>
+        <li>Stat counter eases with <code>1 - (1-t)³</code>. Numbers slow as they approach the target. Linear counters feel mechanical; this lands.</li>
+      </ul>
+    </div>
+
+    <div class="review-block">
+      <div class="review-sub">// What I'd do differently</div>
+      <ul class="review-list">
+        <li>The FPS chart is simulated. A real implementation would measure actual frame deltas via <code>requestAnimationFrame</code> — different design problem, harder spikes to read.</li>
+        <li>The scatter has no zoom or focus state. Past 16 points the dots collide. The next version is brush-zoom — D3 has it, this didn't need it.</li>
+        <li>Force graph runs a fresh simulation on every page load. Production should serialize settled positions and start from rest — saves ~600ms of unsettled wiggling on first paint.</li>
+        <li>No keyboard navigation on any chart. Tab order skips them entirely. Charts are interactive UI; they need keyboard equivalents or they fail an audit.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer>
