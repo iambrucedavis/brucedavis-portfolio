@@ -690,6 +690,7 @@ a { color:inherit; text-decoration:none; }
       <ul class="review-list">
         <li>Hero stagger is <code>22ms</code> per character with <code>power3.out</code>. The mask is an <code>overflow:hidden</code> line wrapper — characters slide up from <code>yPercent: 110</code>. Browser-native CSS clipping. No SVG, no plugin.</li>
         <li>Magnetic cards pull <code>13/10px</code> on the wrapper and <code>22/16px</code> on the inner label. Inner moves further than outer — parallax depth inside a 2D animation. On exit, both spring back with <code>elastic.out(1, .45)</code>.</li>
+        <li>Magnetic respects <code>prefers-reduced-motion</code>. The CSS hover state stays; the cursor chase and elastic spring are skipped.</li>
         <li>Scroll scrub pins the section and steps each word on at <code>i × .42s</code>, dimming the previous to 28% opacity. The spotlight moves with reading speed — not animation speed.</li>
         <li>Kinetic type pins for <code>2.8×</code> the section height. Long pin = slow scrub = the user reads each line at the pace of their own scroll. Pin distance is the design knob.</li>
       </ul>
@@ -701,7 +702,6 @@ a { color:inherit; text-decoration:none; }
         <li>Hero stagger uses character index. Long headlines create a wave that runs too long. Real implementation would group by word and stagger words, characters within word.</li>
         <li>Magnetic effect runs on every <code>mousemove</code> with no throttling. Fine on a fresh page; on a heavier page it would jank. <code>gsap.quickTo</code> would smooth the hot path.</li>
         <li>Kinetic section pins without a scroll prompt. First-time visitors stop, think the page froze. A subtle <code>// scroll to advance</code> annotation would solve it.</li>
-        <li>No <code>prefers-reduced-motion</code> check on the magnetic interaction — the cursor still chases. The check exists at entrance level; it doesn't propagate to the interaction layer.</li>
       </ul>
     </div>
 
@@ -939,6 +939,9 @@ window.addEventListener('scroll', () => {
 
   // Magnetic only on fine pointer (desktop)
   if (!window.matchMedia('(pointer:fine)').matches) return;
+
+  // Skip magnetic interaction if user prefers reduced motion
+  if (!motionOK) return;
 
   const cards = document.querySelectorAll('.mag-card');
 
