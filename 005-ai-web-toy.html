@@ -156,11 +156,6 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 .otb-id    { font-family:var(--mono); font-size:10px; color:var(--signal); }
 .otb-state { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
 .otb-right { display:flex; align-items:center; gap:8px; }
-.demo-badge {
-  font-family:var(--mono); font-size:9px; letter-spacing:.06em;
-  color:var(--text-muted); border:1px solid var(--text-muted);
-  padding:2px 7px;
-}
 .otb-btn {
   font-family:var(--mono); font-size:10px; letter-spacing:.04em;
   color:var(--text-dim); background:none;
@@ -241,15 +236,15 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-pre">// 005 — AI-Powered Web Toy</div>
+  <div class="hero-pre">// 005 — Design Brief Library</div>
   <h1 id="hero-hl">THE BRIEF<br>MACHINE.</h1>
   <p class="hero-sub">
-    Type a design challenge. Get a structured brief — constraints, user truth, a north star, a success metric. Streaming output. Six brief types. Ready to work from.
+    A curated library of design briefs in the studio's voice. Pick a challenge. The brief renders at reading pace — structured, opinionated, ready to work from.
   </p>
   <div class="hero-meta">
     <span>build.2026.05</span>
-    <span>streaming output</span>
-    <span>6 brief types</span>
+    <span>curated · 6 briefs</span>
+    <span>paced render</span>
     <span class="live">[ ACTIVE ]</span>
   </div>
 </section>
@@ -258,9 +253,9 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 <section id="brief" class="reveal">
   <div class="brief-lbl">// The Brief</div>
   <div class="brief-body">
-    <p>The brief was constraint. Most brief generators produce expansive lists. This one produces structure: a problem, a user truth, a north star, a success metric. Four outputs. Enough to think from, not enough to hide behind.</p>
-    <p>Six brief types — Error Recovery, First Use, Loading State, Empty State, AI Uncertainty, Destructive Action — because those are the moments where interface design matters most. The happy path doesn't need a brief.</p>
-    <p>The streaming output is intentional. Watching the brief form at character pace slows the designer down. The constraint arrives word by word. By the time it's done, you've already started thinking.</p>
+    <p>The brief was constraint. Most brief generators produce expansive lists. This one produces structure: core tension, interaction approach, motion language, constraints, first sketch. Five sections. Enough to think from, not enough to hide behind.</p>
+    <p>Six briefs — Error Recovery, First Use, Loading State, Empty State, AI Uncertainty, Destructive Action — because those are the moments where interface design matters most. The happy path doesn't need a brief. Hand-written, not generated.</p>
+    <p>The paced render is intentional. Watching the brief form at character pace slows the designer down. The constraint arrives word by word. By the time it's done, you've already started thinking.</p>
   </div>
 </section>
 
@@ -280,8 +275,8 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
   </div>
   <div class="sample-row" id="sample-row"></div>
   <div class="gen-row">
-    <button class="gen-btn" id="gen-btn">Generate Brief →</button>
-    <span class="gen-hint">// Demo mode · Simulated responses</span>
+    <button class="gen-btn" id="gen-btn">Render Brief →</button>
+    <span class="gen-hint">// pick a sample · 6 in the library</span>
   </div>
 </div>
 
@@ -294,9 +289,8 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
         <span class="otb-state" id="brief-state">[ GENERATING ]</span>
       </div>
       <div class="otb-right">
-        <span class="demo-badge">// DEMO MODE</span>
         <button class="otb-btn" id="copy-btn" style="display:none">Copy ↗</button>
-        <button class="otb-btn" id="regen-btn" style="display:none">↺ New Brief</button>
+        <button class="otb-btn" id="regen-btn" style="display:none">↺ Next Brief</button>
       </div>
     </div>
     <div class="output-body" id="output-body">
@@ -313,20 +307,21 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
     <div class="review-block">
       <div class="review-sub">// Craft decisions</div>
       <ul class="review-list">
-        <li>Streaming is character-paced with adaptive pause: <code>11–25ms</code> baseline, <code>+30ms</code> after newline, <code>+55ms</code> after <code>.,—?!:</code>. The output reads like writing — the model thinks at punctuation.</li>
-        <li>The brief counter starts in the <code>#040</code>s, randomized, and persists in <code>sessionStorage</code>. The product looks lived-in. A static <code>#001</code> would expose the demo.</li>
-        <li>Six sample prompts, six pre-written briefs — and they map. Click "loading state" and you get the loading-state brief. The connection between input and output is part of the design.</li>
-        <li>The <code>// DEMO MODE</code> badge sits beside the action buttons. Honest about what's real. Hiding it would have read as deceptive on inspection.</li>
+        <li>This is a library, not a generator. Six briefs, hand-written in the studio's voice, mapped to six samples. Calling it AI would be the wrong claim — calling it curated is the right one. The render pace and frame are the design; the words are the work.</li>
+        <li>Render is character-paced with adaptive pause: <code>11–25ms</code> baseline, <code>+30ms</code> after newline, <code>+55ms</code> after <code>.,—?!:</code>. The output reads like writing — the brief thinks at punctuation.</li>
+        <li>The brief counter starts in the <code>#040</code>s, randomized, and persists in <code>sessionStorage</code>. The product looks lived-in. A static <code>#001</code> would feel fresh-tab.</li>
+        <li>Six sample prompts, six briefs — and they map. Click "loading state" and you get the loading-state brief. The connection between input and output is part of the design.</li>
+        <li>The brief format itself is the artifact. Same labels, same arrows, same brackets, every time. The shape is opinionated. Plug it into any AI brief generator later — the format ports.</li>
       </ul>
     </div>
 
     <div class="review-block">
-      <div class="review-sub">// What I'd do differently</div>
+      <div class="review-sub">// What this is not</div>
       <ul class="review-list">
-        <li>Briefs are pre-written and pinned to the prompt. A real version routes freeform input to a model with a templated system prompt — different design problem, the latency is real and the structure is generated.</li>
-        <li>The brief streams as one block. Production should render section-by-section as it streams — dim the unsettled sections, full opacity on the settled ones. Section-level confidence.</li>
-        <li>No empty state. Clear the input, click Generate, nothing happens silently. A short message — "give me a challenge to work from" — would be the right correction.</li>
+        <li>Not an AI demo. The earlier framing claimed AI; the page didn't deliver. Honest now: a curated library with a paced render. The next version of this project would route freeform input to a real model — different scope, different page.</li>
+        <li>The brief renders as one block. A real version would render section-by-section, with the format dimming and resolving as it lands. Section-level structure.</li>
         <li>The output isn't editable. The point of a brief is to start from it; users will want to mark it up. Click-to-edit on the output would be the next move.</li>
+        <li>Six briefs is a small library. Twenty would feel inhabited; six feels demo-able. The ratio is honest about scope.</li>
       </ul>
     </div>
 
@@ -432,7 +427,7 @@ const SAMPLES = [
 ];
 
 function makeBrief(num, title, body) {
-  return `// BRIEF #${String(num).padStart(3,'0')} · ${title}\n// Generated: ${today} · Demo Mode\n\n${body}\n\n// STATUS: [ DRAFT ] · build.2026.05 · Use freely`;
+  return `// BRIEF #${String(num).padStart(3,'0')} · ${title}\n// Curated · ${today}\n\n${body}\n\n// STATUS: [ DRAFT ] · build.2026.05 · Use freely`;
 }
 
 const BRIEF_BODIES = [
@@ -766,15 +761,15 @@ function generate(val) {
 
   /* Disable gen while streaming */
   genBtn.disabled     = true;
-  genBtn.textContent  = '// Generating...';
+  genBtn.textContent  = '// Rendering...';
 
   streamBrief(briefText, () => {
     genBtn.disabled    = false;
-    genBtn.textContent = 'Generate Brief →';
+    genBtn.textContent = 'Render Brief →';
   });
 }
 
-/* ── GENERATE BUTTON */
+/* ── RENDER BUTTON */
 genBtn.addEventListener('click', () => {
   const val = input.value.trim();
   if (!val) return;
@@ -811,10 +806,10 @@ regenBtn.addEventListener('click', () => {
   const briefText = makeBrief(briefNum, BRIEF_TITLES[idx], BRIEF_BODIES[idx]);
   briefIdEl.textContent = `// BRIEF #${String(briefNum).padStart(3,'0')}`;
   genBtn.disabled    = true;
-  genBtn.textContent = '// Generating...';
+  genBtn.textContent = '// Rendering...';
   streamBrief(briefText, () => {
     genBtn.disabled    = false;
-    genBtn.textContent = 'Generate Brief →';
+    genBtn.textContent = 'Render Brief →';
   });
 });
 
