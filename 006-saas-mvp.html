@@ -258,6 +258,7 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
   transition:background .2s;
 }
 .pricing-card.featured { background:var(--surface-hi); }
+body.light .pricing-card.featured { background:#D8D8D6; }
 .pricing-tier  { font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--signal); text-transform:uppercase; margin-bottom:12px; }
 .pricing-price-row { display:flex; align-items:baseline; gap:4px; margin-bottom:6px; }
 .pricing-amount { font-size:40px; font-weight:700; letter-spacing:-.02em; line-height:1; }
@@ -625,6 +626,7 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
         <li>Deploy state machine has three states with three colors: queued (dim), building (yellow + 2.8s progress bar), live (teal). Not status badges — a real fake of a real build.</li>
         <li>Log stream caps at 6 lines and shifts as new ones arrive. Each line enters with <code>opacity 0→1</code>, <code>x: -4→0</code> over 250ms. Logs feel arrived, not pasted.</li>
         <li>Pricing toggle animates the digits: out at <code>opacity 0, y: -6</code>, replace text, in at <code>opacity 1, y: 0</code>. The number changes through the transition — value is the thing, the motion reinforces it.</li>
+        <li>Featured pricing card surface differential is mode-specific: dark mode uses <code>--surface-hi</code>, light mode overrides to <code>#D8D8D6</code>. Tokens with the same RGB delta read different at opposite ends of the value scale.</li>
       </ul>
     </div>
 
@@ -634,7 +636,6 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
         <li>The dashboard is locked at <code>440px</code>. On a 1440 screen there's room for it to breathe to 600+. Fixed height killed a chance to make the product feel substantial.</li>
         <li>Log stream is round-robin from a static array. Real production would surface log severity — error lines should look different from info, and recent errors should pin.</li>
         <li>No empty state on the deploy list. First-time signup would see four <code>[ LIVE ]</code> rows as decoration. The product needs an empty state for new accounts — and I didn't design one.</li>
-        <li>The <code>featured</code> pricing card uses <code>--surface-hi</code> against <code>--surface</code>. The contrast is too close in light mode. Caught text contrast in 008, missed surface differentiation.</li>
       </ul>
     </div>
 
