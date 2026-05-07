@@ -517,7 +517,7 @@ body:has(button:hover) #cur {
         <span class="c-bar-status on" id="stream-status">[ IDLE ]</span>
       </div>
       <div class="c-body">
-        <div class="stream-out" id="stream-out">
+        <div class="stream-out" id="stream-out" aria-live="polite" aria-busy="true">
           <span id="s-text"></span><span class="s-cursor blink" id="s-cur"></span>
         </div>
         <div class="stream-foot">
@@ -904,6 +904,7 @@ let currentSample = 0;
 let streaming     = false;
 let streamTimers  = [];
 
+const streamOut   = document.getElementById('stream-out');
 const sText       = document.getElementById('s-text');
 const sCur        = document.getElementById('s-cur');
 const tokN        = document.getElementById('tok-n');
@@ -932,6 +933,7 @@ function startStream(text) {
   sCur.className = 's-cursor blink';
   tokN.textContent = '0';
   setStreamBadge('streaming');
+  streamOut.setAttribute('aria-busy', 'true');
   btnReplay.disabled = true;
   btnNext.disabled   = true;
   pSend.disabled     = true;
@@ -948,6 +950,7 @@ function startStream(text) {
       streaming = false;
       sCur.className  = 's-cursor off';
       setStreamBadge('done');
+      streamOut.setAttribute('aria-busy', 'false');
       btnReplay.disabled = false;
       btnNext.disabled   = false;
       pSend.disabled     = false;
