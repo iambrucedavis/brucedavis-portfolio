@@ -727,6 +727,7 @@ body:has(button:hover) #cur {
       <div class="review-sub">// Craft decisions</div>
       <ul class="review-list">
         <li>Streaming pauses on punctuation. 65ms after <code>.</code> <code>,</code> <code>—</code> <code>?</code> <code>!</code>. The cursor blinks while writing, goes solid on done. The model finishes a sentence — not a string.</li>
+        <li>Streaming region uses <code>aria-live="polite"</code> with <code>aria-busy</code> toggling. Screen readers get the full sentence once on done — no per-character stutter.</li>
         <li>Confidence encodes four levels in two visual properties: opacity and underline style. Readable without the legend, inspectable on hover.</li>
         <li>The token meter is the same component at three meanings — signal under 75%, warn at 75%, error at 90%. The threshold is the design decision, not the bar.</li>
         <li>Error states are typed by failure class. 429, 503, 500 — different icons, different colors, different actions. Rate limit gets a queue. Inference failure gets a report. Each maps to user agency in the actual failure mode.</li>
@@ -739,7 +740,6 @@ body:has(button:hover) #cur {
         <li>Confidence is static here. Production needs streaming logprobs and a debounced rerender. Different design problem — the values change while you read them.</li>
         <li>Token meter is a single ratio. Real context windows break out system prompt, tools, attached files, history. The bar should be a stack, not a slider.</li>
         <li>Error codes show on the surface. Real users don't read <code>429</code>. Move the code into a collapse and lead with what to do.</li>
-        <li>No <code>aria-live</code> on the streaming region. A screen reader hears nothing. Day-one regression in a system meant for legibility.</li>
       </ul>
     </div>
 
