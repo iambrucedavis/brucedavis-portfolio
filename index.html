@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIX PERCENT STUDIO — Design and build.</title>
+<title>Bruce Davis — Design Engineer</title>
+<!-- // 6% — six percent. small change. whole product. quietly here. -->
+<meta name="description" content="Bruce Davis. Design engineer. Designed in Figma, built in code. One hand the whole way.">
+
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -17,7 +20,7 @@
   --border-hi:  rgba(255,255,255,.16);
   --text:       #EBEBEB;
   --text-dim:   #999999;
-  --text-muted: #555555;
+  --text-muted: #7D7D7D;
   --signal:     #E8601C;
   --signal-rgb: 232,96,28;
 }
@@ -121,8 +124,16 @@ body *{cursor:none;}
   font-weight:700;font-size:15px;
   letter-spacing:.26em;color:var(--signal);
   text-decoration:none;
+  display:inline-flex;align-items:baseline;gap:10px;
 }
-.nav-logo span{color:var(--text-dim);}
+.nav-logo .bd-monogram{color:var(--signal);}
+.nav-logo .bd-six{
+  font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.18em;
+  color:var(--text-muted);font-weight:400;
+  opacity:.55;transition:opacity .2s,color .2s;
+}
+.nav-logo:hover .bd-six{opacity:1;color:var(--signal);}
 .nav-links{display:flex;gap:36px;list-style:none;}
 .nav-links a{
   color:var(--text-muted);font-size:11px;font-weight:600;
@@ -1295,31 +1306,83 @@ body.layout-h #h-panel-indicator { display: block; }
 /* Sys status — footer */
 .sys-status{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:rgba(var(--signal-rgb),.28);margin-top:3px;}
 
+/* ─── A11Y P0 ────────────────────────────── */
+.skip-link{
+  position:absolute;left:-9999px;top:8px;z-index:10001;
+  background:var(--bg);color:var(--signal);
+  padding:10px 16px;border:1px solid var(--signal);
+  font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;text-decoration:none;
+}
+.skip-link:focus{left:8px;}
+
+a:focus-visible,button:focus-visible,
+.exhibit-card:focus-visible,.theme-dot:focus-visible{
+  outline:1px solid var(--signal);
+  outline-offset:3px;
+}
+
+.marquee-wrap:hover .marquee-track,
+.marquee-wrap:focus-within .marquee-track{animation-play-state:paused;}
+
+.layout-toggle-hint{
+  font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;
+  color:var(--text-muted);opacity:.5;margin-right:6px;
+  text-transform:uppercase;
+}
+
+/* Hide custom cursor for non-pointer devices, keyboard, reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+    scroll-behavior:auto!important;
+  }
+  html{scroll-behavior:auto;}
+  body,body *{cursor:auto!important;}
+  #cur,#cur-trail,body::after{display:none!important;}
+  .marquee-track{animation:none!important;transform:none!important;}
+  .glitch-word{animation:none!important;}
+  .hero-build-state{animation:none!important;}
+  .err-badge{animation:none!important;}
+}
+@media (hover:none),(pointer:coarse){
+  body,body *{cursor:auto;}
+  #cur,#cur-trail{display:none;}
+}
 </style>
 </head>
 <body>
 
+<a href="#gallery" class="skip-link">Skip to gallery</a>
+
 <!-- Cursor -->
-<div id="cur"></div>
-<div id="cur-trail"></div>
-<div id="flash"></div>
+<div id="cur" aria-hidden="true"></div>
+<div id="cur-trail" aria-hidden="true"></div>
+<div id="flash" aria-hidden="true"></div>
 
 
 <!-- ── NAV ───────────────────────────────── -->
 <nav id="nav">
-  <a href="#" class="nav-logo">SIX<span> PERCENT</span>™</a>
+  <a href="#" class="nav-logo" aria-label="Bruce Davis — home">
+    <span class="bd-monogram">BD</span>
+    <span class="bd-six">// 6%</span>
+  </a>
   <ul class="nav-links">
     <li><a href="#gallery">Gallery</a></li>
     <li><a href="#method">Method</a></li>
     <li><a href="#process">Process</a></li>
+    <li><a href="bruce-davis-resume.html" target="_blank" rel="noopener">Resume</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:24px;">
-    <button id="layout-toggle" title="Toggle scroll direction" aria-label="Toggle scroll direction">
+    <button id="layout-toggle" title="Toggle scroll direction — vertical or horizontal" aria-label="Toggle scroll direction between vertical and horizontal">
+      <span class="layout-toggle-hint">// scroll</span>
       <span class="lt-v">↕ V</span>
       <span style="opacity:.3;">/</span>
       <span class="lt-h">↔ H</span>
     </button>
-    <a href="#cta" class="nav-cta">Start A Project</a>
+    <a href="#cta" class="nav-cta">Work With Me</a>
   </div>
 </nav>
 
@@ -1330,8 +1393,8 @@ body.layout-h #h-panel-indicator { display: block; }
 <section id="hero">
   <div class="hero-inner">
 
-    <p class="hero-eyebrow reveal">Six Percent Studio
-      <span class="version-stamp" style="margin-left:20px;">// build.2026.05</span>
+    <p class="hero-eyebrow reveal">I'm Bruce Davis. Design engineer.
+      <span class="version-stamp" style="margin-left:20px;">// bd · build.2026.05</span>
       <span class="hero-build-state">[ ACTIVE ]</span>
     </p>
 
@@ -1346,10 +1409,11 @@ body.layout-h #h-panel-indicator { display: block; }
         Interactive products. Design systems. Motion. Interface work.<br>
         Designed in Figma. Built in code.<br>
         <em>One hand the whole way.</em>
+        <span class="annot" style="margin-top:18px;display:block;color:var(--text-dim);opacity:.85;">// open to full-time roles · contract · project work</span>
       </p>
       <div class="hero-actions">
         <a href="#gallery" class="btn-pri">Enter The Gallery →</a>
-        <a href="#cta" class="btn-ghost">Start A Project</a>
+        <a href="bruce-davis-resume.html" target="_blank" rel="noopener" class="btn-ghost">View Resume</a>
       </div>
     </div>
 
@@ -1370,7 +1434,8 @@ body.layout-h #h-panel-indicator { display: block; }
         <span class="annot" style="margin-top:0;">// the gap</span>
         <p>A designer hands the engineer a Figma file. The engineer ships something close. The interaction loses its timing. The animation loses its weight. The brief always shrinks at the seam.</p>
         <span class="annot">// the work</span>
-        <p>I am a Design Engineer. CS degree. Master's in computer graphics technology. Fifteen years in tech. I draft a static surface in Figma and an interactive one in code — because that is where each is most legible. From first sketch to live URL, same hand.</p>
+        <p>I'm a designer who owns the build. I draft static surfaces in Figma, interactive ones in code — wherever each is most legible. From first sketch to live URL, same hand.</p>
+        <p>Backed by a CS degree, a master's in computer graphics technology, and fifteen years in tech.</p>
         <p class="hi">The seam never happens.</p>
       </div>
     </div>
@@ -1382,35 +1447,23 @@ body.layout-h #h-panel-indicator { display: block; }
 
 
 <!-- ── MARQUEE ────────────────────────────── -->
-<div class="marquee-wrap">
+<div class="marquee-wrap" aria-hidden="true">
   <div class="marquee-track">
-    <span>DESIGN AND BUILD</span><span class="sep"></span>
     <span>DESIGN ENGINEER</span><span class="sep"></span>
-    <span>INTERACTIVE PRODUCTS</span><span class="sep"></span>
-    <span>INTERFACE WORK</span><span class="sep"></span>
-    <span>DESIGN SYSTEMS</span><span class="sep"></span>
-    <span>MOTION CRAFT</span><span class="sep"></span>
-    <span>DATA VISUALIZATION</span><span class="sep"></span>
-    <span>WEB TOYS</span><span class="sep"></span>
-    <span>SHIPPED MVPs</span><span class="sep"></span>
-    <span>DESIGNED IN FIGMA · BUILT IN CODE</span><span class="sep"></span>
-    <span>FIRST SKETCH TO PRODUCTION</span><span class="sep"></span>
     <span>NO HANDOFF</span><span class="sep"></span>
-    <span>TASTE AND ENGINEERING</span><span class="sep"></span>
+    <span>FIRST SKETCH TO PRODUCTION</span><span class="sep"></span>
+    <span>DESIGNED IN FIGMA · BUILT IN CODE</span><span class="sep"></span>
+    <span>INTERACTIVE PRODUCTS</span><span class="sep"></span>
+    <span>MOTION CRAFT</span><span class="sep"></span>
+    <span>SECURITY UX</span><span class="sep"></span>
     <span>OWN THE RESULT</span><span class="sep"></span>
-    <span>DESIGN AND BUILD</span><span class="sep"></span>
     <span>DESIGN ENGINEER</span><span class="sep"></span>
-    <span>INTERACTIVE PRODUCTS</span><span class="sep"></span>
-    <span>INTERFACE WORK</span><span class="sep"></span>
-    <span>DESIGN SYSTEMS</span><span class="sep"></span>
-    <span>MOTION CRAFT</span><span class="sep"></span>
-    <span>DATA VISUALIZATION</span><span class="sep"></span>
-    <span>WEB TOYS</span><span class="sep"></span>
-    <span>SHIPPED MVPs</span><span class="sep"></span>
-    <span>DESIGNED IN FIGMA · BUILT IN CODE</span><span class="sep"></span>
-    <span>FIRST SKETCH TO PRODUCTION</span><span class="sep"></span>
     <span>NO HANDOFF</span><span class="sep"></span>
-    <span>TASTE AND ENGINEERING</span><span class="sep"></span>
+    <span>FIRST SKETCH TO PRODUCTION</span><span class="sep"></span>
+    <span>DESIGNED IN FIGMA · BUILT IN CODE</span><span class="sep"></span>
+    <span>INTERACTIVE PRODUCTS</span><span class="sep"></span>
+    <span>MOTION CRAFT</span><span class="sep"></span>
+    <span>SECURITY UX</span><span class="sep"></span>
     <span>OWN THE RESULT</span><span class="sep"></span>
   </div>
 </div>
@@ -1425,8 +1478,8 @@ body.layout-h #h-panel-indicator { display: block; }
     <div class="gallery-grid">
 
       <!-- Project 001 — Featured — Physics Playground (LIVE) -->
-      <a href="six-percent-playground.html" target="_blank" class="exhibit-card live feat reveal">
-        <div class="exhibit-art">
+      <a href="six-percent-playground.html" target="_blank" rel="noopener" class="exhibit-card live feat reveal" aria-label="Open Project 001 — Interactive Physics Playground">
+        <div class="exhibit-art" aria-hidden="true">
           <div class="exhibit-art-num">001</div>
           <div class="exhibit-art-icon">⚛</div>
           <div class="exhibit-live-badge">[ ACTIVE ]</div>
@@ -1436,7 +1489,7 @@ body.layout-h #h-panel-indicator { display: block; }
           <div class="exhibit-plaque-title">Interactive <span style="color:var(--signal);">Physics</span> Playground</div>
           <div class="exhibit-plaque-medium">Matter.js · Web Audio API · Canvas 2D · Gamification</div>
           <div class="exhibit-plaque-desc">
-            Real-time physics. Synthesized audio on collision. Score mechanics, combo multiplier, CHAOS MODE. The question was: what if the demo was the product.
+            Real-time rigid-body physics with synthesized audio on collision, a scoring system, combo multiplier, and CHAOS MODE. Built to argue that the demo can be the product. Proves: motion engineering + sound design + game feel, drafted in code from sketch to ship.
           </div>
           <div class="exhibit-before-after">
             <span class="ex-before">Static Demo Page</span>
@@ -1444,8 +1497,8 @@ body.layout-h #h-panel-indicator { display: block; }
             <span class="ex-after">Playable Product Experience</span>
           </div>
           <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Signature Interactions</span>
             <span class="ex-op-tag">// Real-Time Physics</span>
+            <span class="ex-op-tag">// Synthesized Audio</span>
             <span class="ex-op-tag">// Live &amp; Playable</span>
           </div>
         </div>
@@ -1453,8 +1506,8 @@ body.layout-h #h-panel-indicator { display: block; }
       </a>
 
       <!-- Project 002 — AI Interface Patterns (ACTIVE) -->
-      <a href="002-ai-interface-design-system.html" class="exhibit-card live reveal">
-        <div class="exhibit-art">
+      <a href="002-ai-interface-design-system.html" class="exhibit-card live reveal" aria-label="Open Project 002 — AI Interface Patterns">
+        <div class="exhibit-art" aria-hidden="true">
           <div class="exhibit-art-num">002</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">⌗</div>
@@ -1465,7 +1518,7 @@ body.layout-h #h-panel-indicator { display: block; }
           <div class="exhibit-plaque-title">AI Interface <span style="color:var(--signal);">Patterns</span></div>
           <div class="exhibit-plaque-medium">Streaming · State Machine · Confidence · Failure</div>
           <div class="exhibit-plaque-desc">
-            Five interface patterns for the moments between model outputs. Streaming, state, token pressure, confidence, error recovery. A design exploration — patterns documented and demonstrated, not a shipped library.
+            Five working interface patterns for the moments between model outputs — streaming output, state machine, token pressure, confidence annotator, error recovery. Each demonstrated in code, not described in Figma. Proves: AI UI literacy and the discipline to ship patterns rather than mockups.
           </div>
           <div class="exhibit-before-after">
             <span class="ex-before">Mockup In Figma</span>
@@ -1482,8 +1535,8 @@ body.layout-h #h-panel-indicator { display: block; }
       </a>
 
       <!-- Project 003 — Interactive Data Viz Dashboard (ACTIVE) -->
-      <a href="003-data-viz-dashboard.html" class="exhibit-card live reveal">
-        <div class="exhibit-art">
+      <a href="003-data-viz-dashboard.html" class="exhibit-card live reveal" aria-label="Open Project 003 — Interactive Data Dashboard">
+        <div class="exhibit-art" aria-hidden="true">
           <div class="exhibit-art-num">003</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">▣</div>
@@ -1492,9 +1545,9 @@ body.layout-h #h-panel-indicator { display: block; }
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Project 003 · Data Visualization</div>
           <div class="exhibit-plaque-title">Interactive <span style="color:var(--signal);">Data</span> Dashboard</div>
-          <div class="exhibit-plaque-medium">D3 · Canvas · Animation · Filterable</div>
+          <div class="exhibit-plaque-medium">D3.js v7 · Canvas · Live Filtering · Animated Enter/Exit</div>
           <div class="exhibit-plaque-desc">
-            An animated, filterable dashboard for data with personality. Sports, music, city signal. Designed with intention — not just functional.
+            Three live charts in one surface — FPS monitor, filterable scatter with animated enter/exit, force-directed graph with drag and hover-highlight. Designed for read-first, not feature-first. Proves: data structure literacy plus interaction design that makes the read feel intentional.
           </div>
           <div class="exhibit-before-after">
             <span class="ex-before">Raw Data</span>
@@ -1511,8 +1564,8 @@ body.layout-h #h-panel-indicator { display: block; }
       </a>
 
       <!-- Project 004 — Motion & Interaction Showcase (ACTIVE) -->
-      <a href="004-motion-showcase.html" class="exhibit-card live reveal">
-        <div class="exhibit-art">
+      <a href="004-motion-showcase.html" class="exhibit-card live reveal" aria-label="Open Project 004 — Motion and Interaction Showcase">
+        <div class="exhibit-art" aria-hidden="true">
           <div class="exhibit-art-num">004</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">↻</div>
@@ -1521,9 +1574,9 @@ body.layout-h #h-panel-indicator { display: block; }
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Project 004 · Motion &amp; Interaction</div>
           <div class="exhibit-plaque-title">Motion + Interaction <span style="color:var(--signal);">Showcase</span></div>
-          <div class="exhibit-plaque-medium">GSAP · Framer Motion · Scroll-Driven Animation</div>
+          <div class="exhibit-plaque-medium">GSAP · Scroll-Driven Animation · Magnetic Cursor · No Framework</div>
           <div class="exhibit-plaque-desc">
-            A site about pure interaction craft. Page transitions, scroll-driven sequences, micro-interactions, cursor effects. The craft is the subject.
+            Five GSAP techniques in one file — split-text entrance, scroll-scrub word reveal, magnetic cursor cards, stagger reveal grid, kinetic type sequence. No framework, all native. Proves: motion isn't decoration; it's an interface decision drafted in code.
           </div>
           <div class="exhibit-before-after">
             <span class="ex-before">Static Page</span>
@@ -1531,17 +1584,17 @@ body.layout-h #h-panel-indicator { display: block; }
             <span class="ex-after">Living Surface</span>
           </div>
           <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Craft Forward</span>
-            <span class="ex-op-tag">// Zero Generic Frames</span>
-            <span class="ex-op-tag">// For Brand Studios</span>
+            <span class="ex-op-tag">// Motion Engineering</span>
+            <span class="ex-op-tag">// Scroll-Driven</span>
+            <span class="ex-op-tag">// Native, No Framework</span>
           </div>
         </div>
         <div class="exhibit-floor"></div>
       </a>
 
       <!-- Project 005 — Brief Machine (ACTIVE) -->
-      <a href="005-ai-web-toy.html" class="exhibit-card live reveal">
-        <div class="exhibit-art">
+      <a href="005-ai-web-toy.html" class="exhibit-card live reveal" aria-label="Open Project 005 — The Brief Machine">
+        <div class="exhibit-art" aria-hidden="true">
           <div class="exhibit-art-num">005</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">✦</div>
@@ -1550,9 +1603,9 @@ body.layout-h #h-panel-indicator { display: block; }
         <div class="exhibit-plaque">
           <div class="exhibit-plaque-num">Project 005 · Design Brief Library</div>
           <div class="exhibit-plaque-title">The Brief <span style="color:var(--signal);">Machine</span></div>
-          <div class="exhibit-plaque-medium">Curated Library · Paced Render · Studio Voice</div>
+          <div class="exhibit-plaque-medium">Curated Library · Paced Render · Hand-Written Briefs</div>
           <div class="exhibit-plaque-desc">
-            Six design briefs in the studio's voice, rendered at reading pace. The format is the design; the words are the work.
+            Six design briefs hand-written, structured, and rendered at reading pace. The render itself is the design move — pacing, hierarchy, and voice tuned to make a brief feel like a finished thing. Proves: editorial design judgment and the ability to make small surfaces feel deliberate.
           </div>
           <div class="exhibit-before-after">
             <span class="ex-before">Challenge</span>
@@ -1568,30 +1621,59 @@ body.layout-h #h-panel-indicator { display: block; }
         <div class="exhibit-floor"></div>
       </a>
 
-      <!-- Project 006 — SaaS Product MVP (ACTIVE) -->
-      <a href="006-saas-mvp.html" class="exhibit-card live reveal">
-        <div class="exhibit-art">
+      <!-- Project 006 — SaaS Landing & Brand Study (CONCEPT) -->
+      <a href="006-saas-landing-brand-study.html" class="exhibit-card live reveal" aria-label="Open Project 006 — SaaS Landing and Brand Study">
+        <div class="exhibit-art" aria-hidden="true">
           <div class="exhibit-art-num">006</div>
           <div class="exhibit-art-glow"></div>
           <div class="exhibit-art-icon">⊡</div>
           <div class="exhibit-live-badge">[ ACTIVE ]</div>
         </div>
         <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 006 · Shipped Product</div>
-          <div class="exhibit-plaque-title">SaaS Product <span style="color:var(--signal);">MVP</span></div>
-          <div class="exhibit-plaque-medium">Next.js · Auth · Payments · Live Users</div>
+          <div class="exhibit-plaque-num">Project 006 · Concept Study</div>
+          <div class="exhibit-plaque-title">SaaS Landing &amp; <span style="color:var(--signal);">Brand</span> Study</div>
+          <div class="exhibit-plaque-medium">Surface Design · Brand System · Motion</div>
           <div class="exhibit-plaque-desc">
-            Small but complete. Live. Clean onboarding, intentional UI, real interactions. Shipped beats complex.
+            A visual study of a modern SaaS surface — landing, brand, hierarchy. Designed and built as a concept, not a shipped product. Proof of taste, not proof of users. The move I'd run on any team's SaaS surface stuck on a default template.
           </div>
           <div class="exhibit-before-after">
-            <span class="ex-before">Idea</span>
+            <span class="ex-before">Stock SaaS Template</span>
             <span class="ex-arrow">→</span>
-            <span class="ex-after">Live SaaS</span>
+            <span class="ex-after">Designed Surface</span>
           </div>
           <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Live</span>
-            <span class="ex-op-tag">// Complete</span>
-            <span class="ex-op-tag">// End-To-End</span>
+            <span class="ex-op-tag">// Visual Study</span>
+            <span class="ex-op-tag">// Surface Design</span>
+            <span class="ex-op-tag">// Concept Build</span>
+          </div>
+        </div>
+        <div class="exhibit-floor"></div>
+      </a>
+
+      <!-- Project 007 — Security UX Concept (CONCEPT) -->
+      <a href="007-security-ux-concept.html" class="exhibit-card live reveal" aria-label="Open Project 007 — Security UX Concept">
+        <div class="exhibit-art" aria-hidden="true">
+          <div class="exhibit-art-num">007</div>
+          <div class="exhibit-art-glow"></div>
+          <div class="exhibit-art-icon">⌖</div>
+          <div class="exhibit-live-badge">[ ACTIVE ]</div>
+        </div>
+        <div class="exhibit-plaque">
+          <div class="exhibit-plaque-num">Project 007 · Security UX Concept</div>
+          <div class="exhibit-plaque-title">Phishing Training, <span style="color:var(--signal);">Redesigned</span></div>
+          <div class="exhibit-plaque-medium">Vanilla JS · GSAP · Web Audio · HUD-Style UI</div>
+          <div class="exhibit-plaque-desc">
+            Most security training is compliance theater — dry, ignored, forgotten by Tuesday. This one borrows the visual language of the threat itself: the blade-runner glow of network monitoring, the kinetic pulse of an active attack. A playable "spot the phish" round makes defense feel earned rather than assigned. Behavior change through aesthetic and interaction, not slides.
+          </div>
+          <div class="exhibit-before-after">
+            <span class="ex-before">Compliance Slideshow</span>
+            <span class="ex-arrow">→</span>
+            <span class="ex-after">Engaged Defender</span>
+          </div>
+          <div class="exhibit-op-tags">
+            <span class="ex-op-tag">// Security UX</span>
+            <span class="ex-op-tag">// Behavioral Design</span>
+            <span class="ex-op-tag">// Aesthetic As Pedagogy</span>
           </div>
         </div>
         <div class="exhibit-floor"></div>
@@ -1603,14 +1685,14 @@ body.layout-h #h-panel-indicator { display: block; }
     <div class="gallery-clients reveal">
       <div class="clients-label">// works with</div>
       <div class="client-types">
-        <div class="client-type">AI Startups</div>
+        <div class="client-type">SMBs &amp; Founders</div>
+        <div class="client-type">Enterprises</div>
         <div class="client-type">Product Companies</div>
-        <div class="client-type">Founders</div>
-        <div class="client-type">Creative Agencies</div>
-        <div class="client-type">Consumer AI</div>
+        <div class="client-type">Startups</div>
+        <div class="client-type">Entertainment &amp; Media</div>
+        <div class="client-type">Digital Agencies</div>
         <div class="client-type">Brand Studios</div>
-        <div class="client-type">Design Engineer Hires</div>
-        <div class="client-type">Anyone Shipping</div>
+        <div class="client-type">Hiring Teams</div>
       </div>
     </div>
 
@@ -1621,8 +1703,8 @@ body.layout-h #h-panel-indicator { display: block; }
 <!-- ── H-MODE GALLERY PANES ─────────────────── -->
 
 <section class="h-exhibit-pane" id="h-pane-001">
-  <div class="h-pane-label">// The Gallery · 01 / 06</div>
-  <a href="six-percent-playground.html" target="_blank" class="exhibit-card live">
+  <div class="h-pane-label">// The Gallery · 01 / 07</div>
+  <a href="six-percent-playground.html" target="_blank" rel="noopener" class="exhibit-card live">
     <div class="exhibit-art">
       <div class="exhibit-art-num">001</div>
       <div class="exhibit-art-icon">⚛</div>
@@ -1649,7 +1731,7 @@ body.layout-h #h-panel-indicator { display: block; }
 </section>
 
 <section class="h-exhibit-pane" id="h-pane-002">
-  <div class="h-pane-label">// The Gallery · 02 / 06</div>
+  <div class="h-pane-label">// The Gallery · 02 / 07</div>
   <a href="002-ai-interface-design-system.html" class="exhibit-card live">
     <div class="exhibit-art">
       <div class="exhibit-art-num">002</div>
@@ -1677,7 +1759,7 @@ body.layout-h #h-panel-indicator { display: block; }
 </section>
 
 <section class="h-exhibit-pane" id="h-pane-003">
-  <div class="h-pane-label">// The Gallery · 03 / 06</div>
+  <div class="h-pane-label">// The Gallery · 03 / 07</div>
   <a href="003-data-viz-dashboard.html" class="exhibit-card live">
     <div class="exhibit-art">
       <div class="exhibit-art-num">003</div>
@@ -1705,7 +1787,7 @@ body.layout-h #h-panel-indicator { display: block; }
 </section>
 
 <section class="h-exhibit-pane" id="h-pane-004">
-  <div class="h-pane-label">// The Gallery · 04 / 06</div>
+  <div class="h-pane-label">// The Gallery · 04 / 07</div>
   <a href="004-motion-showcase.html" class="exhibit-card live">
     <div class="exhibit-art">
       <div class="exhibit-art-num">004</div>
@@ -1733,7 +1815,7 @@ body.layout-h #h-panel-indicator { display: block; }
 </section>
 
 <section class="h-exhibit-pane" id="h-pane-005">
-  <div class="h-pane-label">// The Gallery · 05 / 06</div>
+  <div class="h-pane-label">// The Gallery · 05 / 07</div>
   <a href="005-ai-web-toy.html" class="exhibit-card live">
     <div class="exhibit-art">
       <div class="exhibit-art-num">005</div>
@@ -1761,29 +1843,57 @@ body.layout-h #h-panel-indicator { display: block; }
 </section>
 
 <section class="h-exhibit-pane" id="h-pane-006">
-  <div class="h-pane-label">// The Gallery · 06 / 06</div>
-  <a href="006-saas-mvp.html" class="exhibit-card live">
-    <div class="exhibit-art">
+  <div class="h-pane-label">// The Gallery · 06 / 07</div>
+  <a href="006-saas-landing-brand-study.html" class="exhibit-card live">
+    <div class="exhibit-art" aria-hidden="true">
       <div class="exhibit-art-num">006</div>
       <div class="exhibit-art-icon">⊡</div>
       <div class="exhibit-live-badge">[ ACTIVE ]</div>
     </div>
     <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Project 006 · Shipped Product</div>
-      <div class="exhibit-plaque-title">SaaS Product <span style="color:var(--signal);">MVP</span></div>
-      <div class="exhibit-plaque-medium">Next.js · Auth · Payments · Live Users</div>
-      <div class="exhibit-plaque-desc">Small but complete. Live. Clean onboarding, intentional UI, real interactions. Shipped beats complex.</div>
+      <div class="exhibit-plaque-num">Project 006 · Concept Study</div>
+      <div class="exhibit-plaque-title">SaaS Landing &amp; <span style="color:var(--signal);">Brand</span> Study</div>
+      <div class="exhibit-plaque-medium">Surface Design · Brand System · Motion</div>
+      <div class="exhibit-plaque-desc">A visual study of a modern SaaS surface — landing, brand, hierarchy. Designed and built as a concept, not a shipped product. Proof of taste, not proof of users. The move I'd run on any team's SaaS surface stuck on a default template.</div>
       <div class="exhibit-before-after">
-        <span class="ex-before">Idea</span>
+        <span class="ex-before">Stock SaaS Template</span>
         <span class="ex-arrow">→</span>
-        <span class="ex-after">Live SaaS</span>
+        <span class="ex-after">Designed Surface</span>
       </div>
       <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// Live</span>
-        <span class="ex-op-tag">// Complete</span>
-        <span class="ex-op-tag">// End-To-End</span>
+        <span class="ex-op-tag">// Visual Study</span>
+        <span class="ex-op-tag">// Surface Design</span>
+        <span class="ex-op-tag">// Concept Build</span>
       </div>
-      <a href="006-saas-mvp.html" class="h-pane-open-btn">View Project →</a>
+      <a href="006-saas-landing-brand-study.html" class="h-pane-open-btn">View Project →</a>
+    </div>
+  </a>
+</section>
+
+<section class="h-exhibit-pane" id="h-pane-007">
+  <div class="h-pane-label">// The Gallery · 07 / 07</div>
+  <a href="007-security-ux-concept.html" class="exhibit-card live">
+    <div class="exhibit-art" aria-hidden="true">
+      <div class="exhibit-art-num">007</div>
+      <div class="exhibit-art-icon">⌖</div>
+      <div class="exhibit-live-badge">[ ACTIVE ]</div>
+    </div>
+    <div class="exhibit-plaque">
+      <div class="exhibit-plaque-num">Project 007 · Security UX Concept</div>
+      <div class="exhibit-plaque-title">Phishing Training, <span style="color:var(--signal);">Redesigned</span></div>
+      <div class="exhibit-plaque-medium">Vanilla JS · GSAP · Web Audio · HUD-Style UI</div>
+      <div class="exhibit-plaque-desc">Most security training is compliance theater. This one borrows the visual language of the threat itself — the blade-runner glow of network monitoring, the kinetic pulse of an active attack. A playable "spot the phish" round makes defense feel earned rather than assigned.</div>
+      <div class="exhibit-before-after">
+        <span class="ex-before">Compliance Slideshow</span>
+        <span class="ex-arrow">→</span>
+        <span class="ex-after">Engaged Defender</span>
+      </div>
+      <div class="exhibit-op-tags">
+        <span class="ex-op-tag">// Security UX</span>
+        <span class="ex-op-tag">// Behavioral Design</span>
+        <span class="ex-op-tag">// Aesthetic As Pedagogy</span>
+      </div>
+      <a href="007-security-ux-concept.html" class="h-pane-open-btn">View Project →</a>
     </div>
   </a>
 </section>
@@ -1906,27 +2016,30 @@ body.layout-h #h-panel-indicator { display: block; }
 <!-- ── CTA ────────────────────────────────── -->
 <section id="cta">
   <div class="cta-inner reveal">
-    <span class="cta-tag">// Open For Projects</span>
-    <h2 class="cta-title">BRING THE<br>IDEA. I'LL<br><span>BUILD IT.</span></h2>
-    <p class="cta-sub">An interactive product, a motion piece, a design system, a SaaS MVP. First sketch to live URL. That's the conversation.</p>
+    <span class="cta-tag">// open to full-time · contract · project work</span>
+    <h2 class="cta-title">WORK<br>WITH<br><span>ME.</span></h2>
+    <p class="cta-sub">Full-time roles, contract engagements, or a single shipped surface. First sketch to live URL — same hand the whole way.</p>
     <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation →</a>
-    <p class="cta-note">No decks. No briefs. Bring the idea.</p>
+    <p class="cta-note">Resume below. Email above. No deck required.</p>
     <a href="mailto:heymrlb@gmail.com" class="cta-email">heymrlb@gmail.com</a>
   </div>
 </section>
 
 
 <!-- ── FOOTER ─────────────────────────────── -->
+<!-- // 6% — six percent. small change. whole product. -->
 <footer>
-  <div class="footer-logo">SIX PERCENT™</div>
+  <div class="footer-logo"><span style="color:var(--signal);">BD</span><span style="color:var(--text-muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;font-weight:400;margin-left:10px;opacity:.55;">// 6%</span></div>
   <div class="footer-links">
     <a href="#gallery">Gallery</a>
     <a href="#method">Method</a>
     <a href="#process">Process</a>
+    <a href="bruce-davis-resume.html" target="_blank" rel="noopener">Resume</a>
+    <a href="bruce-davis-resume.pdf" target="_blank" rel="noopener">↓ PDF</a>
     <a href="#cta">Contact</a>
   </div>
   <div>
-    <div class="footer-copy">© 2026 SIX PERCENT STUDIO · CHARLOTTE, NC <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
+    <div class="footer-copy">© 2026 Bruce Davis · Charlotte, NC · Remote <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
     <div class="sys-status">// STATUS: ACTIVE ·· DESIGN: IN CODE ·· BUILD: SHIPPING</div>
   </div>
 </footer>
@@ -1936,6 +2049,10 @@ body.layout-h #h-panel-indicator { display: block; }
 <div id="h-panel-indicator">// <span id="h-panel-cur">01</span> <span style="opacity:.3">/ </span><span id="h-panel-tot">10</span></div>
 
 <script>
+/* ─── 6% — easter egg ───────────────────────── */
+console.log('%c// 6% — six percent. small change. whole product.', 'color:#E8601C;font-family:monospace;letter-spacing:.04em;');
+console.log('%c// design + build · bruce davis · 2026', 'color:#7d7d7d;font-family:monospace;letter-spacing:.04em;');
+
 /* ─── CURSOR ────────────────────────────────── */
 const cur   = document.getElementById('cur');
 const trail = document.getElementById('cur-trail');

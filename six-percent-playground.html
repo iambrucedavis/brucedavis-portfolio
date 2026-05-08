@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>THE PLAYGROUND — SIX PERCENT</title>
+<!-- // v2026.05.07-fix · TDZ boot order corrected. -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 <style>
@@ -310,7 +315,12 @@ function sizeCanvases() {
 }
 
 window.addEventListener('resize', sizeCanvases, { passive: true });
-sizeCanvases();
+
+// Set canvas dimensions inline at boot (sizeCanvases() also calls updateWalls/initRain
+// which reference let-bindings declared below — defer the full call until after init).
+W = window.innerWidth; H = window.innerHeight;
+bgCvs.width  = phCvs.width  = W;
+bgCvs.height = phCvs.height = H;
 
 /* ═══════════════════════════════════════
    PHYSICS ENGINE
@@ -816,6 +826,9 @@ function playChaos() {
 /* ═══════════════════════════════════════
    BOOT
 ═══════════════════════════════════════ */
+
+// Init rain (defined above; references let rainDrops which is now initialized)
+initRain();
 
 // Spawn initial blocks
 for (let i = 0; i < 6; i++) {
