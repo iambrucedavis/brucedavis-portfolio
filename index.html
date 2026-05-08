@@ -29,11 +29,14 @@
 
 /* ─── SIGNAL THEMES ─────────────────────── */
 [data-theme="og"]    { --signal: #E8601C; --signal-rgb: 232,96,28; }
-[data-theme="solar"] { --signal: #D42B2B; --signal-rgb: 212,43,43; }
-[data-theme="wave"]  { --signal: #1A8A7A; --signal-rgb: 26,138,122; }
+[data-theme="solar"] { --signal: #FF4D4D; --signal-rgb: 255,77,77; }
+[data-theme="wave"]  { --signal: #2BC4AB; --signal-rgb: 43,196,171; }
 [data-theme="volt"]  { --signal: #B8E02A; --signal-rgb: 184,224,42; }
 [data-theme="haze"]  { --signal: #2AA8C4; --signal-rgb: 42,168,196; }
 [data-theme="noir"]  { --signal: #C0C0C0; --signal-rgb: 192,192,192; }
+/* Light-mode signal overrides for themes whose dark-mode hex fails AA on light bg */
+[data-theme="solar"] body.light { --signal: #B22020; --signal-rgb: 178,32,32; }
+[data-theme="wave"]  body.light { --signal: #0E695C; --signal-rgb: 14,105,92; }
 
 /* ─── LIGHT MODE ─────────────────────────── */
 body.light {
@@ -341,7 +344,7 @@ body *{cursor:none;}
 }
 .sector-card:hover .sector-name{color:var(--signal);}
 .sector-hook{
-  font-size:13px;color:var(--text-muted);line-height:1.75;
+  font-size:14px;color:var(--text-muted);line-height:1.75;
   margin-bottom:14px;
 }
 .sector-example{
@@ -566,8 +569,8 @@ body *{cursor:none;}
 }
 .exhibit-card.soon .exhibit-plaque-medium{border-left-color:var(--border);color:#2a2044;}
 .exhibit-plaque-desc{
-  font-size:13px;color:var(--text-muted);
-  line-height:1.8;flex:1;
+  font-size:14px;color:var(--text-muted);
+  line-height:1.75;flex:1;
 }
 .exhibit-card.soon .exhibit-plaque-desc{color:#1e172e;}
 .exhibit-before-after{
@@ -654,6 +657,7 @@ body *{cursor:none;}
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:1px;background:var(--border);
   margin-top:60px;
+  list-style:none;padding:0;
 }
 .process-step{
   background:var(--bg);
@@ -696,6 +700,7 @@ body *{cursor:none;}
   flex-wrap:wrap;
   border:1px solid var(--border);
   display:inline-flex;
+  list-style:none;padding:0;margin:0;
 }
 .client-type{
   padding:18px 32px;
@@ -850,6 +855,7 @@ footer{
   font-family:'Space Mono',monospace;
   border:1px solid var(--border);
   border-bottom:none;
+  list-style:none;padding:0;margin:0;
 }
 .op-list-item{
   padding:14px 20px;
@@ -1684,16 +1690,16 @@ a:focus-visible,button:focus-visible,
     <!-- Client strip — inline at gallery close -->
     <div class="gallery-clients reveal">
       <div class="clients-label">// works with</div>
-      <div class="client-types">
-        <div class="client-type">SMBs &amp; Founders</div>
-        <div class="client-type">Enterprises</div>
-        <div class="client-type">Product Companies</div>
-        <div class="client-type">Startups</div>
-        <div class="client-type">Entertainment &amp; Media</div>
-        <div class="client-type">Digital Agencies</div>
-        <div class="client-type">Brand Studios</div>
-        <div class="client-type">Hiring Teams</div>
-      </div>
+      <ul class="client-types">
+        <li class="client-type">SMBs &amp; Founders</li>
+        <li class="client-type">Enterprises</li>
+        <li class="client-type">Product Companies</li>
+        <li class="client-type">Startups</li>
+        <li class="client-type">Entertainment &amp; Media</li>
+        <li class="client-type">Digital Agencies</li>
+        <li class="client-type">Brand Studios</li>
+        <li class="client-type">Hiring Teams</li>
+      </ul>
     </div>
 
   </div>
@@ -1909,14 +1915,14 @@ a:focus-visible,button:focus-visible,
       <!-- Operating Logic list -->
       <div class="reveal-left">
         <div class="op-list-label">// The Operating Logic</div>
-        <div class="op-list">
-          <div class="op-list-item"><span class="op-n">01</span> Design + Build</div>
-          <div class="op-list-item"><span class="op-n">02</span> Sketch In Code</div>
-          <div class="op-list-item"><span class="op-n">03</span> Own The Motion</div>
-          <div class="op-list-item"><span class="op-n">04</span> Own The Interaction</div>
-          <div class="op-list-item"><span class="op-n">05</span> Sketch In The Medium</div>
-          <div class="op-list-item"><span class="op-n">06</span> No Handoff</div>
-        </div>
+        <ol class="op-list">
+          <li class="op-list-item"><span class="op-n">01</span> Design + Build</li>
+          <li class="op-list-item"><span class="op-n">02</span> Sketch In Code</li>
+          <li class="op-list-item"><span class="op-n">03</span> Own The Motion</li>
+          <li class="op-list-item"><span class="op-n">04</span> Own The Interaction</li>
+          <li class="op-list-item"><span class="op-n">05</span> Sketch In The Medium</li>
+          <li class="op-list-item"><span class="op-n">06</span> No Handoff</li>
+        </ol>
       </div>
       <!-- Philosophy copy -->
       <div class="method-copy reveal-right">
@@ -1988,27 +1994,27 @@ a:focus-visible,button:focus-visible,
   <div class="section-inner">
     <div class="section-label reveal">How It Works</div>
     <h2 class="section-title reveal">Three moves.<br>One ship.</h2>
-    <div class="process-steps">
-      <div class="process-step reveal">
+    <ol class="process-steps">
+      <li class="process-step reveal">
         <span class="op-tag">// start here</span>
         <div class="step-n">01</div>
         <div class="step-title">Bring The Idea</div>
         <div class="step-body">A product, an interaction, a feature, a brief. We talk it through. I sketch in Figma where it helps, in code where it helps more. The output is a prototype, not a deck.</div>
-      </div>
-      <div class="process-step reveal">
+      </li>
+      <li class="process-step reveal">
         <span class="op-tag">// own it</span>
         <div class="step-n">02</div>
         <div class="step-title">Build The Real Thing</div>
         <div class="step-body">Production code from day one. The interaction is built in build. The animation runs in the browser. The state and motion are owned by the same hand. No handoff between design and engineering — same person.</div>
-      </div>
-      <div class="process-step reveal">
+      </li>
+      <li class="process-step reveal">
         <span class="op-tag">// live</span>
         <div class="step-n">03</div>
         <div class="step-title">Push To Live</div>
         <div class="step-body">Deploy. Iterate. Polish in public. Micro-interactions tightened, motion timing refined, accessibility checked. The work is the URL.</div>
         <span class="step-trace">// trace_id: 0x3f2a · status: SHIPPED · uptime: ACTIVE</span>
-      </div>
-    </div>
+      </li>
+    </ol>
   </div>
 </section>
 

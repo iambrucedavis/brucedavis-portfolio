@@ -33,8 +33,10 @@
   --mono:         'Space Mono', monospace;
 }
 [data-theme="og"]    { --signal:#E8601C; --signal-rgb:232,96,28; }
-[data-theme="solar"] { --signal:#D42B2B; --signal-rgb:212,43,43; }
-[data-theme="wave"]  { --signal:#1A8A7A; --signal-rgb:26,138,122; }
+[data-theme="solar"] { --signal:#FF4D4D; --signal-rgb:255,77,77; }
+[data-theme="wave"]  { --signal:#2BC4AB; --signal-rgb:43,196,171; }
+[data-theme="solar"] body.light { --signal:#B22020; --signal-rgb:178,32,32; }
+[data-theme="wave"]  body.light { --signal:#0E695C; --signal-rgb:14,105,92; }
 [data-theme="volt"]  { --signal:#B8E02A; --signal-rgb:184,224,42; }
 [data-theme="haze"]  { --signal:#2AA8C4; --signal-rgb:42,168,196; }
 [data-theme="noir"]  { --signal:#C0C0C0; --signal-rgb:192,192,192; }
@@ -279,6 +281,32 @@ body::before{
   background:var(--border);
   border-bottom:1px solid rgba(var(--amber-rgb),.15);
   position:relative;z-index:2;
+}
+
+/* Audio enable toggle — top-right of demo-frame */
+.audio-toggle{
+  position:absolute;top:14px;right:18px;z-index:4;
+  font-family:var(--mono);
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  padding:7px 12px;background:transparent;
+  border:1px solid var(--border-hi);color:var(--text-dim);
+  cursor:none;transition:background .2s,border-color .2s,color .2s;
+}
+.audio-toggle:hover{color:var(--amber);border-color:rgba(var(--amber-rgb),.5);}
+.audio-toggle.on{
+  color:var(--amber);
+  border-color:rgba(var(--amber-rgb),.5);
+  background:rgba(var(--amber-rgb),.08);
+}
+.audio-toggle .ind{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--text-muted);margin-right:8px;
+  transition:background .2s;vertical-align:middle;
+}
+.audio-toggle.on .ind{
+  background:var(--amber);
+  box-shadow:0 0 6px rgba(var(--amber-rgb),.7);
+  animation:threat-pulse 2.4s infinite;
 }
 .hud-cell{
   background:var(--bg-deep);
@@ -686,6 +714,11 @@ footer{
 
     <div class="demo-frame reveal">
 
+      <button class="audio-toggle" id="audio-toggle" aria-pressed="false" aria-label="Enable audio feedback for hotspot interactions">
+        <span class="ind" aria-hidden="true"></span>
+        <span class="audio-toggle-label">♪ Enable Audio</span>
+      </button>
+
       <!-- HUD bar -->
       <div class="hud-bar" aria-live="polite">
         <div class="hud-cell">
@@ -867,17 +900,38 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold:.08 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-/* ── AUDIO (optional, soft) */
+/* ── AUDIO (gated — opt-in via user gesture) */
 let audioCtx = null;
-function audio(){
-  if (!motionOK) return null;
-  if (audioCtx) return audioCtx;
-  try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-  catch(e) { return null; }
-  return audioCtx;
-}
+let audioOn  = false;
+
+const audioToggleBtn = document.getElementById('audio-toggle');
+const audioToggleLbl = audioToggleBtn?.querySelector('.audio-toggle-label');
+
+audioToggleBtn?.addEventListener('click', async () => {
+  if (!motionOK) return;
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e) { return; }
+  }
+  if (!audioOn) {
+    try { await audioCtx.resume(); } catch(e) {}
+    audioOn = true;
+    audioToggleBtn.classList.add('on');
+    audioToggleBtn.setAttribute('aria-pressed', 'true');
+    if (audioToggleLbl) audioToggleLbl.textContent = '♪ Audio On';
+    blip(660, .12, 'triangle'); // confirm tone
+  } else {
+    try { await audioCtx.suspend(); } catch(e) {}
+    audioOn = false;
+    audioToggleBtn.classList.remove('on');
+    audioToggleBtn.setAttribute('aria-pressed', 'false');
+    if (audioToggleLbl) audioToggleLbl.textContent = '♪ Enable Audio';
+  }
+});
+
 function blip(freq, dur, type){
-  const ctx = audio(); if (!ctx) return;
+  if (!audioOn || !audioCtx || !motionOK) return;
+  const ctx = audioCtx;
   const o = ctx.createOscillator(); const g = ctx.createGain();
   o.type = type || 'sine'; o.frequency.value = freq;
   g.gain.setValueAtTime(0, ctx.currentTime);
