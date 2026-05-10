@@ -14,6 +14,8 @@ import { register as registerProjectScaffold } from './tools/project_scaffold.js
 import { register as registerDocExtract } from './tools/doc_extract.js';
 import { register as registerPiiMask } from './tools/pii_mask.js';
 import { register as registerDocValidate } from './tools/doc_validate.js';
+import { register as registerHitlRoute }   from './tools/hitl_route.js';
+import { register as registerCostReport }  from './tools/cost_report.js';
 
 const server = new McpServer({
   name: 'six-percent-mcp',
@@ -28,6 +30,8 @@ registerProjectScaffold(server);
 registerDocExtract(server);
 registerPiiMask(server);
 registerDocValidate(server);
+registerHitlRoute(server);
+registerCostReport(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
