@@ -1,0 +1,128 @@
+{
+  "data": {
+    "invoice_number": "INV-2026-04-887",
+    "issue_date": "2026-04-30",
+    "due_date": "2026-05-30",
+    "terms": "Net 30",
+    "po_number": "PO-44120",
+    "vendor": {
+      "name": "NORTH AXIS PRINTWORKS LLC",
+      "address": "2240 Industrial Way, Portland, OR 97210",
+      "tax_id": "84-2210947"
+    },
+    "bill_to": {
+      "name": "Lattice & Loom Apparel",
+      "attn_name": "[NAME-REDACTED]",
+      "attn_email": "[EMAIL-REDACTED]",
+      "address": "414 Burnside St, Suite 220, Portland, OR 97209"
+    },
+    "ship_to": {
+      "name": "Lattice & Loom Apparel — Warehouse",
+      "address": "812 Holgate Blvd, Bay 4, Portland, OR 97202"
+    },
+    "line_items": [
+      {
+        "number": 1,
+        "description": "Cotton/poly tee — silkscreen, 2 colors, front + sleeve hit, sizes S–XXL",
+        "qty": 240,
+        "unit_price": 6.4,
+        "amount": 1536
+      },
+      {
+        "number": 2,
+        "description": "Heavyweight hoodie — embroidered chest logo, 12k stitch count, sizes S–XL",
+        "qty": 80,
+        "unit_price": 24.5,
+        "amount": 1960
+      },
+      {
+        "number": 3,
+        "description": "Woven label — sewn-in, 50mm × 25mm, custom Pantone 7686 C",
+        "qty": 320,
+        "unit_price": 0.85,
+        "amount": 272
+      },
+      {
+        "number": 4,
+        "description": "Setup + screen burn — 2 colors, 1 plate",
+        "qty": 1,
+        "unit_price": 85,
+        "amount": 85
+      },
+      {
+        "number": 5,
+        "description": "Rush surcharge (5-day turn vs standard 12)",
+        "qty": 1,
+        "unit_price": 220,
+        "amount": 220
+      }
+    ],
+    "subtotal": 4073,
+    "tax": 0,
+    "total": 4073,
+    "payment": {
+      "method": "ACH",
+      "routing": "[BANKING-REDACTED]",
+      "account": "[BANKING-REDACTED]",
+      "bank": "Umpqua Bank",
+      "late_fee_pct": 1.5
+    },
+    "contact": {
+      "email": "[EMAIL-REDACTED]",
+      "phone": "[PHONE-REDACTED]"
+    }
+  },
+  "redactions": [
+    {
+      "field_path": "bill_to.attn_name",
+      "pii_type": "name",
+      "masked_value": "[NAME-REDACTED]",
+      "original_hash": "b0472da2c0c302c7",
+      "method": "path"
+    },
+    {
+      "field_path": "bill_to.attn_email",
+      "pii_type": "email",
+      "masked_value": "[EMAIL-REDACTED]",
+      "original_hash": "d517bd661d4bc3d3",
+      "method": "path"
+    },
+    {
+      "field_path": "contact.email",
+      "pii_type": "email",
+      "masked_value": "[EMAIL-REDACTED]",
+      "original_hash": "a48710baa24b67f8",
+      "method": "path"
+    },
+    {
+      "field_path": "contact.phone",
+      "pii_type": "phone",
+      "masked_value": "[PHONE-REDACTED]",
+      "original_hash": "67631be36609b2f7",
+      "method": "path"
+    },
+    {
+      "field_path": "payment.routing",
+      "pii_type": "banking",
+      "masked_value": "[BANKING-REDACTED]",
+      "original_hash": "90d21e29b3445e20",
+      "method": "path"
+    },
+    {
+      "field_path": "payment.account",
+      "pii_type": "banking",
+      "masked_value": "[BANKING-REDACTED]",
+      "original_hash": "5f0b7b1ef19ca666",
+      "method": "path"
+    }
+  ],
+  "contextual_review_advised": [],
+  "estimate": {
+    "stage": "mask",
+    "input_tokens": 353,
+    "method": "char_count / 4 — deterministic pass only",
+    "redactions_count": 6
+  },
+  "on_completion": "Pass masked data to doc_validate with doc_type='invoice'. Optionally scan contextual_review_advised fields first and apply additional redactions.",
+  "note": "Deterministic pass applied. The contextual_review_advised list flags free-text fields the calling agent should scan for residual PII."
+}

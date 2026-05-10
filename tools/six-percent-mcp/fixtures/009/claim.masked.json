@@ -1,0 +1,191 @@
+{
+  "data": {
+    "claim_id": "NSM-2026-0451829",
+    "submitted_at": "2026-04-22T11:43:00-05:00",
+    "channel": "mobile app",
+    "policyholder": {
+      "name": "[NAME-REDACTED]",
+      "dob": "[DOB-REDACTED]",
+      "ssn": "[SSN-REDACTED]",
+      "policy_number": "NSM-A-220947-04",
+      "phone": "[PHONE-REDACTED]",
+      "email": "[EMAIL-REDACTED]",
+      "address": {
+        "street": "[ADDRESS-REDACTED]",
+        "unit": "[ADDRESS-REDACTED]",
+        "city": "[ADDRESS-REDACTED]",
+        "state": "MI",
+        "zip": "[ADDRESS-REDACTED]"
+      }
+    },
+    "incident": {
+      "date_of_loss": "2026-04-19",
+      "time": "7:42 PM",
+      "location": "I-94 westbound, mile marker 211, Detroit MI",
+      "conditions": "Light rain, dusk",
+      "police_report": {
+        "present": true,
+        "agency": "Detroit PD",
+        "report_number": "DPD-26-44819"
+      },
+      "other_party": {
+        "present": true,
+        "driver_name": "[NAME-REDACTED]",
+        "insurer": "GEICO",
+        "policy_number": "[IDENTIFIER-REDACTED]"
+      }
+    },
+    "description": "Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.",
+    "vehicle": {
+      "year": 2022,
+      "make": "Toyota",
+      "model": "Camry",
+      "trim": "SE",
+      "vin": "4T1G11AK7NU654221",
+      "license_plate": "MI 8XJ-K42",
+      "damage_summary": "Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.",
+      "repair_estimate_usd": 4820
+    },
+    "amounts": {
+      "vehicle_repair": 4820,
+      "rental_coverage": 480,
+      "diminished_value": 650,
+      "total_claimed": 5950,
+      "deductible": 500,
+      "net_claim": 5450
+    },
+    "attachments": [
+      {
+        "type": "photo",
+        "description": "8 photos of damage (mobile upload)"
+      },
+      {
+        "type": "pdf",
+        "description": "Police report PDF (uploaded 04/22 11:38 AM)"
+      },
+      {
+        "type": "pdf",
+        "description": "Repair estimate from Detroit Auto Body ($4,820.00)"
+      }
+    ],
+    "consent": {
+      "recorded_statement": true,
+      "inspection_window_days": 5
+    },
+    "signature": {
+      "name": "[NAME-REDACTED]",
+      "date": "2026-04-22"
+    }
+  },
+  "redactions": [
+    {
+      "field_path": "policyholder.name",
+      "pii_type": "name",
+      "masked_value": "[NAME-REDACTED]",
+      "original_hash": "5ce90f300c8bf412",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.dob",
+      "pii_type": "dob",
+      "masked_value": "[DOB-REDACTED]",
+      "original_hash": "d01eae10f927a344",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.ssn",
+      "pii_type": "ssn",
+      "masked_value": "[SSN-REDACTED]",
+      "original_hash": "46cd29eb705ff3bb",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.phone",
+      "pii_type": "phone",
+      "masked_value": "[PHONE-REDACTED]",
+      "original_hash": "ee1afe8a5c762cb1",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.email",
+      "pii_type": "email",
+      "masked_value": "[EMAIL-REDACTED]",
+      "original_hash": "4a5bc7d5894ce3db",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.address.street",
+      "pii_type": "address",
+      "masked_value": "[ADDRESS-REDACTED]",
+      "original_hash": "06b8adb2db263664",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.address.unit",
+      "pii_type": "address",
+      "masked_value": "[ADDRESS-REDACTED]",
+      "original_hash": "664c85d16e0d24fe",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.address.city",
+      "pii_type": "address",
+      "masked_value": "[ADDRESS-REDACTED]",
+      "original_hash": "08382a413cd3de61",
+      "method": "path"
+    },
+    {
+      "field_path": "policyholder.address.zip",
+      "pii_type": "address",
+      "masked_value": "[ADDRESS-REDACTED]",
+      "original_hash": "cc5c5c3ecd2e4448",
+      "method": "path"
+    },
+    {
+      "field_path": "incident.other_party.driver_name",
+      "pii_type": "name",
+      "masked_value": "[NAME-REDACTED]",
+      "original_hash": "7968957d95c73dbc",
+      "method": "path"
+    },
+    {
+      "field_path": "incident.other_party.policy_number",
+      "pii_type": "identifier",
+      "masked_value": "[IDENTIFIER-REDACTED]",
+      "original_hash": "b48962519ea808e3",
+      "method": "path"
+    },
+    {
+      "field_path": "signature.name",
+      "pii_type": "name",
+      "masked_value": "[NAME-REDACTED]",
+      "original_hash": "5ce90f300c8bf412",
+      "method": "path"
+    }
+  ],
+  "contextual_review_advised": [
+    {
+      "field_path": "description",
+      "value": "Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.",
+      "reason": "Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."
+    },
+    {
+      "field_path": "incident.location",
+      "value": "I-94 westbound, mile marker 211, Detroit MI",
+      "reason": "Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."
+    },
+    {
+      "field_path": "vehicle.damage_summary",
+      "value": "Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.",
+      "reason": "Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."
+    }
+  ],
+  "estimate": {
+    "stage": "mask",
+    "input_tokens": 471,
+    "method": "char_count / 4 — deterministic pass only",
+    "redactions_count": 12
+  },
+  "on_completion": "Pass masked data to doc_validate with doc_type='claim'. Optionally scan contextual_review_advised fields first and apply additional redactions.",
+  "note": "Deterministic pass applied. The contextual_review_advised list flags free-text fields the calling agent should scan for residual PII."
+}
