@@ -1,0 +1,19 @@
+{
+  "name": "six-percent-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing Bruce Davis's design practice — vault, palettes, voice rules, portfolio scaffolding — as tools.",
+  "type": "module",
+  "bin": {
+    "six-percent-mcp": "./src/server.js"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@notionhq/client": "^2.2.15",
+    "dotenv": "^16.4.5",
+    "zod": "^4.4.3"
+  }
+}
