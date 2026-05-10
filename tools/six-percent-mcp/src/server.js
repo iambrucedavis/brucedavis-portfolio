@@ -11,6 +11,7 @@ import { register as registerVaultCapture } from './tools/vault_capture.js';
 import { register as registerPaletteSuggest } from './tools/palette_suggest.js';
 import { register as registerVoiceCheck } from './tools/voice_check.js';
 import { register as registerProjectScaffold } from './tools/project_scaffold.js';
+import { register as registerDocExtract } from './tools/doc_extract.js';
 
 const server = new McpServer({
   name: 'six-percent-mcp',
@@ -22,6 +23,7 @@ registerVaultCapture(server);
 registerPaletteSuggest(server);
 registerVoiceCheck(server);
 registerProjectScaffold(server);
+registerDocExtract(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

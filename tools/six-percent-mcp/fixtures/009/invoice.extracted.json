@@ -1,0 +1,73 @@
+{
+  "invoice_number": "INV-2026-04-887",
+  "issue_date": "2026-04-30",
+  "due_date": "2026-05-30",
+  "terms": "Net 30",
+  "po_number": "PO-44120",
+  "vendor": {
+    "name": "NORTH AXIS PRINTWORKS LLC",
+    "address": "2240 Industrial Way, Portland, OR 97210",
+    "tax_id": "84-2210947"
+  },
+  "bill_to": {
+    "name": "Lattice & Loom Apparel",
+    "attn_name": "Accounts Payable",
+    "attn_email": "ramona.singh@latticeandloom.co",
+    "address": "414 Burnside St, Suite 220, Portland, OR 97209"
+  },
+  "ship_to": {
+    "name": "Lattice & Loom Apparel — Warehouse",
+    "address": "812 Holgate Blvd, Bay 4, Portland, OR 97202"
+  },
+  "line_items": [
+    {
+      "number": 1,
+      "description": "Cotton/poly tee — silkscreen, 2 colors, front + sleeve hit, sizes S–XXL",
+      "qty": 240,
+      "unit_price": 6.40,
+      "amount": 1536.00
+    },
+    {
+      "number": 2,
+      "description": "Heavyweight hoodie — embroidered chest logo, 12k stitch count, sizes S–XL",
+      "qty": 80,
+      "unit_price": 24.50,
+      "amount": 1960.00
+    },
+    {
+      "number": 3,
+      "description": "Woven label — sewn-in, 50mm × 25mm, custom Pantone 7686 C",
+      "qty": 320,
+      "unit_price": 0.85,
+      "amount": 272.00
+    },
+    {
+      "number": 4,
+      "description": "Setup + screen burn — 2 colors, 1 plate",
+      "qty": 1,
+      "unit_price": 85.00,
+      "amount": 85.00
+    },
+    {
+      "number": 5,
+      "description": "Rush surcharge (5-day turn vs standard 12)",
+      "qty": 1,
+      "unit_price": 220.00,
+      "amount": 220.00
+    }
+  ],
+  "subtotal": 4073.00,
+  "tax": 0,
+  "total": 4073.00,
+  "payment": {
+    "method": "ACH",
+    "routing": "123000220",
+    "account": "884-22-9947",
+    "bank": "Umpqua Bank",
+    "late_fee_pct": 1.5
+  },
+  "contact": {
+    "email": "billing@northaxisprintworks.com",
+    "phone": "(503) 555-0814"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "claim_id": "NSM-2026-0451829",
+  "submitted_at": "2026-04-22T11:43:00-05:00",
+  "channel": "mobile app",
+  "policyholder": {
+    "name": "Marcus J. Whitfield",
+    "dob": "1982-08-14",
+    "ssn": "541-22-8893",
+    "policy_number": "NSM-A-220947-04",
+    "phone": "(313) 555-0119",
+    "email": "mwhitfield.detroit@gmail.com",
+    "address": {
+      "street": "2847 Linwood Ave",
+      "unit": "Apt 4B",
+      "city": "Detroit",
+      "state": "MI",
+      "zip": "48206"
+    }
+  },
+  "incident": {
+    "date_of_loss": "2026-04-19",
+    "time": "7:42 PM",
+    "location": "I-94 westbound, mile marker 211, Detroit MI",
+    "conditions": "Light rain, dusk",
+    "police_report": {
+      "present": true,
+      "agency": "Detroit PD",
+      "report_number": "DPD-26-44819"
+    },
+    "other_party": {
+      "present": true,
+      "driver_name": "Linda Sosa",
+      "insurer": "GEICO",
+      "policy_number": "G-994-22-117"
+    }
+  },
+  "description": "Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.",
+  "vehicle": {
+    "year": 2022,
+    "make": "Toyota",
+    "model": "Camry",
+    "trim": "SE",
+    "vin": "4T1G11AK7NU654221",
+    "license_plate": "MI 8XJ-K42",
+    "damage_summary": "Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.",
+    "repair_estimate_usd": 4820.00
+  },
+  "amounts": {
+    "vehicle_repair": 4820.00,
+    "rental_coverage": 480.00,
+    "diminished_value": 650.00,
+    "total_claimed": 5950.00,
+    "deductible": 500.00,
+    "net_claim": 5450.00
+  },
+  "attachments": [
+    {
+      "type": "photo",
+      "description": "8 photos of damage (mobile upload)"
+    },
+    {
+      "type": "pdf",
+      "description": "Police report PDF (uploaded 04/22 11:38 AM)"
+    },
+    {
+      "type": "pdf",
+      "description": "Repair estimate from Detroit Auto Body ($4,820.00)"
+    }
+  ],
+  "consent": {
+    "recorded_statement": true,
+    "inspection_window_days": 5
+  },
+  "signature": {
+    "name": "Marcus J. Whitfield",
+    "date": "2026-04-22"
+  }
+}

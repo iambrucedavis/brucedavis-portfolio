@@ -1,0 +1,86 @@
+{
+  "agreement_number": "CRA-2026-118-LL",
+  "effective_date": "2026-05-01",
+  "initial_term_months": 12,
+  "renewal_terms": "Auto-renews for successive 12-month terms unless either party gives 30 days written notice prior to renewal.",
+  "termination_date": "2027-04-30",
+  "provider": {
+    "name": "Crane Analytics, Inc.",
+    "entity_type": "Delaware C-corp",
+    "address": "600 California St, 12th Floor, San Francisco, CA 94108",
+    "signatory": {
+      "name": "Anita Bhasin",
+      "title": "COO"
+    },
+    "email": "anita.bhasin@crane-analytics.com"
+  },
+  "customer": {
+    "name": "Lattice & Loom Apparel",
+    "entity_type": "Oregon LLC",
+    "address": "414 Burnside St, Suite 220, Portland, OR 97209",
+    "signatory": {
+      "name": "David Park",
+      "title": "CFO"
+    },
+    "email": "dpark@latticeandloom.co"
+  },
+  "service": {
+    "name": "Crane Cohort Analytics Platform",
+    "tier": "Standard",
+    "seats": 25,
+    "annual_fee_usd": 48000.00,
+    "payment_terms": "Annual, invoiced on Effective Date, Net 30",
+    "currency": "USD"
+  },
+  "overage": {
+    "rate_usd": 42,
+    "unit": "named user per month",
+    "cap_pct": 10
+  },
+  "service_levels": {
+    "uptime_pct": 99.9,
+    "support_response": {
+      "p1": "1 hour",
+      "p2": "4 hours",
+      "p3": "1 business day"
+    },
+    "service_credits": {
+      "pct_per_0_1_below_sla": 5,
+      "cap_pct_per_month": 25
+    }
+  },
+  "data": {
+    "residency": "US (AWS us-west-2)",
+    "ownership": "Property of Customer. Provider granted limited license to process for service delivery only.",
+    "subprocessors_url": "crane-analytics.com/subprocessors",
+    "certifications": ["SOC 2 Type II"],
+    "encryption": {
+      "in_transit": "TLS 1.3",
+      "at_rest": "AES-256"
+    }
+  },
+  "termination": {
+    "for_convenience": {
+      "notice_days": 30,
+      "refund_policy": "Refunds prepaid fees for unused months."
+    },
+    "for_cause": {
+      "notice_days": 30,
+      "cure_required": true
+    }
+  },
+  "signatures": [
+    {
+      "name": "Anita Bhasin",
+      "title": "COO",
+      "organization": "Crane Analytics, Inc.",
+      "date": "2026-04-29"
+    },
+    {
+      "name": "David Park",
+      "title": "CFO",
+      "organization": "Lattice & Loom Apparel",
+      "date": "2026-04-30"
+    }
+  ]
+}
