@@ -1,0 +1,377 @@
+{
+  "doc_id": "CRA-2026-118-LL",
+  "doc_type": "contract",
+  "fixture": "contract.txt",
+  "started_at": "2026-05-10T22:22:57.305Z",
+  "finished_at": "2026-05-10T22:22:57.312Z",
+  "stages": [
+    {
+      "name": "extract",
+      "tool": "doc_extract",
+      "doc_text_preview": "SOFTWARE AS A SERVICE AGREEMENT\nOrder Form — Schedule A\n\nAgreement #:        CRA-2026-118-LL\nEffective date:     05/01/2026\nInitial term:       12 months\nRenewal:            Auto-renews for successive 12-month terms unless\n                 …",
+      "work_order_summary": {
+        "task": "Extract structured data from this contract document. Conform exactly to the schema. Return JSON only.",
+        "extraction_rules_count": 12,
+        "schema_title": "SaaSOrderForm",
+        "schema_required": [
+          "agreement_number",
+          "effective_date",
+          "termination_date",
+          "provider",
+          "customer",
+          "service"
+        ]
+      },
+      "data": {
+        "agreement_number": "CRA-2026-118-LL",
+        "effective_date": "2026-05-01",
+        "initial_term_months": 12,
+        "renewal_terms": "Auto-renews for successive 12-month terms unless either party gives 30 days written notice prior to renewal.",
+        "termination_date": "2027-04-30",
+        "provider": {
+          "name": "Crane Analytics, Inc.",
+          "entity_type": "Delaware C-corp",
+          "address": "600 California St, 12th Floor, San Francisco, CA 94108",
+          "signatory": {
+            "name": "Anita Bhasin",
+            "title": "COO"
+          },
+          "email": "anita.bhasin@crane-analytics.com"
+        },
+        "customer": {
+          "name": "Lattice & Loom Apparel",
+          "entity_type": "Oregon LLC",
+          "address": "414 Burnside St, Suite 220, Portland, OR 97209",
+          "signatory": {
+            "name": "David Park",
+            "title": "CFO"
+          },
+          "email": "dpark@latticeandloom.co"
+        },
+        "service": {
+          "name": "Crane Cohort Analytics Platform",
+          "tier": "Standard",
+          "seats": 25,
+          "annual_fee_usd": 48000,
+          "payment_terms": "Annual, invoiced on Effective Date, Net 30",
+          "currency": "USD"
+        },
+        "overage": {
+          "rate_usd": 42,
+          "unit": "named user per month",
+          "cap_pct": 10
+        },
+        "service_levels": {
+          "uptime_pct": 99.9,
+          "support_response": {
+            "p1": "1 hour",
+            "p2": "4 hours",
+            "p3": "1 business day"
+          },
+          "service_credits": {
+            "pct_per_0_1_below_sla": 5,
+            "cap_pct_per_month": 25
+          }
+        },
+        "data": {
+          "residency": "US (AWS us-west-2)",
+          "ownership": "Property of Customer. Provider granted limited license to process for service delivery only.",
+          "subprocessors_url": "crane-analytics.com/subprocessors",
+          "certifications": [
+            "SOC 2 Type II"
+          ],
+          "encryption": {
+            "in_transit": "TLS 1.3",
+            "at_rest": "AES-256"
+          }
+        },
+        "termination": {
+          "for_convenience": {
+            "notice_days": 30,
+            "refund_policy": "Refunds prepaid fees for unused months."
+          },
+          "for_cause": {
+            "notice_days": 30,
+            "cure_required": true
+          }
+        },
+        "signatures": [
+          {
+            "name": "Anita Bhasin",
+            "title": "COO",
+            "organization": "Crane Analytics, Inc.",
+            "date": "2026-04-29"
+          },
+          {
+            "name": "David Park",
+            "title": "CFO",
+            "organization": "Lattice & Loom Apparel",
+            "date": "2026-04-30"
+          }
+        ]
+      },
+      "tokens": {
+        "in": 1761,
+        "out": 450
+      },
+      "duration_ms": 0
+    },
+    {
+      "name": "mask",
+      "tool": "pii_mask",
+      "data": {
+        "agreement_number": "CRA-2026-118-LL",
+        "effective_date": "2026-05-01",
+        "initial_term_months": 12,
+        "renewal_terms": "Auto-renews for successive 12-month terms unless either party gives 30 days written notice prior to renewal.",
+        "termination_date": "2027-04-30",
+        "provider": {
+          "name": "Crane Analytics, Inc.",
+          "entity_type": "Delaware C-corp",
+          "address": "600 California St, 12th Floor, San Francisco, CA 94108",
+          "signatory": {
+            "name": "[NAME-REDACTED]",
+            "title": "COO"
+          },
+          "email": "[EMAIL-REDACTED]"
+        },
+        "customer": {
+          "name": "Lattice & Loom Apparel",
+          "entity_type": "Oregon LLC",
+          "address": "414 Burnside St, Suite 220, Portland, OR 97209",
+          "signatory": {
+            "name": "[NAME-REDACTED]",
+            "title": "CFO"
+          },
+          "email": "[EMAIL-REDACTED]"
+        },
+        "service": {
+          "name": "Crane Cohort Analytics Platform",
+          "tier": "Standard",
+          "seats": 25,
+          "annual_fee_usd": 48000,
+          "payment_terms": "Annual, invoiced on Effective Date, Net 30",
+          "currency": "USD"
+        },
+        "overage": {
+          "rate_usd": 42,
+          "unit": "named user per month",
+          "cap_pct": 10
+        },
+        "service_levels": {
+          "uptime_pct": 99.9,
+          "support_response": {
+            "p1": "1 hour",
+            "p2": "4 hours",
+            "p3": "1 business day"
+          },
+          "service_credits": {
+            "pct_per_0_1_below_sla": 5,
+            "cap_pct_per_month": 25
+          }
+        },
+        "data": {
+          "residency": "US (AWS us-west-2)",
+          "ownership": "Property of Customer. Provider granted limited license to process for service delivery only.",
+          "subprocessors_url": "crane-analytics.com/subprocessors",
+          "certifications": [
+            "SOC 2 Type II"
+          ],
+          "encryption": {
+            "in_transit": "TLS 1.3",
+            "at_rest": "AES-256"
+          }
+        },
+        "termination": {
+          "for_convenience": {
+            "notice_days": 30,
+            "refund_policy": "Refunds prepaid fees for unused months."
+          },
+          "for_cause": {
+            "notice_days": 30,
+            "cure_required": true
+          }
+        },
+        "signatures": [
+          {
+            "name": "Anita Bhasin",
+            "title": "COO",
+            "organization": "Crane Analytics, Inc.",
+            "date": "2026-04-29"
+          },
+          {
+            "name": "David Park",
+            "title": "CFO",
+            "organization": "Lattice & Loom Apparel",
+            "date": "2026-04-30"
+          }
+        ]
+      },
+      "redactions": [
+        {
+          "field_path": "provider.signatory.name",
+          "pii_type": "name",
+          "masked_value": "[NAME-REDACTED]",
+          "original_hash": "7e1a549b98522e06",
+          "method": "path"
+        },
+        {
+          "field_path": "provider.email",
+          "pii_type": "email",
+          "masked_value": "[EMAIL-REDACTED]",
+          "original_hash": "e41b3214222d022b",
+          "method": "path"
+        },
+        {
+          "field_path": "customer.signatory.name",
+          "pii_type": "name",
+          "masked_value": "[NAME-REDACTED]",
+          "original_hash": "58ae73013f2b9331",
+          "method": "path"
+        },
+        {
+          "field_path": "customer.email",
+          "pii_type": "email",
+          "masked_value": "[EMAIL-REDACTED]",
+          "original_hash": "a93efb572958ca3c",
+          "method": "path"
+        }
+      ],
+      "contextual_review_advised": [
+        {
+          "field_path": "renewal_terms",
+          "value": "Auto-renews for successive 12-month terms unless either party gives 30 days written notice prior to renewal.",
+          "reason": "Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."
+        },
+        {
+          "field_path": "data.ownership",
+          "value": "Property of Customer. Provider granted limited license to process for service delivery only.",
+          "reason": "Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."
+        },
+        {
+          "field_path": "termination.for_convenience.refund_policy",
+          "value": "Refunds prepaid fees for unused months.",
+          "reason": "Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."
+        }
+      ],
+      "redactions_count": 4,
+      "tokens": {
+        "in": 450,
+        "out": 447
+      },
+      "duration_ms": 0
+    },
+    {
+      "name": "validate",
+      "tool": "doc_validate",
+      "valid": true,
+      "exceptions": [],
+      "rules_evaluated": 4,
+      "rules_passed": 4,
+      "rules_skipped": [],
+      "schema_errors_filtered_for_redaction": [
+        {
+          "field_path": "/provider/email",
+          "keyword": "format",
+          "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+        },
+        {
+          "field_path": "/customer/email",
+          "keyword": "format",
+          "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+        }
+      ],
+      "tokens": {
+        "in": 447,
+        "out": 136
+      },
+      "duration_ms": 7
+    },
+    {
+      "name": "hitl_route",
+      "tool": "hitl_route",
+      "queue": [],
+      "queue_size": 0,
+      "summary": {
+        "total_queued": 0,
+        "by_priority": {
+          "high": 0,
+          "medium": 0,
+          "low": 0
+        },
+        "by_rule_type": {}
+      },
+      "tokens": {
+        "in": 1,
+        "out": 1
+      },
+      "duration_ms": 0
+    },
+    {
+      "name": "cost_report",
+      "tool": "cost_report",
+      "mode": "estimated",
+      "pricing_model": "claude-sonnet-4-6",
+      "rates_usd_per_million": {
+        "input": 3,
+        "output": 15
+      },
+      "per_stage": [
+        {
+          "stage": "extract",
+          "tokens_in": 1761,
+          "tokens_out": 450,
+          "cost_usd": 0.012033,
+          "method": "estimated"
+        },
+        {
+          "stage": "mask",
+          "tokens_in": 450,
+          "tokens_out": 447,
+          "cost_usd": 0.008055,
+          "method": "estimated"
+        },
+        {
+          "stage": "validate",
+          "tokens_in": 447,
+          "tokens_out": 136,
+          "cost_usd": 0.003381,
+          "method": "estimated"
+        },
+        {
+          "stage": "hitl_route",
+          "tokens_in": 1,
+          "tokens_out": 1,
+          "cost_usd": 0.000018,
+          "method": "estimated"
+        }
+      ],
+      "totals": {
+        "tokens_in": 2659,
+        "tokens_out": 1034,
+        "cost_usd": 0.023487
+      },
+      "scaling": {
+        "per_1000_docs_usd": 23.49,
+        "per_10000_docs_usd": 234.87,
+        "per_100000_docs_usd": 2348.7
+      },
+      "tokens": {
+        "in": 53,
+        "out": 213
+      },
+      "duration_ms": 0
+    }
+  ],
+  "summary": {
+    "valid": true,
+    "exceptions_count": 0,
+    "redactions_count": 4,
+    "queue_size": 0,
+    "total_tokens_in": 2659,
+    "total_tokens_out": 1034,
+    "total_cost_usd": 0.023487,
+    "per_1000_docs_usd": 23.49,
+    "per_100000_docs_usd": 2348.7
+  }
+}

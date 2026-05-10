@@ -1,0 +1,347 @@
+{
+  "doc_id": "INV-2026-04-887",
+  "doc_type": "invoice",
+  "fixture": "invoice.txt",
+  "started_at": "2026-05-10T22:22:57.298Z",
+  "finished_at": "2026-05-10T22:22:57.304Z",
+  "stages": [
+    {
+      "name": "extract",
+      "tool": "doc_extract",
+      "doc_text_preview": "                            INVOICE\n\nFrom:                                          Invoice #:   INV-2026-04-887\nNORTH AXIS PRINTWORKS LLC                      Issued:      04/30/2026\n2240 Industrial Way                            Due:     …",
+      "work_order_summary": {
+        "task": "Extract structured data from this invoice document. Conform exactly to the schema. Return JSON only.",
+        "extraction_rules_count": 11,
+        "schema_title": "Invoice",
+        "schema_required": [
+          "invoice_number",
+          "issue_date",
+          "due_date",
+          "vendor",
+          "bill_to",
+          "line_items",
+          "subtotal",
+          "total"
+        ]
+      },
+      "data": {
+        "invoice_number": "INV-2026-04-887",
+        "issue_date": "2026-04-30",
+        "due_date": "2026-05-30",
+        "terms": "Net 30",
+        "po_number": "PO-44120",
+        "vendor": {
+          "name": "NORTH AXIS PRINTWORKS LLC",
+          "address": "2240 Industrial Way, Portland, OR 97210",
+          "tax_id": "84-2210947"
+        },
+        "bill_to": {
+          "name": "Lattice & Loom Apparel",
+          "attn_name": "Accounts Payable",
+          "attn_email": "ramona.singh@latticeandloom.co",
+          "address": "414 Burnside St, Suite 220, Portland, OR 97209"
+        },
+        "ship_to": {
+          "name": "Lattice & Loom Apparel — Warehouse",
+          "address": "812 Holgate Blvd, Bay 4, Portland, OR 97202"
+        },
+        "line_items": [
+          {
+            "number": 1,
+            "description": "Cotton/poly tee — silkscreen, 2 colors, front + sleeve hit, sizes S–XXL",
+            "qty": 240,
+            "unit_price": 6.4,
+            "amount": 1536
+          },
+          {
+            "number": 2,
+            "description": "Heavyweight hoodie — embroidered chest logo, 12k stitch count, sizes S–XL",
+            "qty": 80,
+            "unit_price": 24.5,
+            "amount": 1960
+          },
+          {
+            "number": 3,
+            "description": "Woven label — sewn-in, 50mm × 25mm, custom Pantone 7686 C",
+            "qty": 320,
+            "unit_price": 0.85,
+            "amount": 272
+          },
+          {
+            "number": 4,
+            "description": "Setup + screen burn — 2 colors, 1 plate",
+            "qty": 1,
+            "unit_price": 85,
+            "amount": 85
+          },
+          {
+            "number": 5,
+            "description": "Rush surcharge (5-day turn vs standard 12)",
+            "qty": 1,
+            "unit_price": 220,
+            "amount": 220
+          }
+        ],
+        "subtotal": 4073,
+        "tax": 0,
+        "total": 4073,
+        "payment": {
+          "method": "ACH",
+          "routing": "123000220",
+          "account": "884-22-9947",
+          "bank": "Umpqua Bank",
+          "late_fee_pct": 1.5
+        },
+        "contact": {
+          "email": "billing@northaxisprintworks.com",
+          "phone": "(503) 555-0814"
+        }
+      },
+      "tokens": {
+        "in": 1268,
+        "out": 353
+      },
+      "duration_ms": 0
+    },
+    {
+      "name": "mask",
+      "tool": "pii_mask",
+      "data": {
+        "invoice_number": "INV-2026-04-887",
+        "issue_date": "2026-04-30",
+        "due_date": "2026-05-30",
+        "terms": "Net 30",
+        "po_number": "PO-44120",
+        "vendor": {
+          "name": "NORTH AXIS PRINTWORKS LLC",
+          "address": "2240 Industrial Way, Portland, OR 97210",
+          "tax_id": "84-2210947"
+        },
+        "bill_to": {
+          "name": "Lattice & Loom Apparel",
+          "attn_name": "[NAME-REDACTED]",
+          "attn_email": "[EMAIL-REDACTED]",
+          "address": "414 Burnside St, Suite 220, Portland, OR 97209"
+        },
+        "ship_to": {
+          "name": "Lattice & Loom Apparel — Warehouse",
+          "address": "812 Holgate Blvd, Bay 4, Portland, OR 97202"
+        },
+        "line_items": [
+          {
+            "number": 1,
+            "description": "Cotton/poly tee — silkscreen, 2 colors, front + sleeve hit, sizes S–XXL",
+            "qty": 240,
+            "unit_price": 6.4,
+            "amount": 1536
+          },
+          {
+            "number": 2,
+            "description": "Heavyweight hoodie — embroidered chest logo, 12k stitch count, sizes S–XL",
+            "qty": 80,
+            "unit_price": 24.5,
+            "amount": 1960
+          },
+          {
+            "number": 3,
+            "description": "Woven label — sewn-in, 50mm × 25mm, custom Pantone 7686 C",
+            "qty": 320,
+            "unit_price": 0.85,
+            "amount": 272
+          },
+          {
+            "number": 4,
+            "description": "Setup + screen burn — 2 colors, 1 plate",
+            "qty": 1,
+            "unit_price": 85,
+            "amount": 85
+          },
+          {
+            "number": 5,
+            "description": "Rush surcharge (5-day turn vs standard 12)",
+            "qty": 1,
+            "unit_price": 220,
+            "amount": 220
+          }
+        ],
+        "subtotal": 4073,
+        "tax": 0,
+        "total": 4073,
+        "payment": {
+          "method": "ACH",
+          "routing": "[BANKING-REDACTED]",
+          "account": "[BANKING-REDACTED]",
+          "bank": "Umpqua Bank",
+          "late_fee_pct": 1.5
+        },
+        "contact": {
+          "email": "[EMAIL-REDACTED]",
+          "phone": "[PHONE-REDACTED]"
+        }
+      },
+      "redactions": [
+        {
+          "field_path": "bill_to.attn_name",
+          "pii_type": "name",
+          "masked_value": "[NAME-REDACTED]",
+          "original_hash": "b0472da2c0c302c7",
+          "method": "path"
+        },
+        {
+          "field_path": "bill_to.attn_email",
+          "pii_type": "email",
+          "masked_value": "[EMAIL-REDACTED]",
+          "original_hash": "d517bd661d4bc3d3",
+          "method": "path"
+        },
+        {
+          "field_path": "contact.email",
+          "pii_type": "email",
+          "masked_value": "[EMAIL-REDACTED]",
+          "original_hash": "a48710baa24b67f8",
+          "method": "path"
+        },
+        {
+          "field_path": "contact.phone",
+          "pii_type": "phone",
+          "masked_value": "[PHONE-REDACTED]",
+          "original_hash": "67631be36609b2f7",
+          "method": "path"
+        },
+        {
+          "field_path": "payment.routing",
+          "pii_type": "banking",
+          "masked_value": "[BANKING-REDACTED]",
+          "original_hash": "90d21e29b3445e20",
+          "method": "path"
+        },
+        {
+          "field_path": "payment.account",
+          "pii_type": "banking",
+          "masked_value": "[BANKING-REDACTED]",
+          "original_hash": "5f0b7b1ef19ca666",
+          "method": "path"
+        }
+      ],
+      "contextual_review_advised": [],
+      "redactions_count": 6,
+      "tokens": {
+        "in": 353,
+        "out": 350
+      },
+      "duration_ms": 0
+    },
+    {
+      "name": "validate",
+      "tool": "doc_validate",
+      "valid": true,
+      "exceptions": [],
+      "rules_evaluated": 4,
+      "rules_passed": 4,
+      "rules_skipped": [],
+      "schema_errors_filtered_for_redaction": [
+        {
+          "field_path": "/bill_to/attn_email",
+          "keyword": "format",
+          "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+        },
+        {
+          "field_path": "/contact/email",
+          "keyword": "format",
+          "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+        }
+      ],
+      "tokens": {
+        "in": 350,
+        "out": 136
+      },
+      "duration_ms": 5
+    },
+    {
+      "name": "hitl_route",
+      "tool": "hitl_route",
+      "queue": [],
+      "queue_size": 0,
+      "summary": {
+        "total_queued": 0,
+        "by_priority": {
+          "high": 0,
+          "medium": 0,
+          "low": 0
+        },
+        "by_rule_type": {}
+      },
+      "tokens": {
+        "in": 1,
+        "out": 1
+      },
+      "duration_ms": 0
+    },
+    {
+      "name": "cost_report",
+      "tool": "cost_report",
+      "mode": "estimated",
+      "pricing_model": "claude-sonnet-4-6",
+      "rates_usd_per_million": {
+        "input": 3,
+        "output": 15
+      },
+      "per_stage": [
+        {
+          "stage": "extract",
+          "tokens_in": 1268,
+          "tokens_out": 353,
+          "cost_usd": 0.009099,
+          "method": "estimated"
+        },
+        {
+          "stage": "mask",
+          "tokens_in": 353,
+          "tokens_out": 350,
+          "cost_usd": 0.006309,
+          "method": "estimated"
+        },
+        {
+          "stage": "validate",
+          "tokens_in": 350,
+          "tokens_out": 136,
+          "cost_usd": 0.00309,
+          "method": "estimated"
+        },
+        {
+          "stage": "hitl_route",
+          "tokens_in": 1,
+          "tokens_out": 1,
+          "cost_usd": 0.000018,
+          "method": "estimated"
+        }
+      ],
+      "totals": {
+        "tokens_in": 1972,
+        "tokens_out": 840,
+        "cost_usd": 0.018516
+      },
+      "scaling": {
+        "per_1000_docs_usd": 18.52,
+        "per_10000_docs_usd": 185.16,
+        "per_100000_docs_usd": 1851.6
+      },
+      "tokens": {
+        "in": 53,
+        "out": 213
+      },
+      "duration_ms": 0
+    }
+  ],
+  "summary": {
+    "valid": true,
+    "exceptions_count": 0,
+    "redactions_count": 6,
+    "queue_size": 0,
+    "total_tokens_in": 1972,
+    "total_tokens_out": 840,
+    "total_cost_usd": 0.018516,
+    "per_1000_docs_usd": 18.52,
+    "per_100000_docs_usd": 1851.6
+  }
+}
