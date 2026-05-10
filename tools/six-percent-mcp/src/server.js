@@ -13,6 +13,7 @@ import { register as registerVoiceCheck } from './tools/voice_check.js';
 import { register as registerProjectScaffold } from './tools/project_scaffold.js';
 import { register as registerDocExtract } from './tools/doc_extract.js';
 import { register as registerPiiMask } from './tools/pii_mask.js';
+import { register as registerDocValidate } from './tools/doc_validate.js';
 
 const server = new McpServer({
   name: 'six-percent-mcp',
@@ -26,6 +27,7 @@ registerVoiceCheck(server);
 registerProjectScaffold(server);
 registerDocExtract(server);
 registerPiiMask(server);
+registerDocValidate(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

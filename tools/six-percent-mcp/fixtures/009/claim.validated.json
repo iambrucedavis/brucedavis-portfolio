@@ -1,0 +1,42 @@
+{
+  "valid": true,
+  "exceptions": [],
+  "rules_evaluated": 4,
+  "rules_passed": 3,
+  "rules_skipped": [
+    {
+      "rule_id": "policyholder_age",
+      "description": "policyholder.dob implies age >= 16 at date_of_loss",
+      "status": "skipped",
+      "reason": "dob has been redacted; run this rule before pii_mask in production"
+    }
+  ],
+  "schema_errors_filtered_for_redaction": [
+    {
+      "field_path": "/policyholder/dob",
+      "keyword": "format",
+      "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+    },
+    {
+      "field_path": "/policyholder/ssn",
+      "keyword": "pattern",
+      "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+    },
+    {
+      "field_path": "/policyholder/email",
+      "keyword": "format",
+      "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+    },
+    {
+      "field_path": "/policyholder/address/zip",
+      "keyword": "pattern",
+      "reason": "value is a [TYPE-REDACTED] placeholder; strict check skipped"
+    }
+  ],
+  "on_completion": "No exceptions. Pipeline continues to cost_report.",
+  "estimate": {
+    "stage": "validate",
+    "input_tokens": 481,
+    "method": "char_count / 4 — deterministic pass"
+  }
+}
