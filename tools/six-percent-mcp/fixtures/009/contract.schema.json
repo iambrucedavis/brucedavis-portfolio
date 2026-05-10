@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "contract.schema.json",
+  "title": "SaaSOrderForm",
+  "type": "object",
+  "required": ["agreement_number", "effective_date", "termination_date", "provider", "customer", "service"],
+  "properties": {
+    "agreement_number":    { "type": "string", "minLength": 1 },
+    "effective_date":      { "type": "string", "format": "date" },
+    "initial_term_months": { "type": "integer", "minimum": 1 },
+    "renewal_terms":       { "type": "string" },
+    "termination_date":    { "type": "string", "format": "date" },
+
+    "provider": { "$ref": "#/$defs/Party" },
+    "customer": { "$ref": "#/$defs/Party" },
+
+    "service": {
+      "type": "object",
+      "required": ["name", "annual_fee_usd", "currency"],
+      "properties": {
+        "name":           { "type": "string" },
+        "tier":           { "type": ["string", "null"] },
+        "seats":          { "type": ["integer", "null"], "minimum": 1 },
+        "annual_fee_usd": { "type": "number", "minimum": 0 },
+        "payment_terms":  { "type": "string" },
+        "currency":       { "type": "string", "enum": ["USD", "EUR", "GBP", "CAD"] }
+      }
+    },
+
+    "overage": {
+      "type": ["object", "null"],
+      "properties": {
+        "rate_usd": { "type": "number", "minimum": 0 },
+        "unit":     { "type": "string" },
+        "cap_pct":  { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+
+    "service_levels": {
+      "type": "object",
+      "properties": {
+        "uptime_pct":      { "type": "number", "minimum": 0, "maximum": 100 },
+        "support_response": {
+          "type": "object",
+          "properties": {
+            "p1": { "type": "string" },
+            "p2": { "type": "string" },
+            "p3": { "type": "string" }
+          }
+        },
+        "service_credits": {
+          "type": "object",
+          "properties": {
+            "pct_per_0_1_below_sla": { "type": "number", "minimum": 0 },
+            "cap_pct_per_month":     { "type": "number", "minimum": 0, "maximum": 100 }
+          }
+        }
+      }
+    },
+
+    "data": {
+      "type": "object",
+      "properties": {
+        "residency":         { "type": "string" },
+        "ownership":         { "type": "string" },
+        "subprocessors_url": { "type": ["string", "null"] },
+        "certifications":    { "type": "array", "items": { "type": "string" } },
+        "encryption": {
+          "type": "object",
+          "properties": {
+            "in_transit": { "type": "string" },
+            "at_rest":    { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "termination": {
+      "type": "object",
+      "properties": {
+        "for_convenience": {
+          "type": "object",
+          "properties": {
+            "notice_days":   { "type": "integer", "minimum": 0 },
+            "refund_policy": { "type": "string" }
+          }
+        },
+        "for_cause": {
+          "type": "object",
+          "properties": {
+            "notice_days":   { "type": "integer", "minimum": 0 },
+            "cure_required": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "signatures": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["name", "organization", "date"],
+        "properties": {
+          "name":         { "type": "string" },
+          "title":        { "type": "string" },
+          "organization": { "type": "string" },
+          "date":         { "type": "string", "format": "date" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Party": {
+      "type": "object",
+      "required": ["name", "address"],
+      "properties": {
+        "name":        { "type": "string" },
+        "entity_type": { "type": ["string", "null"] },
+        "address":     { "type": "string" },
+        "signatory": {
+          "type": "object",
+          "properties": {
+            "name":  { "type": "string" },
+            "title": { "type": ["string", "null"] }
+          }
+        },
+        "email": { "type": ["string", "null"], "format": "email" }
+      }
+    }
+  },
+  "businessRules": [
+    {
+      "id": "termination_after_effective",
+      "description": "termination_date must be after effective_date"
+    },
+    {
+      "id": "term_length_matches_dates",
+      "description": "initial_term_months should match months between effective_date and termination_date (± 1 day)"
+    },
+    {
+      "id": "both_parties_signed",
+      "description": "signatures must include one from provider.name and one from customer.name"
+    },
+    {
+      "id": "signatures_on_or_before_effective",
+      "description": "All signatures.date must be on or before effective_date"
+    }
+  ]
+}
