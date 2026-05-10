@@ -1,0 +1,40 @@
+                            INVOICE
+
+From:                                          Invoice #:   INV-2026-04-887
+NORTH AXIS PRINTWORKS LLC                      Issued:      04/30/2026
+2240 Industrial Way                            Due:         05/30/2026
+Portland, OR 97210                             Terms:       Net 30
+Tax ID: 84-2210947                             PO #:        PO-44120
+
+Bill to:                                       Ship to:
+Lattice & Loom Apparel                         Lattice & Loom Apparel — Warehouse
+Attn: Accounts Payable                         812 Holgate Blvd, Bay 4
+Attn: ramona.singh@latticeandloom.co           Portland, OR 97202
+414 Burnside St, Suite 220
+Portland, OR 97209
+
+──────────────────────────────────────────────────────────────────────
+LINE ITEMS
+
+# | Description                                Qty    Unit       Amount
+1 | Cotton/poly tee — silkscreen, 2 colors,    240    $ 6.40    $ 1,536.00
+    front + sleeve hit, sizes S–XXL
+2 | Heavyweight hoodie — embroidered chest      80    $24.50    $ 1,960.00
+    logo, 12k stitch count, sizes S–XL
+3 | Woven label — sewn-in, 50mm × 25mm,        320    $ 0.85    $   272.00
+    custom Pantone 7686 C
+4 | Setup + screen burn — 2 colors, 1 plate      1    $85.00    $    85.00
+5 | Rush surcharge (5-day turn vs standard 12)   1    $220.00   $   220.00
+
+──────────────────────────────────────────────────────────────────────
+                                              Subtotal:    $ 4,073.00
+                                              Tax (0%):    $     0.00
+                                              Total due:   $ 4,073.00
+
+──────────────────────────────────────────────────────────────────────
+Payment instructions:
+ACH preferred. Routing 123000220, Account 884-22-9947 (North Axis
+Printworks LLC, Umpqua Bank). Reference INV-2026-04-887 in memo.
+Late payments accrue 1.5% per month after due date.
+
+Questions: billing@northaxisprintworks.com  |  (503) 555-0814

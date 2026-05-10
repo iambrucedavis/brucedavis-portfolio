@@ -1,0 +1,76 @@
+SOFTWARE AS A SERVICE AGREEMENT
+Order Form — Schedule A
+
+Agreement #:        CRA-2026-118-LL
+Effective date:     05/01/2026
+Initial term:       12 months
+Renewal:            Auto-renews for successive 12-month terms unless
+                    either party gives 30 days written notice prior
+                    to renewal.
+Termination date:   04/30/2027
+
+──────────────────────────────────────────────────────────────────────
+PARTIES
+
+Provider:           Crane Analytics, Inc.
+                    Delaware C-corp
+                    600 California St, 12th Floor
+                    San Francisco, CA 94108
+                    Signatory: Anita Bhasin, COO
+                    Email: anita.bhasin@crane-analytics.com
+
+Customer:           Lattice & Loom Apparel
+                    Oregon LLC
+                    414 Burnside St, Suite 220
+                    Portland, OR 97209
+                    Signatory: David Park, CFO
+                    Email: dpark@latticeandloom.co
+
+──────────────────────────────────────────────────────────────────────
+SERVICES & FEES
+
+Service:            Crane Cohort Analytics Platform — Standard Tier
+Seats:              25 named users
+Annual fee:         $48,000.00 USD
+Payment terms:      Annual, invoiced on Effective Date, Net 30
+Currency:           USD
+
+Overage:            $42 per additional named user per month, prorated
+                    monthly. Capped at 10% of annual fee.
+
+──────────────────────────────────────────────────────────────────────
+SERVICE LEVELS
+
+Uptime SLA:         99.9% measured monthly, excluding scheduled
+                    maintenance windows
+Support response:   P1 — 1 hour; P2 — 4 hours; P3 — 1 business day
+Service credits:    5% of monthly fee per 0.1% below SLA, capped at
+                    25% of monthly fee per month
+
+──────────────────────────────────────────────────────────────────────
+DATA & SECURITY
+
+Data residency:     US (AWS us-west-2)
+Customer data:      Property of Customer. Provider granted limited
+                    license to process for service delivery only.
+Subprocessors:      List maintained at crane-analytics.com/subprocessors
+Security:           SOC 2 Type II, annual attestation. Encryption in
+                    transit (TLS 1.3) and at rest (AES-256).
+
+──────────────────────────────────────────────────────────────────────
+TERMINATION
+
+For convenience:    Customer may terminate with 30 days written notice;
+                    Provider refunds prepaid fees for unused months.
+For cause:          Either party may terminate for material breach
+                    uncured after 30 days written notice.
+
+──────────────────────────────────────────────────────────────────────
+
+This Order Form incorporates the Master Subscription Agreement at
+crane-analytics.com/msa, version 2026-Q1. In conflict, the Order Form
+controls.
+
+Signed:
+  Anita Bhasin, COO, Crane Analytics, Inc.        Date: 04/29/2026
+  David Park, CFO, Lattice & Loom Apparel         Date: 04/30/2026
