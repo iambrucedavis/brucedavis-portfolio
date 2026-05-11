@@ -206,12 +206,12 @@ pre.diff .at   { color:var(--signal); }
   <div class="hero-pre">// 008 — Six Percent MCP · Claude Engineering</div>
   <h1 id="hero-hl">TASTE AS<br>TOOLS.</h1>
   <p class="hero-sub">
-    A Model Context Protocol server that exposes the creative practice as five primitives — vault search, palette suggestion, voice critique, project scaffolding, vault capture. Claude composes them. The server returns candidates and rules; the model does the picking and the rewriting.
+    A small program I built that gives Claude five custom tools — for searching my idea vault, suggesting color palettes, checking my writing voice, scaffolding new project pages, and saving fresh ideas. Claude wires them together. The server hands over options and rules; Claude does the picking and the writing.
   </p>
   <div class="hero-meta">
     <span>build.2026.05</span>
     <span>v0.1.0</span>
-    <span>5 tools · MCP SDK 1.x · stdio transport</span>
+    <span>5 tools · MCP server · runs locally</span>
     <span class="live">[ ACTIVE ]</span>
   </div>
 </section>
@@ -220,9 +220,9 @@ pre.diff .at   { color:var(--signal); }
 <section id="brief" class="reveal">
   <div class="brief-lbl">// The Brief</div>
   <div class="brief-body">
-    <p>Most LLM tooling treats Claude as a wrapper around an API. A function gets a model call wrapped around it, the model generates text, the text gets parsed back into the function's vocabulary. The model is the verb; the tool is plumbing.</p>
-    <p>This server inverts the relationship. Claude is the reasoner over taste primitives. The tools encode <strong>constraints</strong>, not capabilities. Three patterns, deliberately: <strong>retrieval</strong> (server returns candidates, model picks), <strong>critique</strong> (server returns rule violations, model rewrites), <strong>mutation</strong> (model decides, server commits the change).</p>
-    <p>No tool reaches for the model. The model reaches for the tools. The case study below is itself the artifact: this page was drafted, voice-checked, and scaffolded by Claude through the same five tools it documents.</p>
+    <p>Most projects that use Claude treat it as a generator wrapped in code. You write a function, the function calls Claude, Claude returns text, the function parses the text back into something usable. Claude does the work; the code is plumbing.</p>
+    <p>This project flips that. Claude is the <strong>decision-maker; the tools are the constraints</strong> — rules about what fits my voice, my color library, my workflow. Three patterns, deliberately: <strong>retrieval</strong> (the tool returns options, Claude picks), <strong>critique</strong> (the tool flags problems, Claude rewrites), <strong>mutation</strong> (Claude decides, the tool writes the change).</p>
+    <p>No tool reaches for Claude. Claude reaches for the tools. The case study below is itself the proof: this page was drafted, voice-checked, and scaffolded by Claude — using the same five tools the page documents.</p>
   </div>
 </section>
 
@@ -231,42 +231,42 @@ pre.diff .at   { color:var(--signal); }
   <div class="sec-inner">
     <div class="dv-hdr">
       <span class="dv-label">// 01 — The Tools</span>
-      <span class="dv-version">5 tools · 3 patterns · ~785 LOC source</span>
+      <span class="dv-version">5 tools · 3 patterns · ~785 lines of source code</span>
     </div>
-    <h2 class="dv-title">Five primitives, three shapes.</h2>
-    <p class="dv-desc">Pattern, name, role. Each tool ships in a single file under <code style="font-family:var(--mono);font-size:12px;color:var(--text)">src/tools/</code>. Schemas are Zod, validated on every call.</p>
+    <h2 class="dv-title">Five tools, three patterns.</h2>
+    <p class="dv-desc">Pattern, name, role. Each tool is one file. Inputs are validated on every call with Zod.</p>
 
     <div class="tools-grid">
       <div class="tool-row">
         <div class="tool-pattern">// Retrieval</div>
         <div class="tool-name">vault_search</div>
-        <div class="tool-desc">Search the Inspiration Vault on Notion. Soft-filter by section title prefix. Title + body match across the first ~20 blocks of each entry.</div>
+        <div class="tool-desc">Search my Inspiration Vault on Notion. Filter by section. Matches both the entry title and the first ~20 blocks of body content.</div>
       </div>
       <div class="tool-row">
         <div class="tool-pattern">// Retrieval</div>
         <div class="tool-name">palette_suggest</div>
-        <div class="tool-desc">Pull candidate palettes from the Color Lab database with hex, mood, category, notes. Returns candidates only; does not rank. Reasoning is the model's job.</div>
+        <div class="tool-desc">Pulls color palettes from my Color Lab on Notion — each with hex codes, mood, category, and notes. Returns options, not a ranking. Picking the right one is Claude's job.</div>
       </div>
       <div class="tool-row">
         <div class="tool-pattern">// Critique</div>
         <div class="tool-name">voice_check</div>
-        <div class="tool-desc">Run a draft against my voice rules — no hedging, no filler, no marketing warmth, no repetition, sentence cap. Returns structured violations and a verdict. Does not rewrite.</div>
+        <div class="tool-desc">Runs a piece of writing against my voice rules — no hedging, no filler transitions, no marketing warmth, no repetition, short sentences. Returns the specific violations and a verdict. Does not rewrite (that's a separate decision).</div>
       </div>
       <div class="tool-row">
         <div class="tool-pattern">// Mutation</div>
         <div class="tool-name">vault_capture</div>
-        <div class="tool-desc">Write a new entry into the Vault, formatted to match the existing CLI's block layout. Section conveyed via title prefix.</div>
+        <div class="tool-desc">Saves a new entry to my Vault on Notion, formatted to match the layout my command-line tool already uses. Section is set via a tag in the title.</div>
       </div>
       <div class="tool-row">
         <div class="tool-pattern">// Mutation</div>
         <div class="tool-name">project_scaffold</div>
-        <div class="tool-desc">Generate a new exhibit-card and write it into <code style="font-family:var(--mono);font-size:12px;color:var(--text)">index.html</code>. Auto-numbers the project. Supports <code style="font-family:var(--mono);font-size:12px;color:var(--text)">dry_run</code>.</div>
+        <div class="tool-desc">Generates a new project card and writes it into the site's <code style="font-family:var(--mono);font-size:12px;color:var(--text)">index.html</code>. Auto-numbers the project. Supports a "preview-only" mode (<code style="font-family:var(--mono);font-size:12px;color:var(--text)">dry_run</code>).</div>
       </div>
     </div>
 
     <div class="c-ann">
       <span class="ann-lbl">// Design rationale</span>
-      <span class="ann-txt">The pattern label matters more than the tool name. A reasoner that knows which pattern it's asking for picks better. Naming three shapes — retrieval, critique, mutation — is itself the schema. Everything below it inherits from those three.</span>
+      <span class="ann-txt">The pattern label matters more than the tool name. Claude picks better when it knows which of the three patterns it's reaching for. Naming the three — retrieval, critique, mutation — IS the structure. Every tool below those three is just a specific case.</span>
     </div>
   </div>
 </div>
@@ -318,7 +318,7 @@ pre.diff .at   { color:var(--signal); }
       </div>
       <div class="c-ann">
         <span class="ann-lbl">// Reasoning</span>
-        <span class="ann-txt">The brief asked for restrained, signal-orange-friendly. The notes on this palette literally read "Zip-tie orange as the one controlled disruption." The server didn't rank — it handed me four candidates with their full metadata. My pick was the one whose author's own note matched the brief word-for-word. That's the design point: when the candidates carry their own justifications, the model's job is recognition, not invention.</span>
+        <span class="ann-txt">The brief asked for restrained, signal-orange-friendly. The notes on this palette literally read "Zip-tie orange as the one controlled disruption." The server didn't rank — it handed me four options, each with its color codes, mood, and author notes. My pick was the one whose author's own note matched the brief word-for-word. That's the design point: when the options carry their own justifications, Claude's job is recognition, not invention.</span>
       </div>
     </div>
 
@@ -337,15 +337,15 @@ pre.diff .at   { color:var(--signal); }
         <div class="call-io">
           <div class="io-block">
             <div class="io-hdr"><span class="io-tag">→</span> draft</div>
-            <div class="io-body"><pre class="code">Five MCP tools that expose the creative
-practice as primitives — vault search,
-palette suggestion, voice critique, project
-scaffolding, vault capture. The server
-returns candidates and rules; the model
-does the picking and the rewriting. Proves:
-tool-use schema design, MCP server
-engineering, and taste encoded as
-constraints rather than agents.</pre></div>
+            <div class="io-body"><pre class="code">Five custom Claude tools I built to extend
+my own creative workflow — find ideas in my
+vault, suggest a color palette, check copy
+in my voice, scaffold a new project page,
+save a new idea. The tools hand Claude the
+options; Claude does the picking and the
+writing. Proves: AI tool design, server
+engineering, and the idea of encoding
+taste as rules rather than agents.</pre></div>
           </div>
           <div class="io-block">
             <div class="io-hdr"><span class="io-tag">←</span> verdict + violations</div>
@@ -363,7 +363,7 @@ constraints rather than agents.</pre></div>
       </div>
       <div class="c-ann">
         <span class="ann-lbl">// Reasoning</span>
-        <span class="ann-txt">Verdict <code style="font-family:var(--mono);font-size:11px;color:var(--text)">ship</code> means the lexical heuristics found nothing — no hedge words, no filler transitions, no marketing warmth, no repeated phrases, no oversize sentences. The note is the honest part: heuristics don't catch empty. That's why the tool refuses to rewrite. Rewriting is a tone judgment; heuristics are constraint enforcement.</span>
+        <span class="ann-txt">Verdict <code style="font-family:var(--mono);font-size:11px;color:var(--text)">ship</code> means the rule-based checks found nothing — no hedge words, no filler transitions, no marketing warmth, no repeated phrases, no oversize sentences. The note is the honest part: rules can't catch empty writing. That's why the tool refuses to rewrite. Rewriting is a tone judgment; rule-checking is just enforcement.</span>
       </div>
     </div>
 
@@ -417,7 +417,7 @@ constraints rather than agents.</pre></div>
       </div>
       <div class="c-ann">
         <span class="ann-lbl">// Reasoning</span>
-        <span class="ann-txt">The scaffold tool walks the gallery-grid container with a div-depth counter, finds the matching closing tag, and inserts before it. Indentation is six-space-prefixed to match the existing cards. Auto-numbering scans <code style="font-family:var(--mono);font-size:11px;color:var(--text)">&lt;!-- Project NNN --&gt;</code> comments and increments. The dry_run flag returns the diff without writing — the model sees the change before committing to it. After approval, the same call without dry_run wrote the card you saw on the home page.</span>
+        <span class="ann-txt">The scaffold tool finds the right spot in <code style="font-family:var(--mono);font-size:11px;color:var(--text)">index.html</code> — the project-gallery container — and inserts the new card just before it closes. Indentation matches the existing cards. The new project number is auto-detected by scanning for the existing <code style="font-family:var(--mono);font-size:11px;color:var(--text)">&lt;!-- Project NNN --&gt;</code> markers. <code style="font-family:var(--mono);font-size:11px;color:var(--text)">dry_run</code> returns the change as a preview, not a write — so Claude can review it before approving. After approval, the same call (without <code style="font-family:var(--mono);font-size:11px;color:var(--text)">dry_run</code>) wrote the card you saw on the home page.</span>
       </div>
     </div>
   </div>
@@ -428,10 +428,10 @@ constraints rather than agents.</pre></div>
   <div class="sec-inner">
     <div class="dv-hdr">
       <span class="dv-label">// 03 — Inside voice_check</span>
-      <span class="dv-version">heuristic · deterministic · no LLM call</span>
+      <span class="dv-version">rule-based · predictable · no AI call</span>
     </div>
     <h2 class="dv-title">Constraints, encoded.</h2>
-    <p class="dv-desc">The voice rules from CLAUDE.md, expressed as lexical detectors. Read aloud: hedge words, filler transitions, marketing warmth. The tool flags every match with a verbatim excerpt and a one-line suggestion.</p>
+    <p class="dv-desc">The voice rules from my project's instructions, encoded as plain-text patterns. Read aloud: hedge words, filler transitions, marketing warmth. The tool flags every match with the exact excerpt and a one-line suggestion.</p>
 
     <div class="rules">
       <div class="rule">
@@ -456,7 +456,7 @@ constraints rather than agents.</pre></div>
 
     <div class="c-ann">
       <span class="ann-lbl">// Why heuristic, not LLM-backed</span>
-      <span class="ann-txt">An LLM-backed voice_check would be more expressive but less honest. The model already reads the draft. Asking it to call a tool that's just a wrapper around itself is a circular system. Lexical detection is what the tool can offer that the model can't — the rules are visible, the failure modes are knowable, the output is reproducible. The note that ships on every passing verdict — "heuristics don't catch empty" — is the tool admitting its own limit. That admission is the design.</span>
+      <span class="ann-txt">A Claude-powered voice_check would be more expressive but less honest. Claude already reads the draft — asking it to call a tool that just asks Claude again is a circular system. Rule-based detection is what the tool can offer that Claude can't — the rules are visible, the failure cases are knowable, the output is repeatable. The note that ships on every passing verdict — "heuristics don't catch empty" — is the tool admitting its own limit. That admission is the design.</span>
     </div>
   </div>
 </div>
@@ -469,22 +469,22 @@ constraints rather than agents.</pre></div>
     <div class="review-block">
       <div class="review-sub">// Craft decisions</div>
       <ul class="review-list">
-        <li>Three patterns named first, five tools fit into them. Naming the shapes is the schema. A model that picks <code>retrieval</code> versus <code>mutation</code> picks the right tool for free.</li>
-        <li><code>palette_suggest</code> doesn't rank — it returns candidates and lets the model reason. The candidates already carry their author's notes. Ranking would discard the notes; reasoning over them is the value.</li>
-        <li><code>voice_check</code> refuses to rewrite. The split between "what's wrong" (tool) and "what to write instead" (model) is intentional. Rewriting is taste; flagging is rules. They don't belong in the same surface.</li>
-        <li><code>project_scaffold</code> is mutation-with-preview. <code>dry_run: true</code> returns the diff first. The reasoner sees the change, decides, then re-calls without the flag. Two-phase commit on a single tool.</li>
-        <li>Notion's data model is flatter than its UI. Vault entries are stored as flat <code>child_page</code> blocks; section headings are decorative <code>heading_2</code> blocks that don't actually nest the entries. The tool encodes the truth, not the UI metaphor — sections live in a <code>[section-key]</code> title prefix.</li>
+        <li>Three patterns named first, five tools fit into them. Naming the three shapes IS the structure. Claude picks the right tool for free when it knows whether it's asking for <code>retrieval</code> versus <code>mutation</code>.</li>
+        <li><code>palette_suggest</code> doesn't rank — it returns options and lets Claude reason. The options already carry their author's notes. Ranking would discard the notes; reasoning over them is the value.</li>
+        <li><code>voice_check</code> refuses to rewrite. The split between "what's wrong" (tool) and "what to write instead" (Claude) is intentional. Rewriting is taste; flagging is rules. They don't belong in the same surface.</li>
+        <li><code>project_scaffold</code> is mutation-with-preview. <code>dry_run: true</code> returns the proposed change first. Claude sees the change, decides, then re-calls without the flag. Two steps in one tool — preview, then commit.</li>
+        <li>Notion's data structure is flatter than its UI. Vault entries are stored as flat <code>child_page</code> blocks; section headings are decorative <code>heading_2</code> blocks that don't actually contain the entries underneath. The tool encodes the truth, not the UI metaphor — sections live in a <code>[section-key]</code> tag inside the title.</li>
       </ul>
     </div>
 
     <div class="review-block">
       <div class="review-sub">// What I'd do differently</div>
       <ul class="review-list">
-        <li><code>vault_capture</code> still parents to the Vault root and tags the section in the title. A more honest version would create real section sub-pages and parent the entries to those — restructuring the Vault, not working around it.</li>
-        <li>No tests. The smoke-test harness in the README is the test. Day 2 of the build adds Vitest with mocked Notion fixtures.</li>
-        <li>Suggestion text in <code>voice_check</code> violations is template-flat. A v0.2 routes suggestions through the model with the rule and excerpt as context — heuristics for flagging, model for the rewrite hint. Hybrid.</li>
-        <li>The <code>palette_suggest</code> output is large when the lab grows. Beyond ~30 palettes, returning all candidates burns context. Add a server-side embedding pass keyed by mood, return top-k by cosine similarity, still let the model do the final pick.</li>
-        <li><code>project_scaffold</code> writes only into <code>six-percent-studio/index.html</code>. Single target. A repo-aware version takes the gallery file as a parameter, opening the door to other surfaces — including the Lane 1 site this MCP server points toward.</li>
+        <li><code>vault_capture</code> still saves entries directly to the Vault root and tags the section name in the title. A more honest version would create real section pages and save the entries under those — restructuring the Vault, not working around it.</li>
+        <li>No real tests. The smoke test in the README is the test. Day 2 of the build adds Vitest, with mocked Notion data for the test cases.</li>
+        <li>Suggestion text in <code>voice_check</code> violations is the same boilerplate each time. A v0.2 would route suggestions through Claude with the rule and excerpt as context — rules for flagging, Claude for the rewrite hint. Hybrid.</li>
+        <li>The <code>palette_suggest</code> output gets large when the lab grows. Beyond ~30 palettes, returning every option wastes context. The fix: pre-sort options by mood similarity (a vector-embedding pass on the server) and return the top few — still letting Claude make the final pick.</li>
+        <li><code>project_scaffold</code> writes only into <code>six-percent-studio/index.html</code>. Single target. A repo-aware version would take the gallery file as an input, opening the door to other portfolio surfaces or even other projects entirely.</li>
       </ul>
     </div>
   </div>
