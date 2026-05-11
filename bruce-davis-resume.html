@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bruce Davis — AI Design Engineer · AI Engineer</title>
-<meta name="description" content="Designer who codes and ships AI products. UX engineer for AI surfaces, Claude engineer for workflows and MCP servers. Fifteen years in regulated systems.">
+<title>Bruce Davis — AI Engineer · UX / Design Engineer</title>
+<meta name="description" content="AI engineer and UX / design engineer. Fifteen years shipping systems in regulated environments — identity, payment infrastructure, HIPAA-compliant IAM, Non-Human Identity governance at Microsoft. Now building AI products end to end.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -76,6 +76,7 @@ body {
   border-left: 2px solid var(--signal);
   padding-left: 14px;
 }
+.summary strong { color: var(--ink); font-weight: 600; }
 
 /* ─── SECTIONS ─────────────────────────── */
 .section {
@@ -193,7 +194,7 @@ body {
 /* ─── EDUCATION + CERTS ────────────────── */
 .edu-certs { display: flex; gap: 40px; }
 .edu { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-.certs { display: flex; flex-direction: column; gap: 6px; }
+.certs { flex: 1; display: flex; flex-direction: column; gap: 6px; }
 .edu-row, .cert-row {
   display: flex;
   flex-direction: column;
@@ -245,20 +246,20 @@ body {
 <header class="hd">
   <div>
     <div class="hd-name">Bruce Davis</div>
-    <div class="hd-title">AI Design Engineer · AI Engineer</div>
+    <div class="hd-title">AI Engineer · UX / Design Engineer</div>
   </div>
   <div class="hd-contact">
-    <div>heymrlb@gmail.com</div>
+    <div><a href="mailto:iambrucedavis@gmail.com">iambrucedavis@gmail.com</a></div>
     <div>Charlotte, NC</div>
     <div><a href="https://github.com/heylb">github.com/heylb</a></div>
-    <div><a href="https://linkedin.com/in/brucedavis">linkedin.com/in/brucedavis</a></div>
+    <div><a href="https://linkedin.com/in/bruce3">linkedin.com/in/bruce3</a></div>
     <div><a href="https://six-percent-studio.vercel.app">Portfolio</a></div>
   </div>
 </header>
 
 <!-- SUMMARY -->
 <p class="summary">
-  I'm a designer who builds the thing &mdash; and an engineer who designs it. Fifteen years shipping systems in regulated environments: identity platforms, payment infrastructure, HIPAA-compliant healthcare IAM, and Python automation for governance workflows. Now applying that to AI products &mdash; interfaces, agents, MCP servers, document pipelines. Same instinct, new medium.
+  Designer who codes and engineer who designs. Fifteen years shipping systems in regulated environments &mdash; identity platforms for 16,000+ users in HIPAA-compliant healthcare, payment infrastructure for SWIFT/CHIPS/Fedwire, and Python automation for <strong>Non-Human Identity (NHI) governance at Microsoft</strong> &mdash; the same identity problem that now defines enterprise AI agent deployment. Now applying that instinct to AI products: Claude-powered workflows, MCP servers, document pipelines, and AI-native interfaces in React and TypeScript. Security, identity, and compliance as a feature, not a footnote.
 </p>
 
 <!-- RECENT AI WORK -->
@@ -270,15 +271,15 @@ body {
       <div class="proj-id">Document Pipeline</div>
       <div>
         <div class="proj-name">Claude tools, end-to-end document processing</div>
-        <div class="proj-desc">Pipeline of Claude tools on an MCP server &mdash; reads a document, masks PII, validates the extraction with structured JSON outputs, escalates anything unusual to a human reviewer, tracks token cost per stage. Document processing, deidentification, validation, human-in-the-loop, cost optimization. MCP SDK · Node · ajv · JSON Schema · Python.</div>
+        <div class="proj-desc">MCP-based set of Claude tools that handle a document end to end &mdash; extraction, PII masking / deidentification, structured JSON outputs, validation, human-in-the-loop review, and token-cost tracking. The Claude Engineer JD, end to end. MCP SDK · Node · ajv · JSON Schema · Python.</div>
       </div>
     </div>
 
     <div class="project">
-      <div class="proj-id">MCP Server</div>
+      <div class="proj-id">Six Percent MCP</div>
       <div>
-        <div class="proj-name">Custom Claude tools on an MCP server</div>
-        <div class="proj-desc">Five Claude tools running on an MCP server I built to extend my own workflow &mdash; vault search, palette suggest, voice check, project scaffold, idea capture. Hands-on MCP server engineering, tool design with Zod schemas, and Claude API integration. @modelcontextprotocol/sdk · Notion API · Zod · Node.</div>
+        <div class="proj-name">Custom MCP server, five Claude tools</div>
+        <div class="proj-desc">Custom MCP server with five Claude tools for content workflow &mdash; Notion-backed idea retrieval, palette suggestion, voice-checking, page scaffolding, vault capture. Hands-on MCP server engineering and Claude API integration. @modelcontextprotocol/sdk · Notion API · Zod · Node.</div>
       </div>
     </div>
 
@@ -286,23 +287,23 @@ body {
       <div class="proj-id">AI Interface Patterns</div>
       <div>
         <div class="proj-name">Loading, empty, and error states for AI surfaces</div>
-        <div class="proj-desc">Five working interface patterns for AI products &mdash; word-by-word streaming, model state indicators, low-context warnings, confidence flags, error recovery. The loading states, empty states, and error states the UX Engineer JD asks for, built in React/TypeScript. Live demos, not Figma mockups.</div>
+        <div class="proj-desc">Five working React/TypeScript demos for AI products &mdash; streaming output, model state, low-context warnings, confidence flags, error recovery. Loading, empty, and error states built in code &mdash; not Figma mockups.</div>
       </div>
     </div>
 
     <div class="project">
       <div class="proj-id">Motion Showcase</div>
       <div>
-        <div class="proj-name">Motion as a UX decision</div>
-        <div class="proj-desc">Five web motion techniques in one demo &mdash; split-text entrances, scroll-driven reveals, magnetic cursor hover, staggered grid reveals, kinetic type. Motion as a UX decision, not decoration. GSAP, no framework.</div>
+        <div class="proj-name">Motion as a UX decision, not decoration</div>
+        <div class="proj-desc">GSAP-driven motion craft &mdash; split-text entrances, scroll-driven reveals, magnetic cursor, kinetic typography. Motion as a UX decision, not decoration. GSAP, no framework.</div>
       </div>
     </div>
 
     <div class="project">
-      <div class="proj-id">Security UX</div>
+      <div class="proj-id">Security UX Concept</div>
       <div>
         <div class="proj-name">Phishing training, redesigned</div>
-        <div class="proj-desc">Security awareness surface that borrows the visual language of the threat &mdash; HUD UI, scan lines, threat pulse, a playable "spot the phish" round. Motion, empty states, and behavioral interaction design applied to a compliance use case. Vanilla JS · GSAP · Web Audio.</div>
+        <div class="proj-desc">Phishing-training surface redesigned with HUD UI and a playable &ldquo;spot the phish&rdquo; round. Behavioral interaction design applied to a compliance use case. Vanilla JS · GSAP · Web Audio.</div>
       </div>
     </div>
 
@@ -317,70 +318,75 @@ body {
     <div class="role">
       <div class="role-hd">
         <div>
-          <div class="role-title">Infrastructure Design · Information Security Analyst</div>
+          <div class="role-title">Business Execution Consultant &mdash; Infrastructure Design</div>
           <div class="role-co">Wells Fargo · Contract</div>
         </div>
         <div class="role-dates">Nov 2024–Apr 2025</div>
       </div>
       <ul class="role-bullets">
-        <li>Built Python tooling to map network dependencies across SWIFT, CHIPS, and Fedwire payment infrastructure — visualized system flows that hadn't been documented.</li>
-        <li>Designed NIST-compliant documentation architecture for network security controls; became the reference layer for cross-team incident response.</li>
+        <li>Mapped network dependencies for SWIFT, CHIPS, and Fedwire payment infrastructure — documented system flows that hadn't existed on paper, accelerating regulatory approval and reducing design rework by 25%.</li>
+        <li>Designed NIST-compliant documentation architecture for network security controls; became the cross-team reference layer for incident response.</li>
+        <li>Translated executive payment-rail objectives into detailed execution plans for ISO 20022 interoperability and Federal Reserve compliance.</li>
       </ul>
     </div>
 
     <div class="role">
       <div class="role-hd">
         <div>
-          <div class="role-title">Business Analyst · IAM Analyst</div>
+          <div class="role-title">Cloud Solutions Architect</div>
           <div class="role-co">Microsoft · Contract</div>
         </div>
         <div class="role-dates">May–Nov 2024</div>
       </div>
       <ul class="role-bullets">
-        <li>Built Python automation on top of the Graph API for Entra ID Governance — non-human identity (NHI) onboarding and lifecycle review, the same access-control pattern AI agents now require.</li>
-        <li>Prototyped an AI-assisted workflow MVP using Microsoft Copilot: designed the flow, built the proof of concept, presented to stakeholders.</li>
+        <li>Designed and built Python automation on the Microsoft Graph API to extract and normalize identity data — transformed raw Entra ID Governance output into executive-ready dashboards and documentation.</li>
+        <li>Architected an AI-assisted workflow MVP using Microsoft Copilot — designed, built, and presented to global delivery stakeholders to accelerate knowledge transfer and standardize requirements gathering.</li>
+        <li>Translated Non-Human Identity (NHI) governance capabilities into customer-facing solution designs — the same identity governance problem that now defines secure enterprise AI agent deployment.</li>
       </ul>
     </div>
 
     <div class="role">
       <div class="role-hd">
         <div>
-          <div class="role-title">Agile PM · Vulnerability Remediation</div>
+          <div class="role-title">Senior Security Engineer</div>
           <div class="role-co">Starbucks · Contract</div>
         </div>
         <div class="role-dates">Apr–Sept 2023</div>
       </div>
       <ul class="role-bullets">
-        <li>Built PowerShell automation that replaced manual remediation work across 60+ domains — wrote the scripts, designed the runbooks, shipped the solution.</li>
-        <li>Shipped 50+ vulnerability tickets per sprint working at the engineering layer, not the ticket layer.</li>
+        <li>Engineered PowerShell automation that replaced manual remediation work across 60+ domains — shipped scripts and runbooks at the engineering layer.</li>
+        <li>Closed 50+ vulnerabilities per sprint through automation and scripted remediation rather than manual triage.</li>
+        <li>Hardened identity and access controls across distributed teams; owned security testing and defect remediation end to end.</li>
       </ul>
     </div>
 
     <div class="role">
       <div class="role-hd">
         <div>
-          <div class="role-title">PM — Infrastructure &amp; IAM</div>
+          <div class="role-title">Project Manager &mdash; Infrastructure &amp; IAM Delivery</div>
           <div class="role-co">Bank of America · Contract</div>
         </div>
         <div class="role-dates">Oct 2021–Nov 2022</div>
       </div>
       <ul class="role-bullets">
-        <li>Owned design and execution of HashiCorp Vault cutover for 45+ engineering teams — system architecture, runbooks, stakeholder coordination, zero rollback.</li>
-        <li>Built ServiceNow dashboards that became the operational source of truth for infrastructure state across the program.</li>
+        <li>Led zero-downtime infrastructure cutover for 45+ engineering teams across Oracle, Azure, and Middleware platforms — coordinated dependency mapping, change validation, and stakeholder alignment.</li>
+        <li>Owned ServiceNow dashboards as operational source of truth for change approvals, release readiness, and migration tracking; ensured all initiatives met stringent audit requirements.</li>
+        <li>Authored runbooks and governance documentation for senior leadership; identified delivery risks through deep-dive requirements workshops.</li>
       </ul>
     </div>
 
     <div class="role">
       <div class="role-hd">
         <div>
-          <div class="role-title">Program Lead — IAM &amp; Compliance</div>
-          <div class="role-co">Veradigm · Full-time</div>
+          <div class="role-title">Program Lead &mdash; IAM &amp; Compliance</div>
+          <div class="role-co">Veradigm · Healthcare</div>
         </div>
         <div class="role-dates">Jan 2019–Jul 2021</div>
       </div>
       <ul class="role-bullets">
-        <li>Architected and shipped a HIPAA-compliant IAM platform for 16,000+ users at a healthcare company — Entra ID, MIM, CyberArk — integrated end to end from design through deployment.</li>
-        <li>Built Power Platform dashboards that surfaced compliance state across the org; moved compliance from 65% to 95% over the engagement.</li>
+        <li>Architected and shipped an IAM platform for 16,000+ users in a HIPAA-regulated healthcare environment — Entra ID, MIM, and CyberArk integrated end to end.</li>
+        <li>Built Power Platform dashboards that surfaced compliance state across the organization; moved audit compliance from 65% to 95% over the engagement.</li>
+        <li>Designed and executed a multi-year IAM strategy in a regulated healthcare environment, overseeing technology selection and solution architecture.</li>
       </ul>
     </div>
 
@@ -397,44 +403,49 @@ body {
 <section class="section">
   <div class="sec-label">Stack</div>
   <div class="stack">
-    Figma · HTML · CSS · JavaScript · TypeScript · React · Next.js · Svelte ·
-    GSAP · Framer Motion · Three.js · WebGL · Canvas API · D3.js · Matter.js · Web Audio API ·
-    Tailwind · Radix UI · Storybook · Node.js · Python · PowerShell · Vercel · Git
-    <br><br>
-    <strong style="color:var(--ink);">AI engineering:</strong>
-    Model Context Protocol (MCP) · @modelcontextprotocol/sdk · Tool-use schema design · Zod · JSON-RPC · Anthropic SDK · Notion API · ajv / JSON Schema
+    <strong style="color:var(--ink);">Design &amp; Frontend:</strong>
+    Figma · React · TypeScript · Next.js · Tailwind · Radix UI · Storybook · HTML/CSS
     <br>
-    <strong style="color:var(--ink);">AI in workflow:</strong>
-    Claude Code · Cursor · OpenAI SDK · Vercel AI SDK · Microsoft Copilot
+    <strong style="color:var(--ink);">AI &amp; Automation:</strong>
+    Claude · Claude Code · Anthropic SDK · MCP SDK · OpenAI SDK · Vercel AI SDK · Microsoft Copilot · Cursor · v0 · Figma Make
+    <br>
+    <strong style="color:var(--ink);">Motion &amp; Interaction:</strong>
+    GSAP · Framer Motion · Three.js · Canvas API · D3.js · Matter.js · Web Audio API · WebGL
+    <br>
+    <strong style="color:var(--ink);">Languages &amp; Tools:</strong>
+    JavaScript · TypeScript · Python · PowerShell · SQL · Git · Vercel
+    <br>
+    <strong style="color:var(--ink);">Enterprise &amp; Security:</strong>
+    SWIFT · CHIPS · Fedwire · ISO 20022 · Entra ID Governance · Non-Human Identity · HIPAA · NIST · CyberArk · MIM · ServiceNow · JIRA
   </div>
 </section>
 
-<!-- EDUCATION + CERTS -->
+<!-- CERTS + EDUCATION -->
 <section class="section">
-  <div class="sec-label">Education &amp; Certifications</div>
+  <div class="sec-label">Certifications &amp; Education</div>
   <div class="edu-certs">
-    <div class="edu">
-      <div class="edu-row">
-        <div class="edu-degree">Master of Science — Computer Graphics Technology</div>
-        <div class="edu-school">Purdue University</div>
-      </div>
-      <div class="edu-row">
-        <div class="edu-degree">Bachelor of Science — Computer Science</div>
-        <div class="edu-school">Lincoln University</div>
-      </div>
-    </div>
     <div class="certs">
       <div class="cert-row">
+        <div class="cert-name">Certified in Cybersecurity (CC)</div>
+        <div class="cert-body">ISC2</div>
+      </div>
+      <div class="cert-row">
         <div class="cert-name">Project Management Professional (PMP)</div>
-        <div class="cert-body">PMI</div>
+        <div class="cert-body">Project Management Institute</div>
       </div>
       <div class="cert-row">
         <div class="cert-name">Professional Scrum Master I (PSM I)</div>
         <div class="cert-body">Scrum.org</div>
       </div>
-      <div class="cert-row">
-        <div class="cert-name">Certified in Cybersecurity (CC)</div>
-        <div class="cert-body">ISC2</div>
+    </div>
+    <div class="edu">
+      <div class="edu-row">
+        <div class="edu-degree">M.S., Computer Graphics Technology</div>
+        <div class="edu-school">Purdue University</div>
+      </div>
+      <div class="edu-row">
+        <div class="edu-degree">B.S., Computer Science</div>
+        <div class="edu-school">Lincoln University</div>
       </div>
     </div>
   </div>
