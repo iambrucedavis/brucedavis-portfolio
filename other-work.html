@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Other Work — Bruce Davis</title>
+<meta name="description" content="Experiments, craft demos, and concept builds by Bruce Davis.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:         #0F0F0F;
+  --surface:    #161616;
+  --border:     rgba(255,255,255,.10);
+  --text:       #EBEBEB;
+  --text-dim:   #A8A8A8;
+  --text-muted: #7D7D7D;
+  --signal:     #E8601C;
+  --mono:       'Space Mono', monospace;
+  --sans:       'Space Grotesk', sans-serif;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 80px 32px 80px;
+}
+
+.wrap { max-width: 760px; margin: 0 auto; }
+
+.back-top {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 56px;
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.back-top:hover { color: var(--signal); border-bottom-color: var(--signal); }
+
+h1 {
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  margin-bottom: 18px;
+  color: #fff;
+}
+
+.intro {
+  font-size: 17px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 56px;
+  max-width: 60ch;
+}
+
+.list {
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+.list li {
+  border-bottom: 1px solid var(--border);
+  padding: 28px 0;
+}
+.item-name {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.item-name a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color .2s;
+}
+.item-name a:hover { color: var(--signal); }
+.item-desc {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+.item-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--signal);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.item-link:hover { border-bottom-color: var(--signal); }
+
+.back-bottom {
+  margin-top: 56px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--signal);
+  text-decoration: none;
+  display: inline-block;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.back-bottom:hover { border-bottom-color: var(--signal); }
+
+a:focus-visible {
+  outline: 1px solid var(--signal);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  body { padding: 60px 22px; }
+  .intro { margin-bottom: 40px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <a href="index.html" class="back-top">← Back to main site</a>
+
+  <h1>Other Work</h1>
+
+  <p class="intro">
+    Experiments, craft demos, and concept builds that aren't directly aimed at the roles I'm targeting. Here if you want a longer look.
+  </p>
+
+  <ul class="list">
+
+    <li>
+      <div class="item-name"><a href="six-percent-playground.html" target="_blank" rel="noopener">Physics Playground</a></div>
+      <p class="item-desc">A browser physics toy with synthesized sound on every collision. Built with Matter.js and Web Audio API.</p>
+      <a href="six-percent-playground.html" target="_blank" rel="noopener" class="item-link">View →</a>
+    </li>
+
+    <li>
+      <div class="item-name"><a href="003-data-viz-dashboard.html">Interactive Data Viz Dashboard</a></div>
+      <p class="item-desc">Three live D3 charts: a real-time monitor, a filterable scatter plot, and a force-directed graph.</p>
+      <a href="003-data-viz-dashboard.html" class="item-link">View →</a>
+    </li>
+
+    <li>
+      <div class="item-name"><a href="005-ai-web-toy.html">The Brief Machine</a></div>
+      <p class="item-desc">Six design briefs displayed at reading pace, one phrase at a time. Format as a design move.</p>
+      <a href="005-ai-web-toy.html" class="item-link">View →</a>
+    </li>
+
+    <li>
+      <div class="item-name"><a href="006-saas-landing-brand-study.html">SaaS Landing &amp; Brand Study</a></div>
+      <p class="item-desc">A visual study of a modern SaaS surface. Concept, not shipped product.</p>
+      <a href="006-saas-landing-brand-study.html" class="item-link">View →</a>
+    </li>
+
+  </ul>
+
+  <a href="index.html" class="back-bottom">Back to main site →</a>
+
+</div>
+
+</body>
+</html>

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bruce Davis — Design Engineer + AI Engineer</title>
-<!-- // 6% — six percent. small change. whole product. quietly here. -->
-<meta name="description" content="Bruce Davis — design engineer + AI engineer. AI systems, interfaces, pipelines, MCP tools. Fifteen years shipping production systems at Wells Fargo, Microsoft, Starbucks, Bank of America.">
-<meta property="og:title" content="Bruce Davis — Design Engineer + AI Engineer">
-<meta property="og:description" content="AI systems, interfaces, pipelines, MCP tools. Fifteen years shipping production systems. Same hand on design and engineering, first sketch to live URL.">
+<title>Bruce Davis — AI Design Engineer · AI Engineer</title>
+<!-- // 6% — small change. whole product. quietly here. -->
+<meta name="description" content="Designer who codes and ships AI products. UX engineer for AI surfaces, Claude engineer for workflows and MCP servers. Fifteen years in regulated systems.">
+<meta property="og:title" content="Bruce Davis — AI Design Engineer · AI Engineer">
+<meta property="og:description" content="I design and build AI products — interfaces, agents, workflows, and automation. Fifteen years shipping systems for Wells Fargo, Microsoft, Starbucks, Bank of America, and Veradigm.">
 <meta property="og:type" content="website">
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -18,17 +18,16 @@
   --bg:         #0F0F0F;
   --surface:    #161616;
   --surface2:   #1D1D1D;
-  --paper:      #F4F1EA;
-  --border:     rgba(255,255,255,.07);
-  --border-hi:  rgba(255,255,255,.16);
+  --border:     rgba(255,255,255,.08);
+  --border-hi:  rgba(255,255,255,.18);
   --text:       #EBEBEB;
-  --text-dim:   #999999;
+  --text-dim:   #A8A8A8;
   --text-muted: #7D7D7D;
   --signal:     #E8601C;
   --signal-rgb: 232,96,28;
+  --mono:       'Space Mono', monospace;
+  --sans:       'Space Grotesk', sans-serif;
 }
-
-/* ─── THEMES ─────────────────────────────── */
 
 /* ─── SIGNAL THEMES ─────────────────────── */
 [data-theme="og"]    { --signal: #E8601C; --signal-rgb: 232,96,28; }
@@ -37,7 +36,6 @@
 [data-theme="volt"]  { --signal: #B8E02A; --signal-rgb: 184,224,42; }
 [data-theme="haze"]  { --signal: #2AA8C4; --signal-rgb: 42,168,196; }
 [data-theme="noir"]  { --signal: #C0C0C0; --signal-rgb: 192,192,192; }
-/* Light-mode signal overrides for themes whose dark-mode hex fails AA on light bg */
 [data-theme="solar"] body.light { --signal: #B22020; --signal-rgb: 178,32,32; }
 [data-theme="wave"]  body.light { --signal: #0E695C; --signal-rgb: 14,105,92; }
 
@@ -45,2027 +43,680 @@
 body.light {
   --bg:         #F5F5F3;
   --surface:    #EBEBEA;
-  --surface-hi: #E2E2E0;
+  --surface2:   #DCDCDA;
   --border:     rgba(0,0,0,.10);
   --border-hi:  rgba(0,0,0,.22);
   --text:       #111111;
   --text-dim:   #444444;
-  --text-muted: #888888;
-  --surface2:   #DCDCDA;
+  --text-muted: #777777;
 }
 body.light #cur { mix-blend-mode: normal; }
 body.light #nav.scrolled { background: rgba(245,245,243,.88); }
-.mode-btn {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .08em;
-  background: transparent;
-  border: 1px solid var(--border-hi);
-  color: var(--text-dim);
-  padding: 4px 8px;
-  cursor: none;
-  transition: color .2s, border-color .2s;
-}
-.mode-btn:hover { color: var(--text); border-color: var(--text); }
 
 /* ─── RESET ──────────────────────────────── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Space Grotesk',sans-serif;
-  overflow-x:hidden;cursor:none;
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  cursor: none;
+  line-height: 1.5;
 }
 
-/* Film grain overlay */
-body::after{
-  content:'';position:fixed;inset:0;z-index:9996;pointer-events:none;
+/* Subtle film grain */
+body::after {
+  content:''; position:fixed; inset:0; z-index:9996; pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity:.032;mix-blend-mode:overlay;
+  opacity:.028; mix-blend-mode:overlay;
 }
 
 /* ─── CURSOR ─────────────────────────────── */
-#cur{
-  position:fixed;z-index:9998;pointer-events:none;
-  width:10px;height:10px;border-radius:50%;
-  background:var(--signal);
-  transform:translate(-50%,-50%);
-  transition:width .3s,height .3s,border-radius .3s;
-  mix-blend-mode:difference;
+#cur {
+  position:fixed; z-index:9998; pointer-events:none;
+  width:10px; height:10px; border-radius:50%;
+  background: var(--signal);
+  transform: translate(-50%,-50%);
+  transition: width .25s, height .25s, border-radius .25s;
+  mix-blend-mode: difference;
 }
-#cur.big{width:48px;height:48px;border-radius:0;}
-#cur-trail{
-  position:fixed;z-index:9997;pointer-events:none;
-  width:30px;height:30px;border-radius:50%;
-  border:1px solid rgba(var(--signal-rgb),.35);
-  transform:translate(-50%,-50%);
-  transition:all .12s ease;
+#cur.big { width:42px; height:42px; border-radius:0; }
+#cur-trail {
+  position:fixed; z-index:9997; pointer-events:none;
+  width:28px; height:28px; border-radius:50%;
+  border: 1px solid rgba(var(--signal-rgb),.32);
+  transform: translate(-50%,-50%);
+  transition: all .12s ease;
 }
-body *{cursor:none;}
-
-/* ─── FLASH ──────────────────────────────── */
-#flash{
-  position:fixed;inset:0;z-index:10000;
-  background:var(--signal);opacity:0;
-  pointer-events:none;transition:opacity .18s;
-}
-#flash.on{opacity:1;}
+body * { cursor: none; }
 
 /* ─── NAV ────────────────────────────────── */
-#nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  padding:0 52px;height:68px;
-  display:flex;align-items:center;justify-content:space-between;
-  background:transparent;
-  border-bottom:1px solid transparent;
-  transition:background .4s,border-color .4s,backdrop-filter .4s;
+#nav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  padding: 0 56px; height:68px;
+  display:flex; align-items:center; justify-content:space-between;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background .35s, border-color .35s, backdrop-filter .35s;
 }
-#nav.scrolled{
-  background:rgba(0,0,0,.92);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom-color:var(--border);
+#nav.scrolled {
+  background: rgba(0,0,0,.90);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-bottom-color: var(--border);
 }
-.nav-logo{
-  font-weight:700;font-size:15px;
-  letter-spacing:.26em;color:var(--signal);
-  text-decoration:none;
-  display:inline-flex;align-items:baseline;gap:10px;
+.nav-logo {
+  font-family: var(--sans);
+  font-weight: 700; font-size: 14px;
+  letter-spacing: .22em;
+  color: var(--signal);
+  text-decoration: none;
 }
-.nav-logo .bd-monogram{color:var(--signal);}
-.nav-links{display:flex;gap:36px;list-style:none;}
-.nav-links a{
-  color:var(--text-muted);font-size:11px;font-weight:600;
-  letter-spacing:.16em;text-transform:uppercase;
-  text-decoration:none;transition:color .2s;
+.nav-links {
+  display:flex; gap: 36px; list-style: none;
 }
-.nav-links a:hover{color:var(--signal);}
-.nav-cta{
-  padding:10px 0;
-  background:transparent;color:var(--signal);
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;font-size:11px;
-  letter-spacing:.16em;text-transform:uppercase;
-  border:none;border-bottom:1px solid transparent;
-  text-decoration:none;display:inline-block;
-  transition:color .2s,border-color .2s;
+.nav-links a {
+  color: var(--text-muted);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase;
+  text-decoration: none;
+  transition: color .2s;
 }
-.nav-cta:hover{color:#fff;border-bottom-color:var(--signal);}
-
-/* ─── REVEAL ─────────────────────────────── */
-/* No entry animation — content is visible immediately */
-.reveal,.reveal-left,.reveal-right { opacity: 1; }
-.reveal.visible,.reveal-left.visible,.reveal-right.visible { opacity: 1; }
-
-/* ─── HERO ───────────────────────────────── */
-#hero{
-  min-height:100vh;
-  display:flex;align-items:center;
-  padding:160px 64px 100px;
-  position:relative;overflow:hidden;
-}
-
-/* Hero hairline accent — replaces radial glow */
-#hero::before{
-  content:'';position:absolute;
-  top:0;right:64px;
-  width:1px;height:100%;
-  background:linear-gradient(to bottom,transparent,rgba(var(--signal-rgb),.3) 30%,rgba(var(--signal-rgb),.15) 70%,transparent);
-  pointer-events:none;
-}
-
-/* Removed: diagonal stripe was a fashion surface reference */
-
-.hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:2;}
-
-.hero-eyebrow{
-  font-size:11px;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--signal);margin-bottom:32px;font-weight:600;
-  display:flex;align-items:center;gap:14px;
-}
-.hero-eyebrow::before{
-  content:'→';width:auto;background:none;height:auto;line-height:1;
-  font-family:'Space Mono',monospace;font-size:14px;
-  color:var(--signal);letter-spacing:0;
-}
-
-.hero-headline{
-  font-size:clamp(68px,10.5vw,176px);
-  font-weight:700;line-height:.88;
-  letter-spacing:-.03em;color:#fff;
-}
-.hero-headline .y{color:var(--signal);}
-.hero-headline .p{color:var(--signal);}
-.hero-headline .dim{color:#1a1128;}
-
-.hero-sub-row{
-  display:flex;align-items:flex-end;
-  justify-content:space-between;
-  margin-top:52px;gap:40px;flex-wrap:wrap;
-}
-.hero-sub{
-  font-size:clamp(15px,2vw,20px);
-  color:var(--text-dim);max-width:460px;
-  line-height:1.65;font-weight:400;
-}
-.hero-sub em{color:var(--text-muted);font-style:normal;}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;flex-shrink:0;}
-
-.btn-pri{
-  padding:18px 44px;
-  background:var(--signal);color:#fff;
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;font-size:12px;
-  letter-spacing:.16em;text-transform:uppercase;
-  border:none;text-decoration:none;display:inline-block;
-  transition:transform .2s,background .2s,box-shadow .2s;
-  box-shadow:0 0 0 0 rgba(var(--signal-rgb),0);
-}
-.btn-pri:hover{
-  transform:translateY(-1px);
-  background:var(--signal);
-}
-.btn-ghost{
-  padding:18px 44px;
-  background:transparent;color:var(--text-muted);
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:600;font-size:12px;
-  letter-spacing:.16em;text-transform:uppercase;
-  border:none;border-bottom:1px solid transparent;
-  text-decoration:none;display:inline-block;
-  transition:border-color .3s,color .3s;
-}
-.btn-ghost:hover{border-bottom-color:var(--signal);color:var(--signal);}
-
-.scroll-hint{
-  position:absolute;bottom:40px;left:52px;
-  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--text-muted);
-  display:flex;align-items:center;gap:10px;
-}
-.scroll-hint::before{
-  content:'';width:1px;height:40px;
-  background:linear-gradient(to bottom,var(--signal),transparent);
-}
-
-/* ─── WHAT I DO (two-track) ───────────────── */
-#what-i-do{
-  padding:56px 64px;
-  background:var(--surface);
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-}
-.wid-inner{max-width:1200px;margin:0 auto;}
-.wid-label{
-  font-family:'Space Mono',monospace;
-  font-size:10px;letter-spacing:.34em;text-transform:uppercase;
-  color:var(--signal);font-weight:700;
-  margin-bottom:28px;
-}
-.wid-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:64px;
-}
-.wid-col{display:flex;flex-direction:column;gap:14px;}
-.wid-track{
-  font-size:18px;font-weight:600;letter-spacing:-.01em;
-  color:var(--text);text-transform:uppercase;
-}
-.wid-body{
-  font-size:15px;line-height:1.6;
-  color:var(--text-dim);max-width:52ch;
-}
-.wid-refs{
-  font-family:'Space Mono',monospace;
-  font-size:11px;letter-spacing:.14em;
-  color:var(--text-muted);margin-top:2px;
-}
-.wid-link{
-  color:var(--signal);text-decoration:none;
-  border-bottom:1px solid transparent;
-  transition:border-color .2s;
-}
-.wid-link:hover{border-bottom-color:var(--signal);}
-@media (max-width:760px){
-  #what-i-do{padding:40px 24px;}
-  .wid-grid{grid-template-columns:1fr;gap:32px;}
-  .wid-label{margin-bottom:20px;}
-}
+.nav-links a:hover { color: var(--signal); }
 
 /* ─── SECTION SHELL ──────────────────────── */
-.section{padding:160px 64px;}
-.section-inner{max-width:1200px;margin:0 auto;}
-.section-label{
-  font-size:10px;letter-spacing:.36em;text-transform:uppercase;
-  color:var(--signal);font-weight:700;margin-bottom:20px;
-  display:flex;align-items:center;gap:12px;
-  font-family:'Space Mono',monospace;
-}
-.section-label::before{
-  content:'//';width:auto;background:none;
-  color:var(--signal);letter-spacing:0;
-  font-family:'Space Mono',monospace;
-}
-.section-label::after{content:'';}
-.section-title{
-  font-size:clamp(44px,6vw,80px);
-  font-weight:700;line-height:1.02;
-  color:#fff;letter-spacing:-.03em;
-  margin-bottom:72px;
+section { padding: 120px 56px; }
+.inner { max-width: 1180px; margin: 0 auto; }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 22px;
 }
 
-/* ─── DISCIPLINES ────────────────────────── */
-#sectors{
-  background:var(--surface);
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
+/* ─── HERO ───────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding-top: 140px; padding-bottom: 80px;
+  position: relative;
 }
-.sectors-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--border);
-}
-.sector-card{
-  background:var(--surface);
-  padding:44px 32px;position:relative;overflow:hidden;
-  transition:background .3s;
-}
-.sector-card:hover{background:var(--surface2);}
-.sector-card::after{
-  content:'';position:absolute;
-  bottom:0;left:0;right:0;height:1px;
-  background:var(--signal);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform .5s ease;
-}
-.sector-card:hover::after{transform:scaleX(1);}
-
-.sector-icon{display:none;}
-
-.sector-num{
-  font-family:'Space Mono',monospace;
-  font-size:10px;color:var(--text-muted);
-  margin-bottom:12px;letter-spacing:.1em;
-}
-.sector-name{
-  font-size:20px;font-weight:700;
-  color:var(--text);margin-bottom:12px;
-  transition:color .2s;
-}
-.sector-card:hover .sector-name{color:var(--signal);}
-.sector-hook{
-  font-size:14px;color:var(--text-muted);line-height:1.75;
-  margin-bottom:14px;
-}
-.sector-example{
-  font-size:10px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--signal);opacity:0;
-  transition:opacity .4s .1s;
-  font-family:'Space Mono',monospace;
-}
-.sector-card:hover .sector-example{opacity:1;}
-
-/* ─── FEATURED INSTALLATION ──────────────── */
-#featured{
-  background:var(--bg);
-  padding:100px 52px;
-  border-bottom:1px solid var(--border);
-}
-.feat-inner{max-width:1200px;margin:0 auto;}
-.feat-plaque-top{
-  display:flex;justify-content:space-between;
-  align-items:flex-start;
-  margin-bottom:40px;
-  flex-wrap:wrap;gap:20px;
-}
-.feat-label-block{}
-.feat-exhibit-num{
-  font-family:'Space Mono',monospace;
-  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--signal);font-weight:700;margin-bottom:8px;
-}
-.feat-title{
-  font-size:clamp(32px,4.5vw,56px);
-  font-weight:700;color:#fff;
-  line-height:1.05;letter-spacing:-.02em;
-}
-.feat-title em{color:var(--signal);font-style:normal;}
-.feat-meta{
-  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--text-muted);margin-top:10px;
-  font-family:'Space Mono',monospace;
-}
-.feat-cta-block{display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
-.feat-cta-note{
-  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--text-muted);font-family:'Space Mono',monospace;
-}
-
-/* The exhibit "canvas" */
-.feat-canvas{
-  width:100%;
-  height:420px;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  transition:border-color .4s;
-}
-.feat-canvas:hover{border-color:var(--border-hi);}
-.feat-canvas-num{
-  position:absolute;
-  font-size:clamp(120px,20vw,260px);
-  font-weight:700;
-  color:rgba(var(--signal-rgb),.04);
-  letter-spacing:-.05em;
-  line-height:1;
-  user-select:none;pointer-events:none;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-}
-.feat-canvas-glow{
-  position:absolute;
-  inset:0;
-  background:none;
-  border:1px solid var(--border);
+#hero::before {
+  content:''; position:absolute;
+  top:0; right:56px; width:1px; height:100%;
+  background: linear-gradient(to bottom, transparent, rgba(var(--signal-rgb),.28) 35%, rgba(var(--signal-rgb),.12) 70%, transparent);
   pointer-events:none;
 }
-.feat-canvas-label{
-  position:relative;z-index:2;text-align:center;
+.hero-name {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 28px;
 }
-.feat-canvas-title{
-  font-size:clamp(22px,3vw,36px);
-  font-weight:700;color:#fff;
-  margin-bottom:12px;letter-spacing:-.01em;
+.hero-h1 {
+  font-size: clamp(40px, 5.6vw, 76px);
+  font-weight: 600; line-height: 1.05;
+  letter-spacing: -.025em;
+  color: #fff;
+  max-width: 18ch;
+  margin-bottom: 28px;
 }
-.feat-canvas-sub{
-  font-size:14px;color:var(--text-dim);
-  max-width:440px;line-height:1.7;
-  margin:0 auto 28px;
+body.light .hero-h1 { color: #0a0a0a; }
+.hero-h1 .accent { color: var(--signal); }
+.hero-sub {
+  font-size: clamp(16px, 1.4vw, 19px);
+  color: var(--text-dim);
+  max-width: 62ch;
+  line-height: 1.65;
+  margin-bottom: 44px;
 }
-.feat-enter{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:14px 36px;
-  background:var(--signal);color:#fff;
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;font-size:11px;
-  letter-spacing:.2em;text-transform:uppercase;
-  text-decoration:none;
-  transition:background .2s,box-shadow .2s,transform .2s;
-  box-shadow:0 0 0 0 rgba(var(--signal-rgb),0);
+.hero-cta {
+  display: flex; gap: 14px; flex-wrap: wrap;
 }
-.feat-enter:hover{
-  background:var(--signal);
-  transform:translateY(-1px);
+.btn {
+  display: inline-block;
+  padding: 16px 32px;
+  font-family: var(--sans);
+  font-weight: 600; font-size: 12px;
+  letter-spacing: .14em; text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  transition: transform .2s, background .2s, color .2s, border-color .2s;
 }
-.feat-bottom{
-  margin-top:28px;
-  display:flex;gap:32px;
-  font-size:11px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--text-muted);font-family:'Space Mono',monospace;
-  flex-wrap:wrap;
+.btn-primary {
+  background: var(--signal);
+  color: #fff;
 }
-.feat-tag{
-  display:flex;align-items:center;gap:8px;
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-hi);
 }
-.feat-tag::before{
-  content:'';width:6px;height:6px;border-radius:50%;
-  background:var(--signal);opacity:.6;flex-shrink:0;
+.btn-ghost:hover { border-color: var(--signal); color: var(--signal); }
+
+/* ─── LOOKING FOR ────────────────────────── */
+#looking-for {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 96px 56px;
+}
+.lf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+.lf-card {
+  background: var(--surface);
+  padding: 48px 44px;
+  display: flex; flex-direction: column; gap: 18px;
+  text-decoration: none;
+  color: inherit;
+  transition: background .25s;
+}
+.lf-card:hover { background: var(--surface2); }
+.lf-tag {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--signal);
+}
+.lf-title {
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--text);
+}
+.lf-body {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 48ch;
+}
+.lf-link {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--signal);
+  margin-top: 4px;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+  align-self: flex-start;
+}
+.lf-card:hover .lf-link { border-bottom-color: var(--signal); }
+
+/* ─── WORK ───────────────────────────────── */
+#work {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.section-h2 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--text);
+  margin-bottom: 56px;
+  max-width: 24ch;
+  line-height: 1.1;
+}
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.work-card {
+  background: var(--bg);
+  padding: 36px 36px 32px;
+  display: flex; flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: background .25s;
+  position: relative;
+}
+.work-card:hover { background: var(--surface); }
+.work-tag {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 16px;
+}
+.work-name {
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--text);
+  margin-bottom: 14px;
+  transition: color .2s;
+}
+.work-card:hover .work-name { color: var(--signal); }
+.work-desc {
+  font-size: 14.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 22px;
+  flex: 1;
+}
+.work-badges {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: auto;
+}
+.badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .04em;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  background: transparent;
+  transition: color .2s, border-color .2s;
+}
+.work-card:hover .badge { color: var(--text-dim); border-color: var(--border-hi); }
+
+/* Single-row last card spans both columns when count is odd */
+.work-card.span-2 { grid-column: 1 / -1; }
+
+/* ─── AI TOOLS ───────────────────────────── */
+#ai-tools {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 96px 56px;
+}
+.ai-tools-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.ai-tools-label {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--signal);
+}
+.ai-tools-body {
+  font-size: clamp(17px, 1.6vw, 21px);
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 64ch;
+}
+.ai-tools-body strong {
+  color: var(--text);
+  font-weight: 600;
 }
 
-/* ─── GALLERY ────────────────────────────── */
-#portfolio{
-  background:var(--bg);
-  padding:100px 52px 130px;
-  border-top:1px solid var(--border);
+/* ─── BACKGROUND ─────────────────────────── */
+#background {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 96px 56px;
 }
-.gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:1px;background:var(--border);
+.bg-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 80px;
+  align-items: start;
 }
+.bg-body {
+  font-size: clamp(17px, 1.6vw, 21px);
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 64ch;
+}
+.bg-body strong { color: var(--text); font-weight: 600; }
 
-/* Exhibit card */
-.exhibit-card{
-  background:var(--bg);
-  text-decoration:none;color:inherit;
-  display:flex;flex-direction:column;
-  position:relative;overflow:hidden;
-  transition:background .3s;
+/* ─── CONTACT ────────────────────────────── */
+#contact {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 110px 56px 100px;
+  text-align: center;
 }
-.exhibit-card:hover{background:var(--surface);}
-
-/* Artwork area */
-.exhibit-art{
-  height:240px;
-  background:var(--surface);
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  border-bottom:1px solid var(--border);
-  transition:border-color .4s;
+.contact-h2 {
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--text);
+  margin-bottom: 24px;
+  line-height: 1.2;
 }
-.exhibit-card:hover .exhibit-art{border-bottom-color:var(--border-hi);}
-.exhibit-art-num{
-  position:absolute;
-  font-size:clamp(80px,12vw,130px);
-  font-weight:700;
-  color:rgba(var(--signal-rgb),.04);
-  letter-spacing:-.04em;
-  user-select:none;pointer-events:none;
-  transition:color .4s;
+.contact-line {
+  font-family: var(--mono);
+  font-size: clamp(14px, 1.3vw, 17px);
+  color: var(--text-dim);
+  letter-spacing: .04em;
+  display: inline-flex; gap: 18px; flex-wrap: wrap; justify-content: center;
 }
-.exhibit-card:hover .exhibit-art-num{color:rgba(var(--signal-rgb),.09);}
-.exhibit-art-glow{display:none;}
-.exhibit-art-icon{
-  font-size:40px;
-  position:relative;z-index:2;
-  filter:grayscale(1);opacity:.2;
-  transition:filter .4s,opacity .4s,transform .4s;
+.contact-line a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s;
 }
-.exhibit-card:hover .exhibit-art-icon{
-  filter:none;opacity:.7;transform:scale(1.1);
-}
-.exhibit-soon-badge{
-  position:absolute;top:18px;right:18px;
-  font-family:'Space Mono',monospace;
-  font-size:9px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;
-  color:var(--text-muted);
-  border:1px solid var(--border);
-  padding:5px 10px;
-  background:rgba(0,0,0,.6);
-  opacity:.6;
-}
-
-/* Plaque area */
-.exhibit-plaque{
-  padding:32px 36px 40px;
-  flex:1;display:flex;flex-direction:column;
-}
-.exhibit-plaque-num{
-  font-family:'Space Mono',monospace;
-  font-size:9px;font-weight:700;
-  letter-spacing:.3em;text-transform:uppercase;
-  color:var(--signal);margin-bottom:10px;
-  opacity:.7;
-}
-.exhibit-plaque-title{
-  font-size:clamp(20px,2.5vw,28px);
-  font-weight:700;color:var(--text);
-  line-height:1.15;margin-bottom:8px;
-  transition:color .2s;
-}
-.exhibit-card.live:hover .exhibit-plaque-title{color:var(--signal);}
-.exhibit-card.soon .exhibit-plaque-title{color:var(--text-muted);}
-.exhibit-plaque-medium{
-  font-family:'Space Mono',monospace;
-  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text-muted);margin-bottom:18px;
-  border-left:2px solid var(--border-hi);
-  padding-left:10px;
-}
-.exhibit-card.soon .exhibit-plaque-medium{border-left-color:var(--border);color:#2a2044;}
-.exhibit-plaque-desc{
-  font-size:14px;color:var(--text-muted);
-  line-height:1.75;flex:1;
-}
-.exhibit-card.soon .exhibit-plaque-desc{color:#1e172e;}
-.exhibit-before-after{
-  margin-top:20px;
-  display:flex;gap:10px;align-items:center;
-  font-size:10px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  font-family:'Space Mono',monospace;
-}
-.ex-before{color:var(--text-muted);}
-.ex-arrow{color:var(--border-hi);}
-.ex-after{color:var(--text-dim);}
-.exhibit-card.live:hover .ex-after{color:var(--signal);}
-.exhibit-card.soon .ex-before,
-.exhibit-card.soon .ex-arrow,
-.exhibit-card.soon .ex-after{color:#1e172e;}
-
-/* gallery floor line at card bottom */
-.exhibit-floor{
-  height:1px;
-  background:var(--border);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform .5s ease;
-}
-.exhibit-card.live:hover .exhibit-floor{
-  transform:scaleX(1);
-  background:var(--signal);
-}
-
-/* ─── PHILOSOPHY ─────────────────────────── */
-#philosophy{
-  background:var(--surface);
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:130px 52px;
-}
-.phil-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:100px;align-items:center;
-  max-width:1200px;margin:0 auto;
-}
-.phil-numbers{
-  height:180px;display:flex;align-items:center;gap:16px;
-}
-.big-num{
-  font-size:clamp(72px,10vw,128px);
-  font-weight:700;line-height:1;
-  transition:color .3s;
-}
-.big-num.dim{color:#1a1128;}
-.big-num.lit{color:var(--signal);}
-.phil-arrow{font-size:36px;color:var(--text-muted);}
-
-.phil-copy h2{
-  font-size:clamp(26px,3.2vw,38px);
-  font-weight:700;line-height:1.25;
-  color:#fff;margin-bottom:20px;
-}
-.phil-copy h2 em{color:var(--signal);font-style:normal;}
-.phil-copy p{color:var(--text-muted);font-size:14px;line-height:1.95;margin-bottom:14px;}
-.phil-quote{
-  margin-top:30px;
-  border-left:2px solid var(--signal);
-  padding-left:16px;
-  font-size:13px;color:var(--text-muted);
-  font-style:italic;line-height:1.85;
-  opacity:.7;
-}
-.phil-names{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;}
-.phil-name-tag{
-  font-size:10px;font-weight:700;
-  letter-spacing:.16em;text-transform:uppercase;
-  color:var(--text-muted);
-  padding:6px 12px;
-  border:1px solid var(--border);
-  font-family:'Space Mono',monospace;
-  transition:color .2s,border-color .2s;
-}
-.phil-name-tag:hover{color:var(--signal);border-color:var(--border-hi);}
-
-/* ─── PROCESS ────────────────────────────── */
-#process{background:var(--bg);padding:130px 52px;}
-.process-steps{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--border);
-  margin-top:60px;
-  list-style:none;padding:0;
-}
-.process-step{
-  background:var(--bg);
-  padding:52px 40px;
-  transition:background .3s;
-}
-.process-step:hover{background:var(--surface);}
-.step-n{
-  font-family:'Space Mono',monospace;
-  font-size:48px;font-weight:700;
-  color:var(--text-muted);line-height:1;
-  margin-bottom:24px;
-  opacity:.35;
-  transition:color .2s;
-}
-.process-step:hover .step-n{color:var(--signal);opacity:1;}
-.step-title{
-  font-size:19px;font-weight:700;
-  color:var(--text);margin-bottom:12px;
-  transition:color .2s;
-}
-.process-step:hover .step-title{color:var(--signal);}
-.step-body{color:var(--text-muted);font-size:14px;line-height:1.85;}
-
-/* ─── CLIENT STRIP ───────────────────────── */
-#clients{
-  padding:80px 52px;
-  background:var(--surface);
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  text-align:center;
-}
-.clients-label{
-  font-size:10px;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--text-muted);font-weight:700;margin-bottom:36px;
-  font-family:'Space Mono',monospace;
-}
-.client-types{
-  display:flex;gap:0;justify-content:center;
-  flex-wrap:wrap;
-  border:1px solid var(--border);
-  display:inline-flex;
-  list-style:none;padding:0;margin:0;
-}
-.client-type{
-  padding:18px 32px;
-  font-size:11px;font-weight:700;
-  letter-spacing:.16em;text-transform:uppercase;
-  color:var(--text-muted);
-  border-right:1px solid var(--border);
-  font-family:'Space Mono',monospace;
-  transition:color .2s,background .2s;
-}
-.client-type:last-child{border-right:none;}
-.client-type:hover{color:var(--signal);background:var(--surface2);}
-
-/* ─── CTA ────────────────────────────────── */
-#cta{
-  padding:150px 52px;
-  background:var(--surface2);
-  text-align:center;
-  position:relative;overflow:hidden;
-  border-top:1px solid var(--border);
-}
-#cta::before{
-  content:'';position:absolute;
-  top:0;left:64px;right:64px;height:1px;
-  background:linear-gradient(to right,transparent,rgba(var(--signal-rgb),.4),transparent);
-  pointer-events:none;
-}
-.cta-inner{position:relative;z-index:2;}
-.cta-tag{
-  font-family:'Space Mono',monospace;
-  font-size:10px;letter-spacing:.34em;text-transform:uppercase;
-  color:var(--signal);font-weight:700;
-  margin-bottom:24px;display:block;
-}
-.cta-title{
-  font-size:clamp(44px,7.5vw,100px);
-  font-weight:700;color:#fff;
-  line-height:.92;letter-spacing:-.03em;
-  margin-bottom:28px;
-}
-.cta-title span{color:var(--signal);}
-.cta-sub{
-  font-size:17px;color:var(--text-dim);
-  margin-bottom:52px;
-  max-width:480px;margin-left:auto;margin-right:auto;
-  line-height:1.7;
-}
-.cta-btn{
-  display:inline-block;
-  padding:22px 68px;
-  background:var(--signal);color:#fff;
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;font-size:13px;
-  letter-spacing:.2em;text-transform:uppercase;
-  text-decoration:none;border:none;
-  transition:transform .25s,background .2s,box-shadow .2s;
-  box-shadow:0 0 0 0 rgba(var(--signal-rgb),0);
-}
-.cta-btn:hover{
-  transform:translateY(-1px);
-  background:var(--signal);
-}
-.cta-note{margin-top:24px;font-size:13px;color:var(--text-muted);letter-spacing:.04em;}
-.cta-email{
-  display:block;margin-top:8px;
-  font-size:14px;font-weight:700;
-  color:var(--text-dim);text-decoration:none;letter-spacing:.06em;
-  transition:color .2s;
-}
-.cta-email:hover{color:var(--signal);}
-.cta-linkedin{
-  display:inline-block;margin-top:18px;
-  font-family:'Space Mono',monospace;
-  font-size:11px;font-weight:700;
-  color:var(--text-muted);text-decoration:none;letter-spacing:.18em;text-transform:uppercase;
-  border-bottom:1px solid transparent;
-  transition:color .2s,border-color .2s;
-}
-.cta-linkedin:hover{color:var(--signal);border-bottom-color:var(--signal);}
+.contact-line a:hover { color: var(--signal); border-bottom-color: var(--signal); }
+.contact-sep { color: var(--text-muted); }
 
 /* ─── FOOTER ─────────────────────────────── */
-footer{
-  background:var(--bg);
-  padding:40px 52px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-top:1px solid var(--border);
-  flex-wrap:wrap;gap:16px;
+footer {
+  background: var(--bg);
+  padding: 36px 56px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--text-muted);
 }
-.footer-logo{font-weight:700;font-size:14px;letter-spacing:.26em;color:var(--signal);}
-.footer-links{display:flex;gap:28px;}
-.footer-links a{
-  font-size:10px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text-muted);text-decoration:none;
-  font-family:'Space Mono',monospace;
-  transition:color .2s;
+footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: .12em;
+  transition: color .2s;
 }
-.footer-links a:hover{color:var(--signal);}
-.footer-copy{font-size:11px;color:var(--text-muted);letter-spacing:.04em;font-family:'Space Mono',monospace;}
-
-/* ─── COMPUTATIONAL MARKS ───────────────── */
-.version-stamp{
-  font-family:'Space Mono',monospace;
-  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--text-muted);opacity:.5;
-}
-.state-badge{
-  font-family:'Space Mono',monospace;
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--signal);
-  border:1px solid var(--border);
-  padding:4px 9px;
-  background:rgba(var(--signal-rgb),.04);
-  display:inline-block;
-}
-.state-badge.active{color:var(--signal);border-color:rgba(var(--signal-rgb),.25);background:rgba(var(--signal-rgb),.04);}
-.state-badge.pending{color:var(--text-muted);border-color:var(--border);}
-.delta-mark{
-  font-family:'Space Mono',monospace;
-  font-size:.42em;font-weight:700;
-  letter-spacing:.05em;
-  display:inline-block;
-  margin-right:8px;
-  opacity:.7;
-}
-.delta-mark.minus{color:var(--text-muted);}
-.delta-mark.plus{color:var(--signal);}
-
-/* ─── OPERATING LOGIC ────────────────────── */
-.op-tag{
-  font-family:'Space Mono',monospace;
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--signal);opacity:.55;
-  margin-bottom:10px;display:block;
-}
-.annot{
-  font-family:'Space Mono',monospace;
-  font-size:9px;letter-spacing:.12em;
-  color:var(--text-muted);
-  display:block;margin-top:24px;margin-bottom:6px;
-  opacity:.6;
-}
-.op-list-label{
-  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--text-muted);font-family:'Space Mono',monospace;
-  margin-bottom:14px;opacity:.5;
-}
-.op-list{
-  display:flex;flex-direction:column;
-  font-family:'Space Mono',monospace;
-  border:1px solid var(--border);
-  border-bottom:none;
-  list-style:none;padding:0;margin:0;
-}
-.op-list-item{
-  padding:14px 20px;
-  border-bottom:1px solid var(--border);
-  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text-muted);
-  display:flex;gap:14px;align-items:center;
-  transition:color .2s,background .2s;
-}
-.op-list-item:hover{color:var(--signal);background:var(--surface2);}
-.op-list-item .op-n{color:var(--signal);opacity:.45;font-size:9px;flex-shrink:0;}
-.exhibit-op-tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
-.ex-op-tag{
-  font-family:'Space Mono',monospace;
-  font-size:8px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--signal);border:1px solid var(--border);
-  padding:4px 8px;opacity:.5;transition:opacity .2s;
-}
-.exhibit-card.live:hover .ex-op-tag{opacity:1;}
-.exhibit-card.soon .ex-op-tag{opacity:.15;}
-
-/* ─── RESPONSIVE ─────────────────────────── */
-@media(max-width:900px){
-  #nav{padding:0 24px;}
-  .nav-links{display:none;}
-  .section,#hero,#featured,#portfolio,#philosophy,#process,#clients,#cta,footer{
-    padding-left:24px;padding-right:24px;
-  }
-  #hero{padding-top:100px;padding-bottom:60px;}
-  .sectors-grid{grid-template-columns:1fr 1fr;}
-  .phil-grid{grid-template-columns:1fr;gap:44px;}
-  .gallery-grid{grid-template-columns:1fr;}
-  .process-steps{grid-template-columns:1fr;}
-  footer{padding:28px 24px;flex-direction:column;text-align:center;}
-  .footer-links{flex-wrap:wrap;justify-content:center;}
-  #cta{padding:80px 24px;}
-  .client-types{flex-direction:column;display:flex;}
-  .client-type{border-right:none;border-bottom:1px solid var(--border);}
-  .client-type:last-child{border-bottom:none;}
-}
-@media(max-width:600px){
-  .sectors-grid{grid-template-columns:1fr;}
-  .hero-sub-row{flex-direction:column;align-items:flex-start;}
-  .feat-plaque-top{flex-direction:column;}
-  .feat-cta-block{align-items:flex-start;}
-  .hero-eyebrow .version-stamp{display:none;}
+footer a:hover { color: var(--signal); }
+.footer-links {
+  display: flex; gap: 22px; flex-wrap: wrap;
 }
 
 /* ─── THEME SWITCHER ─────────────────────── */
 #theme-switcher {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
+  bottom: 28px; right: 28px;
   z-index: 600;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
 }
 .theme-switcher-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 8px;
-  letter-spacing: .18em;
-  color: var(--text-dim);
-  opacity: .5;
+  font-family: var(--mono);
+  font-size: 8px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: .55;
   user-select: none;
 }
 .theme-dots {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
 }
 .theme-dot {
-  width: 18px;
-  height: 18px;
+  width: 16px; height: 16px;
   border-radius: 50%;
   background: var(--dot-color);
   border: 2px solid transparent;
   cursor: none;
   transition: transform .15s, box-shadow .15s, border-color .15s;
-  position: relative;
   padding: 0;
 }
 .theme-dot:hover {
-  transform: scale(1.25);
+  transform: scale(1.2);
   box-shadow: 0 0 0 2px var(--dot-color);
 }
 .theme-dot-active {
   border-color: rgba(255,255,255,.6);
   box-shadow: 0 0 0 2px var(--dot-color);
 }
-.theme-active-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 7px;
-  letter-spacing: .14em;
-  color: var(--text-dim);
-  opacity: .6;
-  user-select: none;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  margin-top: 4px;
-}
-@media(max-width:600px){
-  #theme-switcher { bottom: 20px; right: 20px; }
-  .theme-active-label { display: none; }
-}
-
-/* ─── LAYOUT TOGGLE ──────────────────────── */
-#layout-toggle {
-  font-family: 'Space Mono', monospace;
-  font-size: 8px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+body.light .theme-dot-active { border-color: rgba(0,0,0,.4); }
+.mode-btn {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: .12em;
   background: transparent;
-  border: none;
-  padding: 0;
+  border: 1px solid var(--border-hi);
+  color: var(--text-muted);
+  padding: 4px 8px;
   cursor: none;
-  opacity: .45;
-  transition: opacity .2s, color .2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  transition: color .2s, border-color .2s;
 }
-#layout-toggle:hover { opacity: 1; color: var(--signal); }
-#layout-toggle .lt-active { color: var(--signal); opacity: 1; }
+.mode-btn:hover { color: var(--signal); border-color: var(--signal); }
 
-/* ─── HORIZONTAL LAYOUT ──────────────────── */
-body.layout-h {
-  overflow: hidden;
-  height: 100vh;
+/* ─── A11Y ───────────────────────────────── */
+.skip-link {
+  position: absolute; left: -9999px; top: 8px; z-index: 10001;
+  background: var(--bg); color: var(--signal);
+  padding: 10px 16px; border: 1px solid var(--signal);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+  text-transform: uppercase; text-decoration: none;
 }
-body.layout-h #page-wrapper {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-body.layout-h #page-wrapper > section,
-body.layout-h #page-wrapper > div,
-body.layout-h #page-wrapper > footer {
-  flex: 0 0 100vw;
-  width: 100vw;
-  min-height: 100vh;
-  height: 100vh;
-  overflow-y: auto;
-  scroll-snap-align: start;
-  box-sizing: border-box;
-}
-body.layout-h #what-i-do { display: none; }
-/* horizontal scroll indicator */
-body.layout-h #page-wrapper > section::after,
-body.layout-h #page-wrapper > div::after {
-  content: none;
+.skip-link:focus { left: 8px; }
+
+a:focus-visible, button:focus-visible {
+  outline: 1px solid var(--signal);
+  outline-offset: 3px;
 }
 
-/* ─── H-MODE EXHIBIT PANES ───────────────── */
-.h-exhibit-pane { display: none; }
-
-body.layout-h #gallery { display: none; }
-
-body.layout-h .h-exhibit-pane {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 60px;
-  box-sizing: border-box;
-  position: relative;
+/* ─── RESPONSIVE ─────────────────────────── */
+@media (max-width: 900px) {
+  #nav { padding: 0 22px; }
+  .nav-links { gap: 22px; }
+  section, footer { padding-left: 22px; padding-right: 22px; }
+  #hero { padding-top: 110px; padding-bottom: 60px; }
+  .lf-grid { grid-template-columns: 1fr; }
+  .work-grid { grid-template-columns: 1fr; }
+  .work-card.span-2 { grid-column: 1; }
+  .ai-tools-grid, .bg-grid { grid-template-columns: 1fr; gap: 24px; }
+  footer { flex-direction: column; text-align: center; padding: 28px 22px; }
 }
 
-.h-pane-label {
-  display: none;
-  position: absolute;
-  top: 80px; left: 60px;
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  opacity: .5;
-}
-body.layout-h .h-pane-label { display: block; }
-
-body.layout-h .h-exhibit-pane .exhibit-card {
-  flex-direction: row;
-  width: min(1200px, 100%);
-  height: min(600px, 72vh);
-  border: 1px solid var(--border);
+@media (max-width: 600px) {
+  .nav-links a { font-size: 10px; letter-spacing: .12em; }
+  .lf-card { padding: 36px 28px; }
+  .work-card { padding: 28px 26px; }
 }
 
-body.layout-h .h-exhibit-pane .exhibit-card:hover {
-  border-color: var(--border-hi);
-}
-
-body.layout-h .h-exhibit-pane .exhibit-art {
-  width: 360px;
-  flex-shrink: 0;
-  height: 100%;
-  border-bottom: none;
-  border-right: 1px solid var(--border);
-  transition: border-color .4s;
-}
-
-body.layout-h .h-exhibit-pane .exhibit-card:hover .exhibit-art {
-  border-right-color: var(--border-hi);
-}
-
-body.layout-h .h-exhibit-pane .exhibit-art-num {
-  font-size: clamp(120px, 14vw, 180px);
-}
-
-body.layout-h .h-exhibit-pane .exhibit-art-icon { font-size: 56px; }
-
-body.layout-h .h-exhibit-pane .exhibit-plaque {
-  padding: 52px 60px;
-  justify-content: center;
-  overflow-y: auto;
-}
-
-body.layout-h .h-exhibit-pane .exhibit-plaque-title {
-  font-size: clamp(24px, 2.8vw, 38px);
-  margin-bottom: 14px;
-}
-
-body.layout-h .h-exhibit-pane .exhibit-plaque-desc {
-  font-size: 13px;
-  line-height: 1.85;
-}
-
-body.layout-h .h-exhibit-pane .exhibit-floor { display: none; }
-
-.h-pane-open-btn { display: none; }
-
-body.layout-h .h-pane-open-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 28px;
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  padding: 11px 18px;
-  text-decoration: none;
-  transition: background .2s, color .2s, border-color .2s;
-}
-
-body.layout-h .h-pane-open-btn:hover {
-  background: var(--surface);
-  color: var(--signal);
-  border-color: var(--border-hi);
-}
-
-/* ─── H-MODE SECTION OVERRIDES ──────────── */
-body.layout-h #hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 100px 60px 60px;
-}
-
-body.layout-h #hero .hero-argument { display: none; }
-body.layout-h #hero .scroll-hint { display: none; }
-
-body.layout-h #hero .hero-inner {
-  max-width: 900px;
-  width: 100%;
-}
-
-body.layout-h #hero::after {
-  content: '← swipe →';
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .22em;
-  color: var(--text-muted);
-  opacity: .3;
-  pointer-events: none;
-}
-
-body.layout-h #method {
-  display: flex;
-  align-items: center;
-  overflow-y: auto;
-}
-
-body.layout-h #method .method-inner {
-  max-width: 1200px;
-  width: 100%;
-  padding: 80px;
-  margin: 0 auto;
-}
-
-body.layout-h #method .sectors-grid { display: none; }
-
-body.layout-h #process {
-  display: flex;
-  align-items: center;
-  overflow-y: auto;
-}
-
-body.layout-h #process .section-inner {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-body.layout-h #cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-body.layout-h footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 24px;
-}
-
-/* ─── H-MODE PANEL INDICATOR ─────────────── */
-#h-panel-indicator {
-  display: none;
-  position: fixed;
-  bottom: 28px;
-  right: 40px;
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  letter-spacing: .2em;
-  color: var(--text-muted);
-  opacity: .45;
-  z-index: 200;
-  pointer-events: none;
-  user-select: none;
-}
-body.layout-h #h-panel-indicator { display: block; }
-
-/* ─── GLITCH SYSTEM ──────────────────────── */
-@keyframes rgb-split{
-  0%,88%,100%{text-shadow:none;transform:none;}
-  90%{text-shadow:-4px 0 rgba(255,0,80,.85),4px 0 rgba(0,200,255,.85);transform:translateX(-2px);}
-  92%{text-shadow:3px 0 rgba(255,0,80,.6),-3px 0 rgba(0,200,255,.6);transform:translateX(1px);}
-  94%{text-shadow:none;transform:none;}
-}
-.glitch-word{animation:rgb-split 7s ease-in-out infinite;display:inline-block;}
-
-@keyframes err-blink{
-  0%,49%{opacity:1;}50%,99%{opacity:.15;}100%{opacity:1;}
-}
-/* Override hero flex to stack hero-inner + hero-argument vertically */
-#hero{flex-direction:column;align-items:stretch;justify-content:flex-start;}
-.hero-inner{width:100%;}
-
-/* Hero argument (absorbed What We Do) */
-.hero-argument{border-top:1px solid var(--border);margin-top:80px;padding:80px 0 120px;}
-.hero-arg-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
-.hero-arg-visual{font-size:clamp(48px,7vw,96px);font-weight:700;line-height:1;letter-spacing:-.03em;color:#fff;}
-.hero-arg-vs{color:var(--text-muted);font-size:.55em;letter-spacing:.02em;margin-left:1.6em;display:block;}
-.hero-arg-copy p{font-size:clamp(15px,1.7vw,18px);color:var(--text-dim);line-height:1.85;margin-bottom:16px;}
-.hero-arg-copy .hi{color:var(--signal);font-weight:600;}
-@media(max-width:900px){
-  .hero-argument{padding:60px 0 80px;}
-  .hero-arg-inner{grid-template-columns:1fr;gap:44px;}
-}
-
-/* Gallery section */
-#gallery{background:var(--bg);padding:100px 52px 60px;border-top:1px solid var(--border);}
-
-/* Gallery featured card (full-width) */
-.exhibit-card.feat{grid-column:1/-1;flex-direction:row;}
-.exhibit-card.feat .exhibit-art{width:340px;flex-shrink:0;height:auto;min-height:280px;border-bottom:none;border-right:1px solid var(--border);}
-.exhibit-card.feat .exhibit-plaque{padding:48px 52px;}
-.exhibit-card.feat .exhibit-plaque-title{font-size:clamp(24px,3vw,36px);}
-@media(max-width:900px){
-  #gallery{padding-left:24px;padding-right:24px;}
-  .exhibit-card.feat{flex-direction:column;}
-  .exhibit-card.feat .exhibit-art{width:100%;height:240px;border-right:none;border-bottom:1px solid var(--border);}
-  .exhibit-card.feat .exhibit-plaque{padding:32px 28px;}
-}
-
-/* Error card — Treatment 005 corrupted state */
-.exhibit-card.err .exhibit-art{background:var(--surface2);}
-.exhibit-card.err .exhibit-art::after{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0px,rgba(0,0,0,.14) 1px,transparent 1px,transparent 4px);
-  z-index:3;pointer-events:none;
-}
-.err-badge{
-  position:absolute;top:18px;right:18px;
-  font-family:'Space Mono',monospace;font-size:9px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(232,96,28,.9);border:1px solid rgba(232,96,28,.35);
-  padding:5px 10px;background:rgba(232,96,28,.06);
-  animation:err-blink 2.4s step-end infinite;
-  z-index:4;
-}
-.err-noise{
-  position:absolute;inset:0;z-index:2;
-  font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.05em;
-  color:rgba(var(--signal-rgb),.2);padding:14px;line-height:1.55;
-  overflow:hidden;pointer-events:none;white-space:pre;
-}
-.exhibit-card.err .exhibit-plaque-title{color:var(--text-muted)!important;}
-.exhibit-card.err .exhibit-plaque-desc{color:rgba(124,111,160,.3);}
-.exhibit-card.err .exhibit-before-after{opacity:.2;}
-.exhibit-card.err:hover .exhibit-before-after{opacity:.45;}
-
-/* Gallery client strip (inline) */
-.gallery-clients{padding:56px 52px 80px;border-top:1px solid var(--border);text-align:center;}
-@media(max-width:900px){.gallery-clients{padding:40px 24px 60px;}}
-
-/* Method section (disciplines + philosophy merged) */
-#method{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:130px 52px;}
-.method-inner{max-width:1200px;margin:0 auto;}
-.method-intro{display:grid;grid-template-columns:280px 1fr;gap:80px;align-items:start;margin-bottom:80px;}
-.method-copy h2{font-size:clamp(26px,3.2vw,38px);font-weight:700;line-height:1.25;color:#fff;margin-bottom:20px;letter-spacing:-.02em;}
-.method-copy h2 em{color:var(--signal);font-style:normal;}
-.method-copy p{color:var(--text-muted);font-size:14px;line-height:1.95;margin-bottom:14px;}
-.method-copy .hi{color:var(--signal);font-weight:600;}
-@media(max-width:900px){
-  #method{padding:80px 24px;}
-  .method-intro{grid-template-columns:1fr;gap:44px;}
-}
-
-/* Process trace mark */
-.step-trace{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.1em;color:rgba(var(--signal-rgb),.22);margin-top:10px;display:block;}
-
-/* Sys status — footer */
-.sys-status{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:rgba(var(--signal-rgb),.28);margin-top:3px;}
-
-/* ─── A11Y P0 ────────────────────────────── */
-.skip-link{
-  position:absolute;left:-9999px;top:8px;z-index:10001;
-  background:var(--bg);color:var(--signal);
-  padding:10px 16px;border:1px solid var(--signal);
-  font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;
-  text-transform:uppercase;text-decoration:none;
-}
-.skip-link:focus{left:8px;}
-
-a:focus-visible,button:focus-visible,
-.exhibit-card:focus-visible,.theme-dot:focus-visible{
-  outline:1px solid var(--signal);
-  outline-offset:3px;
-}
-
-
-/* Hide custom cursor for non-pointer devices, keyboard, reduced-motion */
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{
-    animation-duration:.001ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:.001ms!important;
-    scroll-behavior:auto!important;
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
   }
-  html{scroll-behavior:auto;}
-  body,body *{cursor:auto!important;}
-  #cur,#cur-trail,body::after{display:none!important;}
-  .glitch-word{animation:none!important;}
-  .err-badge{animation:none!important;}
+  html { scroll-behavior: auto; }
+  body, body * { cursor: auto !important; }
+  #cur, #cur-trail, body::after { display: none !important; }
 }
-@media (hover:none),(pointer:coarse){
-  body,body *{cursor:auto;}
-  #cur,#cur-trail{display:none;}
+
+@media (hover: none), (pointer: coarse) {
+  body, body * { cursor: auto; }
+  #cur, #cur-trail { display: none; }
 }
+
 </style>
 </head>
 <body>
 
-<a href="#gallery" class="skip-link">Skip to gallery</a>
+<a href="#work" class="skip-link">Skip to work</a>
 
-<!-- Cursor -->
 <div id="cur" aria-hidden="true"></div>
 <div id="cur-trail" aria-hidden="true"></div>
-<div id="flash" aria-hidden="true"></div>
 
-
-<!-- ── NAV ───────────────────────────────── -->
+<!-- ── NAV ──────────────────────────────── -->
 <nav id="nav">
-  <a href="#" class="nav-logo" aria-label="Bruce Davis — home">
-    <span class="bd-monogram">BD</span>
-  </a>
+  <a href="#" class="nav-logo" aria-label="Bruce Davis — home">Bruce Davis</a>
   <ul class="nav-links">
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#method">Method</a></li>
-    <li><a href="#process">Process</a></li>
+    <li><a href="#work">Work</a></li>
     <li><a href="bruce-davis-resume.html" target="_blank" rel="noopener">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:24px;">
-    <button id="layout-toggle" title="Toggle scroll direction — vertical or horizontal" aria-label="Toggle scroll direction between vertical and horizontal">
-      <span class="lt-v">↕ V</span>
-      <span style="opacity:.3;">/</span>
-      <span class="lt-h">↔ H</span>
-    </button>
-    <a href="#cta" class="nav-cta">Work With Me</a>
-  </div>
 </nav>
 
-<div id="page-wrapper">
-
-
-<!-- ── HERO ──────────────────────────────── -->
+<!-- ── HERO ─────────────────────────────── -->
 <section id="hero">
-  <div class="hero-inner">
-
-    <p class="hero-eyebrow reveal">Bruce Davis · Design Engineer + AI Engineer
-      <span class="version-stamp" style="margin-left:20px;">// bd · build.2026.05</span>
-    </p>
-
-    <h1 class="hero-headline reveal">
-      DESIGN<br>
-      AND<br>
-      <span class="y glitch-word">BUILD.</span>
+  <div class="inner">
+    <div class="hero-name">Bruce Davis · Charlotte, NC</div>
+    <h1 class="hero-h1">
+      I'm Bruce Davis. I design and build <span class="accent">AI products</span> — interfaces, agents, workflows, and automation.
     </h1>
+    <p class="hero-sub">
+      Fifteen years shipping systems for Wells Fargo, Microsoft, Starbucks, Bank of America, and Veradigm. Now applying that to AI.
+    </p>
+    <div class="hero-cta">
+      <a href="#work" class="btn btn-primary">See the work</a>
+      <a href="bruce-davis-resume.html" target="_blank" rel="noopener" class="btn btn-ghost">Resume</a>
+    </div>
+  </div>
+</section>
 
-    <div class="hero-sub-row reveal">
-      <p class="hero-sub">
-        AI systems. Interfaces. Pipelines. MCP tools.<br>
-        Fifteen years shipping production systems &mdash; Wells Fargo, Microsoft, Starbucks, Bank of America.<br>
-        Now pointing that hand at AI. <em>Same hand on design and engineering.</em>
-        <span class="annot" style="margin-top:18px;display:block;color:var(--text-dim);opacity:.85;">// open to full-time roles · contract · project work</span>
+<!-- ── LOOKING FOR ──────────────────────── -->
+<section id="looking-for" aria-label="What I'm looking for">
+  <div class="inner">
+    <div class="lf-grid">
+
+      <a href="#work" class="lf-card">
+        <div class="lf-tag">UX Engineer / Design Engineer</div>
+        <div class="lf-title">The designer who codes inside a product pod.</div>
+        <p class="lf-body">
+          UX-first, React/TypeScript-fluent, AI-native by default. I care about motion, accessibility, empty states, loading and error states — the craft details. Below are the projects that prove it.
+        </p>
+        <span class="lf-link">See UX work →</span>
+      </a>
+
+      <a href="#work" class="lf-card">
+        <div class="lf-tag">AI Engineer / Claude Engineer</div>
+        <div class="lf-title">Claude-powered workflows, MCP servers, document pipelines.</div>
+        <p class="lf-body">
+          For enterprise and healthcare. Fifteen years of regulated-environment systems work to back it up — identity, payments, HIPAA-compliant IAM. Below are the projects that prove it.
+        </p>
+        <span class="lf-link">See AI work →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── WORK ─────────────────────────────── -->
+<section id="work">
+  <div class="inner">
+    <div class="eyebrow">Work</div>
+    <h2 class="section-h2">Five projects, two lanes — AI engineering and UX engineering.</h2>
+
+    <div class="work-grid">
+
+      <a href="009-document-pipeline.html" class="work-card" aria-label="Document Pipeline">
+        <div class="work-tag">AI Engineer</div>
+        <div class="work-name">Document Pipeline</div>
+        <p class="work-desc">
+          A document pipeline built as a set of Claude tools — it reads a doc, masks PII, validates the extraction with structured JSON outputs, escalates anything unusual to a human reviewer, and tracks token cost. The Claude Engineer JD end to end: MCP architecture, document processing, deidentification, human-in-the-loop, cost optimization.
+        </p>
+        <div class="work-badges">
+          <span class="badge">Claude</span>
+          <span class="badge">MCP</span>
+          <span class="badge">Node</span>
+          <span class="badge">JSON Schema</span>
+          <span class="badge">Python</span>
+        </div>
+      </a>
+
+      <a href="008-six-percent-mcp.html" class="work-card" aria-label="MCP Server">
+        <div class="work-tag">AI Engineer</div>
+        <div class="work-name">MCP Server</div>
+        <p class="work-desc">
+          Five custom Claude tools running on an MCP server I built to extend my own workflow — pulling ideas from a Notion vault, suggesting palettes, voice-checking copy, scaffolding project pages. Hands-on MCP server engineering, tool design, and Claude API integration.
+        </p>
+        <div class="work-badges">
+          <span class="badge">MCP</span>
+          <span class="badge">Claude SDK</span>
+          <span class="badge">Notion API</span>
+          <span class="badge">Zod</span>
+          <span class="badge">Node</span>
+        </div>
+      </a>
+
+      <a href="002-ai-interface-design-system.html" class="work-card" aria-label="AI Interface Patterns">
+        <div class="work-tag">UX Engineer</div>
+        <div class="work-name">AI Interface Patterns</div>
+        <p class="work-desc">
+          Five working interface patterns for AI products: word-by-word streaming, model state indicators, low-context warnings, confidence flags, and error recovery. The loading states, empty states, and error states the UX Engineer JD asks for — built as live React/TypeScript, not Figma mockups.
+        </p>
+        <div class="work-badges">
+          <span class="badge">React</span>
+          <span class="badge">TypeScript</span>
+          <span class="badge">Streaming</span>
+          <span class="badge">State machines</span>
+        </div>
+      </a>
+
+      <a href="004-motion-showcase.html" class="work-card" aria-label="Motion Showcase">
+        <div class="work-tag">UX Engineer</div>
+        <div class="work-name">Motion Showcase</div>
+        <p class="work-desc">
+          Five web motion techniques in one demo — split-text entrances, scroll-driven reveals, magnetic cursor hover, staggered grid reveals, kinetic type. Motion as a UX decision, not decoration. Built in GSAP, no framework.
+        </p>
+        <div class="work-badges">
+          <span class="badge">GSAP</span>
+          <span class="badge">Scroll-driven</span>
+          <span class="badge">Canvas</span>
+          <span class="badge">Vanilla JS</span>
+        </div>
+      </a>
+
+      <a href="007-security-ux-concept.html" class="work-card span-2" aria-label="Security UX">
+        <div class="work-tag">UX Engineer</div>
+        <div class="work-name">Security UX</div>
+        <p class="work-desc">
+          A security awareness training surface redesigned to borrow the visual language of the threat itself — HUD UI, scan lines, threat pulse, a playable "spot the phish" round. Motion, empty states, and behavioral interaction design applied to a compliance use case.
+        </p>
+        <div class="work-badges">
+          <span class="badge">GSAP</span>
+          <span class="badge">Web Audio</span>
+          <span class="badge">Vanilla JS</span>
+          <span class="badge">HUD UI</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── AI TOOLS ─────────────────────────── -->
+<section id="ai-tools">
+  <div class="inner">
+    <div class="ai-tools-grid">
+      <div class="ai-tools-label">How I work with AI tools</div>
+      <p class="ai-tools-body">
+        Claude Code, Cursor, and v0 are everyday tools for me, not experiments. <strong>This portfolio is a working example</strong> — I built and shipped it using Claude Code, iterating on copy and structure with the model in the loop. The work I take to a pod tomorrow looks the same: prompt, prototype, ship, refine. Not a deck. Something clickable.
       </p>
-      <div class="hero-actions">
-        <a href="#gallery" class="btn-pri">View Work →</a>
-        <a href="bruce-davis-resume.html" target="_blank" rel="noopener" class="btn-ghost">View Resume</a>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- The Argument — Design Engineer pitch -->
-  <div class="hero-argument">
-    <div class="hero-arg-inner">
-      <div class="reveal-left">
-        <div class="hero-arg-visual">
-          <span class="delta-mark minus">—</span>HANDOFF<br>
-          <span class="hero-arg-vs">vs.</span>
-          <span class="delta-mark plus">+</span><span style="color:var(--signal);">OWNERSHIP.</span>
-        </div>
-        <span class="annot" style="margin-top:20px;">// same brief. different ship.</span>
-      </div>
-      <div class="hero-arg-copy reveal-right">
-        <p>A designer hands the engineer a Figma file. The engineer ships something close. The interaction loses its timing. The animation loses its weight. The brief shrinks at the handoff.</p>
-        <p class="hi">The handoff never happens.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="scroll-hint">Scroll</div>
-</section>
-
-
-<!-- ── WHAT I DO (two-track) ──────────────── -->
-<section id="what-i-do" aria-labelledby="wid-label">
-  <div class="wid-inner">
-    <div class="wid-label reveal" id="wid-label">// what I do</div>
-    <div class="wid-grid">
-      <div class="wid-col reveal">
-        <div class="wid-track">AI Engineering</div>
-        <p class="wid-body">Workflows, automation, agents, and LLM integration. Custom Claude tools, document pipelines, MCP servers. Fifteen years of enterprise systems experience &mdash; IAM, payment rails, compliance &mdash; pointed at AI implementations.</p>
-        <div class="wid-refs">→ <a href="#gallery" class="wid-link">009 · 008</a></div>
-      </div>
-      <div class="wid-col reveal">
-        <div class="wid-track">AI Product Surfaces</div>
-        <p class="wid-body">Interfaces, motion, prototypes, and design systems for AI-powered products. Streaming UI, model state, confidence patterns, error recovery. Drafted in Figma when static, built in code when interactive.</p>
-        <div class="wid-refs">→ <a href="#gallery" class="wid-link">002 · 003 · 004 · 007</a></div>
-      </div>
     </div>
   </div>
 </section>
 
-
-<!-- ── THE GALLERY ────────────────────────── -->
-<section id="gallery">
-  <div class="section-inner">
-    <div class="section-label reveal">The Gallery</div>
-    <h2 class="section-title reveal">Designed in Figma.<br><span style="color:var(--signal);">Built in code.</span></h2>
-
-    <div class="gallery-grid">
-
-      <!-- Project 001 — Featured — Physics Playground (LIVE) -->
-      <a href="six-percent-playground.html" target="_blank" rel="noopener" class="exhibit-card live feat reveal" aria-label="Open Project 001 — Interactive Physics Playground">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">001</div>
-          <div class="exhibit-art-icon">⚛</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Featured Project — 001 · Interactive</div>
-          <div class="exhibit-plaque-title">Interactive <span style="color:var(--signal);">Physics</span> Playground</div>
-          <div class="exhibit-plaque-medium">Matter.js · Web Audio API · Canvas 2D · Gamification</div>
-          <div class="exhibit-plaque-desc">
-            A browser physics toy with synthesized sound on every collision, a score, a combo multiplier, and a CHAOS MODE. Built to argue that the demo can be the product. Proves: motion engineering, sound design, and game feel — drafted in code from first sketch to ship.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Static Demo Page</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Playable Product Experience</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Real-Time Physics</span>
-            <span class="ex-op-tag">// Synthesized Audio</span>
-            <span class="ex-op-tag">// Live &amp; Playable</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 009 — Document Processing Pipeline (ACTIVE) -->
-      <a href="009-document-pipeline.html" class="exhibit-card live reveal" aria-label="Open Project 009 — Document Processing Pipeline">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">009</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">▤</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 009 · Pipeline</div>
-          <div class="exhibit-plaque-title">Document <span style="color:var(--signal);">Pipeline</span></div>
-          <div class="exhibit-plaque-medium">MCP SDK · ajv · Node ESM · JSON Schema</div>
-          <div class="exhibit-plaque-desc">
-            Five custom Claude tools that handle a document end-to-end — read it, hide personal info, check the data, send anything weird to a human reviewer, report the cost. Each tool does one thing; the model wires them together. Proves: document processing, structured AI outputs, PII masking, human-in-the-loop review, and AI-cost tracking.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Black Box Workflow</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Composable Stages</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Doc Processing</span>
-            <span class="ex-op-tag">// Pipeline Design</span>
-            <span class="ex-op-tag">// PII / HITL</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 008 — Six Percent MCP (ACTIVE) -->
-      <a href="008-six-percent-mcp.html" class="exhibit-card live reveal" aria-label="Open Project 008 — Six Percent MCP">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">008</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">⌬</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 008 · MCP</div>
-          <div class="exhibit-plaque-title">Six Percent <span style="color:var(--signal);">MCP</span></div>
-          <div class="exhibit-plaque-medium">@modelcontextprotocol/sdk · Node ESM · Notion API · Zod</div>
-          <div class="exhibit-plaque-desc">
-            Five custom Claude tools I built to extend my own creative workflow — find ideas in my vault, suggest a color palette, check copy in my voice, scaffold a new project page, save a new idea. The tools hand Claude the options; Claude does the picking and the writing. Proves: AI tool design, server engineering, and the idea of encoding taste as rules rather than agents.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">AI As Wrapper</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Taste Encoded As Tools</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// MCP</span>
-            <span class="ex-op-tag">// Tool Design</span>
-            <span class="ex-op-tag">// Claude Engineering</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 002 — AI Interface Patterns (ACTIVE) -->
-      <a href="002-ai-interface-design-system.html" class="exhibit-card live reveal" aria-label="Open Project 002 — AI Interface Patterns">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">002</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">⌗</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 002 · Interface Patterns</div>
-          <div class="exhibit-plaque-title">AI Interface <span style="color:var(--signal);">Patterns</span></div>
-          <div class="exhibit-plaque-medium">Streaming · State Machine · Confidence · Failure</div>
-          <div class="exhibit-plaque-desc">
-            Five interface patterns for the moments while AI is responding — text streaming in word-by-word, status indicators, low-context warnings, confidence flags, error recovery. Each is a working demo in code, not a mockup in Figma. Proves: AI interface literacy and the discipline to ship working patterns, not mockups.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Mockup In Figma</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Working Patterns In Code</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// AI UI Studies</span>
-            <span class="ex-op-tag">// Documented</span>
-            <span class="ex-op-tag">// Pattern Set</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 003 — Interactive Data Viz Dashboard (ACTIVE) -->
-      <a href="003-data-viz-dashboard.html" class="exhibit-card live reveal" aria-label="Open Project 003 — Interactive Data Dashboard">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">003</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">▣</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 003 · Data Visualization</div>
-          <div class="exhibit-plaque-title">Interactive <span style="color:var(--signal);">Data</span> Dashboard</div>
-          <div class="exhibit-plaque-medium">D3.js v7 · Canvas · Live Filtering · Animated Enter/Exit</div>
-          <div class="exhibit-plaque-desc">
-            Three live, interactive charts in one page — a real-time performance monitor, a filterable scatter plot with smooth in-and-out animation, and a node-and-edge graph you can drag around. Designed to be read first, then explored. Proves: data fluency plus interaction design that makes the chart feel intentional, not generated.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Raw Data</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Designed Read</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Designed With POV</span>
-            <span class="ex-op-tag">// Live Filtering</span>
-            <span class="ex-op-tag">// Animated Reads</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 004 — Motion & Interaction Showcase (ACTIVE) -->
-      <a href="004-motion-showcase.html" class="exhibit-card live reveal" aria-label="Open Project 004 — Motion and Interaction Showcase">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">004</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">↻</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 004 · Motion &amp; Interaction</div>
-          <div class="exhibit-plaque-title">Motion + Interaction <span style="color:var(--signal);">Showcase</span></div>
-          <div class="exhibit-plaque-medium">GSAP · Scroll-Driven Animation · Magnetic Cursor · No Framework</div>
-          <div class="exhibit-plaque-desc">
-            Five web animation techniques in one demo — split-text entrances, scroll-driven word reveals, cards that follow your cursor with a magnet effect, staggered reveal grids, kinetic typography. Built with GSAP, no front-end framework. Proves: motion isn't decoration — it's an interface decision drafted in code.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Static Page</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Living Surface</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Motion Engineering</span>
-            <span class="ex-op-tag">// Scroll-Driven</span>
-            <span class="ex-op-tag">// Native, No Framework</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 007 — Security UX Concept (CONCEPT) -->
-      <a href="007-security-ux-concept.html" class="exhibit-card live reveal" aria-label="Open Project 007 — Security UX Concept">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">007</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">⌖</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 007 · Security UX Concept</div>
-          <div class="exhibit-plaque-title">Phishing Training, <span style="color:var(--signal);">Redesigned</span></div>
-          <div class="exhibit-plaque-medium">Vanilla JS · GSAP · Web Audio · HUD-Style UI</div>
-          <div class="exhibit-plaque-desc">
-            Most security training is compliance theater — dry, ignored, forgotten by Tuesday. This one borrows the visual language of the threat itself: the blade-runner glow of network monitoring, the kinetic pulse of an active attack. A playable "spot the phish" round makes defense feel earned rather than assigned. Behavior change through aesthetic and interaction, not slides.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Compliance Slideshow</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Engaged Defender</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Security UX</span>
-            <span class="ex-op-tag">// Behavioral Design</span>
-            <span class="ex-op-tag">// Aesthetic As Pedagogy</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 005 — Brief Machine (ACTIVE) -->
-      <a href="005-ai-web-toy.html" class="exhibit-card live reveal" aria-label="Open Project 005 — The Brief Machine">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">005</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">✦</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 005 · Design Brief Library</div>
-          <div class="exhibit-plaque-title">The Brief <span style="color:var(--signal);">Machine</span></div>
-          <div class="exhibit-plaque-medium">Curated Library · Paced Render · Hand-Written Briefs</div>
-          <div class="exhibit-plaque-desc">
-            Six design briefs I wrote, then displayed at reading pace — text appearing one phrase at a time, with deliberate pacing, hierarchy, and voice. The display is the design move; reading it should feel like watching a finished thing get assembled. Proves: editorial judgment and the craft to make a small surface feel intentional.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Challenge</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Brief</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Hand-Written</span>
-            <span class="ex-op-tag">// Format As Design</span>
-            <span class="ex-op-tag">// Paced Render</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-      <!-- Project 006 — SaaS Landing & Brand Study (CONCEPT) -->
-      <a href="006-saas-landing-brand-study.html" class="exhibit-card live reveal" aria-label="Open Project 006 — SaaS Landing and Brand Study">
-        <div class="exhibit-art" aria-hidden="true">
-          <div class="exhibit-art-num">006</div>
-          <div class="exhibit-art-glow"></div>
-          <div class="exhibit-art-icon">⊡</div>
-        </div>
-        <div class="exhibit-plaque">
-          <div class="exhibit-plaque-num">Project 006 · Concept Study</div>
-          <div class="exhibit-plaque-title">SaaS Landing &amp; <span style="color:var(--signal);">Brand</span> Study</div>
-          <div class="exhibit-plaque-medium">Surface Design · Brand System · Motion</div>
-          <div class="exhibit-plaque-desc">
-            A visual study of a modern SaaS landing page — brand, hierarchy, surface design. Designed and built as a concept, not a shipped product. Proof of taste, not proof of users. The move I'd run on any team's landing page stuck on a default template.
-          </div>
-          <div class="exhibit-before-after">
-            <span class="ex-before">Stock SaaS Template</span>
-            <span class="ex-arrow">→</span>
-            <span class="ex-after">Designed Surface</span>
-          </div>
-          <div class="exhibit-op-tags">
-            <span class="ex-op-tag">// Visual Study</span>
-            <span class="ex-op-tag">// Surface Design</span>
-            <span class="ex-op-tag">// Concept Build</span>
-          </div>
-        </div>
-        <div class="exhibit-floor"></div>
-      </a>
-
-    </div>
-
-    <!-- Client strip — inline at gallery close -->
-    <div class="gallery-clients reveal">
-      <div class="clients-label">// works with</div>
-      <ul class="client-types">
-        <li class="client-type">SMBs &amp; Founders</li>
-        <li class="client-type">Enterprises</li>
-        <li class="client-type">Product Companies</li>
-        <li class="client-type">Startups</li>
-        <li class="client-type">Entertainment &amp; Media</li>
-        <li class="client-type">Digital Agencies</li>
-        <li class="client-type">Brand Studios</li>
-        <li class="client-type">Hiring Teams</li>
-      </ul>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ── H-MODE GALLERY PANES ─────────────────── -->
-
-<section class="h-exhibit-pane" id="h-pane-001">
-  <div class="h-pane-label">// The Gallery · 01 / 07</div>
-  <a href="six-percent-playground.html" target="_blank" rel="noopener" class="exhibit-card live">
-    <div class="exhibit-art">
-      <div class="exhibit-art-num">001</div>
-      <div class="exhibit-art-icon">⚛</div>
-    </div>
-    <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Featured Project — 001 · Interactive</div>
-      <div class="exhibit-plaque-title">Interactive <span style="color:var(--signal);">Physics</span> Playground</div>
-      <div class="exhibit-plaque-medium">Matter.js · Web Audio API · Canvas 2D · Gamification</div>
-      <div class="exhibit-plaque-desc">Real-time physics. Synthesized audio on collision. Score mechanics, combo multiplier, CHAOS MODE. The question was: what if the demo was the product.</div>
-      <div class="exhibit-before-after">
-        <span class="ex-before">Static Demo Page</span>
-        <span class="ex-arrow">→</span>
-        <span class="ex-after">Playable Product Experience</span>
-      </div>
-      <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// Signature Interactions</span>
-        <span class="ex-op-tag">// Real-Time Physics</span>
-        <span class="ex-op-tag">// Live &amp; Playable</span>
-      </div>
-      <span class="h-pane-open-btn">Open Project →</span>
-    </div>
-  </a>
-</section>
-
-<section class="h-exhibit-pane" id="h-pane-002">
-  <div class="h-pane-label">// The Gallery · 02 / 07</div>
-  <a href="002-ai-interface-design-system.html" class="exhibit-card live">
-    <div class="exhibit-art">
-      <div class="exhibit-art-num">002</div>
-      <div class="exhibit-art-icon">⌗</div>
-    </div>
-    <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Project 002 · Interface Patterns</div>
-      <div class="exhibit-plaque-title">AI Interface <span style="color:var(--signal);">Patterns</span></div>
-      <div class="exhibit-plaque-medium">Streaming · State Machine · Confidence · Failure</div>
-      <div class="exhibit-plaque-desc">Five interface patterns for the moments while AI is responding. Word-by-word streaming, status indicators, low-context warnings, confidence flags, error recovery. A design exploration — patterns documented and demonstrated, not a shipped library.</div>
-      <div class="exhibit-before-after">
-        <span class="ex-before">Mockup In Figma</span>
-        <span class="ex-arrow">→</span>
-        <span class="ex-after">Working Patterns In Code</span>
-      </div>
-      <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// AI UI Studies</span>
-        <span class="ex-op-tag">// Documented</span>
-        <span class="ex-op-tag">// Pattern Set</span>
-      </div>
-      <a href="002-ai-interface-design-system.html" class="h-pane-open-btn">View Project →</a>
-    </div>
-  </a>
-</section>
-
-<section class="h-exhibit-pane" id="h-pane-003">
-  <div class="h-pane-label">// The Gallery · 03 / 07</div>
-  <a href="003-data-viz-dashboard.html" class="exhibit-card live">
-    <div class="exhibit-art">
-      <div class="exhibit-art-num">003</div>
-      <div class="exhibit-art-icon">▣</div>
-    </div>
-    <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Project 003 · Data Visualization</div>
-      <div class="exhibit-plaque-title">Interactive <span style="color:var(--signal);">Data</span> Dashboard</div>
-      <div class="exhibit-plaque-medium">D3 · Canvas · Animation · Filterable</div>
-      <div class="exhibit-plaque-desc">An animated, filterable dashboard for data with personality. Sports, music, city signal. Designed with intention — not just functional.</div>
-      <div class="exhibit-before-after">
-        <span class="ex-before">Raw Data</span>
-        <span class="ex-arrow">→</span>
-        <span class="ex-after">Designed Read</span>
-      </div>
-      <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// Designed With POV</span>
-        <span class="ex-op-tag">// Live Filtering</span>
-        <span class="ex-op-tag">// Animated Reads</span>
-      </div>
-      <a href="003-data-viz-dashboard.html" class="h-pane-open-btn">View Project →</a>
-    </div>
-  </a>
-</section>
-
-<section class="h-exhibit-pane" id="h-pane-004">
-  <div class="h-pane-label">// The Gallery · 04 / 07</div>
-  <a href="004-motion-showcase.html" class="exhibit-card live">
-    <div class="exhibit-art">
-      <div class="exhibit-art-num">004</div>
-      <div class="exhibit-art-icon">↻</div>
-    </div>
-    <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Project 004 · Motion &amp; Interaction</div>
-      <div class="exhibit-plaque-title">Motion + Interaction <span style="color:var(--signal);">Showcase</span></div>
-      <div class="exhibit-plaque-medium">GSAP · Framer Motion · Scroll-Driven Animation</div>
-      <div class="exhibit-plaque-desc">A site about pure interaction craft. Page transitions, scroll-driven sequences, micro-interactions, cursor effects. The craft is the subject.</div>
-      <div class="exhibit-before-after">
-        <span class="ex-before">Static Page</span>
-        <span class="ex-arrow">→</span>
-        <span class="ex-after">Living Surface</span>
-      </div>
-      <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// Craft Forward</span>
-        <span class="ex-op-tag">// Zero Generic Frames</span>
-        <span class="ex-op-tag">// For Brand Studios</span>
-      </div>
-      <a href="004-motion-showcase.html" class="h-pane-open-btn">View Project →</a>
-    </div>
-  </a>
-</section>
-
-<section class="h-exhibit-pane" id="h-pane-005">
-  <div class="h-pane-label">// The Gallery · 05 / 07</div>
-  <a href="005-ai-web-toy.html" class="exhibit-card live">
-    <div class="exhibit-art">
-      <div class="exhibit-art-num">005</div>
-      <div class="exhibit-art-icon">✦</div>
-    </div>
-    <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Project 005 · Design Brief Library</div>
-      <div class="exhibit-plaque-title">The Brief <span style="color:var(--signal);">Machine</span></div>
-      <div class="exhibit-plaque-medium">Curated Library · Paced Render · Studio Voice</div>
-      <div class="exhibit-plaque-desc">Six design briefs in my voice, displayed at reading pace — text appearing one phrase at a time. The format is the design; the words are the work.</div>
-      <div class="exhibit-before-after">
-        <span class="ex-before">Challenge</span>
-        <span class="ex-arrow">→</span>
-        <span class="ex-after">Brief</span>
-      </div>
-      <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// Hand-Written</span>
-        <span class="ex-op-tag">// Format As Design</span>
-        <span class="ex-op-tag">// Paced Render</span>
-      </div>
-      <a href="005-ai-web-toy.html" class="h-pane-open-btn">View Project →</a>
-    </div>
-  </a>
-</section>
-
-<section class="h-exhibit-pane" id="h-pane-006">
-  <div class="h-pane-label">// The Gallery · 06 / 07</div>
-  <a href="006-saas-landing-brand-study.html" class="exhibit-card live">
-    <div class="exhibit-art" aria-hidden="true">
-      <div class="exhibit-art-num">006</div>
-      <div class="exhibit-art-icon">⊡</div>
-    </div>
-    <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Project 006 · Concept Study</div>
-      <div class="exhibit-plaque-title">SaaS Landing &amp; <span style="color:var(--signal);">Brand</span> Study</div>
-      <div class="exhibit-plaque-medium">Surface Design · Brand System · Motion</div>
-      <div class="exhibit-plaque-desc">A visual study of a modern SaaS landing page — brand, hierarchy, surface design. Designed and built as a concept, not a shipped product. Proof of taste, not proof of users. The move I'd run on any team's landing page stuck on a default template.</div>
-      <div class="exhibit-before-after">
-        <span class="ex-before">Stock SaaS Template</span>
-        <span class="ex-arrow">→</span>
-        <span class="ex-after">Designed Surface</span>
-      </div>
-      <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// Visual Study</span>
-        <span class="ex-op-tag">// Surface Design</span>
-        <span class="ex-op-tag">// Concept Build</span>
-      </div>
-      <a href="006-saas-landing-brand-study.html" class="h-pane-open-btn">View Project →</a>
-    </div>
-  </a>
-</section>
-
-<section class="h-exhibit-pane" id="h-pane-007">
-  <div class="h-pane-label">// The Gallery · 07 / 07</div>
-  <a href="007-security-ux-concept.html" class="exhibit-card live">
-    <div class="exhibit-art" aria-hidden="true">
-      <div class="exhibit-art-num">007</div>
-      <div class="exhibit-art-icon">⌖</div>
-    </div>
-    <div class="exhibit-plaque">
-      <div class="exhibit-plaque-num">Project 007 · Security UX Concept</div>
-      <div class="exhibit-plaque-title">Phishing Training, <span style="color:var(--signal);">Redesigned</span></div>
-      <div class="exhibit-plaque-medium">Vanilla JS · GSAP · Web Audio · HUD-Style UI</div>
-      <div class="exhibit-plaque-desc">Most security training is compliance theater. This one borrows the visual language of the threat itself — the blade-runner glow of network monitoring, the kinetic pulse of an active attack. A playable "spot the phish" round makes defense feel earned rather than assigned.</div>
-      <div class="exhibit-before-after">
-        <span class="ex-before">Compliance Slideshow</span>
-        <span class="ex-arrow">→</span>
-        <span class="ex-after">Engaged Defender</span>
-      </div>
-      <div class="exhibit-op-tags">
-        <span class="ex-op-tag">// Security UX</span>
-        <span class="ex-op-tag">// Behavioral Design</span>
-        <span class="ex-op-tag">// Aesthetic As Pedagogy</span>
-      </div>
-      <a href="007-security-ux-concept.html" class="h-pane-open-btn">View Project →</a>
-    </div>
-  </a>
-</section>
-
-
-<!-- ── METHOD ──────────────────────────────── -->
-<section id="method">
-  <div class="method-inner">
-    <div class="section-label reveal">Method</div>
-    <h2 class="section-title reveal">System logic.<br><span style="color:var(--signal);">Applied with taste.</span></h2>
-
-    <div class="method-intro">
-      <!-- Operating Logic list -->
-      <div class="reveal-left">
-        <div class="op-list-label">// The Operating Logic</div>
-        <ol class="op-list">
-          <li class="op-list-item"><span class="op-n">01</span> Design + Build</li>
-          <li class="op-list-item"><span class="op-n">02</span> Sketch In Code</li>
-          <li class="op-list-item"><span class="op-n">03</span> Own The Motion</li>
-          <li class="op-list-item"><span class="op-n">04</span> Own The Interaction</li>
-          <li class="op-list-item"><span class="op-n">05</span> Sketch In The Medium</li>
-          <li class="op-list-item"><span class="op-n">06</span> No Handoff</li>
-        </ol>
-      </div>
-      <!-- Philosophy copy -->
-      <div class="method-copy reveal-right">
-        <h2>I built systems before I designed them.</h2>
-        <p>CS degree. Master's in computer graphics technology. Fifteen years in tech. The work that felt alive was always the work where decisions were still visible — the edit legible, the structure exposed.</p>
-        <p>I work in Figma when the surface is static. I work in code when the surface moves. The cursor effect, the streaming UI, the loading state — these are decisions, not decorations. They are most legible in the medium where they will run.</p>
-        <p class="hi">First sketch to live URL. One hand the whole way.</p>
-      </div>
-    </div>
-
-    <!-- Disciplines grid -->
-    <div class="sectors-grid">
-
-      <div class="sector-card reveal">
-        <span class="op-tag">// Hand Crafted</span>
-        <div class="sector-num">01 —</div>
-        <div class="sector-name">Interaction Design</div>
-        <div class="sector-hook">Hover states. Cursor effects. The micro-feedback that makes a product feel alive. Drafted in code because that is where it is most legible.</div>
-        <div class="sector-example">Cursor · Microinteractions · Feedback</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="op-tag">// Always In Code</span>
-        <div class="sector-num">02 —</div>
-        <div class="sector-name">Motion &amp; Animation</div>
-        <div class="sector-hook">Page transitions. Scroll-driven sequences. Loading states with weight. GSAP for orchestration. Framer Motion for component flow. CSS for the rest.</div>
-        <div class="sector-example">GSAP · Framer Motion · Scroll</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="op-tag">// For AI Products</span>
-        <div class="sector-num">03 —</div>
-        <div class="sector-name">Interface Patterns</div>
-        <div class="sector-hook">Streaming output. Prompt UI. State indicators. The visual language of AI products is being written right now. I draft patterns for it.</div>
-        <div class="sector-example">Streaming · Prompts · State UI</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="op-tag">// Documented</span>
-        <div class="sector-num">04 —</div>
-        <div class="sector-name">Design Systems</div>
-        <div class="sector-hook">Component libraries that ship. Storybook, Radix, Tailwind. Design tokens that survive a redesign. Documentation that matches the build.</div>
-        <div class="sector-example">Storybook · Radix · Tailwind</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="op-tag">// With POV</span>
-        <div class="sector-num">05 —</div>
-        <div class="sector-name">Data Visualization</div>
-        <div class="sector-hook">Dashboards designed with intention. D3 when the structure demands it. Canvas when the volume demands it. The read is always the priority.</div>
-        <div class="sector-example">D3 · Canvas · Animated Reads</div>
-      </div>
-
-      <div class="sector-card reveal">
-        <span class="op-tag">// Playable</span>
-        <div class="sector-num">06 —</div>
-        <div class="sector-name">Web Toys &amp; Experiments</div>
-        <div class="sector-hook">Three.js. Matter.js. Web Audio API. The corner of my practice where ideas become interactive without a brief. Some of them ship as products.</div>
-        <div class="sector-example">Three.js · Physics · Web Audio</div>
-      </div>
-
+<!-- ── BACKGROUND ───────────────────────── -->
+<section id="background">
+  <div class="inner">
+    <div class="bg-grid">
+      <div class="ai-tools-label">Background</div>
+      <p class="bg-body">
+        Fifteen years building and shipping systems at <strong>Wells Fargo, Microsoft, Starbucks, Bank of America, and Veradigm</strong>. Identity platforms, payment infrastructure (SWIFT, CHIPS, Fedwire), HIPAA-regulated IAM for 16,000+ users at a healthcare company, and Python automation transforming raw technical data into governance-ready outputs. Same instinct, now pointed at AI.
+      </p>
     </div>
   </div>
 </section>
 
-
-<!-- ── PROCESS ────────────────────────────── -->
-<section class="section" id="process">
-  <div class="section-inner">
-    <div class="section-label reveal">How It Works</div>
-    <h2 class="section-title reveal">Three moves.<br>One ship.</h2>
-    <ol class="process-steps">
-      <li class="process-step reveal">
-        <span class="op-tag">// start here</span>
-        <div class="step-n">01</div>
-        <div class="step-title">Bring The Idea</div>
-        <div class="step-body">A product, an interaction, a feature, a brief. We talk it through. I sketch in Figma where it helps, in code where it helps more. The output is a prototype, not a deck.</div>
-      </li>
-      <li class="process-step reveal">
-        <span class="op-tag">// own it</span>
-        <div class="step-n">02</div>
-        <div class="step-title">Build The Real Thing</div>
-        <div class="step-body">Production code from day one. The interaction is built in code. The animation runs in the browser. The state and motion are owned by the same hand. No handoff between design and engineering — same person.</div>
-      </li>
-      <li class="process-step reveal">
-        <span class="op-tag">// live</span>
-        <div class="step-n">03</div>
-        <div class="step-title">Push To Live</div>
-        <div class="step-body">Deploy. Iterate. Polish in public. Micro-interactions tightened, motion timing refined, accessibility checked. The work is the URL.</div>
-        <span class="step-trace">// trace_id: 0x3f2a · status: SHIPPED · uptime: ACTIVE</span>
-      </li>
-    </ol>
+<!-- ── CONTACT ──────────────────────────── -->
+<section id="contact">
+  <div class="inner">
+    <h2 class="contact-h2">Open to full-time, contract, and project work.</h2>
+    <div class="contact-line">
+      <a href="mailto:heymrlb@gmail.com">heymrlb@gmail.com</a>
+      <span class="contact-sep">·</span>
+      <a href="https://linkedin.com/in/brucedavis" target="_blank" rel="noopener">LinkedIn</a>
+      <span class="contact-sep">·</span>
+      <a href="https://github.com/heylb" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </div>
 </section>
 
-
-<!-- ── CTA ────────────────────────────────── -->
-<section id="cta">
-  <div class="cta-inner reveal">
-    <span class="cta-tag">// open to full-time · contract · project work</span>
-    <h2 class="cta-title">WORK<br>WITH<br><span>ME.</span></h2>
-    <p class="cta-sub">Full-time roles, contract engagements, or a single shipped page. First sketch to live URL — same hand the whole way.</p>
-    <a href="mailto:heymrlb@gmail.com" class="cta-btn">Start The Conversation →</a>
-    <p class="cta-note">Resume below. Email above. No deck required.</p>
-    <a href="mailto:heymrlb@gmail.com" class="cta-email">heymrlb@gmail.com</a>
-    <a href="https://linkedin.com/in/PLACEHOLDER" target="_blank" rel="noopener" class="cta-linkedin">↗ LinkedIn</a>
-  </div>
-</section>
-
-
-<!-- ── FOOTER ─────────────────────────────── -->
+<!-- ── FOOTER ───────────────────────────── -->
 <footer>
-  <div class="footer-logo"><span style="color:var(--signal);">BD</span></div>
+  <div>Bruce Davis · Charlotte, NC · 2026</div>
   <div class="footer-links">
-    <a href="#gallery">Gallery</a>
-    <a href="#method">Method</a>
-    <a href="#process">Process</a>
+    <a href="#work">Work</a>
     <a href="bruce-davis-resume.html" target="_blank" rel="noopener">Resume</a>
-    <a href="bruce-davis-resume.pdf" target="_blank" rel="noopener">↓ PDF</a>
-    <a href="https://linkedin.com/in/PLACEHOLDER" target="_blank" rel="noopener">LinkedIn ↗</a>
-    <a href="#cta">Contact</a>
-  </div>
-  <div>
-    <div class="footer-copy">© 2026 Bruce Davis · Charlotte, NC · Remote <span class="version-stamp" style="margin-left:16px;">// v2.0</span></div>
-    <div class="sys-status">// STATUS: ACTIVE ·· DESIGN: IN CODE ·· BUILD: SHIPPING</div>
+    <a href="#contact">Contact</a>
+    <a href="other-work.html">Other Work</a>
   </div>
 </footer>
 
-</div><!-- end #page-wrapper -->
-
-<div id="h-panel-indicator">// <span id="h-panel-cur">01</span> <span style="opacity:.3">/ </span><span id="h-panel-tot">10</span></div>
-
 <script>
 /* ─── 6% — easter egg ───────────────────────── */
-console.log('%c// 6% — six percent. small change. whole product.', 'color:#E8601C;font-family:monospace;letter-spacing:.04em;');
-console.log('%c// design + build · bruce davis · 2026', 'color:#7d7d7d;font-family:monospace;letter-spacing:.04em;');
+console.log('%c// 6% — small change. whole product.', 'color:#E8601C;font-family:monospace;letter-spacing:.04em;');
+console.log('%c// bruce davis · 2026', 'color:#7d7d7d;font-family:monospace;letter-spacing:.04em;');
 
 /* ─── CURSOR ────────────────────────────────── */
 const cur   = document.getElementById('cur');
@@ -2075,8 +726,8 @@ let mx = 0, my = 0, tx = 0, ty = 0;
 document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
 
 (function loop() {
-  tx += (mx - tx) * 0.15;
-  ty += (my - ty) * 0.15;
+  tx += (mx - tx) * 0.18;
+  ty += (my - ty) * 0.18;
   cur.style.left   = mx + 'px';
   cur.style.top    = my + 'px';
   trail.style.left = tx + 'px';
@@ -2084,94 +735,48 @@ document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; })
   requestAnimationFrame(loop);
 })();
 
-document.querySelectorAll(
-  'a, button, .sector-card, .exhibit-card, .phil-name-tag, .client-type, .process-step'
-).forEach(el => {
+document.querySelectorAll('a, button').forEach(el => {
   el.addEventListener('mouseenter', () => cur.classList.add('big'));
   el.addEventListener('mouseleave', () => cur.classList.remove('big'));
 });
 
 /* ─── NAV SCROLL ────────────────────────────── */
 const nav = document.getElementById('nav');
-function updateNavScrolled() {
-  if (currentLayout === 'horizontal') {
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  }
-}
-window.addEventListener('scroll', updateNavScrolled, { passive: true });
-
-/* ─── SCROLL REVEAL ─────────────────────────── */
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
-}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
-
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach((el, i) => {
-  el.style.transitionDelay = (i % 8 * 0.07) + 's';
-  obs.observe(el);
-});
-
-/* ─── FLASH ON LOAD ─────────────────────────── */
-window.addEventListener('load', () => {
-  const fl = document.getElementById('flash');
-  fl.style.opacity = '0.5';
-  fl.style.transition = 'opacity 0.7s ease';
-  setTimeout(() => { fl.style.opacity = '0'; }, 60);
-});
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
 
 /* ─── SMOOTH ANCHOR SCROLL ──────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
-    let href = a.getAttribute('href');
-    if (currentLayout === 'horizontal' && href === '#gallery') href = '#h-pane-001';
+    const href = a.getAttribute('href');
+    if (href === '#') return;
     const target = document.querySelector(href);
     if (target) {
       e.preventDefault();
-      if (currentLayout === 'horizontal') {
-        pageWrapper.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
-      } else {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 });
 
-/* ─── MOBILE: show sector text always ──────── */
-if (window.innerWidth < 600) {
-  document.querySelectorAll('.sector-hook,.sector-example').forEach(el => {
-    el.style.maxHeight = '200px';
-    el.style.opacity = '1';
-  });
-}
-
 /* ─── THEME SWITCHER ────────────────────────── */
 const THEMES = [
   { id: 'og',    label: 'OG',    signal: '#E8601C' },
-  { id: 'solar', label: 'Solar', signal: '#D42B2B' },
-  { id: 'wave',  label: 'Wave',  signal: '#1A8A7A' },
+  { id: 'solar', label: 'Solar', signal: '#FF4D4D' },
+  { id: 'wave',  label: 'Wave',  signal: '#2BC4AB' },
   { id: 'volt',  label: 'Volt',  signal: '#B8E02A' },
   { id: 'haze',  label: 'Haze',  signal: '#2AA8C4' },
   { id: 'noir',  label: 'Noir',  signal: '#C0C0C0' },
 ];
 
-let currentThemeId = 'og';
-
 function applyTheme(id) {
-  currentThemeId = id;
   document.documentElement.setAttribute('data-theme', id);
-  const theme = THEMES.find(t => t.id === id);
   document.querySelectorAll('.theme-dot').forEach(btn => {
     btn.classList.toggle('theme-dot-active', btn.dataset.themeId === id);
   });
-  const lbl = document.getElementById('theme-active-label');
-  if (lbl && theme) lbl.textContent = `// ${theme.label.toUpperCase()} · ACTIVE`;
   try { localStorage.setItem('6pct-theme', id); } catch(e) {}
 }
 
-// Build switcher HTML
 const switcher = document.createElement('div');
 switcher.id = 'theme-switcher';
 switcher.innerHTML = `
@@ -2187,8 +792,7 @@ switcher.innerHTML = `
       ></button>
     `).join('')}
   </div>
-  <div id="theme-active-label" class="theme-active-label"></div>
-  <button class="mode-btn" id="mode-btn">[ LIGHT ]</button>
+  <button class="mode-btn" id="mode-btn">Light</button>
 `;
 document.body.appendChild(switcher);
 
@@ -2198,73 +802,22 @@ document.querySelectorAll('.theme-dot').forEach(btn => {
   btn.addEventListener('mouseleave', () => cur.classList.remove('big'));
 });
 
-// Restore saved theme
-const saved = (() => { try { return localStorage.getItem('6pct-theme'); } catch(e) { return null; } })();
-applyTheme(THEMES.find(t => t.id === saved) ? saved : 'og');
+const savedTheme = (() => { try { return localStorage.getItem('6pct-theme'); } catch(e) { return null; } })();
+applyTheme(THEMES.find(t => t.id === savedTheme) ? savedTheme : 'og');
 
-/* ── MODE */
+/* ─── DARK / LIGHT MODE ─────────────────────── */
 (function(){
-  const m   = localStorage.getItem('6pct-mode') || 'dark';
+  const m   = (() => { try { return localStorage.getItem('6pct-mode'); } catch(e) { return null; } })() || 'dark';
   const btn = document.getElementById('mode-btn');
   if (m === 'light') document.body.classList.add('light');
-  if (btn) btn.textContent = m === 'light' ? '[ DARK ]' : '[ LIGHT ]';
+  if (btn) btn.textContent = m === 'light' ? 'Dark' : 'Light';
   if (btn) btn.addEventListener('click', () => {
     document.body.classList.toggle('light');
     const isLight = document.body.classList.contains('light');
-    localStorage.setItem('6pct-mode', isLight ? 'light' : 'dark');
-    btn.textContent = isLight ? '[ DARK ]' : '[ LIGHT ]';
+    try { localStorage.setItem('6pct-mode', isLight ? 'light' : 'dark'); } catch(e) {}
+    btn.textContent = isLight ? 'Dark' : 'Light';
   });
 })();
-
-/* ─── LAYOUT TOGGLE ─────────────────────────── */
-const layoutBtn = document.getElementById('layout-toggle');
-const pageWrapper = document.getElementById('page-wrapper');
-let currentLayout = 'vertical';
-
-/* ─── H-MODE PANEL INDICATOR ────────────────── */
-const hPanelCur = document.getElementById('h-panel-cur');
-const hPanelTot = document.getElementById('h-panel-tot');
-
-function updateHPanelIndicator() {
-  if (currentLayout !== 'horizontal') return;
-  const total = Math.round(pageWrapper.scrollWidth / window.innerWidth);
-  const current = Math.round(pageWrapper.scrollLeft / window.innerWidth) + 1;
-  hPanelTot.textContent = String(total).padStart(2, '0');
-  hPanelCur.textContent = String(Math.min(current, total)).padStart(2, '0');
-}
-
-pageWrapper.addEventListener('scroll', updateHPanelIndicator, { passive: true });
-
-function applyLayout(mode) {
-  currentLayout = mode;
-  if (mode === 'horizontal') {
-    document.body.classList.add('layout-h');
-    layoutBtn.querySelector('.lt-h').classList.add('lt-active');
-    layoutBtn.querySelector('.lt-v').classList.remove('lt-active');
-    setTimeout(updateHPanelIndicator, 80);
-  } else {
-    document.body.classList.remove('layout-h');
-    layoutBtn.querySelector('.lt-v').classList.add('lt-active');
-    layoutBtn.querySelector('.lt-h').classList.remove('lt-active');
-  }
-  updateNavScrolled();
-  try { localStorage.setItem('6pct-layout', mode); } catch(e) {}
-}
-
-layoutBtn.addEventListener('click', () => {
-  applyLayout(currentLayout === 'vertical' ? 'horizontal' : 'vertical');
-});
-
-// Arrow key navigation in horizontal mode
-document.addEventListener('keydown', e => {
-  if (currentLayout !== 'horizontal' || !pageWrapper) return;
-  if (e.key === 'ArrowRight') pageWrapper.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
-  if (e.key === 'ArrowLeft')  pageWrapper.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
-});
-
-// Restore saved layout
-const savedLayout = (() => { try { return localStorage.getItem('6pct-layout'); } catch(e) { return null; } })();
-applyLayout(savedLayout === 'horizontal' ? 'horizontal' : 'vertical');
 </script>
 </body>
 </html>

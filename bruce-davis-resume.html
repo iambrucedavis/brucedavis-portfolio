@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bruce Davis — Design Engineer + AI Engineer</title>
+<title>Bruce Davis — AI Design Engineer · AI Engineer</title>
+<meta name="description" content="Designer who codes and ships AI products. UX engineer for AI surfaces, Claude engineer for workflows and MCP servers. Fifteen years in regulated systems.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -244,104 +245,64 @@ body {
 <header class="hd">
   <div>
     <div class="hd-name">Bruce Davis</div>
-    <div class="hd-title">Design Engineer + AI Engineer</div>
+    <div class="hd-title">AI Design Engineer · AI Engineer</div>
   </div>
   <div class="hd-contact">
     <div>heymrlb@gmail.com</div>
     <div>Charlotte, NC</div>
-    <div><a href="https://six-percent-studio.vercel.app">six-percent-studio.vercel.app</a></div>
     <div><a href="https://github.com/heylb">github.com/heylb</a></div>
-    <div><a href="https://linkedin.com/in/PLACEHOLDER">linkedin.com/in/PLACEHOLDER</a></div>
+    <div><a href="https://linkedin.com/in/brucedavis">linkedin.com/in/brucedavis</a></div>
+    <div><a href="https://six-percent-studio.vercel.app">Portfolio</a></div>
   </div>
 </header>
 
 <!-- SUMMARY -->
 <p class="summary">
-  Design engineer + AI engineer. Static surfaces in Figma, interactive ones in code &mdash; first sketch to live URL, same hand. Backed by a CS degree, a master's in Computer Graphics Technology, and fifteen years shipping production systems at Wells Fargo, Microsoft, Starbucks, and Bank of America &mdash; payment infrastructure, identity platforms, governance automation. Now pointing that hand at AI: MCP servers, document pipelines, agent workflows. Same instinct, new medium.
+  I'm a designer who builds the thing &mdash; and an engineer who designs it. Fifteen years shipping systems in regulated environments: identity platforms, payment infrastructure, HIPAA-compliant healthcare IAM, and Python automation for governance workflows. Now applying that to AI products &mdash; interfaces, agents, MCP servers, document pipelines. Same instinct, new medium.
 </p>
 
-<!-- AI / RECENT BUILDS -->
+<!-- RECENT AI WORK -->
 <section class="section">
-  <div class="sec-label">AI / Recent Builds</div>
+  <div class="sec-label">Recent AI Work</div>
   <div class="projects">
 
     <div class="project">
-      <div class="proj-id">009 · Document Pipeline</div>
+      <div class="proj-id">Document Pipeline</div>
       <div>
-        <div class="proj-name">Document Processing Pipeline</div>
-        <div class="proj-desc">Five custom Claude tools that handle a document end-to-end &mdash; extract structured data, mask PII, validate against business rules, route exceptions to human review, report per-stage token cost. Composable stages, not a black box. MCP SDK · Node ESM · ajv · JSON Schema.</div>
+        <div class="proj-name">Claude tools, end-to-end document processing</div>
+        <div class="proj-desc">Pipeline of Claude tools on an MCP server &mdash; reads a document, masks PII, validates the extraction with structured JSON outputs, escalates anything unusual to a human reviewer, tracks token cost per stage. Document processing, deidentification, validation, human-in-the-loop, cost optimization. MCP SDK · Node · ajv · JSON Schema · Python.</div>
       </div>
     </div>
 
     <div class="project">
-      <div class="proj-id">008 · Six Percent MCP</div>
+      <div class="proj-id">MCP Server</div>
       <div>
-        <div class="proj-name">MCP Server for a Creative Workflow</div>
-        <div class="proj-desc">Five Claude tools I built to extend my own design workflow &mdash; vault search, palette suggest, voice check, project scaffold, idea capture. Tools hand the model options; the model decides. Proves: MCP server engineering and the idea of encoding taste as rules. @modelcontextprotocol/sdk · Notion API · Zod.</div>
+        <div class="proj-name">Custom Claude tools on an MCP server</div>
+        <div class="proj-desc">Five Claude tools running on an MCP server I built to extend my own workflow &mdash; vault search, palette suggest, voice check, project scaffold, idea capture. Hands-on MCP server engineering, tool design with Zod schemas, and Claude API integration. @modelcontextprotocol/sdk · Notion API · Zod · Node.</div>
       </div>
     </div>
 
     <div class="project">
-      <div class="proj-id">002 · AI Interface Patterns</div>
+      <div class="proj-id">AI Interface Patterns</div>
       <div>
-        <div class="proj-name">Working Patterns for AI Surfaces</div>
-        <div class="proj-desc">Five interface patterns for the moments while a model is responding &mdash; streaming output, state machine, token pressure, confidence annotation, error recovery. Each a working demo in code, not a mockup. Patterns documented and demonstrated.</div>
+        <div class="proj-name">Loading, empty, and error states for AI surfaces</div>
+        <div class="proj-desc">Five working interface patterns for AI products &mdash; word-by-word streaming, model state indicators, low-context warnings, confidence flags, error recovery. The loading states, empty states, and error states the UX Engineer JD asks for, built in React/TypeScript. Live demos, not Figma mockups.</div>
       </div>
     </div>
 
     <div class="project">
-      <div class="proj-id">007 · Security UX</div>
+      <div class="proj-id">Motion Showcase</div>
       <div>
-        <div class="proj-name">Phishing Training, Redesigned</div>
-        <div class="proj-desc">Security awareness surface that borrows the visual language of the threat &mdash; HUD, scan-lines, real-time threat scoring, playable "spot the phish" round. Concept that brings IAM/security UX experience into a designed product surface. Vanilla JS · GSAP · Web Audio.</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- PORTFOLIO -->
-<section class="section">
-  <div class="sec-label">Portfolio</div>
-  <div class="projects">
-
-    <div class="project">
-      <div class="proj-id">001 · Physics Playground</div>
-      <div>
-        <div class="proj-name">Interactive Physics Playground</div>
-        <div class="proj-desc">Real-time physics with Matter.js, synthesized audio on collision via Web Audio API, score mechanics and CHAOS MODE. Designed the interactions, built the simulation, tuned the feel.</div>
+        <div class="proj-name">Motion as a UX decision</div>
+        <div class="proj-desc">Five web motion techniques in one demo &mdash; split-text entrances, scroll-driven reveals, magnetic cursor hover, staggered grid reveals, kinetic type. Motion as a UX decision, not decoration. GSAP, no framework.</div>
       </div>
     </div>
 
     <div class="project">
-      <div class="proj-id">003 · Data Viz</div>
+      <div class="proj-id">Security UX</div>
       <div>
-        <div class="proj-name">Interactive Data Viz Dashboard</div>
-        <div class="proj-desc">Three live D3.js v7 charts: FPS monitor, filterable scatter plot, force-directed graph with drag and hover traversal. Designed the system, built the charts, wrote the interaction.</div>
-      </div>
-    </div>
-
-    <div class="project">
-      <div class="proj-id">004 · Motion</div>
-      <div>
-        <div class="proj-name">Motion + Interaction Showcase</div>
-        <div class="proj-desc">Five GSAP techniques in one file: split-text entrance, scroll scrub, magnetic hover, stagger reveal, kinetic type. No framework. The motion is the interface.</div>
-      </div>
-    </div>
-
-    <div class="project">
-      <div class="proj-id">005 · Brief Library</div>
-      <div>
-        <div class="proj-name">The Brief Machine</div>
-        <div class="proj-desc">A curated library of six design briefs, hand-written and rendered at reading pace. The format is the design move &mdash; pacing, hierarchy, and voice tuned to make a brief feel like a finished thing.</div>
-      </div>
-    </div>
-
-    <div class="project">
-      <div class="proj-id">006 · SaaS Surface</div>
-      <div>
-        <div class="proj-name">SaaS Landing &amp; Brand Study</div>
-        <div class="proj-desc">Visual study of a modern SaaS surface &mdash; landing, brand, hierarchy, motion. Deploy state machine, live log stream, pricing toggle with animated value swap. Concept study, not a deployed product.</div>
+        <div class="proj-name">Phishing training, redesigned</div>
+        <div class="proj-desc">Security awareness surface that borrows the visual language of the threat &mdash; HUD UI, scan lines, threat pulse, a playable "spot the phish" round. Motion, empty states, and behavioral interaction design applied to a compliance use case. Vanilla JS · GSAP · Web Audio.</div>
       </div>
     </div>
 
@@ -418,8 +379,8 @@ body {
         <div class="role-dates">Jan 2019–Jul 2021</div>
       </div>
       <ul class="role-bullets">
-        <li>Architected and shipped an IAM platform for 16,000+ users — Entra ID, MIM, CyberArk — integrated end to end from design through deployment.</li>
-        <li>Built Power Platform dashboards that surfaced compliance state across the org; moved from 65% to 95% compliance over the engagement.</li>
+        <li>Architected and shipped a HIPAA-compliant IAM platform for 16,000+ users at a healthcare company — Entra ID, MIM, CyberArk — integrated end to end from design through deployment.</li>
+        <li>Built Power Platform dashboards that surfaced compliance state across the org; moved compliance from 65% to 95% over the engagement.</li>
       </ul>
     </div>
 
@@ -440,11 +401,11 @@ body {
     GSAP · Framer Motion · Three.js · WebGL · Canvas API · D3.js · Matter.js · Web Audio API ·
     Tailwind · Radix UI · Storybook · Node.js · Python · PowerShell · Vercel · Git
     <br><br>
-    <strong style="color:var(--ink);">// AI engineering:</strong>
+    <strong style="color:var(--ink);">AI engineering:</strong>
     Model Context Protocol (MCP) · @modelcontextprotocol/sdk · Tool-use schema design · Zod · JSON-RPC · Anthropic SDK · Notion API · ajv / JSON Schema
     <br>
-    <strong style="color:var(--ink);">// AI in workflow:</strong>
-    Claude Code · OpenAI SDK · Vercel AI SDK · Microsoft Copilot
+    <strong style="color:var(--ink);">AI in workflow:</strong>
+    Claude Code · Cursor · OpenAI SDK · Vercel AI SDK · Microsoft Copilot
   </div>
 </section>
 
@@ -481,8 +442,8 @@ body {
 
 <!-- FOOTER -->
 <footer class="foot">
-  <div class="foot-mark">// First sketch to production. One hand the whole way.</div>
-  <div class="foot-url">six-percent-studio.vercel.app</div>
+  <div class="foot-mark">Bruce Davis &middot; Charlotte, NC &middot; 2026</div>
+  <div class="foot-url"><a href="https://six-percent-studio.vercel.app" style="color:inherit;text-decoration:none;">Portfolio</a></div>
 </footer>
 
 </body>
