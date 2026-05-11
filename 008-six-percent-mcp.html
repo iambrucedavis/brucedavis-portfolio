@@ -471,7 +471,7 @@ taste as rules rather than agents.</pre></div>
       <ul class="review-list">
         <li>Three patterns named first, five tools fit into them. Naming the three shapes IS the structure. Claude picks the right tool for free when it knows whether it's asking for <code>retrieval</code> versus <code>mutation</code>.</li>
         <li><code>palette_suggest</code> doesn't rank — it returns options and lets Claude reason. The options already carry their author's notes. Ranking would discard the notes; reasoning over them is the value.</li>
-        <li><code>voice_check</code> refuses to rewrite. The split between "what's wrong" (tool) and "what to write instead" (Claude) is intentional. Rewriting is taste; flagging is rules. They don't belong in the same surface.</li>
+        <li><code>voice_check</code> refuses to rewrite. The split between "what's wrong" (tool) and "what to write instead" (Claude) is intentional. Rewriting is taste; flagging is rules. They don't belong in the same tool.</li>
         <li><code>project_scaffold</code> is mutation-with-preview. <code>dry_run: true</code> returns the proposed change first. Claude sees the change, decides, then re-calls without the flag. Two steps in one tool — preview, then commit.</li>
         <li>Notion's data structure is flatter than its UI. Vault entries are stored as flat <code>child_page</code> blocks; section headings are decorative <code>heading_2</code> blocks that don't actually contain the entries underneath. The tool encodes the truth, not the UI metaphor — sections live in a <code>[section-key]</code> tag inside the title.</li>
       </ul>
@@ -484,7 +484,7 @@ taste as rules rather than agents.</pre></div>
         <li>No real tests. The smoke test in the README is the test. Day 2 of the build adds Vitest, with mocked Notion data for the test cases.</li>
         <li>Suggestion text in <code>voice_check</code> violations is the same boilerplate each time. A v0.2 would route suggestions through Claude with the rule and excerpt as context — rules for flagging, Claude for the rewrite hint. Hybrid.</li>
         <li>The <code>palette_suggest</code> output gets large when the lab grows. Beyond ~30 palettes, returning every option wastes context. The fix: pre-sort options by mood similarity (a vector-embedding pass on the server) and return the top few — still letting Claude make the final pick.</li>
-        <li><code>project_scaffold</code> writes only into <code>six-percent-studio/index.html</code>. Single target. A repo-aware version would take the gallery file as an input, opening the door to other portfolio surfaces or even other projects entirely.</li>
+        <li><code>project_scaffold</code> writes only into <code>six-percent-studio/index.html</code>. Single target. A repo-aware version would take the gallery file as an input, opening the door to other portfolio pages or even other projects entirely.</li>
       </ul>
     </div>
   </div>

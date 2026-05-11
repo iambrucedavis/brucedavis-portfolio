@@ -431,7 +431,7 @@ pre.code .c    { color:var(--text-muted); }
       <div class="review-sub">// Craft decisions</div>
       <ul class="review-list">
         <li>Five tools, one per stage. <code>doc_extract</code> / <code>pii_mask</code> / <code>doc_validate</code> / <code>hitl_route</code> / <code>cost_report</code>. Each owns one contract; the pipeline is composition.</li>
-        <li>The work-order pattern. <code>doc_extract</code> returns a schema + rules + task instead of calling Claude. Claude executes. No API key for the demo; the same seam takes a real API call in production.</li>
+        <li>The work-order pattern. <code>doc_extract</code> returns a schema + rules + task instead of calling Claude. Claude executes. No API key for the demo; the same plug-in point takes a real API call in production.</li>
         <li>PII masking is two-layer: deterministic regex + path-based redaction first, then a list of free-text fields flagged for Claude to scan as a second pass. The tool draws the line between what can be caught with rules and what can't.</li>
         <li><code>doc_validate</code> is redaction-aware. Format and pattern errors on values that look like <code>[TYPE-REDACTED]</code> are filtered out automatically. Rules that need the original PII (the age check against a redacted DOB, for example) skip with a note that they should run before masking in production.</li>
         <li>Business rules live alongside the schema (a <code>businessRules</code> array in the JSON Schema file). One file per doc type. The functions that evaluate them live in the validator file. Adding a rule is two changes: schema entry plus evaluator function.</li>
