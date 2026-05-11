@@ -268,12 +268,12 @@ pre.code .c    { color:var(--text-muted); }
   <div class="hero-pre">// 009 — Document Processing Pipeline · Claude Engineering</div>
   <h1 id="hero-hl">DOCUMENT,<br>PROCESSED.</h1>
   <p class="hero-sub">
-    A five-stage MCP pipeline for claims, invoices, and contracts. Extract structured JSON, mask PII, validate against schema and business rules, route exceptions to a human queue, report token cost. Each stage is its own tool; the model composes them.
+    A five-stage system for claims, invoices, and contracts. Read the document. Hide personal info. Check the data. Send anything weird to a human reviewer. Report the cost. Each stage is its own custom Claude tool; Claude wires them together.
   </p>
   <div class="hero-meta">
     <span>build.2026.05</span>
     <span>v0.1.0</span>
-    <span>5 stage tools · MCP SDK 1.x · ajv validation</span>
+    <span>5 stage tools · MCP server · ajv validation</span>
     <span class="live">[ ACTIVE ]</span>
   </div>
 </section>
@@ -282,9 +282,9 @@ pre.code .c    { color:var(--text-muted); }
 <section id="brief" class="reveal">
   <div class="brief-lbl">// The Brief</div>
   <div class="brief-body">
-    <p>Document processing pipelines look simple on a slide. Extract. Validate. Mask. Queue exceptions. Ship. In practice they're a black-box workflow with the model in the middle, doing everything from OCR to business rules to deciding what's PII. Hard to debug, hard to cost, hard to swap a stage out.</p>
-    <p>This pipeline pulls those concerns apart. Five MCP tools, one per stage. The model is the <strong>orchestrator</strong>, not the pipeline. Each tool owns its piece of the contract — <code>doc_extract</code> returns a schema and a set of rules, <code>pii_mask</code> redacts by path and by pattern, <code>doc_validate</code> runs schema + business rules and produces an exceptions array, <code>hitl_route</code> turns exceptions into a triaged queue, <code>cost_report</code> totals the tokens.</p>
-    <p>The interesting design choice: <code>doc_extract</code> doesn't call a model. It returns a <strong>work order</strong> — task, schema, rules — for the calling agent to execute. No Anthropic API key needed for the demo. Production swaps the work order for an API call without changing any other stage. The pattern survives the boundary.</p>
+    <p>Document processing pipelines look simple on a slide. Read it. Check it. Hide the personal info. Send anything wrong to a human. Ship. In practice they're a black box with Claude in the middle, doing everything from text extraction (OCR) to business rules to deciding what counts as personal info. Hard to debug, hard to know the cost, hard to swap one piece out.</p>
+    <p>This pipeline pulls those concerns apart. Five custom Claude tools, one per stage. Claude is the <strong>conductor</strong>, not the pipeline itself. Each tool owns its piece of the work — <code>doc_extract</code> returns a schema and the rules to follow, <code>pii_mask</code> hides personal info by field path and by pattern matching, <code>doc_validate</code> runs schema + business-rule checks and produces a list of exceptions, <code>hitl_route</code> turns those exceptions into a prioritized queue, <code>cost_report</code> totals the tokens.</p>
+    <p>The interesting design choice: <code>doc_extract</code> doesn't call Claude. It returns a <strong>work order</strong> — task, schema, rules — for Claude to carry out. No Anthropic API key needed for the demo. Production swaps the work order for a real API call without changing any other stage. The pattern survives the boundary.</p>
   </div>
 </section>
 
@@ -293,47 +293,47 @@ pre.code .c    { color:var(--text-muted); }
   <div class="sec-inner">
     <div class="dv-hdr">
       <span class="dv-label">// 01 — The pipeline</span>
-      <span class="dv-version">5 stages · 3 patterns · ~1240 LOC source</span>
+      <span class="dv-version">5 stages · 3 patterns · ~1240 lines of source code</span>
     </div>
-    <h2 class="dv-title">Five tools, one orchestrator.</h2>
-    <p class="dv-desc">Each stage is a separate MCP tool, swappable in isolation. The orchestrator is the model. Three of the five tools are mutations (extract, mask, route); one is critique (validate); one is aggregation (cost). The pipeline is composition.</p>
+    <h2 class="dv-title">Five tools, one conductor.</h2>
+    <p class="dv-desc">Each stage is a separate custom Claude tool, swappable on its own. The conductor is Claude. Three of the five tools change something (extract, mask, route); one is a check (validate); one totals things up (cost). The pipeline is composition.</p>
 
     <div class="pl-flow">
       <div class="pl-node">
         <span class="pl-num">// stage 1</span>
         <span class="pl-name">doc_extract</span>
         <span class="pl-pattern">// mutation · work-order</span>
-        <span class="pl-desc">Returns task + schema + 13 rules. The model executes against the doc text.</span>
+        <span class="pl-desc">Returns the task, schema, and 13 rules. Claude does the extraction against the document text.</span>
       </div>
       <div class="pl-node">
         <span class="pl-num">// stage 2</span>
         <span class="pl-name">pii_mask</span>
         <span class="pl-pattern">// mutation · two-layer</span>
-        <span class="pl-desc">Path-based + regex. Free-text fields routed back for contextual review.</span>
+        <span class="pl-desc">Two-layer hide: known fields by path, plus regex matches anywhere. Free-text fields get sent back to Claude for a second look.</span>
       </div>
       <div class="pl-node">
         <span class="pl-num">// stage 3</span>
         <span class="pl-name">doc_validate</span>
         <span class="pl-pattern">// critique · redaction-aware</span>
-        <span class="pl-desc">ajv schema + 12 business rules. Format checks on redacted fields skip cleanly.</span>
+        <span class="pl-desc">Schema check (with ajv) + 12 business rules. Skips format checks on fields where the data is hidden.</span>
       </div>
       <div class="pl-node">
         <span class="pl-num">// stage 4</span>
         <span class="pl-name">hitl_route</span>
         <span class="pl-pattern">// mutation · triage</span>
-        <span class="pl-desc">Exceptions → queue. Auto-priority on rule type. Suggested resolutions attached.</span>
+        <span class="pl-desc">Sends exceptions to a queue. Auto-priorities based on the rule type. Each entry comes with a suggested fix.</span>
       </div>
       <div class="pl-node">
         <span class="pl-num">// stage 5</span>
         <span class="pl-name">cost_report</span>
         <span class="pl-pattern">// aggregation</span>
-        <span class="pl-desc">Per-stage tokens × rates. Totals, plus per-1k and per-100k scaling.</span>
+        <span class="pl-desc">Per-stage tokens × rates. Totals, plus what this would cost per 1,000 and per 100,000 documents.</span>
       </div>
     </div>
 
     <div class="c-ann">
       <span class="ann-lbl">// Design rationale</span>
-      <span class="ann-txt">Separation by stage is separation by concern. Each tool's input contract is the previous tool's output contract — pure functions of the data, no shared state. The pipeline becomes inspectable: drop a tool's trace into the orchestrator, swap it for another, A/B the prompts. The work-order pattern keeps the demo runnable on a Max subscription; production with API-direct execution drops in at <code>doc_extract</code> without touching the four downstream tools.</span>
+      <span class="ann-txt">Separation by stage is separation by concern. Each tool's input is the previous tool's output — no shared state, no surprises. The pipeline becomes inspectable: drop a tool's trace into Claude, swap one piece for another, test different prompts side by side. The work-order pattern keeps the demo runnable on a Claude Max subscription; production with direct API access plugs in at <code>doc_extract</code> without touching the four downstream tools.</span>
     </div>
   </div>
 </div>
@@ -346,7 +346,7 @@ pre.code .c    { color:var(--text-muted); }
       <span class="dv-version">4 pre-baked traces · click a tab</span>
     </div>
     <h2 class="dv-title">Pick a doc. Watch it move.</h2>
-    <p class="dv-desc">Four runs: three clean documents, plus one claim with deliberately broken amounts and a missing required field. The traces below are real outputs from the orchestrator script — same JSON the pipeline produces against the live MCP server.</p>
+    <p class="dv-desc">Four runs: three clean documents, plus one claim with deliberately broken amounts and a missing required field. The traces below are real outputs from the pipeline runner — same JSON the MCP tools produce when run end-to-end.</p>
 
     <div class="tab-bar" id="tab-bar">
       <button class="tab active" data-fixture="claim">
@@ -363,7 +363,7 @@ pre.code .c    { color:var(--text-muted); }
       </button>
       <button class="tab" data-fixture="claim-broken">
         claim · with errors
-        <span class="tab-sub">3 exceptions, HITL routed</span>
+        <span class="tab-sub">3 exceptions, human review</span>
       </button>
     </div>
 
@@ -379,8 +379,8 @@ pre.code .c    { color:var(--text-muted); }
       <span class="dv-label">// 03 — Inside the work-order pattern</span>
       <span class="dv-version">no API key required · production-portable</span>
     </div>
-    <h2 class="dv-title">Tools return contracts, not completions.</h2>
-    <p class="dv-desc">The interesting MCP design choice. <code>doc_extract</code> is a mutation tool that doesn't call a model. It returns a structured work order for the calling agent to execute. Production with API-direct execution drops in without touching any downstream stage.</p>
+    <h2 class="dv-title">Tools return contracts, not responses.</h2>
+    <p class="dv-desc">The interesting MCP design choice. <code>doc_extract</code> doesn't call Claude — it's a tool that returns a structured work order for Claude to carry out. Production with direct API access plugs in here without touching any downstream stage.</p>
 
     <div class="c-frame">
       <div class="c-bar">
@@ -416,8 +416,8 @@ pre.code .c    { color:var(--text-muted); }
     </div>
 
     <div class="c-ann">
-      <span class="ann-lbl">// Why the tool doesn't call the model</span>
-      <span class="ann-txt">In MCP, the orchestrating agent is already an LLM. Asking the server to spin up another LLM to do extraction is double inference for no gain — and locks every demo to an API key. Returning a work order keeps the model as the executor. The server's job is to encode the contract: which schema, which rules, what to do with the result. The model reads the contract, generates the JSON, hands off to the next stage. Production swaps the work order for an Anthropic API call at this single seam; the downstream tools don't notice.</span>
+      <span class="ann-lbl">// Why the tool doesn't call Claude</span>
+      <span class="ann-txt">In MCP, Claude is the agent calling the tools. Asking the server to call Claude AGAIN to do the extraction is double work for no gain — and locks every demo to an API key. Returning a work order keeps Claude as the executor. The server's job is to encode the contract: which schema, which rules, what to do with the result. Claude reads the contract, generates the JSON, hands off to the next stage. Production swaps the work order for an Anthropic API call at this single seam; the downstream tools don't notice.</span>
     </div>
   </div>
 </div>
@@ -431,11 +431,11 @@ pre.code .c    { color:var(--text-muted); }
       <div class="review-sub">// Craft decisions</div>
       <ul class="review-list">
         <li>Five tools, one per stage. <code>doc_extract</code> / <code>pii_mask</code> / <code>doc_validate</code> / <code>hitl_route</code> / <code>cost_report</code>. Each owns one contract; the pipeline is composition.</li>
-        <li>The work-order pattern. <code>doc_extract</code> returns a schema + rules + task instead of calling a model. The orchestrator executes. No API key for the demo; the same seam takes a real API call in production.</li>
-        <li>PII masking is two-layer: deterministic regex + path-based redaction first, then a list of free-text fields flagged for the orchestrator to scan contextually. The tool draws the line between what can be caught with rules and what can't.</li>
-        <li><code>doc_validate</code> is redaction-aware. Format and pattern errors on values matching <code>/^\[.*-REDACTED\]$/</code> are filtered out. Rules that need PII (<code>policyholder_age</code> against a masked DOB) skip with a note that they should run before mask in production.</li>
-        <li>Business rules live alongside the schema (<code>businessRules</code> array in the JSON Schema file). One file per doc type. Evaluator functions in the validator file. Adding a rule is two changes: schema entry plus evaluator.</li>
-        <li>The orchestrator script (<code>scripts/run-pipeline.mjs</code>) composes all five tools end-to-end and emits a single trace per fixture. Those traces — checked into the repo — are the source-of-truth for the playback on this page.</li>
+        <li>The work-order pattern. <code>doc_extract</code> returns a schema + rules + task instead of calling Claude. Claude executes. No API key for the demo; the same seam takes a real API call in production.</li>
+        <li>PII masking is two-layer: deterministic regex + path-based redaction first, then a list of free-text fields flagged for Claude to scan as a second pass. The tool draws the line between what can be caught with rules and what can't.</li>
+        <li><code>doc_validate</code> is redaction-aware. Format and pattern errors on values that look like <code>[TYPE-REDACTED]</code> are filtered out automatically. Rules that need the original PII (the age check against a redacted DOB, for example) skip with a note that they should run before masking in production.</li>
+        <li>Business rules live alongside the schema (a <code>businessRules</code> array in the JSON Schema file). One file per doc type. The functions that evaluate them live in the validator file. Adding a rule is two changes: schema entry plus evaluator function.</li>
+        <li>The pipeline runner (<code>scripts/run-pipeline.mjs</code>) composes all five tools end-to-end and emits a single trace per fixture. Those traces — checked into the repo — are the source-of-truth for the playback on this page.</li>
         <li>Exceptions get auto-prioritized in <code>hitl_route</code> based on rule type. Missing required fields are high; business rule failures with monetary impact are high; other schema issues are medium; everything else is low.</li>
       </ul>
     </div>
@@ -443,12 +443,12 @@ pre.code .c    { color:var(--text-muted); }
     <div class="review-block">
       <div class="review-sub">// What I'd do differently</div>
       <ul class="review-list">
-        <li>PDF / OCR is not in the loop. Fixtures are plain text. A real version takes a PDF stream, OCRs to text, then enters at <code>doc_extract</code>. The OCR tool is the obvious next addition — and a clean MCP shape: bytes in, text + per-page confidence out.</li>
-        <li>The HITL queue is in-memory. Production persists each entry to a ticket system (Notion, Linear, Jira) and routes by team. The shape — <code>queue_id</code>, priority, suggested_resolution — is portable. The persistence layer isn't.</li>
-        <li>The contextual review pass for <code>pii_mask</code> is documented but not auto-run. The tool returns a list of free-text fields to scan; the orchestrator can call the model on those. A future tool — <code>pii_review</code> — would close that loop.</li>
+        <li>PDF / OCR is not in the loop. Fixtures are plain text. A real version takes a PDF, reads the text from it (OCR), then enters at <code>doc_extract</code>. The OCR tool is the obvious next addition — and a clean MCP shape: take a PDF, return the text plus a confidence score per page.</li>
+        <li>The human queue is in-memory only. Production would save each entry to a ticket system (Notion, Linear, Jira) and route by team. The shape — <code>queue_id</code>, priority, suggested_resolution — is portable. The persistence layer isn't.</li>
+        <li>The second-pass review for <code>pii_mask</code> is documented but not auto-run. The tool returns a list of free-text fields to scan; Claude can scan those. A future tool — <code>pii_review</code> — would close that loop.</li>
         <li>Token cost is estimated via <code>chars / 4</code>. Real API runs return measured token counts; <code>cost_report</code> already accepts a <code>method: 'measured'</code> flag and reports mode accordingly. Demo runs in <code>estimated</code>; production flips it.</li>
-        <li>The schema-with-redactions interaction is handled by post-hoc error filtering. A cleaner version emits a "masked schema" variant per doc type — same shape, PII fields permissive. The current approach is shorter; the cleaner version is more honest.</li>
-        <li>Auto-numbering, line-of-fire test cases, prompt-iteration logging. A second pass would build a proper evals harness around <code>doc_extract</code> — the same harness Project 010 (voice_check v2) is going to need.</li>
+        <li>The way schema validation handles redacted values is to filter errors after the fact. A cleaner version would emit a second schema per doc type — same shape, but with the PII fields allowed to contain placeholder strings. The current approach is shorter; the cleaner version is more honest.</li>
+        <li>Auto-numbering, edge-case test fixtures, prompt-iteration logging. A second pass would build a proper evaluation system (an "evals harness") around <code>doc_extract</code> — the same kind of system Project 010 (voice_check v2) is going to need.</li>
       </ul>
     </div>
   </div>
@@ -586,7 +586,7 @@ function renderSummary(trace) {
         <div class="summary-val">${s.redactions_count}</div>
       </div>
       <div class="summary-cell">
-        <div class="summary-lbl">// HITL queue</div>
+        <div class="summary-lbl">// human queue</div>
         <div class="summary-val ${s.queue_size>0?'warn':''}">${s.queue_size}</div>
       </div>
       <div class="summary-cell">
@@ -668,7 +668,7 @@ function renderMaskStage(num, stage) {
         <div class="list" style="margin-top:0;border:none">${reds}</div>
       </div>
       <div class="field-cell">
-        <div class="field-lbl">// contextual review advised</div>
+        <div class="field-lbl">// needs another look</div>
         <div class="list" style="margin-top:0;border:none">${flagged}</div>
       </div>
     </div>
