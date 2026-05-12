@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "six-percent-studio",
+  "name": "iambrucedavis",
   "builds": [
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "*.pdf", "use": "@vercel/static" }
@@ -8,7 +8,8 @@
   "routes": [
     { "src": "/", "dest": "/index.html" },
     { "src": "/_archive/(.*)", "status": 404 },
-    { "src": "/playground", "dest": "/six-percent-playground.html" },
+    { "src": "/six-percent-playground.html", "status": 301, "headers": { "Location": "/001-physics-playground.html" } },
+    { "src": "/playground", "dest": "/001-physics-playground.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
