@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project 004 — Motion + Interaction · Bruce Davis</title>
+<title>Motion Showcase — Bruce Davis</title>
+<meta name="description" content="Five web motion techniques in one demo — split-text entrances, scroll-driven reveals, magnetic cursor hover, staggered grid reveals, kinetic type. Motion as a UX decision, not decoration. Built in GSAP, no framework.">
+<meta property="og:title" content="Motion Showcase — Bruce Davis">
+<meta property="og:description" content="Five GSAP-driven motion techniques — split-text entrance, scroll scrub, magnetic hover, staggered grid reveal, kinetic type. Motion as a UX decision, not decoration.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -168,17 +172,9 @@ a { color:inherit; text-decoration:none; }
   transition: color .2s;
 }
 .nav-back:hover { color: var(--signal); }
-.nav-center {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .06em;
-  color: var(--text-dim);
-}
-.nav-state {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  color: var(--text-dim);
-}
+.nav-links { display:flex; gap:28px; }
+.nav-links a { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:.14em; color:var(--text-muted); text-transform:uppercase; transition:color .2s; }
+.nav-links a:hover { color:var(--signal); }
 
 /* ─── SHARED ─────────────────────────────── */
 .annot {
@@ -204,11 +200,10 @@ a { color:inherit; text-decoration:none; }
   opacity: 0;
 }
 #hero-headline {
-  font-size: clamp(72px, 11vw, 160px);
-  font-weight: 700;
-  line-height: .9;
-  letter-spacing: -.03em;
-  text-transform: uppercase;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -.025em;
 }
 .h-line { overflow: hidden; display: block; }
 .h-char { display: inline-block; will-change: transform; }
@@ -466,7 +461,13 @@ a { color:inherit; text-decoration:none; }
   font-size: 10px;
   color: var(--text-dim);
   letter-spacing: .04em;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }
+.footer-stack a { color: var(--text-muted); transition: color .2s; }
+.footer-stack a:hover { color: var(--signal); }
 
 /* ─── REDUCED MOTION ─────────────────────── */
 @media (prefers-reduced-motion:reduce) {
@@ -523,24 +524,26 @@ a { color:inherit; text-decoration:none; }
 <!-- ── NAV ────────────────────────────────── -->
 <nav id="nav">
   <a href="index.html" class="nav-back">← Bruce Davis</a>
-  <div class="nav-center">Motion + Interaction <span style="opacity:.35">// 004</span></div>
-  <div class="nav-state annot">[ ACTIVE ]</div>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="bruce-davis-resume.html">Resume</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
 </nav>
 
 
 <!-- ── 01 · HERO ─────────────────────────── -->
 <section id="hero">
 
-  <div class="annot" id="hero-eyebrow">// PROJECT 004 · MOTION &amp; INTERACTION SHOWCASE</div>
+  <div class="annot" id="hero-eyebrow">UX Engineer</div>
 
-  <h1 id="hero-headline">MOTION IS<br>THE MEDIUM.</h1>
+  <h1 id="hero-headline">Motion Showcase</h1>
 
   <p id="hero-sub">
-    Five GSAP techniques. One file. No framework.<br>
-    Split-text entrance, scroll scrub, magnetic hover, stagger reveal, kinetic type.
+    Five web motion techniques in one demo &mdash; split-text entrances, scroll-driven reveals, magnetic cursor hover, staggered grid reveals, kinetic type. Motion as a UX decision, not decoration. Built in GSAP, no framework.
   </p>
 
-  <div id="hero-foot-l" class="annot">// technique: gsap · stagger · split text</div>
+  <div id="hero-foot-l" class="annot">GSAP &middot; ScrollTrigger &middot; vanilla JS</div>
   <div id="hero-foot-r" class="annot" id="hero-scroll-hint">scroll to explore ↓</div>
 
   <div id="hero-bg" aria-hidden="true">004</div>
@@ -549,7 +552,7 @@ a { color:inherit; text-decoration:none; }
 
 <!-- BRIEF -->
 <section id="brief">
-  <div class="brief-lbl">// The Brief</div>
+  <div class="brief-lbl">The Brief</div>
   <div class="brief-body">
     <p>Five techniques. One file. No framework.</p>
     <p>The brief was proof — not a portfolio item, but a technical argument. Each technique is a production approach worth reaching for on a real project: split-text for hero entrances, scroll scrub for narrative pacing, magnetic hover for interaction depth, stagger for list reveals, kinetic type for emphasis. They're not effects. They're tools.</p>
@@ -561,7 +564,7 @@ a { color:inherit; text-decoration:none; }
 <!-- ── 02 · SCROLL SCRUB ─────────────────── -->
 <section id="scrub">
 
-  <div class="annot" id="scrub-annot">// TECHNIQUE 02 · SCROLL SCRUB · gsap scrolltrigger · scrub</div>
+  <div class="annot" id="scrub-annot">TECHNIQUE 02 · SCROLL SCRUB · gsap scrolltrigger · scrub</div>
 
   <div id="scrub-words">
     <span class="sw">The</span>
@@ -574,7 +577,7 @@ a { color:inherit; text-decoration:none; }
     <span class="sw sw-b">build.</span>
   </div>
 
-  <div class="annot" id="scrub-foot">// each word reveals on scroll · spotlight advances with scroll position</div>
+  <div class="annot" id="scrub-foot">each word reveals on scroll · spotlight advances with scroll position</div>
 
 </section>
 
@@ -582,7 +585,7 @@ a { color:inherit; text-decoration:none; }
 <!-- ── 03 · MAGNETIC ─────────────────────── -->
 <section id="magnetic">
 
-  <div class="annot" id="mag-annot">// TECHNIQUE 03 · MAGNETIC HOVER · move cursor over each card</div>
+  <div class="annot" id="mag-annot">TECHNIQUE 03 · MAGNETIC HOVER · move cursor over each card</div>
 
   <h2 id="mag-headline">Attention<br>is <span class="sig">attracted.</span></h2>
 
@@ -595,7 +598,7 @@ a { color:inherit; text-decoration:none; }
     <div class="mag-card"><div class="mag-inner">WEB TOYS</div></div>
   </div>
 
-  <div class="annot" id="mag-note">// gsap magnetic pattern · elastic.out spring on release</div>
+  <div class="annot" id="mag-note">gsap magnetic pattern · elastic.out spring on release</div>
 
 </section>
 
@@ -603,7 +606,7 @@ a { color:inherit; text-decoration:none; }
 <!-- ── 04 · STAGGER ──────────────────────── -->
 <section id="stagger">
 
-  <div class="annot" id="stagger-annot">// TECHNIQUE 04 · STAGGER REVEAL · scrolltrigger · stagger</div>
+  <div class="annot" id="stagger-annot">TECHNIQUE 04 · STAGGER REVEAL · scrolltrigger · stagger</div>
 
   <h2 id="stagger-headline">The <span class="sig">stack.</span></h2>
 
@@ -613,7 +616,7 @@ a { color:inherit; text-decoration:none; }
       <span class="cap-n">01</span>
       <div>
         <div class="cap-name">GSAP + ScrollTrigger</div>
-        <span class="cap-tag">// orchestration · sequencing · scroll-driven animation</span>
+        <span class="cap-tag">orchestration · sequencing · scroll-driven animation</span>
       </div>
       <div class="cap-bar-wrap"><div class="cap-bar" data-w="95"></div></div>
     </div>
@@ -622,7 +625,7 @@ a { color:inherit; text-decoration:none; }
       <span class="cap-n">02</span>
       <div>
         <div class="cap-name">CSS Animations</div>
-        <span class="cap-tag">// keyframes · custom easing · no dependencies</span>
+        <span class="cap-tag">keyframes · custom easing · no dependencies</span>
       </div>
       <div class="cap-bar-wrap"><div class="cap-bar" data-w="92"></div></div>
     </div>
@@ -631,7 +634,7 @@ a { color:inherit; text-decoration:none; }
       <span class="cap-n">03</span>
       <div>
         <div class="cap-name">Framer Motion</div>
-        <span class="cap-tag">// react component motion · layout animations · presence</span>
+        <span class="cap-tag">react component motion · layout animations · presence</span>
       </div>
       <div class="cap-bar-wrap"><div class="cap-bar" data-w="85"></div></div>
     </div>
@@ -640,7 +643,7 @@ a { color:inherit; text-decoration:none; }
       <span class="cap-n">04</span>
       <div>
         <div class="cap-name">Web Animations API</div>
-        <span class="cap-tag">// native browser · precise · zero overhead</span>
+        <span class="cap-tag">native browser · precise · zero overhead</span>
       </div>
       <div class="cap-bar-wrap"><div class="cap-bar" data-w="78"></div></div>
     </div>
@@ -649,7 +652,7 @@ a { color:inherit; text-decoration:none; }
       <span class="cap-n">05</span>
       <div>
         <div class="cap-name">Canvas + requestAnimationFrame</div>
-        <span class="cap-tag">// physics · particles · custom rendering loops</span>
+        <span class="cap-tag">physics · particles · custom rendering loops</span>
       </div>
       <div class="cap-bar-wrap"><div class="cap-bar" data-w="82"></div></div>
     </div>
@@ -658,7 +661,7 @@ a { color:inherit; text-decoration:none; }
       <span class="cap-n">06</span>
       <div>
         <div class="cap-name">Three.js + WebGL</div>
-        <span class="cap-tag">// 3d · shaders · immersive experiences</span>
+        <span class="cap-tag">3d · shaders · immersive experiences</span>
       </div>
       <div class="cap-bar-wrap"><div class="cap-bar" data-w="68"></div></div>
     </div>
@@ -671,7 +674,7 @@ a { color:inherit; text-decoration:none; }
 <!-- ── 05 · KINETIC ───────────────────────── -->
 <section id="kinetic">
 
-  <div class="annot" id="kinetic-annot">// TECHNIQUE 05 · KINETIC TYPE · scroll through this section</div>
+  <div class="annot" id="kinetic-annot">TECHNIQUE 05 · KINETIC TYPE · scroll through this section</div>
 
   <div id="k-stack">
     <div class="k-wrap"><span id="k-line1">DESIGN</span></div>
@@ -684,11 +687,11 @@ a { color:inherit; text-decoration:none; }
 
 <!-- ── IN REVIEW ──────────────────────────────── -->
 <section id="review">
-  <div class="brief-lbl">// In review</div>
+  <div class="brief-lbl">In review</div>
   <div class="review-body">
 
     <div class="review-block">
-      <div class="review-sub">// Craft decisions</div>
+      <div class="review-sub">Craft decisions</div>
       <ul class="review-list">
         <li>Hero stagger is <code>22ms</code> per character with <code>power3.out</code>. The mask is an <code>overflow:hidden</code> line wrapper — characters slide up from <code>yPercent: 110</code>. Browser-native CSS clipping. No SVG, no plugin.</li>
         <li>Magnetic cards pull <code>13/10px</code> on the wrapper and <code>22/16px</code> on the inner label. Inner moves further than outer — parallax depth inside a 2D animation. On exit, both spring back with <code>elastic.out(1, .45)</code>.</li>
@@ -699,7 +702,7 @@ a { color:inherit; text-decoration:none; }
     </div>
 
     <div class="review-block">
-      <div class="review-sub">// What I'd do differently</div>
+      <div class="review-sub">What I'd do differently</div>
       <ul class="review-list">
         <li>Hero stagger uses character index. Long headlines create a wave that runs too long. Real implementation would group by word and stagger words, characters within word.</li>
         <li>Magnetic effect runs on every <code>mousemove</code> with no throttling. Fine on a fresh page; on a heavier page it would jank. <code>gsap.quickTo</code> would smooth the hot path.</li>
@@ -716,14 +719,19 @@ a { color:inherit; text-decoration:none; }
   <div>
     <div class="footer-logo">BRUCE DAVIS</div>
     <div class="footer-note annot">
-      Project 004 — Motion + Interaction Showcase<br>
-      // GSAP 3.x · ScrollTrigger · CSS animations · pure JS<br>
-      // techniques: entrance · scrub · magnetic · stagger · kinetic
+      Project 004 — Motion Showcase<br>
+      GSAP 3.x · ScrollTrigger · CSS animations · vanilla JS<br>
+      techniques: entrance · scrub · magnetic · stagger · kinetic
     </div>
   </div>
   <div class="footer-cta">
     <a href="index.html" class="footer-back">Back to portfolio →</a>
-    <div class="footer-stack">// build.2026.05 · v1.0</div>
+    <div class="footer-stack">
+      <a href="index.html#work">Work</a>
+      <a href="bruce-davis-resume.html">Resume</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="other-work.html">Other Work</a>
+    </div>
   </div>
 </footer>
 
@@ -732,7 +740,7 @@ a { color:inherit; text-decoration:none; }
 <!-- PALETTE CTRL -->
 <div id="palette-ctrl">
   <button class="mode-btn" id="mode-btn">[ LIGHT ]</button>
-  <span class="p-lbl">// PALETTE</span>
+  <span class="p-lbl">PALETTE</span>
   <div class="p-swatches">
     <div class="p-sw on" data-theme="og"></div>
     <div class="p-sw" data-theme="solar"></div>

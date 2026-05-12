@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project 007 — Phishing Training, Redesigned · Bruce Davis</title>
-<!-- // 6% — security UX concept. concept study, not a deployed product. -->
-<meta name="description" content="Security UX concept study by Bruce Davis. A playable phishing-training surface that borrows the visual language of the threat itself.">
+<title>Security UX Concept — Bruce Davis</title>
+<meta property="og:title" content="Security UX Concept — Bruce Davis">
+<meta property="og:type" content="website">
+<meta property="og:description" content="A security awareness training surface redesigned to borrow the visual language of the threat itself — HUD UI, scan lines, threat pulse, a playable 'spot the phish' round.">
+<!-- Security UX concept. Concept study, not a deployed product. -->
+<meta name="description" content="A security awareness training surface redesigned to borrow the visual language of the threat itself — HUD UI, scan lines, threat pulse, a playable 'spot the phish' round. Motion, empty states, and behavioral interaction design applied to a compliance use case.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -127,8 +130,9 @@ body::before{
 }
 .nav-back{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--text-dim);transition:color .2s;}
 .nav-back:hover{color:var(--amber);}
-.nav-id{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--text-dim);}
-.nav-build{font-family:var(--mono);font-size:10px;color:var(--text-muted);}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--text-muted);text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--amber);}
 
 /* ─── HERO ────────────────────────────────────── */
 #hero{
@@ -154,9 +158,8 @@ body::before{
   100%{box-shadow:0 0 0 0 rgba(var(--amber-rgb),0);}
 }
 #hero-hl{
-  font-size:clamp(56px,8.5vw,108px);
-  font-weight:700;line-height:.92;letter-spacing:-.02em;
-  text-transform:uppercase;
+  font-size:clamp(48px,7vw,88px);
+  font-weight:600;line-height:1.04;letter-spacing:-.025em;
 }
 #hero-hl em{color:var(--amber);font-style:normal;}
 .hero-sub{
@@ -602,7 +605,9 @@ footer{
 }
 .pf-back{color:var(--text-dim);transition:color .2s;}
 .pf-back:hover{color:var(--amber);}
-.pf-id{color:var(--text-muted);}
+.pf-links{display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.06em;}
+.pf-links a{color:var(--text-muted);transition:color .2s;}
+.pf-links a:hover{color:var(--amber);}
 
 /* ─── PALETTE TOGGLE ─────────────────────────── */
 #palette-ctrl{
@@ -640,35 +645,37 @@ footer{
 <!-- ── NAV ──────────────────────────────────── -->
 <nav id="top-nav">
   <a href="index.html" class="nav-back">← Bruce Davis</a>
-  <span class="nav-id">// Project 007 · Security UX Concept</span>
-  <span class="nav-build">v1.0.0 · build.2026.05</span>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="bruce-davis-resume.html">Resume</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
 </nav>
 
 <!-- ── HERO ─────────────────────────────────── -->
 <section id="hero">
   <div class="hero-grid-bg" aria-hidden="true"></div>
   <div class="hero-corner" aria-hidden="true">
-    // INTRUSION-DETECTION-MODE<br>
-    // SURFACE: PHISHING TRAINING<br>
-    // STATUS: CONCEPT STUDY
+    INTRUSION-DETECTION-MODE<br>
+    SURFACE: PHISHING TRAINING<br>
+    STATUS: CONCEPT STUDY
   </div>
-  <div class="hero-pre"><span class="pulse"></span> 007 — Security UX Concept</div>
-  <h1 id="hero-hl">PHISHING<br>TRAINING,<br><em>REDESIGNED.</em></h1>
+  <div class="hero-pre"><span class="pulse"></span> UX Engineer</div>
+  <h1 id="hero-hl">Security UX Concept</h1>
   <p class="hero-sub">
-    Most security training is compliance theater — dry, ignored, forgotten by Tuesday. This one borrows the visual language of the threat itself: the blade-runner glow of network monitoring, the kinetic pulse of an active attack. Defense, made to feel as good as the attack looks.
+    A security awareness training surface redesigned to borrow the visual language of the threat itself &mdash; HUD UI, scan lines, threat pulse, a playable &ldquo;spot the phish&rdquo; round. Motion, empty states, and behavioral interaction design applied to a compliance use case.
   </p>
   <div class="hero-meta">
-    <span>build.2026.05</span>
-    <span>vanilla js · gsap · web audio</span>
-    <span>concept · playable demo</span>
-    <span class="live">[ ACTIVE ]</span>
+    <span>concept study</span>
+    <span>playable demo</span>
+    <span>vanilla JS &middot; GSAP &middot; Web Audio</span>
   </div>
 </section>
 
 <!-- ── THE ARGUMENT ─────────────────────────── -->
 <section class="s-section">
   <div class="s-inner">
-    <span class="s-label reveal">// the argument</span>
+    <span class="s-label reveal">the argument</span>
     <h2 class="s-title reveal">Compliance Slideshow → <em>Engaged Defender.</em></h2>
     <p class="s-desc reveal">
       Security awareness training is a category-shaped problem. Real money, real stakes, and a $B+ industry built on the assumption that boring is somehow virtuous. Here's what that gets you, and what it could get you instead.
@@ -676,7 +683,7 @@ footer{
 
     <div class="argument-grid reveal">
       <div class="arg-cell before">
-        <span class="arg-tag">// before</span>
+        <span class="arg-tag">before</span>
         <div class="arg-h">The slideshow.</div>
         <p class="arg-p">Stock illustrations. A blue header. Bullet lists about "best practices." A quiz at the end. Click through. Mark complete. Forget by Tuesday. The user is positioned as a liability to be managed.</p>
         <div class="fake-before">
@@ -688,11 +695,11 @@ footer{
         </div>
       </div>
       <div class="arg-cell after">
-        <span class="arg-tag">// after</span>
+        <span class="arg-tag">after</span>
         <div class="arg-h">The HUD.</div>
         <p class="arg-p">A live inbox. Clickable threat indicators. Real-time scoring. Visual feedback that matches the stakes — scan-lines, threat pulse, intrusion alerts. The user is positioned as the operator. Defense made to feel earned.</p>
         <div class="fake-after">
-          <div class="fake-after-h">// THREAT QUEUE — INBOX</div>
+          <div class="fake-after-h">THREAT QUEUE — INBOX</div>
           <p>5 messages flagged for inspection.</p>
           <p>2 confirmed phishing · 1 social engineering attempt · 2 benign.</p>
           <p>Tap suspicious indicators. Pulse pattern reveals threat severity.</p>
@@ -706,7 +713,7 @@ footer{
 <!-- ── INTERACTIVE DEMO ─────────────────────── -->
 <section class="s-section" id="demo">
   <div class="s-inner">
-    <span class="s-label reveal">// the demo · playable</span>
+    <span class="s-label reveal">the demo · playable</span>
     <h2 class="s-title reveal">Spot the <em>phish.</em></h2>
     <p class="s-desc reveal">
       Five inbound messages. Two are phishing. Tap the suspicious words, links, or addresses to flag them. Then either <strong style="color:var(--amber);">REPORT</strong> the message or <strong style="color:var(--ok);">TRUST</strong> it. Catch the threats. Keep the legit mail. End-of-round summary at the close.
@@ -745,7 +752,7 @@ footer{
         <!-- Inbox -->
         <aside class="inbox" aria-label="Inbox">
           <div class="inbox-h">
-            <span>// inbox</span>
+            <span>inbox</span>
             <span id="inbox-count">5 unread</span>
           </div>
           <div id="inbox-list"></div>
@@ -755,13 +762,13 @@ footer{
         <main class="viewer" id="viewer">
           <div class="viewer-empty" id="viewer-empty">
             <div class="ve-mark">⌖</div>
-            <div>// select a message<br>// to begin inspection</div>
+            <div>select a message<br>to begin inspection</div>
           </div>
         </main>
 
         <!-- End of round modal -->
         <div class="round-end" id="round-end" role="dialog" aria-modal="true" aria-labelledby="re-headline">
-          <div class="re-mark" id="re-mark">// round complete</div>
+          <div class="re-mark" id="re-mark">round complete</div>
           <h3 class="re-headline" id="re-headline">Engaged <span class="em">Defender.</span></h3>
           <p class="re-sub" id="re-sub">Five messages cleared. Threats caught and trusted as expected. The pattern stuck.</p>
           <div class="re-stats">
@@ -787,11 +794,11 @@ footer{
     </div>
 
     <div class="callout reveal">
-      <strong>// design move:</strong> the user isn't memorizing a checklist. They're <em>reading</em> the surface — sender, link, language, attachment — the way an operator reads a console. The scan-lines and the threat pulse aren't decoration; they're the visual feedback loop that makes the inspection feel like the work it is.
+      <strong>Design move:</strong> the user isn't memorizing a checklist. They're <em>reading</em> the surface — sender, link, language, attachment — the way an operator reads a console. The scan-lines and the threat pulse aren't decoration; they're the visual feedback loop that makes the inspection feel like the work it is.
     </div>
 
     <div class="honesty reveal">
-      <strong>// honesty check:</strong> this is a concept study with a working interactive demo. Not deployed, not in production, no AI behind the scenes — the threat indicators are hand-authored. The demo proves the design, not the platform.
+      <strong>Honesty check:</strong> this is a concept study with a working interactive demo. Not deployed, not in production, no AI behind the scenes — the threat indicators are hand-authored. The demo proves the design, not the platform.
     </div>
 
   </div>
@@ -800,22 +807,22 @@ footer{
 <!-- ── DESIGN RATIONALE ─────────────────────── -->
 <section class="s-section">
   <div class="s-inner">
-    <span class="s-label reveal">// design rationale</span>
+    <span class="s-label reveal">design rationale</span>
     <h2 class="s-title reveal">Three decisions, <em>one read.</em></h2>
 
     <div class="rationale-grid reveal">
       <div class="rat-cell">
-        <div class="rat-num">// 01</div>
+        <div class="rat-num">01</div>
         <div class="rat-h">Borrow the threat's wardrobe.</div>
         <p class="rat-p">The visual language of intrusion — scan-lines, monospace, threat-pulse, HUD readouts — gets associated with attackers. Use it on the defender's side and the surface starts to feel powerful instead of victimized. Same vocabulary, flipped polarity.</p>
       </div>
       <div class="rat-cell">
-        <div class="rat-num">// 02</div>
+        <div class="rat-num">02</div>
         <div class="rat-h">Make inspection physical.</div>
         <p class="rat-p">Threat indicators aren't shown in a bullet list — they're embedded in the email itself, hover-revealed, hit-flagged. The user clicks the suspicious sender, the suspicious link, the urgency keywords. The act of <em>looking</em> is the act of <em>learning</em>.</p>
       </div>
       <div class="rat-cell">
-        <div class="rat-num">// 03</div>
+        <div class="rat-num">03</div>
         <div class="rat-h">Reward over compliance.</div>
         <p class="rat-p">A score, a streak, a round summary that names you "Engaged Defender" or "Compromised." Behavior change comes from reward signals, not deadline emails. The HUD makes correctness feel earned in the moment, not retroactively assessed in a quiz.</p>
       </div>
@@ -828,14 +835,19 @@ footer{
 <footer>
   <div id="page-footer">
     <a href="index.html" class="pf-back">← Back to Bruce Davis</a>
-    <span class="pf-id">// 007 · Security UX Concept · build.2026.05</span>
+    <div class="pf-links">
+      <a href="index.html#work">Work</a>
+      <a href="bruce-davis-resume.html">Resume</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="other-work.html">Other Work</a>
+    </div>
   </div>
 </footer>
 
 <!-- ── PALETTE ──────────────────────────────── -->
 <div id="palette-ctrl">
   <button class="mode-btn" id="mode-btn" aria-label="Toggle light or dark mode">[ LIGHT ]</button>
-  <span class="p-lbl">// PALETTE</span>
+  <span class="p-lbl">PALETTE</span>
   <div class="p-swatches" role="group" aria-label="Color theme">
     <button class="p-sw on" data-theme="og" aria-label="OG palette"></button>
     <button class="p-sw" data-theme="solar" aria-label="Solar palette"></button>
@@ -850,9 +862,9 @@ footer{
 <script>
 'use strict';
 
-/* // 6% — security ux concept · bruce davis · 2026 */
+/* Security UX concept · Bruce Davis · 2026 */
 console.log('%c// 007 — phishing training, redesigned.', 'color:#FFA53D;font-family:monospace;letter-spacing:.04em;');
-console.log('%c// 6% — small change. whole product.', 'color:#7d7d7d;font-family:monospace;letter-spacing:.04em;');
+console.log('%cSecurity UX concept · Bruce Davis', 'color:#7d7d7d;font-family:monospace;letter-spacing:.04em;');
 
 const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePntr = window.matchMedia('(pointer:fine)').matches;
@@ -1176,7 +1188,7 @@ function buildScanList(e, id){
   const flagsTotal = e.threatHints + (e.senderFlag ? 1 : 0) + (e.attachment ? 1 : 0);
   if (flagsTotal === 0) return `
     <div class="scan-panel">
-      <div class="scan-panel-h"><span class="dot"></span> // scan: no obvious threat indicators</div>
+      <div class="scan-panel-h"><span class="dot"></span> scan: no obvious threat indicators</div>
       <div class="scan-list">
         <div class="scan-item"><span>${escapeHtml(e.fromName)} · sender check</span><span class="scan-tag">CLEAN</span></div>
       </div>
@@ -1184,7 +1196,7 @@ function buildScanList(e, id){
   `;
   return `
     <div class="scan-panel">
-      <div class="scan-panel-h"><span class="dot"></span> // scan results · ${flagsFound} / ${flagsTotal} flagged</div>
+      <div class="scan-panel-h"><span class="dot"></span> scan results · ${flagsFound} / ${flagsTotal} flagged</div>
       <div class="scan-list" id="scan-list-${id}">
         ${[...(state.flagged[id] || [])].map(fid => {
           const detail = lookupDetail(e, fid);
@@ -1338,7 +1350,7 @@ document.getElementById('re-replay').addEventListener('click', () => {
   viewer.innerHTML = `
     <div class="viewer-empty" id="viewer-empty">
       <div class="ve-mark">⌖</div>
-      <div>// select a message<br>// to begin inspection</div>
+      <div>select a message<br>to begin inspection</div>
     </div>
   `;
   renderInbox();

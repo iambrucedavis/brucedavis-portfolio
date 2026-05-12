@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project 002 — AI Interface Patterns · Bruce Davis</title>
+<title>AI Interface Patterns — Bruce Davis</title>
+<meta name="description" content="Five working interface patterns for AI products — word-by-word streaming, model state indicators, low-context warnings, confidence flags, and error recovery. Built as live React/TypeScript, not Figma mockups.">
+<meta property="og:title" content="AI Interface Patterns — Bruce Davis">
+<meta property="og:description" content="Five working interface patterns for AI products — word-by-word streaming, model state indicators, low-context warnings, confidence flags, and error recovery. The loading states, empty states, and error states the UX Engineer JD asks for, built live.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
@@ -103,8 +107,9 @@ body:has(button:hover) #cur {
   color: var(--text-dim); transition: color .2s;
 }
 .nav-back:hover { color: var(--text); }
-.nav-id   { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--text-dim); }
-.nav-build{ font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+.nav-links { display:flex; gap:28px; }
+.nav-links a { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:.14em; color:var(--text-muted); text-transform:uppercase; transition:color .2s; }
+.nav-links a:hover { color:var(--signal); }
 
 /* ─── HERO ────────────────────────────────────── */
 #hero {
@@ -118,11 +123,10 @@ body:has(button:hover) #cur {
   color:var(--signal); text-transform:uppercase; margin-bottom:20px;
 }
 #hero-hl {
-  font-size: clamp(44px, 7vw, 88px);
-  font-weight: 700;
-  line-height: .93;
-  letter-spacing: -.02em;
-  text-transform: uppercase;
+  font-size: clamp(40px, 5.6vw, 76px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -.025em;
 }
 #hero-hl .h-line { display:block; overflow:hidden; }
 .hero-sub {
@@ -417,7 +421,9 @@ body:has(button:hover) #cur {
 }
 .pf-back { font-family:var(--mono); font-size:11px; color:var(--text-dim); transition:color .2s; }
 .pf-back:hover { color:var(--text); }
-.pf-id   { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+.pf-links { display:flex; gap:22px; flex-wrap:wrap; }
+.pf-links a { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--text-muted); transition:color .2s; }
+.pf-links a:hover { color:var(--signal); }
 
 /* ─── PALETTE ─────────────────────────────────── */
 #palette-ctrl {
@@ -474,28 +480,31 @@ body:has(button:hover) #cur {
 <!-- NAV -->
 <nav id="top-nav">
   <a href="index.html" class="nav-back">← Bruce Davis</a>
-  <span class="nav-id">// Project 002</span>
-  <span class="nav-build">v1.0.0 · build.2026.05</span>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="bruce-davis-resume.html">Resume</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-pre">// 002 — AI Interface Patterns</div>
-  <h1 id="hero-hl">PATTERNS FOR<br>EVERYTHING THE<br>MODEL DOES.</h1>
+  <div class="hero-pre">UX Engineer</div>
+  <h1 id="hero-hl">AI Interface Patterns</h1>
   <p class="hero-sub">
-    Five interface patterns for model-powered products. Streaming, state, confidence, and failure — each one designed around how the model actually behaves.
+    Five working interface patterns for AI products: word-by-word streaming, model state indicators, low-context warnings, confidence flags, and error recovery. The loading states, empty states, and error states the UX Engineer JD asks for &mdash; built as live React/TypeScript, not Figma mockups.
   </p>
   <div class="hero-meta">
-    <span>build.2026.05</span>
-    <span>v1.0.0</span>
     <span>5 patterns</span>
-    <span class="live">[ ACTIVE ]</span>
+    <span>React &middot; TypeScript</span>
+    <span>Streaming</span>
+    <span>State machines</span>
   </div>
 </section>
 
 <!-- BRIEF -->
 <section id="brief" class="reveal">
-  <div class="brief-lbl">// The Brief</div>
+  <div class="brief-lbl">The Brief</div>
   <div class="brief-body">
     <p>Most AI interfaces design around the output. This one designs around the states between outputs.</p>
     <p>The problem: five distinct model behaviors — streaming, thinking, done, uncertain, failed — and most products render all of them the same way. The decision was to treat each state as a separate design problem. Different visual contract, different affordance, different meaning for the user.</p>
@@ -507,7 +516,7 @@ body:has(button:hover) #cur {
 <div class="ds-section reveal" id="s01">
   <div class="sec-inner">
     <div class="ds-hdr">
-      <span class="ds-label">// 01 — Streaming Output</span>
+      <span class="ds-label">01 — Streaming Output</span>
       <span class="ds-version">v1.0.0 · [ STABLE ]</span>
     </div>
     <h2 class="ds-title">StreamingResponse</h2>
@@ -544,7 +553,7 @@ body:has(button:hover) #cur {
     </div>
 
     <div class="c-ann">
-      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-lbl">Design rationale</span>
       <span class="ann-txt">Character-level streaming creates presence — the model feels active rather than blocked. The blinking cursor is the only animation needed. Token counter surfaces system metadata as a UI element rather than hiding it.</span>
     </div>
   </div>
@@ -554,7 +563,7 @@ body:has(button:hover) #cur {
 <div class="ds-section reveal" id="s02">
   <div class="sec-inner">
     <div class="ds-hdr">
-      <span class="ds-label">// 02 — System States</span>
+      <span class="ds-label">02 — System States</span>
       <span class="ds-version">v1.0.0 · [ STABLE ]</span>
     </div>
     <h2 class="ds-title">ModelStateIndicator</h2>
@@ -575,7 +584,7 @@ body:has(button:hover) #cur {
     </div>
 
     <div class="c-ann">
-      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-lbl">Design rationale</span>
       <span class="ann-txt">AI states are not loading spinners. Thinking, generating, done, and error each carry different meaning. Design them differently. Show the machine's intent — the user reads confidence from the state before they read the output.</span>
     </div>
   </div>
@@ -585,7 +594,7 @@ body:has(button:hover) #cur {
 <div class="ds-section reveal" id="s03">
   <div class="sec-inner">
     <div class="ds-hdr">
-      <span class="ds-label">// 03 — Confidence Layer</span>
+      <span class="ds-label">03 — Confidence Layer</span>
       <span class="ds-version">v0.9.0 · [ EXPERIMENTAL ]</span>
     </div>
     <h2 class="ds-title">ConfidenceAnnotation</h2>
@@ -608,7 +617,7 @@ body:has(button:hover) #cur {
     </div>
 
     <div class="c-ann">
-      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-lbl">Design rationale</span>
       <span class="ann-txt">Model uncertainty is real signal. Showing confidence at the word level gives users a legibility layer — they can scan for what the model knows vs. guesses. Most products hide this. This exposes it.</span>
     </div>
   </div>
@@ -618,7 +627,7 @@ body:has(button:hover) #cur {
 <div class="ds-section reveal" id="s04">
   <div class="sec-inner">
     <div class="ds-hdr">
-      <span class="ds-label">// 04 — Context Meter</span>
+      <span class="ds-label">04 — Context Meter</span>
       <span class="ds-version">v1.0.0 · [ STABLE ]</span>
     </div>
     <h2 class="ds-title">ContextMeter</h2>
@@ -650,7 +659,7 @@ body:has(button:hover) #cur {
           <span><strong id="t-pct">0%</strong> used</span>
         </div>
         <div class="t-sim">
-          <span>// Simulate usage</span>
+          <span>Simulate usage</span>
           <input type="range" class="t-slider" id="t-slider" min="0" max="100" value="0">
           <span id="t-val-lbl">0%</span>
         </div>
@@ -658,7 +667,7 @@ body:has(button:hover) #cur {
     </div>
 
     <div class="c-ann">
-      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-lbl">Design rationale</span>
       <span class="ann-txt">The context window is a finite resource. Surfacing it keeps users oriented — they know how much of the conversation the model can see. Operational reality made legible.</span>
     </div>
   </div>
@@ -668,7 +677,7 @@ body:has(button:hover) #cur {
 <div class="ds-section reveal" id="s05">
   <div class="sec-inner">
     <div class="ds-hdr">
-      <span class="ds-label">// 05 — Error States</span>
+      <span class="ds-label">05 — Error States</span>
       <span class="ds-version">v1.0.0 · [ STABLE ]</span>
     </div>
     <h2 class="ds-title">ErrorState</h2>
@@ -685,7 +694,7 @@ body:has(button:hover) #cur {
           <div class="err-card">
             <div class="err-icon w">⚠</div>
             <div class="err-body">
-              <div class="err-code w">// 429 · Rate Limit Exceeded</div>
+              <div class="err-code w">429 · Rate Limit Exceeded</div>
               <div class="err-msg">Too many requests in this window. The model will resume in approximately 30 seconds. Queued requests will be processed automatically.</div>
               <button class="err-act">View queue →</button>
             </div>
@@ -694,7 +703,7 @@ body:has(button:hover) #cur {
           <div class="err-card">
             <div class="err-icon w">⚠</div>
             <div class="err-body">
-              <div class="err-code w">// 503 · Model Temporarily Unavailable</div>
+              <div class="err-code w">503 · Model Temporarily Unavailable</div>
               <div class="err-msg">The model is temporarily unavailable due to high demand. This is not a problem with your request. Retry in 15–30 seconds.</div>
               <button class="err-act">Retry now →</button>
             </div>
@@ -703,7 +712,7 @@ body:has(button:hover) #cur {
           <div class="err-card">
             <div class="err-icon e">✕</div>
             <div class="err-body">
-              <div class="err-code e">// 500 · Inference Failed</div>
+              <div class="err-code e">500 · Inference Failed</div>
               <div class="err-msg">The model returned an empty or malformed completion. The request did not fail — inference did. Check your prompt for adversarial patterns or try rephrasing.</div>
               <button class="err-act">Report issue →</button>
             </div>
@@ -714,7 +723,7 @@ body:has(button:hover) #cur {
     </div>
 
     <div class="c-ann">
-      <span class="ann-lbl">// Design rationale</span>
+      <span class="ann-lbl">Design rationale</span>
       <span class="ann-txt">Rate limits, service unavailability, and inference failures are different problems. The interface should communicate that difference — not collapse them into a red banner. The user deserves to know what failed and what to do about it.</span>
     </div>
   </div>
@@ -722,11 +731,11 @@ body:has(button:hover) #cur {
 
 <!-- ── IN REVIEW ──────────────────────────────── -->
 <section id="review" class="reveal">
-  <div class="brief-lbl">// In review</div>
+  <div class="brief-lbl">In review</div>
   <div class="review-body">
 
     <div class="review-block">
-      <div class="review-sub">// Craft decisions</div>
+      <div class="review-sub">Craft decisions</div>
       <ul class="review-list">
         <li>Streaming pauses on punctuation. 65ms after <code>.</code> <code>,</code> <code>—</code> <code>?</code> <code>!</code>. The cursor blinks while writing, goes solid on done. The model finishes a sentence — not a string.</li>
         <li>Streaming region uses <code>aria-live="polite"</code> with <code>aria-busy</code> toggling. Screen readers get the full sentence once on done — no per-character stutter.</li>
@@ -737,7 +746,7 @@ body:has(button:hover) #cur {
     </div>
 
     <div class="review-block">
-      <div class="review-sub">// What I'd do differently</div>
+      <div class="review-sub">What I'd do differently</div>
       <ul class="review-list">
         <li>Confidence is static here. Production needs streaming logprobs and a debounced rerender. Different design problem — the values change while you read them.</li>
         <li>Token meter is a single ratio. Real context windows break out system prompt, tools, attached files, history. The bar should be a stack, not a slider.</li>
@@ -752,7 +761,7 @@ body:has(button:hover) #cur {
 <section id="comp-index" class="reveal">
   <div class="ci-inner">
     <div class="ci-head">
-      <span class="ci-title">// Component Index</span>
+      <span class="ci-title">Component Index</span>
       <span class="ci-count">5 components · v1.0.0</span>
     </div>
     <div class="ci-grid">
@@ -789,14 +798,19 @@ body:has(button:hover) #cur {
 <footer>
   <div id="page-footer">
     <a href="index.html" class="pf-back">← Back to Bruce Davis</a>
-    <span class="pf-id">// 002 · AI Interface Design System · build.2026.05</span>
+    <div class="pf-links">
+      <a href="index.html#work">Work</a>
+      <a href="bruce-davis-resume.html">Resume</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="other-work.html">Other Work</a>
+    </div>
   </div>
 </footer>
 
 <!-- PALETTE CTRL -->
 <div id="palette-ctrl">
   <button class="mode-btn" id="mode-btn">[ LIGHT ]</button>
-  <span class="p-lbl">// PALETTE</span>
+  <span class="p-lbl">PALETTE</span>
   <div class="p-swatches">
     <div class="p-sw on" data-theme="og"></div>
     <div class="p-sw" data-theme="solar"></div>
@@ -1045,7 +1059,7 @@ const STATES = [
   },
   {
     badge: '[ ERROR ]',
-    html:  `<div class="s-err-disp"><div class="s-err-code">// 429 · Rate limit exceeded</div><button class="s-btn" id="state-retry">↺ Reset</button></div>`
+    html:  `<div class="s-err-disp"><div class="s-err-code">429 · Rate limit exceeded</div><button class="s-btn" id="state-retry">↺ Reset</button></div>`
   }
 ];
 
