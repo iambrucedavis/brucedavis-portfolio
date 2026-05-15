@@ -262,6 +262,18 @@ pre.code .c    { color:var(--text-muted); }
       <span class="ann-lbl">Why two models</span>
       <span class="ann-txt">The faster model is Claude Haiku. The stronger one is Claude Sonnet. Sorting an inbox is quick work, so it uses the cheap fast model. Planning a task needs careful thought, so it uses the stronger one. This keeps the cost down, because the tools you would run every day are the cheap ones.</span>
     </div>
+
+    <div class="c-frame" style="margin-top:32px;">
+      <div class="c-bar">
+        <span class="c-bar-name">weekly_summary · live run</span>
+        <span class="c-bar-status">[ ACTUAL OUTPUT ]</span>
+      </div>
+      <div class="c-body">
+        <p style="font-size:14px;color:var(--text-dim);line-height:1.75;">&ldquo;It was a productive week for the team, with five issues completed &mdash; all by Bruce Davis. &hellip;</p>
+        <p style="font-size:14px;color:var(--text-dim);line-height:1.75;margin-top:12px;">&hellip; One thing worth flagging: every assigned issue this period belongs to Bruce Davis. Whether this reflects team size or a coverage gap, it&rsquo;s worth keeping an eye on as the active work queue grows.&rdquo;</p>
+      </div>
+    </div>
+    <p class="dv-desc" style="margin-top:16px;margin-bottom:0;">Nobody wrote that paragraph. <code style="font-family:var(--mono);font-size:12px;color:var(--text);">weekly_summary</code> produced it from sixteen real Linear tasks. The last line is something it noticed on its own, unprompted.</p>
   </div>
 </div>
 
@@ -270,10 +282,10 @@ pre.code .c    { color:var(--text-muted); }
   <div class="sec-inner">
     <div class="dv-hdr">
       <span class="dv-label">02 — Testing</span>
-      <span class="dv-version">30 test cases · automatic scorecard</span>
+      <span class="dv-version">30 test cases · 93% live</span>
     </div>
     <h2 class="dv-title">How I know it works.</h2>
-    <p class="dv-desc">An AI gives a slightly different answer every time you ask it something. So "I tried it and it looked fine" does not prove much. I built a test that runs all six tools and checks the answers automatically, then writes out a plain pass-or-fail scorecard with one row per tool. Most people who build these tools skip this step. The gray box below is one of the thirty test cases.</p>
+    <p class="dv-desc">An AI gives a slightly different answer every time you ask it something. So "I tried it and it looked fine" does not prove much. I built a test that runs all six tools, checks the answers automatically, and writes out a plain pass-or-fail scorecard. Most people who build these tools skip that. Run for real against a live Linear workspace, it passed 28 of 30, a score of 93%. The gray box below is one of the thirty cases.</p>
 
     <div class="c-frame">
       <div class="c-bar">
