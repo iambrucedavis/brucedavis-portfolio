@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel Triage — Bruce Davis</title>
+<meta name="description" content="An autonomous SOC triage agent — a ReAct loop on Gemini 2.5 Flash that investigates security incidents through function-calling tools, with a human-in-the-loop gate on destructive actions.">
+<meta property="og:title" content="Sentinel Triage — Bruce Davis">
+<meta property="og:description" content="An autonomous SOC triage agent. A ReAct loop on Gemini 2.5 Flash, three focused tools, and a human-in-the-loop containment gate.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── TOKENS ──────────────────────────────────── */
+:root {
+  --bg:         #0F0F0F;
+  --surface:    #161616;
+  --surface-hi: #1E1E1E;
+  --border:     rgba(255,255,255,.07);
+  --border-hi:  rgba(255,255,255,.16);
+  --text:       #EBEBEB;
+  --text-dim:   #999999;
+  --text-muted: #7d7d7d;
+  --signal:     #E8601C;
+  --signal-rgb: 232,96,28;
+  --add:        #4FB37A;
+  --del:        #C84B4B;
+  --mono:       'Space Mono', monospace;
+}
+
+[data-theme="og"]    { --signal:#E8601C; --signal-rgb:232,96,28; }
+[data-theme="solar"] { --signal:#FF4D4D; --signal-rgb:255,77,77; }
+[data-theme="wave"]  { --signal:#2BC4AB; --signal-rgb:43,196,171; }
+[data-theme="volt"]  { --signal:#B8E02A; --signal-rgb:184,224,42; }
+[data-theme="haze"]  { --signal:#2AA8C4; --signal-rgb:42,168,196; }
+[data-theme="noir"]  { --signal:#C0C0C0; --signal-rgb:192,192,192; }
+
+body.light {
+  --bg:         #F5F5F3;
+  --surface:    #EBEBEA;
+  --surface-hi: #E2E2E0;
+  --border:     rgba(0,0,0,.10);
+  --border-hi:  rgba(0,0,0,.22);
+  --text:       #111111;
+  --text-dim:   #444444;
+  --text-muted: #6b6b6b;
+}
+body.light #cur { mix-blend-mode: normal; }
+body.light #top-nav { background: rgba(245,245,243,.92); }
+
+.mode-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  background: transparent;
+  border: 1px solid var(--border-hi);
+  color: var(--text-dim);
+  padding: 4px 8px;
+  cursor: none;
+  transition: color .2s, border-color .2s;
+}
+.mode-btn:hover { color: var(--text); border-color: var(--text); }
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:auto; }
+body { background:var(--bg); color:var(--text); font-family:'Space Grotesk',sans-serif; overflow-x:hidden; cursor:none; }
+a { color:inherit; text-decoration:none; }
+
+/* ─── CURSOR ──────────────────────────────────── */
+#cur { position:fixed; width:36px; height:36px; border:1.5px solid var(--text); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:border-color .15s, transform .15s; mix-blend-mode:exclusion; }
+body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-50%) scale(1.6); border-color:var(--signal); }
+
+/* ─── NAV ─────────────────────────────────────── */
+#top-nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 32px; border-bottom:1px solid var(--border); background:rgba(15,15,15,.9); backdrop-filter:blur(12px); }
+.nav-back { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--text-dim); transition:color .2s; }
+.nav-back:hover { color:var(--text); }
+.nav-links { display:flex; gap:28px; }
+.nav-links a { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:.14em; color:var(--text-muted); text-transform:uppercase; transition:color .2s; }
+.nav-links a:hover { color:var(--signal); }
+
+/* ─── HERO ────────────────────────────────────── */
+#hero { min-height:88vh; display:flex; flex-direction:column; justify-content:flex-end; padding:120px 32px 64px; border-bottom:1px solid var(--border); }
+.hero-pre { font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--signal); text-transform:uppercase; margin-bottom:20px; }
+#hero-hl { font-size:clamp(40px,5.6vw,76px); font-weight:600; line-height:1.05; letter-spacing:-.025em; }
+#hero-hl .h-line { display:block; overflow:hidden; }
+.hero-sub { margin-top:28px; font-size:16px; color:var(--text-dim); max-width:560px; line-height:1.6; }
+.hero-meta { margin-top:26px; display:flex; gap:20px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--text-muted); flex-wrap:wrap; }
+
+/* ─── SECTION SCAFFOLD ────────────────────────── */
+.dv-section { padding:72px 32px; border-bottom:1px solid var(--border); }
+.sec-inner  { max-width:980px; margin:0 auto; }
+.dv-hdr     { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px; gap:16px; flex-wrap:wrap; }
+.dv-label   { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); }
+.dv-version { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
+.dv-title   { font-size:27px; font-weight:600; letter-spacing:-.015em; margin-bottom:8px; margin-top:2px; }
+.dv-desc    { font-size:14px; color:var(--text-dim); margin-bottom:30px; max-width:560px; line-height:1.6; }
+
+/* ─── FLOW DIAGRAM ────────────────────────────── */
+.flow { display:flex; align-items:stretch; border:1px solid var(--border); border-radius:3px; overflow:hidden; }
+.flow-node { flex:1; background:var(--surface); padding:24px 14px; display:flex; flex-direction:column; gap:5px; text-align:center; justify-content:center; }
+.flow-node.is-signal { background:var(--surface-hi); box-shadow:inset 0 0 0 1px rgba(var(--signal-rgb),.35); }
+.flow-kicker { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+.flow-name { font-size:17px; font-weight:600; }
+.flow-node.is-signal .flow-name { color:var(--signal); }
+.flow-sub { font-size:11px; color:var(--text-dim); }
+.flow-arrow { display:flex; align-items:center; padding:0 6px; background:var(--surface); color:var(--text-muted); font-size:15px; }
+.flow-cap { font-size:13px; color:var(--text-dim); line-height:1.6; margin-top:16px; max-width:620px; }
+
+/* ─── STAT STRIP ──────────────────────────────── */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; margin-top:24px; }
+.stat { background:var(--surface); padding:26px 18px; }
+.stat-num { font-size:32px; font-weight:700; letter-spacing:-.02em; line-height:1; }
+.stat.is-signal .stat-num { color:var(--signal); }
+.stat-label { font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--text-muted); margin-top:9px; }
+
+/* ─── TOOL CARDS ──────────────────────────────── */
+.tool-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
+.tool-card { background:var(--surface); padding:24px 20px; display:flex; flex-direction:column; gap:9px; }
+.tc-verb { font-size:18px; font-weight:600; letter-spacing:-.01em; }
+.tc-name { font-family:var(--mono); font-size:11px; color:var(--signal); }
+.tc-desc { font-size:12.5px; color:var(--text-dim); line-height:1.6; }
+.tc-model { font-family:var(--mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-top:auto; padding-top:8px; }
+
+/* ─── BIG STAT ────────────────────────────────── */
+.bigstat { display:flex; align-items:baseline; gap:20px; flex-wrap:wrap; margin-bottom:28px; }
+.bigstat-num { font-size:clamp(56px,9vw,84px); font-weight:700; letter-spacing:-.03em; color:var(--signal); line-height:.85; }
+.bigstat-text { font-size:14px; color:var(--text-dim); line-height:1.6; max-width:320px; }
+
+/* ─── FRAME ───────────────────────────────────── */
+.c-frame { background:var(--surface); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
+.c-bar   { display:flex; align-items:center; justify-content:space-between; padding:9px 16px; border-bottom:1px solid var(--border); background:var(--bg); gap:12px; }
+.c-bar-name   { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
+.c-bar-status { font-family:var(--mono); font-size:10px; color:var(--signal); }
+.c-body { padding:20px; }
+.c-cap  { font-size:13px; color:var(--text-dim); line-height:1.6; margin-top:14px; max-width:620px; }
+
+/* ─── RULE CARDS ──────────────────────────────── */
+.rules { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
+.rule { background:var(--surface); padding:22px 20px; }
+.rule-name { font-size:15px; font-weight:600; margin-bottom:9px; }
+.rule-body { font-size:12.5px; color:var(--text-dim); line-height:1.65; }
+
+/* ─── REVIEW ──────────────────────────────────── */
+#review { padding:72px 32px; border-bottom:1px solid var(--border); }
+.review-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px; max-width:640px; }
+.review-list li { font-size:14px; color:var(--text-dim); line-height:1.6; padding-left:26px; position:relative; }
+.review-list li::before { content:'+'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:13px; color:var(--text-muted); }
+
+/* ─── PALETTE ─────────────────────────────────── */
+#palette-ctrl { position:fixed; bottom:24px; right:24px; z-index:200; font-family:var(--mono); font-size:10px; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.p-lbl { color:var(--text-muted); letter-spacing:.08em; margin-bottom:2px; }
+.p-swatches { display:flex; gap:6px; }
+.p-sw { width:18px; height:18px; border-radius:50%; border:1px solid transparent; cursor:none; transition:transform .2s; }
+.p-sw:hover { transform:scale(1.25); }
+.p-sw.on { border-color:var(--text); }
+.p-sw[data-theme="og"]    { background:#E8601C; }
+.p-sw[data-theme="solar"] { background:#D42B2B; }
+.p-sw[data-theme="wave"]  { background:#1A8A7A; }
+.p-sw[data-theme="volt"]  { background:#B8E02A; }
+.p-sw[data-theme="haze"]  { background:#2AA8C4; }
+.p-sw[data-theme="noir"]  { background:#C0C0C0; }
+
+/* ─── FOOTER ──────────────────────────────────── */
+#page-footer { padding:48px 32px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; max-width:980px; margin:0 auto; gap:12px; flex-wrap:wrap; }
+.pf-back { font-family:var(--mono); font-size:11px; color:var(--text-dim); transition:color .2s; }
+.pf-back:hover { color:var(--text); }
+.pf-links { display:flex; gap:22px; flex-wrap:wrap; }
+.pf-links a { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--text-muted); transition:color .2s; }
+.pf-links a:hover { color:var(--signal); }
+
+.reveal { opacity:0; transform:translateY(20px); }
+
+@media (max-width:760px) {
+  .tool-cards { grid-template-columns:repeat(2,1fr); }
+  .rules { grid-template-columns:1fr; }
+}
+@media (max-width:600px) {
+  #hero, .dv-section, #review { padding-left:20px; padding-right:20px; }
+  .flow { flex-direction:column; }
+  .flow-arrow { align-self:center; transform:rotate(90deg); padding:8px 0; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .tool-cards { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<nav id="top-nav">
+  <a href="index.html" class="nav-back">← Bruce Davis</a>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="bruce-davis-resume.html">Resume</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-pre">AI Engineer</div>
+  <h1 id="hero-hl">Sentinel<br>Triage</h1>
+  <p class="hero-sub">
+    An autonomous SOC triage agent. It investigates network security incidents — reasoning step by step, calling tools, and stopping for human approval before it touches anything.
+  </p>
+  <div class="hero-meta">
+    <span>3 tools</span>
+    <span>ReAct agent</span>
+    <span>Gemini 2.5 Flash</span>
+    <span>Python · Streamlit</span>
+  </div>
+</section>
+
+<!-- WHAT IT IS — DIAGRAM + STATS -->
+<div class="dv-section reveal">
+  <div class="sec-inner">
+    <div class="dv-hdr">
+      <span class="dv-label">What it is</span>
+    </div>
+
+    <div class="flow">
+      <div class="flow-node">
+        <span class="flow-kicker">Person</span>
+        <span class="flow-name">Operator</span>
+        <span class="flow-sub">opens an incident</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node">
+        <span class="flow-kicker">AI</span>
+        <span class="flow-name">Gemini 2.5 Flash</span>
+        <span class="flow-sub">reasons, picks a tool</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node is-signal">
+        <span class="flow-kicker">This project</span>
+        <span class="flow-name">sentinel</span>
+        <span class="flow-sub">three tools</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node">
+        <span class="flow-kicker">Data</span>
+        <span class="flow-name">SOC environment</span>
+        <span class="flow-sub">logs + threat intel</span>
+      </div>
+    </div>
+    <p class="flow-cap">An AI can reason about a threat — but it should not act on production infrastructure unsupervised. <strong style="color:var(--text);font-weight:500;">Sentinel keeps a human in the loop</strong> on every action that bites.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">focused tools</div></div>
+      <div class="stat is-signal"><div class="stat-num">2</div><div class="stat-label">autonomy modes</div></div>
+      <div class="stat"><div class="stat-num">1</div><div class="stat-label">human-approval gate</div></div>
+      <div class="stat"><div class="stat-num">0</div><div class="stat-label">actions taken without consent</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 THE TOOLS -->
+<div class="dv-section reveal">
+  <div class="sec-inner">
+    <div class="dv-hdr">
+      <span class="dv-label">01 — The Tools</span>
+      <span class="dv-version">three jobs, three tools</span>
+    </div>
+    <h2 class="dv-title">One tool per real job.</h2>
+    <p class="dv-desc">Not a wrapper around an API. Three tools that match what a Tier-1 analyst actually does to triage an incident.</p>
+
+    <div class="tool-cards">
+      <div class="tool-card">
+        <div class="tc-verb">Scan the logs</div>
+        <div class="tc-name">scan_logs</div>
+        <div class="tc-desc">Analyses an incident's traffic for anomalies — suspicious ports, brute force, beaconing, data egress.</div>
+        <div class="tc-model">Read-only</div>
+      </div>
+      <div class="tool-card">
+        <div class="tc-verb">Enrich an IP</div>
+        <div class="tc-name">enrich_threat_data</div>
+        <div class="tc-desc">Cross-references an address against threat intelligence — reputation, category, confidence.</div>
+        <div class="tc-model">Read-only</div>
+      </div>
+      <div class="tool-card">
+        <div class="tc-verb">Quarantine a host</div>
+        <div class="tc-name">isolate_node</div>
+        <div class="tc-desc">Cuts a compromised node off the network. Destructive — never runs without a human approval click.</div>
+        <div class="tc-model">Destructive · gated</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 THE LOOP -->
+<div class="dv-section reveal">
+  <div class="sec-inner">
+    <div class="dv-hdr">
+      <span class="dv-label">02 — The Loop</span>
+      <span class="dv-version">reason, act, observe</span>
+    </div>
+    <h2 class="dv-title">It reasons, then asks.</h2>
+    <p class="dv-desc">A ReAct loop: the agent thinks, calls one tool, reads the result, and repeats — narrating each step into a live thinking log. When it wants to contain a host, it stops and waits for a person.</p>
+
+    <div class="c-frame">
+      <div class="c-bar">
+        <span class="c-bar-name">incident INC-4471 · final verdict</span>
+        <span class="c-bar-status">[ ACTUAL OUTPUT ]</span>
+      </div>
+      <div class="c-body">
+        <p style="font-size:14px;color:var(--text-dim);line-height:1.75;"><strong style="color:var(--text);font-weight:500;">Severity: Critical.</strong> Outbound beaconing and possible data exfiltration from FIN-WKSTN-08 to a known malicious Tor exit node / C2 relay (185.220.101.47).</p>
+        <p style="font-size:14px;color:var(--text-dim);line-height:1.75;margin-top:12px;">Abnormal traffic volume — 188 connections, 1,920,044 bytes egress — to port 4444. The node was quarantined after operator approval.</p>
+      </div>
+    </div>
+    <p class="c-cap">The agent produced that verdict on its own — three tool calls, then a containment proposal a human approved. The <code style="font-family:var(--mono);font-size:12px;color:var(--text);">Autonomy Dial</code> sets how far it can go: Advisory is chat-only; Active lets it run tools.</p>
+  </div>
+</div>
+
+<!-- 03 BUILT FOR CONTROL -->
+<div class="dv-section reveal">
+  <div class="sec-inner">
+    <div class="dv-hdr">
+      <span class="dv-label">03 — Control</span>
+      <span class="dv-version">the agent proposes; the person decides</span>
+    </div>
+    <h2 class="dv-title">Built to be supervised.</h2>
+    <p class="dv-desc">It acts on a company's infrastructure, so the design assumes the agent can be wrong. Three decisions keep a person in command.</p>
+
+    <div class="rules">
+      <div class="rule">
+        <div class="rule-name">The Autonomy Dial</div>
+        <div class="rule-body">A slider between Advisory — chat only — and Active, where the agent runs tools. The operator decides how much rope it gets.</div>
+      </div>
+      <div class="rule">
+        <div class="rule-name">Human-in-the-loop</div>
+        <div class="rule-body">Destructive actions pause the loop. Nothing is quarantined until a person reviews the proposal and clicks approve.</div>
+      </div>
+      <div class="rule">
+        <div class="rule-name">The code owns execution</div>
+        <div class="rule-body">Tools are declared as schemas, not auto-run. The model only proposes; the app decides. That is what makes the gate possible.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IN REVIEW -->
+<section id="review" class="reveal">
+  <div class="review-lbl">In review — what I'd do differently</div>
+  <ul class="review-list">
+    <li>The environment is simulated — logs and threat intel are fixtures, not a live SIEM. The agent logic is the real artefact.</li>
+    <li>It's a single-operator tool with a personal API key. A team version would need real authentication and an audit trail.</li>
+    <li>The next step is an evaluation harness — scoring the triage verdicts the way a test suite scores code.</li>
+  </ul>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div id="page-footer">
+    <a href="index.html" class="pf-back">← Back to Bruce Davis</a>
+    <div class="pf-links">
+      <a href="index.html#work">Work</a>
+      <a href="bruce-davis-resume.html">Resume</a>
+      <a href="index.html#contact">Contact</a>
+      <!-- TODO: confirm this URL once deployed to Streamlit Community Cloud -->
+      <a href="https://sentinel-triage.streamlit.app" target="_blank" rel="noopener">Live Demo</a>
+      <a href="https://github.com/iambrucedavis/sentinel-triage" target="_blank" rel="noopener">GitHub Repo</a>
+    </div>
+  </div>
+</footer>
+
+<!-- PALETTE -->
+<div id="palette-ctrl">
+  <button class="mode-btn" id="mode-btn">[ LIGHT ]</button>
+  <span class="p-lbl">PALETTE</span>
+  <div class="p-swatches">
+    <div class="p-sw on" data-theme="og"></div>
+    <div class="p-sw" data-theme="solar"></div>
+    <div class="p-sw" data-theme="wave"></div>
+    <div class="p-sw" data-theme="volt"></div>
+    <div class="p-sw" data-theme="haze"></div>
+    <div class="p-sw" data-theme="noir"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+'use strict';
+
+const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const finePntr = window.matchMedia('(pointer:fine)').matches;
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── CURSOR */
+if (finePntr) {
+  const cur = document.getElementById('cur');
+  window.addEventListener('mousemove', e => gsap.to(cur, { x:e.clientX, y:e.clientY, duration:.08, ease:'none' }));
+}
+
+/* ── THEME */
+const root = document.documentElement;
+let theme  = localStorage.getItem('6pct-theme') || 'og';
+root.setAttribute('data-theme', theme);
+document.querySelectorAll('.p-sw').forEach(sw => {
+  sw.classList.toggle('on', sw.dataset.theme === theme);
+  sw.addEventListener('click', () => {
+    theme = sw.dataset.theme;
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('6pct-theme', theme);
+    document.querySelectorAll('.p-sw').forEach(s => s.classList.toggle('on', s.dataset.theme === theme));
+  });
+});
+
+/* ── MODE */
+(function(){
+  const m   = localStorage.getItem('6pct-mode') || 'dark';
+  const btn = document.getElementById('mode-btn');
+  if (m === 'light') document.body.classList.add('light');
+  if (btn) btn.textContent = m === 'light' ? '[ DARK ]' : '[ LIGHT ]';
+  if (btn) btn.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    localStorage.setItem('6pct-mode', isLight ? 'light' : 'dark');
+    btn.textContent = isLight ? '[ DARK ]' : '[ LIGHT ]';
+  });
+})();
+
+/* ── HERO */
+const hl = document.getElementById('hero-hl');
+hl.innerHTML = hl.innerHTML.split('<br>').map(line =>
+  `<span class="h-line" style="display:block;overflow:hidden">${
+    [...line.trim()].map(ch => ch === ' '
+      ? `<span style="display:inline-block;min-width:.25em"> </span>`
+      : `<span class="h-char" style="display:inline-block">${ch}</span>`
+    ).join('')
+  }</span>`
+).join('');
+if (motionOK) gsap.from('.h-char', { yPercent:110, duration:.75, stagger:.02, ease:'power3.out', delay:.1 });
+
+/* ── REVEAL */
+if (motionOK) {
+  document.querySelectorAll('.reveal').forEach(el => {
+    gsap.to(el, {
+      opacity:1, y:0, duration:.7, ease:'power2.out',
+      scrollTrigger:{ trigger:el, start:'top 82%' },
+    });
+  });
+} else {
+  document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
+}
+</script>
+
+</body>
+</html>
