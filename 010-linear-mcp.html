@@ -79,62 +79,73 @@ body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-
 .nav-links a:hover { color:var(--signal); }
 
 /* ─── HERO ────────────────────────────────────── */
-#hero { min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end; padding:120px 32px 72px; border-bottom:1px solid var(--border); }
+#hero { min-height:88vh; display:flex; flex-direction:column; justify-content:flex-end; padding:120px 32px 64px; border-bottom:1px solid var(--border); }
 .hero-pre { font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--signal); text-transform:uppercase; margin-bottom:20px; }
 #hero-hl { font-size:clamp(40px,5.6vw,76px); font-weight:600; line-height:1.05; letter-spacing:-.025em; }
 #hero-hl .h-line { display:block; overflow:hidden; }
-.hero-sub { margin-top:36px; font-size:15px; color:var(--text-dim); max-width:600px; line-height:1.65; }
-.hero-meta { margin-top:28px; display:flex; gap:20px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--text-muted); flex-wrap:wrap; }
-.hero-meta .live { color:var(--signal); }
+.hero-sub { margin-top:28px; font-size:16px; color:var(--text-dim); max-width:560px; line-height:1.6; }
+.hero-meta { margin-top:26px; display:flex; gap:20px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--text-muted); flex-wrap:wrap; }
 
 /* ─── SECTION SCAFFOLD ────────────────────────── */
-.dv-section { padding:80px 32px; border-bottom:1px solid var(--border); }
-.sec-inner  { max-width:960px; margin:0 auto; }
-.dv-hdr     { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px; gap:16px; flex-wrap:wrap; }
+.dv-section { padding:72px 32px; border-bottom:1px solid var(--border); }
+.sec-inner  { max-width:980px; margin:0 auto; }
+.dv-hdr     { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px; gap:16px; flex-wrap:wrap; }
 .dv-label   { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); }
 .dv-version { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
-.dv-title   { font-size:26px; font-weight:600; letter-spacing:-.01em; margin-bottom:6px; margin-top:2px; }
-.dv-desc    { font-size:13px; color:var(--text-dim); margin-bottom:32px; max-width:580px; line-height:1.65; }
+.dv-title   { font-size:27px; font-weight:600; letter-spacing:-.015em; margin-bottom:8px; margin-top:2px; }
+.dv-desc    { font-size:14px; color:var(--text-dim); margin-bottom:30px; max-width:560px; line-height:1.6; }
+
+/* ─── FLOW DIAGRAM ────────────────────────────── */
+.flow { display:flex; align-items:stretch; border:1px solid var(--border); border-radius:3px; overflow:hidden; }
+.flow-node { flex:1; background:var(--surface); padding:24px 14px; display:flex; flex-direction:column; gap:5px; text-align:center; justify-content:center; }
+.flow-node.is-signal { background:var(--surface-hi); box-shadow:inset 0 0 0 1px rgba(var(--signal-rgb),.35); }
+.flow-kicker { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); }
+.flow-name { font-size:17px; font-weight:600; }
+.flow-node.is-signal .flow-name { color:var(--signal); }
+.flow-sub { font-size:11px; color:var(--text-dim); }
+.flow-arrow { display:flex; align-items:center; padding:0 6px; background:var(--surface); color:var(--text-muted); font-size:15px; }
+.flow-cap { font-size:13px; color:var(--text-dim); line-height:1.6; margin-top:16px; max-width:620px; }
+
+/* ─── STAT STRIP ──────────────────────────────── */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; margin-top:24px; }
+.stat { background:var(--surface); padding:26px 18px; }
+.stat-num { font-size:32px; font-weight:700; letter-spacing:-.02em; line-height:1; }
+.stat.is-signal .stat-num { color:var(--signal); }
+.stat-label { font-family:var(--mono); font-size:10px; letter-spacing:.05em; color:var(--text-muted); margin-top:9px; }
+
+/* ─── TOOL CARDS ──────────────────────────────── */
+.tool-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
+.tool-card { background:var(--surface); padding:24px 20px; display:flex; flex-direction:column; gap:9px; }
+.tc-verb { font-size:18px; font-weight:600; letter-spacing:-.01em; }
+.tc-name { font-family:var(--mono); font-size:11px; color:var(--signal); }
+.tc-desc { font-size:12.5px; color:var(--text-dim); line-height:1.6; }
+.tc-model { font-family:var(--mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-top:auto; padding-top:8px; }
+
+/* ─── BIG STAT ────────────────────────────────── */
+.bigstat { display:flex; align-items:baseline; gap:20px; flex-wrap:wrap; margin-bottom:28px; }
+.bigstat-num { font-size:clamp(56px,9vw,84px); font-weight:700; letter-spacing:-.03em; color:var(--signal); line-height:.85; }
+.bigstat-text { font-size:14px; color:var(--text-dim); line-height:1.6; max-width:320px; }
 
 /* ─── FRAME ───────────────────────────────────── */
-.c-frame { background:var(--surface); border:1px solid var(--border); border-radius:3px; overflow:hidden; position:relative; }
+.c-frame { background:var(--surface); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
 .c-bar   { display:flex; align-items:center; justify-content:space-between; padding:9px 16px; border-bottom:1px solid var(--border); background:var(--bg); gap:12px; }
 .c-bar-name   { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
 .c-bar-status { font-family:var(--mono); font-size:10px; color:var(--signal); }
 .c-body { padding:20px; }
+.c-cap  { font-size:13px; color:var(--text-dim); line-height:1.6; margin-top:14px; max-width:620px; }
 
-.c-ann { margin-top:18px; padding:14px 16px; border-left:2px solid var(--border-hi); }
-.ann-lbl { display:block; font-family:var(--mono); font-size:10px; color:var(--signal); letter-spacing:.06em; margin-bottom:6px; }
-.ann-txt { font-family:var(--mono); font-size:11px; color:var(--text-dim); line-height:1.75; }
-
-/* ─── BRIEF ─────────────────────────────────── */
-#brief { padding:72px 32px; border-bottom:1px solid var(--border); }
-.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
-.brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:640px; }
-.brief-body p + p { margin-top:16px; }
-.brief-body strong { color:var(--text); font-weight:500; }
-
-/* ─── TOOLS GRID ─────────────────────────────── */
-.tools-grid { display:grid; grid-template-columns:1fr; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
-.tool-row { display:grid; grid-template-columns:120px 200px 1fr; gap:16px; padding:18px 20px; background:var(--surface); align-items:baseline; }
-.tool-pattern { font-family:var(--mono); font-size:10px; letter-spacing:.10em; color:var(--signal); text-transform:uppercase; }
-.tool-name { font-family:var(--mono); font-size:13px; color:var(--text); }
-.tool-desc { font-size:13px; color:var(--text-dim); line-height:1.65; }
-
-/* ─── CODE ──────────────────────────────────── */
-pre.code { font-family:var(--mono); font-size:11px; line-height:1.65; color:var(--text); white-space:pre; tab-size:2; overflow-x:auto; }
-pre.code .k    { color:var(--signal); }
-pre.code .s    { color:#A4D7B0; }
-pre.code .n    { color:#D8C58A; }
-pre.code .b    { color:#7AC4D8; }
-pre.code .c    { color:var(--text-muted); }
-
-/* ─── RULE LIST ─────────────────────────────── */
+/* ─── RULE CARDS ──────────────────────────────── */
 .rules { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; }
-@media (max-width:760px){ .rules { grid-template-columns:1fr; } }
-.rule { background:var(--surface); padding:20px 18px; }
-.rule-name { font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--signal); margin-bottom:10px; }
-.rule-body { font-size:12.5px; color:var(--text-dim); line-height:1.7; }
+.rule { background:var(--surface); padding:22px 20px; }
+.rule-name { font-size:15px; font-weight:600; margin-bottom:9px; }
+.rule-body { font-size:12.5px; color:var(--text-dim); line-height:1.65; }
+
+/* ─── REVIEW ──────────────────────────────────── */
+#review { padding:72px 32px; border-bottom:1px solid var(--border); }
+.review-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px; max-width:640px; }
+.review-list li { font-size:14px; color:var(--text-dim); line-height:1.6; padding-left:26px; position:relative; }
+.review-list li::before { content:'+'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:13px; color:var(--text-muted); }
 
 /* ─── PALETTE ─────────────────────────────────── */
 #palette-ctrl { position:fixed; bottom:24px; right:24px; z-index:200; font-family:var(--mono); font-size:10px; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
@@ -150,18 +161,8 @@ pre.code .c    { color:var(--text-muted); }
 .p-sw[data-theme="haze"]  { background:#2AA8C4; }
 .p-sw[data-theme="noir"]  { background:#C0C0C0; }
 
-/* ─── REVIEW ───────────────────────────── */
-#review { padding:72px 32px; border-bottom:1px solid var(--border); }
-.review-body { max-width:640px; }
-.review-block + .review-block { margin-top:40px; }
-.review-sub { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
-.review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
-.review-list li { font-size:15px; color:var(--text-dim); line-height:1.7; padding-left:28px; position:relative; }
-.review-list li::before { content:'//'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:12px; color:var(--text-muted); line-height:1.7; }
-.review-list code { font-family:var(--mono); font-size:13px; color:var(--text); padding:0 1px; }
-
 /* ─── FOOTER ──────────────────────────────────── */
-#page-footer { padding:48px 32px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; max-width:960px; margin:0 auto; gap:12px; flex-wrap:wrap; }
+#page-footer { padding:48px 32px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; max-width:980px; margin:0 auto; gap:12px; flex-wrap:wrap; }
 .pf-back { font-family:var(--mono); font-size:11px; color:var(--text-dim); transition:color .2s; }
 .pf-back:hover { color:var(--text); }
 .pf-links { display:flex; gap:22px; flex-wrap:wrap; }
@@ -170,9 +171,16 @@ pre.code .c    { color:var(--text-muted); }
 
 .reveal { opacity:0; transform:translateY(20px); }
 
-@media (max-width:640px) {
-  .tool-row { grid-template-columns:1fr; gap:6px; }
-  #hero, .dv-section { padding-left:20px; padding-right:20px; }
+@media (max-width:760px) {
+  .tool-cards { grid-template-columns:repeat(2,1fr); }
+  .rules { grid-template-columns:1fr; }
+}
+@media (max-width:600px) {
+  #hero, .dv-section, #review { padding-left:20px; padding-right:20px; }
+  .flow { flex-direction:column; }
+  .flow-arrow { transform:rotate(90deg); padding:8px 0; justify-content:center; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .tool-cards { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -194,7 +202,7 @@ pre.code .c    { color:var(--text-muted); }
   <div class="hero-pre">AI Engineer</div>
   <h1 id="hero-hl">Linear MCP</h1>
   <p class="hero-sub">
-    Linear is an app that software teams use to track their work. I built a tool that lets an AI assistant like Claude help run it. The AI can sort your notifications, plan out a new task, or write the team's weekly update. I also did the careful work most people skip when they build something like this: testing it properly, reviewing how it could be attacked, and checking what it costs to run.
+    A tool that lets an AI assistant help run Linear — the app software teams use to track their work.
   </p>
   <div class="hero-meta">
     <span>6 tools</span>
@@ -204,66 +212,115 @@ pre.code .c    { color:var(--text-muted); }
   </div>
 </section>
 
-<!-- BRIEF -->
-<section id="brief" class="reveal">
-  <div class="brief-lbl">The Brief</div>
-  <div class="brief-body">
-    <p>Linear is where a lot of software teams keep their work. The bug reports, the tasks, who is doing what. An AI assistant cannot see into Linear on its own, so it needs a bridge built for it. That bridge is what this project is.</p>
-    <p>The easy way to build that bridge is to copy every button and menu Linear has, and hand all of them to the AI. It works, but it leaves the AI to figure everything out, and it does not match how a real person uses Linear. I built it the other way. I looked at what a team lead actually does in Linear each week, picked <strong>six of those jobs</strong>, and made one tool for each. You ask in plain language, and the AI runs the right tool.</p>
-    <p>One choice is worth calling out. None of the six tools can change or delete anything in Linear. They only read information and explain it.</p>
-    <p>The tools were about half the project. The rest was making it something a company could trust. I built a test suite that checks the tools really work. A written security review covers how someone might misuse it and what stops them. The running cost is measured down to a monthly number. The whole thing took two weeks, it was built in the open, and anyone can read the code.</p>
+<!-- WHAT IT IS — DIAGRAM + STATS -->
+<div class="dv-section reveal">
+  <div class="sec-inner">
+    <div class="dv-hdr">
+      <span class="dv-label">What it is</span>
+    </div>
+
+    <div class="flow">
+      <div class="flow-node">
+        <span class="flow-kicker">Person</span>
+        <span class="flow-name">You</span>
+        <span class="flow-sub">ask in plain words</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node">
+        <span class="flow-kicker">AI</span>
+        <span class="flow-name">Claude</span>
+        <span class="flow-sub">picks the right tool</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node is-signal">
+        <span class="flow-kicker">This project</span>
+        <span class="flow-name">linear-mcp</span>
+        <span class="flow-sub">six tools</span>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node">
+        <span class="flow-kicker">Data</span>
+        <span class="flow-name">Linear</span>
+        <span class="flow-sub">your team's work</span>
+      </div>
+    </div>
+    <p class="flow-cap">An AI assistant can't reach into Linear on its own. <strong style="color:var(--text);font-weight:500;">linear-mcp is the bridge</strong> — and it only ever reads.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">focused tools</div></div>
+      <div class="stat is-signal"><div class="stat-num">93%</div><div class="stat-label">live eval pass rate</div></div>
+      <div class="stat"><div class="stat-num">$2.60</div><div class="stat-label">run cost / month</div></div>
+      <div class="stat"><div class="stat-num">0</div><div class="stat-label">tools that can delete</div></div>
+    </div>
   </div>
-</section>
+</div>
 
 <!-- 01 THE TOOLS -->
-<div class="dv-section reveal" id="s01">
+<div class="dv-section reveal">
   <div class="sec-inner">
     <div class="dv-hdr">
       <span class="dv-label">01 — The Tools</span>
-      <span class="dv-version">6 tools · built in TypeScript</span>
+      <span class="dv-version">six jobs, six tools</span>
     </div>
-    <h2 class="dv-title">What the six tools do.</h2>
-    <p class="dv-desc">Each tool handles one job. The AI is told which jobs exist and picks the right one for your request. Two of the tools run on a faster, cheaper version of the AI, because their work is simple sorting. The other four run on a stronger version, because their work needs real thinking.</p>
+    <h2 class="dv-title">One tool per real job.</h2>
+    <p class="dv-desc">Not a copy of every Linear button. Six tools that match what a team lead actually does each week.</p>
 
-    <div class="tools-grid">
-      <div class="tool-row">
-        <div class="tool-pattern">Fast model</div>
-        <div class="tool-name">triage_inbox</div>
-        <div class="tool-desc">Goes through your unread Linear notifications, sorts them by how urgent they are, and says what to do about each one.</div>
+    <div class="tool-cards">
+      <div class="tool-card">
+        <div class="tc-verb">Sort the inbox</div>
+        <div class="tc-name">triage_inbox</div>
+        <div class="tc-desc">Ranks unread notifications by urgency and says what to do with each.</div>
+        <div class="tc-model">Fast model</div>
       </div>
-      <div class="tool-row">
-        <div class="tool-pattern">Strong model</div>
-        <div class="tool-name">scope_issue</div>
-        <div class="tool-desc">Takes a new, rough task and turns it into a plan: the steps to do it, what "finished" should look like, the risks, and a rough size estimate.</div>
+      <div class="tool-card">
+        <div class="tc-verb">Plan a task</div>
+        <div class="tc-name">scope_issue</div>
+        <div class="tc-desc">Turns a rough task into steps, acceptance criteria, risks, and a size estimate.</div>
+        <div class="tc-model">Strong model</div>
       </div>
-      <div class="tool-row">
-        <div class="tool-pattern">Fast model</div>
-        <div class="tool-name">find_orphans</div>
-        <div class="tool-desc">Finds tasks that have gone quiet, gotten stuck, or have nobody assigned to them, and explains why each one needs attention.</div>
+      <div class="tool-card">
+        <div class="tc-verb">Find what's stuck</div>
+        <div class="tc-name">find_orphans</div>
+        <div class="tc-desc">Surfaces stale, blocked, or unassigned work that has slipped through.</div>
+        <div class="tc-model">Fast model</div>
       </div>
-      <div class="tool-row">
-        <div class="tool-pattern">Strong model</div>
-        <div class="tool-name">audit_velocity</div>
-        <div class="tool-desc">Looks at how much work a team finished over recent weeks, and explains whether they are speeding up, slowing down, or just having a normal stretch.</div>
+      <div class="tool-card">
+        <div class="tc-verb">Diagnose the team</div>
+        <div class="tc-name">audit_velocity</div>
+        <div class="tc-desc">Reads recent sprints and explains whether the team is speeding up or slowing down.</div>
+        <div class="tc-model">Strong model</div>
       </div>
-      <div class="tool-row">
-        <div class="tool-pattern">Strong model</div>
-        <div class="tool-name">compose_update</div>
-        <div class="tool-desc">Writes a Slack or email status update from what the team actually did. Give it a few past updates and it copies the team's writing style.</div>
+      <div class="tool-card">
+        <div class="tc-verb">Write the update</div>
+        <div class="tc-name">compose_update</div>
+        <div class="tc-desc">Drafts a Slack or email status update in the team's own voice.</div>
+        <div class="tc-model">Strong model</div>
       </div>
-      <div class="tool-row">
-        <div class="tool-pattern">Strong model</div>
-        <div class="tool-name">weekly_summary</div>
-        <div class="tool-desc">Writes a short, readable recap of the team's week. A few plain paragraphs instead of a long list of bullet points.</div>
+      <div class="tool-card">
+        <div class="tc-verb">Recap the week</div>
+        <div class="tc-name">weekly_summary</div>
+        <div class="tc-desc">A short, readable summary of what the team got done.</div>
+        <div class="tc-model">Strong model</div>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="c-ann">
-      <span class="ann-lbl">Why two models</span>
-      <span class="ann-txt">The faster model is Claude Haiku. The stronger one is Claude Sonnet. Sorting an inbox is quick work, so it uses the cheap fast model. Planning a task needs careful thought, so it uses the stronger one. This keeps the cost down, because the tools you would run every day are the cheap ones.</span>
+<!-- 02 PROVEN -->
+<div class="dv-section reveal">
+  <div class="sec-inner">
+    <div class="dv-hdr">
+      <span class="dv-label">02 — Proven</span>
+      <span class="dv-version">tested, not guessed</span>
+    </div>
+    <h2 class="dv-title">It actually works.</h2>
+
+    <div class="bigstat">
+      <div class="bigstat-num">93%</div>
+      <div class="bigstat-text">Run live against a real Linear workspace, an automatic test of all six tools passed 28 of 30 checks. Most projects like this ship with no test at all.</div>
     </div>
 
-    <div class="c-frame" style="margin-top:32px;">
+    <div class="c-frame">
       <div class="c-bar">
         <span class="c-bar-name">weekly_summary · live run</span>
         <span class="c-bar-status">[ ACTUAL OUTPUT ]</span>
@@ -273,108 +330,45 @@ pre.code .c    { color:var(--text-muted); }
         <p style="font-size:14px;color:var(--text-dim);line-height:1.75;margin-top:12px;">&hellip; One thing worth flagging: every assigned issue this period belongs to Bruce Davis. Whether this reflects team size or a coverage gap, it&rsquo;s worth keeping an eye on as the active work queue grows.&rdquo;</p>
       </div>
     </div>
-    <p class="dv-desc" style="margin-top:16px;margin-bottom:0;">Nobody wrote that paragraph. <code style="font-family:var(--mono);font-size:12px;color:var(--text);">weekly_summary</code> produced it from sixteen real Linear tasks. The last line is something it noticed on its own, unprompted.</p>
+    <p class="c-cap">Nobody wrote that paragraph. <code style="font-family:var(--mono);font-size:12px;color:var(--text);">weekly_summary</code> produced it from sixteen real tasks. The last line is something it noticed on its own.</p>
   </div>
 </div>
 
-<!-- 02 TESTING -->
-<div class="dv-section reveal" id="s02">
-  <div class="sec-inner">
-    <div class="dv-hdr">
-      <span class="dv-label">02 — Testing</span>
-      <span class="dv-version">30 test cases · 93% live</span>
-    </div>
-    <h2 class="dv-title">How I know it works.</h2>
-    <p class="dv-desc">An AI gives a slightly different answer every time you ask it something. So "I tried it and it looked fine" does not prove much. I built a test that runs all six tools, checks the answers automatically, and writes out a plain pass-or-fail scorecard. Most people who build these tools skip that. Run for real against a live Linear workspace, it passed 28 of 30, a score of 93%. The gray box below is one of the thirty cases.</p>
-
-    <div class="c-frame">
-      <div class="c-bar">
-        <span class="c-bar-name">one of 30 test cases</span>
-        <span class="c-bar-status">[ TEST CASE ]</span>
-      </div>
-      <div class="c-body"><pre class="code">{
-  <span class="k">tool</span>: <span class="s">"triage_inbox"</span>,
-  <span class="k">name</span>: <span class="s">"every triaged item is well-formed"</span>,
-  <span class="k">args</span>: { <span class="k">max_count</span>: <span class="n">10</span> },
-  <span class="k">checks</span>: [
-    <span class="b">expectOk</span>(),
-    <span class="b">check</span>(<span class="s">"valid priority, summary, action"</span>, (o) =&gt; {
-      <span class="k">for</span> (<span class="k">const</span> it <span class="k">of</span> <span class="b">structured</span>(o).triaged) {
-        <span class="k">if</span> (!PRIORITIES.has(it.priority)) <span class="k">throw</span> <span class="b">Error</span>(<span class="s">"bad priority"</span>);
-        <span class="k">if</span> (!it.summary?.<span class="b">trim</span>())          <span class="k">throw</span> <span class="b">Error</span>(<span class="s">"empty summary"</span>);
-      }
-    }),
-  ],
-}</pre></div>
-    </div>
-
-    <div class="c-ann">
-      <span class="ann-lbl">What the test actually does</span>
-      <span class="ann-txt">The test does not fake anything. It starts the real tool, the same way the AI assistant would, and gives it real requests. Then it checks each answer against a short list of rules: is the answer shaped correctly, do the numbers add up, and does a bad request get refused with a clear message. It even runs without the paid AI keys, doing whatever checks it can for free. The result is the scorecard, one row per tool.</span>
-    </div>
-  </div>
-</div>
-
-<!-- 03 SECURITY -->
-<div class="dv-section reveal" id="s03">
+<!-- 03 SAFE BY DESIGN -->
+<div class="dv-section reveal">
   <div class="sec-inner">
     <div class="dv-hdr">
       <span class="dv-label">03 — Security</span>
-      <span class="dv-version">full security review in the repo</span>
+      <span class="dv-version">full threat model in the repo</span>
     </div>
-    <h2 class="dv-title">What could go wrong, and what I did about it.</h2>
-    <p class="dv-desc">This tool acts on a real company's data, so I had to think like someone trying to break it. Three decisions do most of the protecting.</p>
+    <h2 class="dv-title">Safe by design.</h2>
+    <p class="dv-desc">It acts on a real company's data, so it was built to be hard to misuse. Three decisions do most of the work.</p>
 
     <div class="rules">
       <div class="rule">
         <div class="rule-name">It can only read</div>
-        <div class="rule-body">None of the six tools can delete or change anything in Linear. They read information and explain it, and that is all. The code to delete a task was never written, so there is no way to trick the AI into deleting one.</div>
+        <div class="rule-body">No tool can delete or change anything. The code to delete a task was never written, so nobody can trick the AI into it.</div>
       </div>
       <div class="rule">
-        <div class="rule-name">The AI never touches the facts</div>
-        <div class="rule-body">The AI does the thinking, like deciding what is urgent or writing a summary. It never handles the real web links to your tasks. My own code adds those, straight from Linear. So the AI cannot send you to a made-up link, because it never gets to write one.</div>
+        <div class="rule-name">The AI never owns the facts</div>
+        <div class="rule-body">Links and IDs come straight from Linear, added by my code. A made-up link is structurally impossible.</div>
       </div>
       <div class="rule">
-        <div class="rule-name">Sneaky instructions go nowhere</div>
-        <div class="rule-body">Task descriptions are written by many different people. Someone could hide an instruction inside one, hoping the AI follows it. I cannot make that impossible. But there is nothing harmful for the AI to do here. The worst case is one notification sorted into the wrong pile.</div>
+        <div class="rule-name">A bad actor finds nothing</div>
+        <div class="rule-body">Even if someone hides a sneaky instruction in a task, there is nothing harmful for the AI to reach.</div>
       </div>
-    </div>
-
-    <div class="c-ann">
-      <span class="ann-lbl">It has no special powers</span>
-      <span class="ann-txt">The tool signs in to Linear with my own normal account. It can see and do exactly what I can already see and do, and nothing more. Every time a tool runs, it writes a short note to a log: which tool ran, what was asked, and when. The log leaves out anything private on purpose. This kind of careful access control is the work I did for fifteen years building security systems for banks and a healthcare company.</span>
     </div>
   </div>
 </div>
 
 <!-- IN REVIEW -->
 <section id="review" class="reveal">
-  <div class="brief-lbl">In review</div>
-  <div class="review-body">
-
-    <div class="review-block">
-      <div class="review-sub">Things I did on purpose</div>
-      <ul class="review-list">
-        <li>Six focused tools, instead of a copy of every Linear button. Each tool checks its own request before doing anything, so a bad request fails early and with a clear message.</li>
-        <li>Not every job needs heavy AI. Finding stuck tasks is really just a database search. Linear does the searching, and the AI only writes the short explanation. Using AI for the whole thing would be slower and cost more.</li>
-        <li>For each job, the tool asks Linear for everything it needs in one request, instead of dozens of small back-and-forth ones. That makes it faster and cheaper.</li>
-        <li>Two layers of testing. A quick set of checks that runs instantly and free, plus the bigger scorecard test that runs against the live AI.</li>
-        <li>Every tool reports what it spent on AI. That fed an honest cost write-up: roughly $2.60 a month for normal use.</li>
-      </ul>
-    </div>
-
-    <div class="review-block">
-      <div class="review-sub">What I would do differently</div>
-      <ul class="review-list">
-        <li>It signs in with my personal Linear access. That is the right call for a tool one person runs on their own computer. A shared, company-wide version would need a full login system, which is a larger job.</li>
-        <li>It spots stuck tasks by looking for a "blocked" label. Linear has a more exact way to record what is blocking what, and a later version should use it.</li>
-        <li>The scorecard test has to be started by hand. Setting it to run on its own after every change is a clear next step.</li>
-        <li>There is a cost-saving feature wired in that is not doing anything yet, because of a size limit on how it works. I left it in and wrote down why, rather than hiding it.</li>
-        <li>It is built for one person. Making it safe for a whole company to share is a separate, bigger piece of work.</li>
-      </ul>
-    </div>
-
-  </div>
+  <div class="review-lbl">In review — what I'd do differently</div>
+  <ul class="review-list">
+    <li>It signs in with a personal Linear key. Right for a one-person tool; a company-wide version would need a full login system.</li>
+    <li><code style="font-family:var(--mono);font-size:13px;color:var(--text);">audit_velocity</code> needs a team with real sprint history to show its best work.</li>
+    <li>The test runs by hand for now. Wiring it to run automatically on every change is the next step.</li>
+  </ul>
 </section>
 
 <!-- FOOTER -->
@@ -464,7 +458,7 @@ if (motionOK) {
   document.querySelectorAll('.reveal').forEach(el => {
     gsap.to(el, {
       opacity:1, y:0, duration:.7, ease:'power2.out',
-      scrollTrigger:{ trigger:el, start:'top 80%' },
+      scrollTrigger:{ trigger:el, start:'top 82%' },
     });
   });
 } else {
