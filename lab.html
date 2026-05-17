@@ -150,8 +150,8 @@ a { color:inherit; }
 }
 .toy-overlay.is-open { opacity:1; }
 .toy-overlay[hidden] { display:none; }
-.familiar-stage { position:absolute; inset:0; overflow:hidden; }
-.familiar-stage canvas { display:block; }
+.toy-stage { position:absolute; inset:0; overflow:hidden; }
+.toy-stage canvas { display:block; }
 .toy-back {
   position:absolute; top:clamp(16px,3vw,24px); left:clamp(16px,3vw,24px); z-index:3;
   background:transparent; border:1px solid rgba(236,231,219,.4); color:#ECE7DB;
@@ -190,6 +190,52 @@ a { color:inherit; }
   text-align:center; color:#ECE7DB; font-family:var(--mono); font-size:13px; line-height:2;
   padding:24px;
 }
+
+/* Wisp — injected by wisp.js */
+.wisp-video {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; transform:scaleX(-1); opacity:.16;
+}
+.wisp-ink, .wisp-trail, .wisp-fx { position:absolute; inset:0; width:100%; height:100%; }
+.wisp-score {
+  position:absolute; top:clamp(16px,3vw,24px); left:50%; transform:translateX(-50%); z-index:3;
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(236,231,219,.6);
+}
+.wisp-score b { color:var(--yellow); font-weight:700; }
+.wisp-readout {
+  position:absolute; left:0; right:0; bottom:clamp(22px,5vh,40px); z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  pointer-events:none; text-align:center; padding:0 20px;
+}
+.wisp-hint { font-family:var(--mono); font-size:12px; letter-spacing:.04em; color:#ECE7DB; }
+.wisp-legend {
+  display:flex; gap:18px; flex-wrap:wrap; justify-content:center;
+  font-family:var(--mono); font-size:9px; letter-spacing:.13em; text-transform:uppercase;
+  color:rgba(236,231,219,.45);
+}
+.wisp-cta {
+  position:absolute; inset:0; z-index:3;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; gap:14px; padding:32px; background:rgba(11,11,11,.72);
+}
+.wisp-cta[hidden] { display:none; }
+.wisp-cta-line {
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(26px,3.6vw,44px); line-height:1; text-transform:uppercase;
+  letter-spacing:.01em; color:#ECE7DB; max-width:18ch;
+}
+.wisp-cta-sub {
+  font-family:var(--mono); font-size:12px; line-height:1.75;
+  color:rgba(236,231,219,.6); max-width:46ch;
+}
+.wisp-cta-btn {
+  margin-top:6px; background:var(--yellow); color:var(--ink); border:none;
+  font-family:var(--mono); font-size:12px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; padding:13px 20px; cursor:pointer;
+  transition:filter .15s ease;
+}
+.wisp-cta-btn:hover, .wisp-cta-btn:focus-visible { outline:none; filter:brightness(1.07); }
 
 /* ─── MOTION ───────────────────────────────── */
 @keyframes rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
@@ -237,13 +283,15 @@ a { color:inherit; }
 <!-- ── CATALOGUE ─────────────────────────── -->
 <main class="lab-grid wrap">
 
-  <article class="toy" aria-label="Wisp — forthcoming">
+  <article class="toy is-live" data-toy="wisp" tabindex="0" role="button"
+           aria-label="Wisp — playable. Open the exhibit.">
+    <div class="toy-drop">Drop 02 · Live</div>
     <div class="toy-no"><span class="br">[</span> 01 <span class="br">]</span></div>
     <h2 class="toy-name">Wisp</h2>
     <p class="toy-line">Pinch your fingers in the air. Draw with glowing light.</p>
     <div class="toy-rule"></div>
     <div class="toy-meta"><span>medium — camera, light</span><span>2026</span></div>
-    <div class="toy-foot">Forthcoming</div>
+    <div class="toy-foot">[ Enter exhibit → ]</div>
   </article>
 
   <article class="toy" aria-label="Bloom — forthcoming">
@@ -264,7 +312,7 @@ a { color:inherit; }
     <div class="toy-foot">Forthcoming</div>
   </article>
 
-  <article class="toy is-live" id="toy-familiar" tabindex="0" role="button"
+  <article class="toy is-live" data-toy="familiar" tabindex="0" role="button"
            aria-label="Familiar — playable. Open the exhibit.">
     <div class="toy-drop">Drop 01 · Live</div>
     <div class="toy-no"><span class="br">[</span> 04 <span class="br">]</span></div>
@@ -307,10 +355,10 @@ a { color:inherit; }
 </aside>
 
 <!-- ── FAMILIAR OVERLAY ──────────────────── -->
-<div class="toy-overlay" id="familiar-overlay" hidden>
+<div class="toy-overlay" id="toy-overlay" hidden>
   <button class="toy-back" type="button">← Back to the Lab</button>
-  <button class="toy-sound" id="familiar-sound" type="button" aria-pressed="false">Sound: Off</button>
-  <div class="familiar-stage" id="familiar-stage"></div>
+  <button class="toy-sound" id="toy-sound" type="button" aria-pressed="false">Sound: Off</button>
+  <div class="toy-stage" id="toy-stage"></div>
 </div>
 
 <script type="module">
@@ -352,15 +400,19 @@ function recordPlay(toy) {
   pendingReward = toy;            /* spark it on return to the catalogue */
 }
 
-/* ── Familiar overlay ───────────────────── */
-const overlay = document.getElementById('familiar-overlay');
-const stage = document.getElementById('familiar-stage');
-const card = document.getElementById('toy-familiar');
+/* ── toy overlay ────────────────────────── */
+const TOYS = {
+  familiar: { src: './lab/familiar.js', fn: 'launchFamiliar', sound: true },
+  wisp:     { src: './lab/wisp.js',     fn: 'launchWisp',     sound: true },
+};
+
+const overlay = document.getElementById('toy-overlay');
+const stage = document.getElementById('toy-stage');
 const backBtn = overlay.querySelector('.toy-back');
 
 /* sound toggle — off by default; the visitor opts in, choice persists */
 const SOUND_KEY = 'lab.sound.v1';
-const soundBtn = document.getElementById('familiar-sound');
+const soundBtn = document.getElementById('toy-sound');
 let soundOn = localStorage.getItem(SOUND_KEY) === '1';
 function renderSound() {
   soundBtn.textContent = soundOn ? 'Sound: On' : 'Sound: Off';
@@ -374,34 +426,36 @@ soundBtn.addEventListener('click', () => {
   renderSound();
 });
 
-let famHandle = null;
+let toyHandle = null;
 let busy = false;
 
-async function openFamiliar() {
-  if (busy || !overlay.hidden) return;
+async function openToy(id) {
+  const toy = TOYS[id];
+  if (busy || !overlay.hidden || !toy) return;
   busy = true;
   overlay.hidden = false;
   void overlay.offsetWidth;            /* commit the hidden state so the fade runs */
   overlay.classList.add('is-open');
   document.body.style.overflow = 'hidden';
-  recordPlay('familiar');
+  soundBtn.hidden = !toy.sound;
+  recordPlay(id);
   try {
-    const mod = await import('./lab/familiar.js');
-    famHandle = mod.launchFamiliar(stage, { isSoundOn: () => soundOn });
+    const mod = await import(toy.src);
+    toyHandle = mod[toy.fn](stage, { isSoundOn: () => soundOn });
   } catch (err) {
-    console.error('[lab] failed to load Familiar:', err);
+    console.error('[lab] failed to load toy:', id, err);
     stage.innerHTML = '<div class="fam-fallback"><p>This exhibit could not load.<br>Check your connection and try again.</p></div>';
   }
   busy = false;
 }
 
-function closeFamiliar() {
+function closeToy() {
   if (overlay.hidden) return;
   overlay.classList.remove('is-open');
   document.body.style.overflow = '';
   setTimeout(() => {
     overlay.hidden = true;
-    if (famHandle) { famHandle.dispose(); famHandle = null; }
+    if (toyHandle) { try { toyHandle.dispose(); } catch (e) { /* ignore */ } toyHandle = null; }
     stage.innerHTML = '';
     if (pendingReward) {
       const dot = document.querySelector(`.lab-dot[data-toy="${pendingReward}"]`);
@@ -411,13 +465,15 @@ function closeFamiliar() {
   }, 320);
 }
 
-card.addEventListener('click', openFamiliar);
-card.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFamiliar(); }
+document.querySelectorAll('.toy.is-live').forEach((c) => {
+  c.addEventListener('click', () => openToy(c.dataset.toy));
+  c.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openToy(c.dataset.toy); }
+  });
 });
-backBtn.addEventListener('click', closeFamiliar);
+backBtn.addEventListener('click', closeToy);
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !overlay.hidden) closeFamiliar();
+  if (e.key === 'Escape' && !overlay.hidden) closeToy();
 });
 </script>
 
