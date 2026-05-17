@@ -163,6 +163,15 @@ section { padding: 120px 56px; }
 }
 body.light .hero-h1 { color: #0a0a0a; }
 .hero-h1 .accent { color: var(--signal); }
+.hero-tagline {
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500;
+  color: var(--signal);
+  line-height: 1.45;
+  max-width: 46ch;
+  letter-spacing: -.01em;
+  margin-bottom: 28px;
+}
 .hero-sub {
   font-size: clamp(16px, 1.4vw, 19px);
   color: var(--text-dim);
@@ -543,6 +552,9 @@ a:focus-visible, button:focus-visible {
     <h1 class="hero-h1">
       I'm Bruce Davis. I design and build <span class="accent">AI products</span> — interfaces, agents, workflows, and automation.
     </h1>
+    <p class="hero-tagline">
+      I build the AI tools your team will actually use — and design the screens people open them in.
+    </p>
     <p class="hero-sub">
       Fifteen years shipping systems for Wells Fargo, Microsoft, Starbucks, Bank of America, and Veradigm. Now applying that to AI.
     </p>
@@ -562,16 +574,16 @@ a:focus-visible, button:focus-visible {
         <div class="lf-tag">UX Engineer / Design Engineer</div>
         <div class="lf-title">The designer who codes inside a product pod.</div>
         <p class="lf-body">
-          UX-first, React/TypeScript-fluent, AI-native by default. I care about motion, accessibility, empty states, loading and error states — the craft details. Below are the projects that prove it.
+          I'm the person on a product team who both designs how something looks <em>and</em> writes the code that ships it — one role, no handoff gap. UX-first, React/TypeScript-fluent, AI-native by default: motion, accessibility, empty states, loading and error states — the craft details. Below are the projects that prove it.
         </p>
         <span class="lf-link">See UX work →</span>
       </a>
 
       <a href="#work" class="lf-card">
         <div class="lf-tag">AI Engineer / Claude Engineer</div>
-        <div class="lf-title">Claude-powered workflows, MCP servers, document pipelines.</div>
+        <div class="lf-title">The engineer who builds AI you can trust with real data.</div>
         <p class="lf-body">
-          For regulated environments — enterprise, healthcare, finance. Fifteen years on identity, payments, and HIPAA-compliant IAM, including Python automation for <strong>Non-Human Identity (NHI) governance at Microsoft</strong> — the same identity problem that now defines enterprise AI agent deployment. Below are the projects that prove it.
+          I build the behind-the-scenes AI tools a company runs on — the kind that have to be safe, auditable, and trusted with real data. Fifteen years in regulated environments — enterprise, healthcare, finance — on identity, payments, and HIPAA-compliant IAM, including Python automation for <strong>Non-Human Identity (NHI) governance at Microsoft</strong>, the same identity problem that now defines enterprise AI agent deployment. Below are the projects that prove it.
         </p>
         <span class="lf-link">See AI work →</span>
       </a>
@@ -592,7 +604,7 @@ a:focus-visible, button:focus-visible {
         <div class="work-tag">AI Engineer</div>
         <div class="work-name">Sentinel Triage</div>
         <p class="work-desc">
-          An autonomous SOC triage agent. A ReAct loop on Gemini 2.5 Flash investigates a security incident — scanning logs, enriching threat intelligence, proposing containment — and stops for a human to approve anything destructive. Three focused tools, an autonomy dial, and a human-in-the-loop gate. Python and Streamlit.
+          An AI assistant for security teams. When an alarm goes off, it reads the logs, works out what happened, and recommends how to contain the threat — then waits for a human to approve anything risky. Under the hood: a ReAct agent loop on Gemini 2.5 Flash with three focused tools, an autonomy dial, and a human-in-the-loop gate. Python and Streamlit.
         </p>
         <div class="work-badges">
           <span class="badge">Gemini 2.5 Flash</span>
@@ -607,7 +619,7 @@ a:focus-visible, button:focus-visible {
         <div class="work-tag">AI Engineer</div>
         <div class="work-name">Visionary Producer</div>
         <p class="work-desc">
-          An autonomous pre-production orchestrator. The same agent architecture as Sentinel Triage, pointed at film — it breaks down a script, scores VFX complexity, and curates casting archetypes, then locks the package only with a producer's sign-off. One pattern, two domains. Python and Streamlit.
+          An AI assistant for film planning. Hand it a movie script and it does the early prep — a scene-by-scene breakdown, a VFX-difficulty read, and casting suggestions — then waits for the producer to sign off before locking the package. It runs on the same agent architecture as Sentinel Triage, pointed at a creative problem instead: one pattern, two domains. Python and Streamlit.
         </p>
         <div class="work-badges">
           <span class="badge">Gemini 2.5 Flash</span>
@@ -637,7 +649,7 @@ a:focus-visible, button:focus-visible {
         <div class="work-tag">AI Engineer</div>
         <div class="work-name">Document Pipeline</div>
         <p class="work-desc">
-          A document pipeline built as a set of Claude tools — reads a doc, masks PII, validates the extraction with structured JSON outputs, escalates anything unusual to a human reviewer, tracks token cost. Built for regulated environments: PII masking, HITL review, and validation as the default, not the add-on. The Claude Engineer JD end to end.
+          A tool that reads documents and pulls out the important information automatically — while hiding personal details like names and Social Security numbers, and setting aside anything unusual for a person to double-check. Built as a set of Claude tools: extraction, PII masking, validation against a structured JSON schema, human-in-the-loop review for edge cases, and token-cost tracking. Built for regulated environments, where that safety net is the default, not the add-on. The Claude Engineer JD end to end.
         </p>
         <div class="work-badges">
           <span class="badge">Claude</span>
@@ -652,7 +664,7 @@ a:focus-visible, button:focus-visible {
         <div class="work-tag">AI Engineer</div>
         <div class="work-name">MCP Server</div>
         <p class="work-desc">
-          Five custom Claude tools running on an MCP server I built to extend my own workflow — pulling ideas from a Notion vault, suggesting palettes, voice-checking copy, scaffolding project pages. Hands-on MCP server engineering, tool design, and Claude API integration.
+          A set of custom abilities I gave my own AI assistant so it can pitch in on my real day-to-day work — pulling ideas from my Notion notes, suggesting color palettes, checking my writing's tone, and building out new project pages. It's an MCP server: the standard way to hand an AI assistant its own toolkit. Hands-on MCP server engineering, tool design, and Claude API integration.
         </p>
         <div class="work-badges">
           <span class="badge">MCP</span>
@@ -667,7 +679,7 @@ a:focus-visible, button:focus-visible {
         <div class="work-tag">UX Engineer</div>
         <div class="work-name">AI Interface Patterns</div>
         <p class="work-desc">
-          Five working interface patterns for AI products: word-by-word streaming, model state indicators, low-context warnings, confidence flags, and error recovery. The loading states, empty states, and error states the UX Engineer JD asks for — built as live React/TypeScript, not Figma mockups.
+          The small screen details that make an AI product feel trustworthy instead of confusing — text that streams in as the AI "types," a clear sign when it's thinking, a warning when it doesn't have enough information to answer well, a flag when it's unsure of an answer, and a graceful recovery when something breaks. Five working interface patterns for AI products — the loading, empty, and error states the UX Engineer JD asks for, built as live React/TypeScript, not Figma mockups.
         </p>
         <div class="work-badges">
           <span class="badge">React</span>
@@ -681,7 +693,7 @@ a:focus-visible, button:focus-visible {
         <div class="work-tag">UX Engineer</div>
         <div class="work-name">Motion Showcase</div>
         <p class="work-desc">
-          Five web motion techniques in one demo — split-text entrances, scroll-driven reveals, magnetic cursor hover, staggered grid reveals, kinetic type. Motion as a UX decision, not decoration. Built in GSAP, no framework.
+          Five web motion techniques in one demo — split-text entrances, scroll-driven reveals, magnetic cursor hover, staggered grid reveals, animated typography. Motion as a UX decision, not decoration. Built in GSAP, no framework.
         </p>
         <div class="work-badges">
           <span class="badge">GSAP</span>
@@ -695,7 +707,7 @@ a:focus-visible, button:focus-visible {
         <div class="work-tag">UX Engineer</div>
         <div class="work-name">Security UX</div>
         <p class="work-desc">
-          A security awareness training surface redesigned to borrow the visual language of the threat itself — HUD UI, scan lines, threat pulse, a playable "spot the phish" round. Motion, empty states, and behavioral interaction design applied to a compliance use case.
+          A security awareness training surface redesigned to borrow the visual language of the threat itself — a game-style heads-up display, scan lines, a threat pulse, and a playable "spot the phish" round. Motion, empty states, and behavioral interaction design applied to a compliance use case.
         </p>
         <div class="work-badges">
           <span class="badge">GSAP</span>
