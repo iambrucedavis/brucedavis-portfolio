@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lab — Bruce Davis</title>
+<meta name="description" content="The Lab — five interactive web experiments. A side door into the work of Bruce Davis: things built to be played with, not just looked at.">
+<meta property="og:title" content="The Lab — Bruce Davis">
+<meta property="og:description" content="Five interactive web experiments. Built to be played with, not just looked at.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<style>
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --ink:       #0B0B0B;
+  --bone:      #ECE7DB;
+  --dim:       #6E6A60;
+  --line:      rgba(11,11,11,.22);
+  --yellow:    #FFE500;
+  --display:   'Anton', Impact, sans-serif;
+  --mono:      'Space Mono', ui-monospace, monospace;
+}
+
+html { -webkit-text-size-adjust:100%; }
+body {
+  background:var(--bone); color:var(--ink);
+  font-family:var(--mono); line-height:1.6;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+a { color:inherit; }
+::selection { background:var(--yellow); color:var(--ink); }
+
+/* ─── TOP BAR ──────────────────────────────── */
+.lab-top {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:16px clamp(22px,5vw,48px);
+  border-bottom:1px solid var(--ink);
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+}
+.lab-top a { text-decoration:none; transition:color .2s; }
+.lab-top a:hover { color:var(--dim); }
+.lab-top .reg { color:var(--dim); }
+
+/* ─── SHELL ────────────────────────────────── */
+.wrap {
+  max-width:1180px; margin:0 auto;
+  padding-left:clamp(22px,5vw,48px); padding-right:clamp(22px,5vw,48px);
+}
+
+/* ─── HERO ─────────────────────────────────── */
+.lab-hero { padding-top:clamp(64px,9vw,108px); padding-bottom:clamp(40px,5vw,60px); }
+.lab-kicker {
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim);
+}
+.lab-tag {
+  background:var(--yellow); color:var(--ink);
+  font-weight:700; font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+  padding:5px 9px;
+}
+.lab-headline {
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(38px,6.2vw,92px); line-height:.98;
+  letter-spacing:.01em; text-transform:uppercase;
+  max-width:19ch; margin:24px 0 20px;
+}
+.lab-sub { font-size:13px; color:var(--dim); max-width:54ch; letter-spacing:.02em; }
+
+/* ─── CATALOGUE GRID ───────────────────────── */
+.lab-grid {
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:clamp(18px,2.4vw,34px);
+  padding-bottom:clamp(60px,8vw,96px);
+}
+.toy {
+  border:1px solid var(--ink); background:var(--bone);
+  padding:clamp(24px,2.8vw,38px);
+  display:flex; flex-direction:column; min-height:340px;
+  position:relative;
+}
+.toy-no { font-size:13px; letter-spacing:.12em; }
+.toy-no .br { color:var(--yellow); font-weight:700; }
+.toy-name {
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(38px,4.3vw,60px); line-height:.96;
+  text-transform:uppercase; letter-spacing:.015em;
+  margin:14px 0 12px;
+}
+.toy-line { font-size:13px; line-height:1.7; max-width:32ch; }
+.toy-rule { height:1px; background:var(--line); margin-top:auto; }
+.toy-meta {
+  display:flex; justify-content:space-between; gap:16px;
+  font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--dim);
+  padding-top:14px;
+}
+.toy-foot {
+  font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--dim); padding-top:10px;
+}
+
+/* live (playable) card */
+.toy.is-live { cursor:pointer; transition:border-color .2s ease, transform .2s ease; }
+.toy.is-live:hover { border-color:var(--yellow); transform:translateY(-3px); }
+.toy.is-live:focus-visible { outline:none; border-color:var(--yellow); box-shadow:0 0 0 2px var(--yellow); }
+.toy.is-live .toy-foot { color:var(--ink); }
+.toy.is-live:hover .toy-foot { color:var(--ink); }
+.toy-drop {
+  position:absolute; top:-1px; right:-1px;
+  background:var(--yellow); color:var(--ink);
+  font-weight:700; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
+  padding:6px 10px;
+}
+
+/* ─── META LAYER ───────────────────────────── */
+.lab-meta {
+  position:fixed; left:clamp(14px,3vw,26px); bottom:clamp(14px,3vw,24px); z-index:40;
+  background:var(--bone); border-left:2px solid var(--ink); padding:4px 0 4px 12px;
+  font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim);
+  display:flex; flex-direction:column; gap:7px;
+}
+.lab-meta .row { display:flex; align-items:center; gap:10px; }
+.lab-meta b { color:var(--ink); font-weight:400; }
+.lab-dots { display:flex; gap:5px; }
+.lab-dot {
+  width:7px; height:7px; border-radius:50%;
+  border:1px solid var(--ink); background:transparent;
+}
+.lab-dot.is-on { background:var(--yellow); border-color:var(--yellow); }
+.lab-dot.just-on { animation:spark .9s ease-out; }
+
+/* ─── LAB FOOTER ───────────────────────────── */
+.lab-foot {
+  border-top:1px solid var(--ink);
+  display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  padding-top:22px; padding-bottom:48px;
+  font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim);
+}
+.lab-foot a { text-decoration:none; transition:color .2s; }
+.lab-foot a:hover { color:var(--ink); }
+
+/* ─── FAMILIAR OVERLAY ─────────────────────── */
+.toy-overlay {
+  position:fixed; inset:0; z-index:100; background:#0B0B0B;
+  opacity:0; transition:opacity .3s ease;
+}
+.toy-overlay.is-open { opacity:1; }
+.toy-overlay[hidden] { display:none; }
+.familiar-stage { position:absolute; inset:0; overflow:hidden; }
+.familiar-stage canvas { display:block; }
+.toy-back {
+  position:absolute; top:clamp(16px,3vw,24px); left:clamp(16px,3vw,24px); z-index:3;
+  background:transparent; border:1px solid rgba(236,231,219,.4); color:#ECE7DB;
+  font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  padding:9px 14px; cursor:pointer; transition:border-color .2s, color .2s;
+}
+.toy-back:hover, .toy-back:focus-visible { outline:none; border-color:var(--yellow); color:var(--yellow); }
+.toy-sound {
+  position:absolute; top:clamp(16px,3vw,24px); right:clamp(16px,3vw,24px); z-index:3;
+  background:transparent; border:1px solid rgba(236,231,219,.4); color:#ECE7DB;
+  font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  padding:9px 14px; cursor:pointer; transition:border-color .2s, color .2s;
+}
+.toy-sound:hover, .toy-sound:focus-visible { outline:none; border-color:var(--yellow); color:var(--yellow); }
+.toy-sound.is-on { border-color:var(--yellow); color:var(--yellow); }
+
+/* readout injected by familiar.js */
+.fam-readout {
+  position:absolute; left:0; right:0; bottom:clamp(22px,5vh,40px); z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  pointer-events:none; padding:0 20px; text-align:center;
+}
+.fam-memory {
+  font-family:var(--mono); font-size:12px; letter-spacing:.04em;
+  color:#ECE7DB; min-height:1.3em;
+}
+.fam-mood {
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(236,231,219,.5);
+}
+.fam-mood-track { display:block; width:120px; height:2px; background:rgba(236,231,219,.16); }
+.fam-mood-fill { display:block; height:100%; background:var(--yellow); transform-origin:left; transform:scaleX(.5); }
+.fam-fallback {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  text-align:center; color:#ECE7DB; font-family:var(--mono); font-size:13px; line-height:2;
+  padding:24px;
+}
+
+/* ─── MOTION ───────────────────────────────── */
+@keyframes rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+@keyframes spark { 0% { box-shadow:0 0 0 0 rgba(255,229,0,.65); } 100% { box-shadow:0 0 0 10px rgba(255,229,0,0); } }
+.lab-hero > * { animation:rise .7s cubic-bezier(.2,.7,.2,1) both; }
+.lab-hero > *:nth-child(2) { animation-delay:.06s; }
+.lab-hero > *:nth-child(3) { animation-delay:.12s; }
+.toy { animation:rise .7s cubic-bezier(.2,.7,.2,1) both; }
+.toy:nth-child(1) { animation-delay:.14s; }
+.toy:nth-child(2) { animation-delay:.20s; }
+.toy:nth-child(3) { animation-delay:.26s; }
+.toy:nth-child(4) { animation-delay:.32s; }
+.toy:nth-child(5) { animation-delay:.38s; }
+
+@media (max-width:720px) {
+  .lab-grid { grid-template-columns:1fr; }
+  .toy { min-height:0; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { animation:none !important; transition:none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── TOP BAR ───────────────────────────── -->
+<header class="lab-top">
+  <a href="index.html">← Bruce Davis</a>
+  <span>The Lab <span class="reg">®</span></span>
+</header>
+
+<!-- ── HERO ──────────────────────────────── -->
+<section class="lab-hero wrap">
+  <div class="lab-kicker">
+    <span>Exhibition 01 — Interactive Toys</span>
+    <span class="lab-tag">Exhibition Open</span>
+  </div>
+  <h1 class="lab-headline">Five experiments. One question: how long can I keep you here?</h1>
+  <p class="lab-sub">
+    A room of small interactive toys — no instructions, no sign-up. Built to be played with, not looked at. Stay as long as you like.
+  </p>
+</section>
+
+<!-- ── CATALOGUE ─────────────────────────── -->
+<main class="lab-grid wrap">
+
+  <article class="toy" aria-label="Wisp — forthcoming">
+    <div class="toy-no"><span class="br">[</span> 01 <span class="br">]</span></div>
+    <h2 class="toy-name">Wisp</h2>
+    <p class="toy-line">Pinch your fingers in the air. Draw with glowing light.</p>
+    <div class="toy-rule"></div>
+    <div class="toy-meta"><span>medium — camera, light</span><span>2026</span></div>
+    <div class="toy-foot">Forthcoming</div>
+  </article>
+
+  <article class="toy" aria-label="Bloom — forthcoming">
+    <div class="toy-no"><span class="br">[</span> 02 <span class="br">]</span></div>
+    <h2 class="toy-name">Bloom</h2>
+    <p class="toy-line">Sing, hum, or whisper. Watch your sound grow into a garden.</p>
+    <div class="toy-rule"></div>
+    <div class="toy-meta"><span>medium — voice, growth</span><span>2026</span></div>
+    <div class="toy-foot">Forthcoming</div>
+  </article>
+
+  <article class="toy" aria-label="Tumble — forthcoming">
+    <div class="toy-no"><span class="br">[</span> 03 <span class="br">]</span></div>
+    <h2 class="toy-name">Tumble</h2>
+    <p class="toy-line">Draw a line. Watch the world fall through it.</p>
+    <div class="toy-rule"></div>
+    <div class="toy-meta"><span>medium — cursor, gravity</span><span>2026</span></div>
+    <div class="toy-foot">Forthcoming</div>
+  </article>
+
+  <article class="toy is-live" id="toy-familiar" tabindex="0" role="button"
+           aria-label="Familiar — playable. Open the exhibit.">
+    <div class="toy-drop">Drop 01 · Live</div>
+    <div class="toy-no"><span class="br">[</span> 04 <span class="br">]</span></div>
+    <h2 class="toy-name">Familiar</h2>
+    <p class="toy-line">A small creature that lives here. It remembers you.</p>
+    <div class="toy-rule"></div>
+    <div class="toy-meta"><span>medium — cursor, time</span><span>2026</span></div>
+    <div class="toy-foot">[ Enter exhibit → ]</div>
+  </article>
+
+  <article class="toy" aria-label="Maestro — forthcoming">
+    <div class="toy-no"><span class="br">[</span> 05 <span class="br">]</span></div>
+    <h2 class="toy-name">Maestro</h2>
+    <p class="toy-line">Conduct an ensemble with your hands and voice.</p>
+    <div class="toy-rule"></div>
+    <div class="toy-meta"><span>medium — hands, voice, sound</span><span>2026</span></div>
+    <div class="toy-foot">Forthcoming</div>
+  </article>
+
+</main>
+
+<!-- ── LAB FOOTER ────────────────────────── -->
+<footer class="lab-foot wrap">
+  <span>Bruce Davis · The Lab · 2026</span>
+  <a href="index.html">← Back to the main site</a>
+</footer>
+
+<!-- ── META LAYER ────────────────────────── -->
+<aside class="lab-meta" aria-label="Lab progress">
+  <div class="row">Time in lab <b id="lab-timer">00:00</b></div>
+  <div class="row">Played
+    <span class="lab-dots">
+      <span class="lab-dot" data-toy="wisp"></span>
+      <span class="lab-dot" data-toy="bloom"></span>
+      <span class="lab-dot" data-toy="tumble"></span>
+      <span class="lab-dot" data-toy="familiar"></span>
+      <span class="lab-dot" data-toy="maestro"></span>
+    </span>
+  </div>
+</aside>
+
+<!-- ── FAMILIAR OVERLAY ──────────────────── -->
+<div class="toy-overlay" id="familiar-overlay" hidden>
+  <button class="toy-back" type="button">← Back to the Lab</button>
+  <button class="toy-sound" id="familiar-sound" type="button" aria-pressed="false">Sound: Off</button>
+  <div class="familiar-stage" id="familiar-stage"></div>
+</div>
+
+<script type="module">
+'use strict';
+
+/* ── meta layer ─────────────────────────── */
+const TIME_KEY = 'lab.time.v1';
+const PLAYED_KEY = 'lab.played.v1';
+
+const timerEl = document.getElementById('lab-timer');
+const fmt = (s) => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+
+let cumSecs = Number(localStorage.getItem(TIME_KEY) || 0) || 0;
+let played;
+try { played = new Set(JSON.parse(localStorage.getItem(PLAYED_KEY) || '[]')); }
+catch { played = new Set(); }
+
+timerEl.textContent = fmt(cumSecs);
+document.querySelectorAll('.lab-dot').forEach((d) => {
+  if (played.has(d.dataset.toy)) d.classList.add('is-on');
+});
+
+setInterval(() => {
+  cumSecs += 1;
+  timerEl.textContent = fmt(cumSecs);
+  if (cumSecs % 5 === 0) localStorage.setItem(TIME_KEY, String(cumSecs));
+}, 1000);
+const flushTime = () => localStorage.setItem(TIME_KEY, String(cumSecs));
+window.addEventListener('pagehide', flushTime);
+document.addEventListener('visibilitychange', () => { if (document.hidden) flushTime(); });
+
+let pendingReward = null;
+function recordPlay(toy) {
+  if (played.has(toy)) return;
+  played.add(toy);
+  localStorage.setItem(PLAYED_KEY, JSON.stringify([...played]));
+  const dot = document.querySelector(`.lab-dot[data-toy="${toy}"]`);
+  if (dot) dot.classList.add('is-on');
+  pendingReward = toy;            /* spark it on return to the catalogue */
+}
+
+/* ── Familiar overlay ───────────────────── */
+const overlay = document.getElementById('familiar-overlay');
+const stage = document.getElementById('familiar-stage');
+const card = document.getElementById('toy-familiar');
+const backBtn = overlay.querySelector('.toy-back');
+
+/* sound toggle — off by default; the visitor opts in, choice persists */
+const SOUND_KEY = 'lab.sound.v1';
+const soundBtn = document.getElementById('familiar-sound');
+let soundOn = localStorage.getItem(SOUND_KEY) === '1';
+function renderSound() {
+  soundBtn.textContent = soundOn ? 'Sound: On' : 'Sound: Off';
+  soundBtn.classList.toggle('is-on', soundOn);
+  soundBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+}
+renderSound();
+soundBtn.addEventListener('click', () => {
+  soundOn = !soundOn;
+  localStorage.setItem(SOUND_KEY, soundOn ? '1' : '0');
+  renderSound();
+});
+
+let famHandle = null;
+let busy = false;
+
+async function openFamiliar() {
+  if (busy || !overlay.hidden) return;
+  busy = true;
+  overlay.hidden = false;
+  void overlay.offsetWidth;            /* commit the hidden state so the fade runs */
+  overlay.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+  recordPlay('familiar');
+  try {
+    const mod = await import('./lab/familiar.js');
+    famHandle = mod.launchFamiliar(stage, { isSoundOn: () => soundOn });
+  } catch (err) {
+    console.error('[lab] failed to load Familiar:', err);
+    stage.innerHTML = '<div class="fam-fallback"><p>This exhibit could not load.<br>Check your connection and try again.</p></div>';
+  }
+  busy = false;
+}
+
+function closeFamiliar() {
+  if (overlay.hidden) return;
+  overlay.classList.remove('is-open');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    overlay.hidden = true;
+    if (famHandle) { famHandle.dispose(); famHandle = null; }
+    stage.innerHTML = '';
+    if (pendingReward) {
+      const dot = document.querySelector(`.lab-dot[data-toy="${pendingReward}"]`);
+      if (dot) { dot.classList.add('just-on'); setTimeout(() => dot.classList.remove('just-on'), 1000); }
+      pendingReward = null;
+    }
+  }, 320);
+}
+
+card.addEventListener('click', openFamiliar);
+card.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFamiliar(); }
+});
+backBtn.addEventListener('click', closeFamiliar);
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !overlay.hidden) closeFamiliar();
+});
+</script>
+
+</body>
+</html>
