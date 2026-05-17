@@ -8,266 +8,237 @@
 <meta property="og:title" content="Document Pipeline — Bruce Davis">
 <meta property="og:description" content="A document pipeline built as a set of Claude tools — reads a doc, masks PII, validates the extraction with structured JSON outputs, escalates anything unusual to a human reviewer, tracks token cost. Built for regulated environments.">
 <meta property="og:type" content="website">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* ─── TOKENS ──────────────────────────────────── */
+/* ─── TOKENS — READYMADE, formal register ─────── */
 :root {
-  --bg:         #0F0F0F;
-  --surface:    #161616;
-  --surface-hi: #1E1E1E;
-  --border:     rgba(255,255,255,.07);
-  --border-hi:  rgba(255,255,255,.16);
-  --text:       #EBEBEB;
-  --text-dim:   #999999;
-  --text-muted: #7d7d7d;
-  --signal:     #E8601C;
-  --signal-rgb: 232,96,28;
-  --add:        #4FB37A;
-  --del:        #C84B4B;
-  --warn:       #E8B341;
-  --mono:       'Space Mono', monospace;
+  --paper:        #ECE4D0;
+  --paper-clean:  #F4EFE0;
+  --paper-deep:   #E4DAC2;
+  --ink:          #111111;
+  --ink-soft:     #2B2522;
+  --mute:         #8A847A;
+  --mute-soft:    #B7B0A2;
+  --signal:       #E1261C;
+  --signal-rgb:   225,38,28;
+  --add:          #2F7D4F;
+  --del:          #B5302A;
+  --warn:         #9A6B12;
+  --code-str:     #3F6B4A;
+  --code-num:     #8A5A1F;
+  --code-bool:    #2A5A6B;
+  --hairline:        rgba(0,0,0,.14);
+  --hairline-strong: rgba(0,0,0,.34);
+  --display: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  --serif:   'EB Garamond', Georgia, serif;
+  --mono:    'Space Mono', ui-monospace, monospace;
+  --shadow:    4px 4px 0 var(--ink);
+  --shadow-lg: 6px 6px 0 var(--ink);
+  --m-base: 140ms cubic-bezier(.2,0,0,1);
+  /* aliases — keep inline-styled / JS-driven body content valid */
+  --bg: var(--paper);
+  --surface: var(--paper-clean);
+  --surface-hi: var(--paper-deep);
+  --border: var(--hairline);
+  --border-hi: var(--hairline-strong);
+  --text: var(--ink);
+  --text-dim: var(--ink-soft);
+  --text-muted: var(--mute);
 }
-
-[data-theme="og"]    { --signal:#E8601C; --signal-rgb:232,96,28; }
-[data-theme="solar"] { --signal:#FF4D4D; --signal-rgb:255,77,77; }
-[data-theme="wave"]  { --signal:#2BC4AB; --signal-rgb:43,196,171; }
-[data-theme="volt"]  { --signal:#B8E02A; --signal-rgb:184,224,42; }
-[data-theme="haze"]  { --signal:#2AA8C4; --signal-rgb:42,168,196; }
-[data-theme="noir"]  { --signal:#C0C0C0; --signal-rgb:192,192,192; }
-
-body.light {
-  --bg:         #F5F5F3;
-  --surface:    #EBEBEA;
-  --surface-hi: #E2E2E0;
-  --border:     rgba(0,0,0,.10);
-  --border-hi:  rgba(0,0,0,.22);
-  --text:       #111111;
-  --text-dim:   #444444;
-  --text-muted: #6b6b6b;
-}
-body.light #cur { mix-blend-mode: normal; }
-body.light #top-nav { background: rgba(245,245,243,.92); }
-
-.mode-btn {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .08em;
-  background: transparent;
-  border: 1px solid var(--border-hi);
-  color: var(--text-dim);
-  padding: 4px 8px;
-  cursor: none;
-  transition: color .2s, border-color .2s;
-}
-.mode-btn:hover { color: var(--text); border-color: var(--text); }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html { scroll-behavior:auto; }
-body { background:var(--bg); color:var(--text); font-family:'Space Grotesk',sans-serif; overflow-x:hidden; cursor:none; }
+html { scroll-behavior:smooth; }
+body { background:var(--paper); color:var(--ink); font-family:var(--serif); font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; }
 a { color:inherit; text-decoration:none; }
-button { font-family:inherit; cursor:none; }
+button { font-family:inherit; cursor:pointer; }
 
-/* ─── CURSOR ──────────────────────────────────── */
-#cur { position:fixed; width:36px; height:36px; border:1.5px solid var(--text); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:border-color .15s, transform .15s; mix-blend-mode:exclusion; }
-body:has(a:hover) #cur, body:has(button:hover) #cur { transform:translate(-50%,-50%) scale(1.6); border-color:var(--signal); }
+/* ─── NAV ──────────────────────────────────────── */
+#top-nav { position:fixed; top:0; left:0; right:0; z-index:500; height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(22px,5vw,56px); border-bottom:1px solid var(--hairline-strong); background:var(--paper); }
+.nav-back { font-family:var(--mono); font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); transition:color var(--m-base); }
+.nav-back:hover { color:var(--signal); }
+.nav-links { display:flex; gap:clamp(20px,3vw,38px); }
+.nav-links a { font-family:var(--mono); font-size:11px; font-weight:400; letter-spacing:.14em; color:var(--mute); text-transform:uppercase; transition:color var(--m-base); }
+.nav-links a:hover { color:var(--ink); }
 
-/* ─── NAV ─────────────────────────────────────── */
-#top-nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 32px; border-bottom:1px solid var(--border); background:rgba(15,15,15,.9); backdrop-filter:blur(12px); }
-.nav-back { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--text-dim); transition:color .2s; }
-.nav-back:hover { color:var(--text); }
-.nav-links { display:flex; gap:28px; }
-.nav-links a { font-family:'Space Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:.14em; color:var(--text-muted); text-transform:uppercase; transition:color .2s; }
-.nav-links a:hover { color:var(--signal); }
-
-/* ─── HERO ────────────────────────────────────── */
-#hero { min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end; padding:120px 32px 72px; border-bottom:1px solid var(--border); }
-.hero-pre { font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--signal); text-transform:uppercase; margin-bottom:20px; }
-#hero-hl { font-size:clamp(40px,5.6vw,76px); font-weight:600; line-height:1.05; letter-spacing:-.025em; }
+/* ─── HERO ─────────────────────────────────────── */
+#hero { min-height:80vh; display:flex; flex-direction:column; justify-content:flex-end; padding:132px clamp(22px,5vw,56px) 72px; border-bottom:1px solid var(--hairline-strong); }
+.hero-pre { font-family:var(--mono); font-size:11px; letter-spacing:.2em; color:var(--signal); text-transform:uppercase; margin-bottom:22px; }
+#hero-hl { font-family:var(--display); font-weight:400; font-size:clamp(48px,8vw,104px); line-height:.92; letter-spacing:.005em; text-transform:uppercase; color:var(--ink); }
 #hero-hl .h-line { display:block; overflow:hidden; }
-.hero-sub { margin-top:36px; font-size:15px; color:var(--text-dim); max-width:600px; line-height:1.65; }
-.hero-meta { margin-top:28px; display:flex; gap:20px; font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--text-muted); flex-wrap:wrap; }
+.hero-sub { margin-top:30px; font-family:var(--serif); font-size:clamp(16px,1.4vw,19px); color:var(--ink-soft); max-width:64ch; line-height:1.6; }
+.hero-meta { margin-top:28px; display:flex; gap:20px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--mute); flex-wrap:wrap; }
 .hero-meta .live { color:var(--signal); }
 
-/* ─── SECTION SCAFFOLD ────────────────────────── */
-.dv-section { padding:80px 32px; border-bottom:1px solid var(--border); }
+/* ─── SECTION SCAFFOLD ─────────────────────────── */
+.dv-section { padding:clamp(64px,8vw,100px) clamp(22px,5vw,56px); border-bottom:1px solid var(--hairline-strong); }
 .sec-inner  { max-width:1040px; margin:0 auto; }
-.dv-hdr     { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px; gap:16px; flex-wrap:wrap; }
-.dv-label   { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); }
-.dv-version { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
-.dv-title   { font-size:26px; font-weight:600; letter-spacing:-.01em; margin-bottom:6px; margin-top:2px; }
-.dv-desc    { font-size:13px; color:var(--text-dim); margin-bottom:32px; max-width:620px; line-height:1.65; }
+.dv-hdr     { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px; gap:16px; flex-wrap:wrap; }
+.dv-label   { font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--signal); }
+.dv-version { font-family:var(--mono); font-size:10px; letter-spacing:.04em; color:var(--mute); }
+.dv-title   { font-family:var(--display); font-weight:400; text-transform:uppercase; font-size:clamp(26px,3.6vw,44px); line-height:1; letter-spacing:.01em; color:var(--ink); margin-bottom:14px; }
+.dv-desc    { font-family:var(--serif); font-size:16.5px; color:var(--ink-soft); margin-bottom:32px; max-width:64ch; line-height:1.6; }
 
-/* ─── FRAME ───────────────────────────────────── */
-.c-frame { background:var(--surface); border:1px solid var(--border); border-radius:3px; overflow:hidden; position:relative; }
-.c-bar   { display:flex; align-items:center; justify-content:space-between; padding:9px 16px; border-bottom:1px solid var(--border); background:var(--bg); gap:12px; }
-.c-bar-name   { font-family:var(--mono); font-size:10px; color:var(--text-dim); }
-.c-bar-status { font-family:var(--mono); font-size:10px; color:var(--signal); }
+/* ─── FRAME ────────────────────────────────────── */
+.c-frame { background:var(--paper-clean); border:1px solid var(--hairline-strong); box-shadow:var(--shadow); position:relative; }
+.c-bar   { display:flex; align-items:center; justify-content:space-between; padding:11px 18px; border-bottom:1px solid var(--hairline-strong); background:var(--paper-deep); gap:12px; }
+.c-bar-name   { font-family:var(--mono); font-size:10px; letter-spacing:.04em; color:var(--ink-soft); }
+.c-bar-status { font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--signal); }
 .c-body { padding:20px; }
 
-.c-ann { margin-top:18px; padding:14px 16px; border-left:2px solid var(--border-hi); }
-.ann-lbl { display:block; font-family:var(--mono); font-size:10px; color:var(--signal); letter-spacing:.06em; margin-bottom:6px; }
-.ann-txt { font-family:var(--mono); font-size:11px; color:var(--text-dim); line-height:1.75; }
+.c-ann { margin-top:20px; padding:16px 18px; border-left:3px solid var(--signal); background:var(--paper-clean); }
+.ann-lbl { display:block; font-family:var(--mono); font-size:10px; color:var(--signal); letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px; }
+.ann-txt { font-family:var(--serif); font-size:15.5px; color:var(--ink-soft); line-height:1.7; }
 
-/* ─── BRIEF ─────────────────────────────────── */
-#brief { padding:72px 32px; border-bottom:1px solid var(--border); }
-.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:24px; }
-.brief-body { font-size:15px; color:var(--text-dim); line-height:1.8; max-width:680px; }
-.brief-body p + p { margin-top:16px; }
-.brief-body strong { color:var(--text); font-weight:500; }
-.brief-body code  { font-family:var(--mono); font-size:13px; color:var(--text); }
+/* ─── BRIEF ────────────────────────────────────── */
+#brief { padding:clamp(64px,8vw,100px) clamp(22px,5vw,56px); border-bottom:1px solid var(--hairline-strong); }
+.brief-lbl { font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--signal); margin-bottom:24px; }
+.brief-body { font-family:var(--serif); font-size:18px; color:var(--ink-soft); line-height:1.72; max-width:66ch; }
+.brief-body p + p { margin-top:18px; }
+.brief-body strong { color:var(--ink); font-weight:600; }
+.brief-body code  { font-family:var(--mono); font-size:14px; color:var(--ink); }
 
-/* ─── PIPELINE DIAGRAM ──────────────────────── */
+/* ─── PIPELINE DIAGRAM ─────────────────────────── */
 .pl-flow { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; align-items:stretch; margin-bottom:18px; }
 @media (max-width:880px) { .pl-flow { grid-template-columns:1fr 1fr; } }
 @media (max-width:520px) { .pl-flow { grid-template-columns:1fr; } }
-.pl-node { background:var(--surface); border:1px solid var(--border); border-radius:3px; padding:14px 14px 16px; display:flex; flex-direction:column; gap:6px; min-height:130px; position:relative; }
-.pl-node .pl-num { font-family:var(--mono); font-size:10px; color:var(--text-muted); letter-spacing:.06em; }
-.pl-node .pl-name { font-family:var(--mono); font-size:12px; color:var(--text); }
-.pl-node .pl-pattern { font-family:var(--mono); font-size:9px; color:var(--signal); letter-spacing:.08em; text-transform:uppercase; }
-.pl-node .pl-desc { font-size:12px; color:var(--text-dim); line-height:1.55; margin-top:auto; }
+.pl-node { background:var(--paper-clean); border:1px solid var(--hairline-strong); box-shadow:var(--shadow); padding:16px 14px 18px; display:flex; flex-direction:column; gap:6px; min-height:130px; position:relative; }
+.pl-node .pl-num { font-family:var(--mono); font-size:10px; color:var(--mute); letter-spacing:.06em; }
+.pl-node .pl-name { font-family:var(--mono); font-size:12px; font-weight:700; color:var(--ink); }
+.pl-node .pl-pattern { font-family:var(--mono); font-size:9px; color:var(--signal); letter-spacing:.1em; text-transform:uppercase; }
+.pl-node .pl-desc { font-family:var(--serif); font-size:14px; color:var(--ink-soft); line-height:1.55; margin-top:auto; }
 
-/* ─── TAB BAR ───────────────────────────────── */
-.tab-bar { display:flex; gap:0; border:1px solid var(--border); border-radius:3px; background:var(--surface); overflow:hidden; margin-bottom:14px; flex-wrap:wrap; }
-.tab { flex:1; min-width:160px; padding:14px 18px; background:transparent; border:none; color:var(--text-dim); font-family:var(--mono); font-size:11px; letter-spacing:.06em; cursor:none; text-align:left; border-right:1px solid var(--border); transition:color .15s, background .15s; }
+/* ─── TAB BAR ──────────────────────────────────── */
+.tab-bar { display:flex; gap:0; border:1px solid var(--hairline-strong); background:var(--paper-clean); margin-bottom:14px; flex-wrap:wrap; }
+.tab { flex:1; min-width:160px; padding:14px 18px; background:transparent; border:none; color:var(--ink-soft); font-family:var(--mono); font-size:11px; letter-spacing:.06em; cursor:pointer; text-align:left; border-right:1px solid var(--hairline-strong); transition:color var(--m-base), background var(--m-base); }
 .tab:last-child { border-right:none; }
-.tab:hover { color:var(--text); }
-.tab.active { color:var(--signal); background:var(--bg); }
-.tab .tab-sub { display:block; font-size:9px; color:var(--text-muted); margin-top:4px; }
-.tab.active .tab-sub { color:var(--text-dim); }
+.tab:hover { color:var(--ink); }
+.tab.active { color:var(--signal); background:var(--paper-deep); }
+.tab .tab-sub { display:block; font-size:9px; color:var(--mute); margin-top:4px; }
+.tab.active .tab-sub { color:var(--ink-soft); }
 
-/* ─── SUMMARY BANNER ──────────────────────── */
-.summary { display:grid; grid-template-columns:repeat(6, 1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:3px; overflow:hidden; margin-bottom:24px; }
+/* ─── SUMMARY BANNER ───────────────────────────── */
+.summary { display:grid; grid-template-columns:repeat(6, 1fr); gap:1px; background:var(--hairline-strong); border:1px solid var(--hairline-strong); box-shadow:var(--shadow); margin-bottom:24px; }
 @media (max-width:760px) { .summary { grid-template-columns:repeat(3, 1fr); } }
 @media (max-width:440px) { .summary { grid-template-columns:repeat(2, 1fr); } }
-.summary-cell { background:var(--surface); padding:14px 14px 14px; }
-.summary-lbl { font-family:var(--mono); font-size:9px; letter-spacing:.10em; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; }
-.summary-val { font-family:var(--mono); font-size:14px; color:var(--text); }
+.summary-cell { background:var(--paper-clean); padding:14px 14px 14px; }
+.summary-lbl { font-family:var(--mono); font-size:9px; letter-spacing:.1em; color:var(--mute); text-transform:uppercase; margin-bottom:6px; }
+.summary-val { font-family:var(--mono); font-size:14px; font-weight:700; color:var(--ink); }
 .summary-val.bad  { color:var(--del); }
 .summary-val.ok   { color:var(--add); }
 .summary-val.warn { color:var(--warn); }
 
-/* ─── STAGE CARDS ──────────────────────────── */
-.stage { background:var(--surface); border:1px solid var(--border); border-radius:3px; margin-bottom:14px; overflow:hidden; }
-.stage-hdr { display:grid; grid-template-columns:32px 1fr auto; gap:14px; align-items:baseline; padding:14px 18px; border-bottom:1px solid var(--border); background:var(--bg); }
-.stage-num { font-family:var(--mono); font-size:11px; color:var(--text-muted); }
-.stage-name { font-family:var(--mono); font-size:13px; color:var(--text); }
+/* ─── STAGE CARDS ──────────────────────────────── */
+.stage { background:var(--paper-clean); border:1px solid var(--hairline-strong); box-shadow:var(--shadow); margin-bottom:20px; }
+.stage-hdr { display:grid; grid-template-columns:32px 1fr auto; gap:14px; align-items:baseline; padding:14px 18px; border-bottom:1px solid var(--hairline-strong); background:var(--paper-deep); }
+.stage-num { font-family:var(--mono); font-size:11px; color:var(--mute); }
+.stage-name { font-family:var(--mono); font-size:13px; font-weight:700; color:var(--ink); }
 .stage-name .tool-tag { color:var(--signal); margin-left:8px; font-size:11px; }
-.stage-meta { display:flex; gap:18px; font-family:var(--mono); font-size:10px; color:var(--text-dim); }
-.stage-meta span strong { color:var(--text); font-weight:400; }
+.stage-meta { display:flex; gap:18px; font-family:var(--mono); font-size:10px; color:var(--ink-soft); }
+.stage-meta span strong { color:var(--ink); font-weight:700; }
 .stage-body { padding:18px 18px 20px; }
 
-.field-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:2px; overflow:hidden; }
+.field-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:1px; background:var(--hairline-strong); border:1px solid var(--hairline-strong); }
 @media (max-width:760px) { .field-grid { grid-template-columns:1fr; } }
-.field-cell { background:var(--surface); padding:12px 14px; }
-.field-lbl { font-family:var(--mono); font-size:9px; letter-spacing:.10em; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px; }
-.field-val { font-family:var(--mono); font-size:11px; color:var(--text); line-height:1.6; word-break:break-word; }
+.field-cell { background:var(--paper-clean); padding:12px 14px; }
+.field-lbl { font-family:var(--mono); font-size:9px; letter-spacing:.1em; color:var(--mute); text-transform:uppercase; margin-bottom:6px; }
+.field-val { font-family:var(--mono); font-size:11px; color:var(--ink); line-height:1.6; word-break:break-word; }
 
-.detail-toggle { margin-top:14px; font-family:var(--mono); font-size:10px; color:var(--text-dim); background:transparent; border:1px solid var(--border-hi); padding:6px 12px; border-radius:2px; letter-spacing:.06em; }
-.detail-toggle:hover { color:var(--text); border-color:var(--text); }
+.detail-toggle { margin-top:14px; font-family:var(--mono); font-size:10px; color:var(--ink-soft); background:transparent; border:1px solid var(--hairline-strong); padding:6px 12px; letter-spacing:.06em; cursor:pointer; transition:color var(--m-base), border-color var(--m-base); }
+.detail-toggle:hover { color:var(--signal); border-color:var(--signal); }
 
 .detail-pane { display:none; margin-top:14px; }
 .detail-pane.open { display:block; }
-.detail-pane pre { font-family:var(--mono); font-size:11px; line-height:1.6; color:var(--text-dim); white-space:pre; max-height:420px; overflow:auto; padding:14px; background:var(--bg); border:1px solid var(--border); border-radius:2px; }
+.detail-pane pre { font-family:var(--mono); font-size:11.5px; line-height:1.7; color:var(--ink); white-space:pre; max-height:420px; overflow:auto; padding:16px; background:var(--paper-deep); border:1px solid var(--hairline-strong); }
 .detail-pane pre .k { color:var(--signal); }
-.detail-pane pre .s { color:#A4D7B0; }
-.detail-pane pre .n { color:#D8C58A; }
-.detail-pane pre .b { color:#7AC4D8; }
+.detail-pane pre .s { color:var(--code-str); }
+.detail-pane pre .n { color:var(--code-num); }
+.detail-pane pre .b { color:var(--code-bool); }
 .detail-pane pre .red { color:var(--del); }
 
-/* ─── REDACTIONS / EXCEPTIONS / QUEUE LISTS ─── */
-.list { display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-top:14px; }
-.list-row { background:var(--surface); padding:11px 14px; display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:baseline; font-family:var(--mono); font-size:11px; }
-.list-row .tag { color:var(--signal); font-size:9px; letter-spacing:.08em; text-transform:uppercase; padding:2px 6px; border:1px solid var(--border-hi); border-radius:2px; }
+/* ─── REDACTIONS / EXCEPTIONS / QUEUE LISTS ────── */
+.list { display:flex; flex-direction:column; gap:1px; background:var(--hairline-strong); border:1px solid var(--hairline-strong); margin-top:14px; }
+.list-row { background:var(--paper-clean); padding:11px 14px; display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:baseline; font-family:var(--mono); font-size:11px; }
+.list-row .tag { color:var(--signal); font-size:9px; letter-spacing:.08em; text-transform:uppercase; padding:2px 6px; border:1px solid var(--hairline-strong); }
 .list-row .tag.bad   { color:var(--del);  border-color:var(--del); }
 .list-row .tag.warn  { color:var(--warn); border-color:var(--warn); }
 .list-row .tag.ok    { color:var(--add);  border-color:var(--add); }
-.list-row .path { color:var(--text); }
-.list-row .meta { color:var(--text-muted); font-size:10px; }
-.list-row .body { color:var(--text-dim); }
-.list-row .desc { color:var(--text-dim); font-size:11px; line-height:1.55; grid-column:1 / -1; padding-top:4px; }
+.list-row .path { color:var(--ink); }
+.list-row .meta { color:var(--mute); font-size:10px; }
+.list-row .body { color:var(--ink-soft); }
+.list-row .desc { color:var(--ink-soft); font-size:11px; line-height:1.55; grid-column:1 / -1; padding-top:4px; }
 
-/* ─── EXCEPTION CARDS ───────────────────────── */
-.exc { background:var(--surface-hi); border:1px solid var(--border-hi); border-left:3px solid var(--del); border-radius:2px; padding:13px 14px; margin-top:10px; }
+/* ─── EXCEPTION CARDS ──────────────────────────── */
+.exc { background:var(--paper-deep); border:1px solid var(--hairline-strong); border-left:3px solid var(--del); padding:13px 14px; margin-top:10px; }
 .exc-hdr { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:8px; }
-.exc-rule { font-family:var(--mono); font-size:11px; color:var(--del); }
-.exc-id { font-family:var(--mono); font-size:10px; color:var(--text-muted); }
-.exc-field { font-family:var(--mono); font-size:10px; color:var(--text); margin-left:auto; }
-.exc-body { font-family:var(--mono); font-size:11px; color:var(--text-dim); line-height:1.65; }
-.exc-body .ea { color:var(--text); }
-.exc-suggest { font-family:var(--mono); font-size:10px; color:var(--text-muted); margin-top:8px; padding-top:8px; border-top:1px solid var(--border); line-height:1.65; }
+.exc-rule { font-family:var(--mono); font-size:11px; font-weight:700; color:var(--del); }
+.exc-id { font-family:var(--mono); font-size:10px; color:var(--mute); }
+.exc-field { font-family:var(--mono); font-size:10px; color:var(--ink); margin-left:auto; }
+.exc-body { font-family:var(--mono); font-size:11px; color:var(--ink-soft); line-height:1.65; }
+.exc-body .ea { color:var(--ink); }
+.exc-suggest { font-family:var(--mono); font-size:10px; color:var(--mute); margin-top:8px; padding-top:8px; border-top:1px solid var(--hairline); line-height:1.65; }
 
-/* ─── COST TABLE ────────────────────────────── */
+/* ─── COST TABLE ───────────────────────────────── */
 .cost-table { width:100%; border-collapse:collapse; font-family:var(--mono); font-size:11px; margin-top:8px; }
-.cost-table th, .cost-table td { padding:8px 12px; text-align:right; border-bottom:1px solid var(--border); }
+.cost-table th, .cost-table td { padding:8px 12px; text-align:right; border-bottom:1px solid var(--hairline); }
 .cost-table th:first-child, .cost-table td:first-child { text-align:left; }
-.cost-table th { font-weight:400; color:var(--text-muted); font-size:9px; letter-spacing:.10em; text-transform:uppercase; }
-.cost-table td { color:var(--text-dim); }
-.cost-table td.stage-cell { color:var(--text); }
-.cost-table tr.totals td { font-weight:700; color:var(--text); border-bottom:none; border-top:1px solid var(--border-hi); }
-.scaling { display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:2px; overflow:hidden; margin-top:14px; }
+.cost-table th { font-weight:400; color:var(--mute); font-size:9px; letter-spacing:.1em; text-transform:uppercase; }
+.cost-table td { color:var(--ink-soft); }
+.cost-table td.stage-cell { color:var(--ink); }
+.cost-table tr.totals td { font-weight:700; color:var(--ink); border-bottom:none; border-top:1px solid var(--hairline-strong); }
+.scaling { display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--hairline-strong); border:1px solid var(--hairline-strong); margin-top:14px; }
 @media (max-width:520px) { .scaling { grid-template-columns:1fr; } }
-.scaling-cell { background:var(--surface); padding:12px 14px; }
-.scaling-lbl { font-family:var(--mono); font-size:9px; color:var(--text-muted); letter-spacing:.10em; text-transform:uppercase; margin-bottom:4px; }
-.scaling-val { font-family:var(--mono); font-size:15px; color:var(--text); }
+.scaling-cell { background:var(--paper-clean); padding:12px 14px; }
+.scaling-lbl { font-family:var(--mono); font-size:9px; color:var(--mute); letter-spacing:.1em; text-transform:uppercase; margin-bottom:4px; }
+.scaling-val { font-family:var(--mono); font-size:15px; font-weight:700; color:var(--ink); }
 
-/* ─── CODE (section 03) ─────────────────────── */
-pre.code { font-family:var(--mono); font-size:11px; line-height:1.65; color:var(--text); white-space:pre; tab-size:2; }
+/* ─── CODE (section 03) ────────────────────────── */
+pre.code { font-family:var(--mono); font-size:11.5px; line-height:1.7; color:var(--ink); white-space:pre; tab-size:2; }
 pre.code .k    { color:var(--signal); }
-pre.code .s    { color:#A4D7B0; }
-pre.code .n    { color:#D8C58A; }
-pre.code .b    { color:#7AC4D8; }
-pre.code .c    { color:var(--text-muted); }
+pre.code .s    { color:var(--code-str); }
+pre.code .n    { color:var(--code-num); }
+pre.code .b    { color:var(--code-bool); }
+pre.code .c    { color:var(--mute); }
 
-/* ─── PALETTE ─────────────────────────────────── */
-#palette-ctrl { position:fixed; bottom:24px; right:24px; z-index:200; font-family:var(--mono); font-size:10px; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
-.p-lbl { color:var(--text-muted); letter-spacing:.08em; margin-bottom:2px; }
-.p-swatches { display:flex; gap:6px; }
-.p-sw { width:18px; height:18px; border-radius:50%; border:1px solid transparent; cursor:none; transition:transform .2s; }
-.p-sw:hover { transform:scale(1.25); }
-.p-sw.on { border-color:var(--text); }
-.p-sw[data-theme="og"]    { background:#E8601C; }
-.p-sw[data-theme="solar"] { background:#D42B2B; }
-.p-sw[data-theme="wave"]  { background:#1A8A7A; }
-.p-sw[data-theme="volt"]  { background:#B8E02A; }
-.p-sw[data-theme="haze"]  { background:#2AA8C4; }
-.p-sw[data-theme="noir"]  { background:#C0C0C0; }
-
-/* ─── REVIEW ───────────────────────────── */
-#review { padding:72px 32px; border-bottom:1px solid var(--border); }
-.review-body { max-width:680px; }
-.review-block + .review-block { margin-top:40px; }
-.review-sub { font-family:var(--mono); font-size:11px; letter-spacing:.10em; color:var(--signal); margin-bottom:20px; }
+/* ─── REVIEW ───────────────────────────────────── */
+#review { padding:clamp(64px,8vw,100px) clamp(22px,5vw,56px); border-bottom:1px solid var(--hairline-strong); }
+.review-body { max-width:66ch; }
+.review-block + .review-block { margin-top:44px; }
+.review-sub { font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--signal); margin-bottom:22px; }
 .review-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
-.review-list li { font-size:15px; color:var(--text-dim); line-height:1.7; padding-left:28px; position:relative; }
-.review-list li::before { content:'//'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:12px; color:var(--text-muted); line-height:1.7; }
-.review-list code { font-family:var(--mono); font-size:13px; color:var(--text); padding:0 1px; }
+.review-list li { font-family:var(--serif); font-size:16.5px; color:var(--ink-soft); line-height:1.65; padding-left:30px; position:relative; }
+.review-list li::before { content:'+'; position:absolute; left:0; top:0; font-family:var(--mono); font-size:14px; color:var(--signal); }
+.review-list code { font-family:var(--mono); font-size:13px; color:var(--ink); padding:0 1px; }
 
-/* ─── FOOTER ──────────────────────────────────── */
-#page-footer { padding:48px 32px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; max-width:1040px; margin:0 auto; gap:12px; flex-wrap:wrap; }
-.pf-back { font-family:var(--mono); font-size:11px; color:var(--text-dim); transition:color .2s; }
-.pf-back:hover { color:var(--text); }
+/* ─── FOOTER ───────────────────────────────────── */
+footer { background:var(--paper); }
+#page-footer { padding:36px clamp(22px,5vw,56px); border-top:1px solid var(--hairline-strong); display:flex; justify-content:space-between; align-items:center; max-width:1040px; margin:0 auto; gap:14px; flex-wrap:wrap; }
+.pf-back { font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); transition:color var(--m-base); }
+.pf-back:hover { color:var(--signal); }
 .pf-links { display:flex; gap:22px; flex-wrap:wrap; }
-.pf-links a { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--text-muted); transition:color .2s; }
+.pf-links a { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--mute); transition:color var(--m-base); }
 .pf-links a:hover { color:var(--signal); }
 
+a:focus-visible, button:focus-visible { outline:2px solid var(--signal); outline-offset:2px; }
 .reveal { opacity:0; transform:translateY(20px); }
 
 @media (max-width:640px) {
-  #hero, .dv-section, #brief, #review { padding-left:20px; padding-right:20px; }
   .stage-hdr { grid-template-columns:1fr; gap:6px; }
   .stage-meta { gap:12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { transition-duration:.001ms !important; animation-duration:.001ms !important; }
+  html { scroll-behavior:auto; }
 }
 </style>
 </head>
 <body>
 
-<div id="cur"></div>
-
 <nav id="top-nav">
   <a href="index.html" class="nav-back">← Bruce Davis</a>
   <div class="nav-links">
     <a href="index.html#work">Work</a>
+    <a href="lab.html">Lab</a>
     <a href="bruce-davis-resume.html">Resume</a>
     <a href="index.html#contact">Contact</a>
   </div>
@@ -477,20 +448,6 @@ pre.code .c    { color:var(--text-muted); }
   </div>
 </footer>
 
-<!-- PALETTE -->
-<div id="palette-ctrl">
-  <button class="mode-btn" id="mode-btn">[ LIGHT ]</button>
-  <span class="p-lbl">PALETTE</span>
-  <div class="p-swatches">
-    <div class="p-sw on" data-theme="og"></div>
-    <div class="p-sw" data-theme="solar"></div>
-    <div class="p-sw" data-theme="wave"></div>
-    <div class="p-sw" data-theme="volt"></div>
-    <div class="p-sw" data-theme="haze"></div>
-    <div class="p-sw" data-theme="noir"></div>
-  </div>
-</div>
-
 <!-- TRACE DATA — embedded JSON, parsed by JS below -->
 <script id="trace-data" type="application/json">{"claim":{"doc_id":"NSM-2026-0451829","doc_type":"claim","fixture":"claim.txt","started_at":"2026-05-10T22:22:57.279Z","finished_at":"2026-05-10T22:22:57.296Z","stages":[{"name":"extract","tool":"doc_extract","doc_text_preview":"NORTHSTAR MUTUAL — AUTO CLAIM SUBMISSION\nClaim ID: NSM-2026-0451829\nSubmitted: 04/22/2026 11:43 AM EST\nChannel: Mobile app\n\nPOLICYHOLDER\nName:           Marcus J. Whitfield\nDOB:            08/14/1982\nSSN:            541-22-8893\nPolicy #:   …","work_order_summary":{"task":"Extract structured data from this claim document. Conform exactly to the schema. Return JSON only.","extraction_rules_count":13,"schema_title":"AutoClaim","schema_required":["claim_id","submitted_at","policyholder","incident","vehicle","amounts"]},"data":{"claim_id":"NSM-2026-0451829","submitted_at":"2026-04-22T11:43:00-05:00","channel":"mobile app","policyholder":{"name":"Marcus J. Whitfield","dob":"1982-08-14","ssn":"541-22-8893","policy_number":"NSM-A-220947-04","phone":"(313) 555-0119","email":"mwhitfield.detroit@gmail.com","address":{"street":"2847 Linwood Ave","unit":"Apt 4B","city":"Detroit","state":"MI","zip":"48206"}},"incident":{"date_of_loss":"2026-04-19","time":"7:42 PM","location":"I-94 westbound, mile marker 211, Detroit MI","conditions":"Light rain, dusk","police_report":{"present":true,"agency":"Detroit PD","report_number":"DPD-26-44819"},"other_party":{"present":true,"driver_name":"Linda Sosa","insurer":"GEICO","policy_number":"G-994-22-117"}},"description":"Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.","vehicle":{"year":2022,"make":"Toyota","model":"Camry","trim":"SE","vin":"4T1G11AK7NU654221","license_plate":"MI 8XJ-K42","damage_summary":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","repair_estimate_usd":4820},"amounts":{"vehicle_repair":4820,"rental_coverage":480,"diminished_value":650,"total_claimed":5950,"deductible":500,"net_claim":5450},"attachments":[{"type":"photo","description":"8 photos of damage (mobile upload)"},{"type":"pdf","description":"Police report PDF (uploaded 04/22 11:38 AM)"},{"type":"pdf","description":"Repair estimate from Detroit Auto Body ($4,820.00)"}],"consent":{"recorded_statement":true,"inspection_window_days":5},"signature":{"name":"Marcus J. Whitfield","date":"2026-04-22"}},"tokens":{"in":1561,"out":471},"duration_ms":1},{"name":"mask","tool":"pii_mask","data":{"claim_id":"NSM-2026-0451829","submitted_at":"2026-04-22T11:43:00-05:00","channel":"mobile app","policyholder":{"name":"[NAME-REDACTED]","dob":"[DOB-REDACTED]","ssn":"[SSN-REDACTED]","policy_number":"NSM-A-220947-04","phone":"[PHONE-REDACTED]","email":"[EMAIL-REDACTED]","address":{"street":"[ADDRESS-REDACTED]","unit":"[ADDRESS-REDACTED]","city":"[ADDRESS-REDACTED]","state":"MI","zip":"[ADDRESS-REDACTED]"}},"incident":{"date_of_loss":"2026-04-19","time":"7:42 PM","location":"I-94 westbound, mile marker 211, Detroit MI","conditions":"Light rain, dusk","police_report":{"present":true,"agency":"Detroit PD","report_number":"DPD-26-44819"},"other_party":{"present":true,"driver_name":"[NAME-REDACTED]","insurer":"GEICO","policy_number":"[IDENTIFIER-REDACTED]"}},"description":"Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.","vehicle":{"year":2022,"make":"Toyota","model":"Camry","trim":"SE","vin":"4T1G11AK7NU654221","license_plate":"MI 8XJ-K42","damage_summary":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","repair_estimate_usd":4820},"amounts":{"vehicle_repair":4820,"rental_coverage":480,"diminished_value":650,"total_claimed":5950,"deductible":500,"net_claim":5450},"attachments":[{"type":"photo","description":"8 photos of damage (mobile upload)"},{"type":"pdf","description":"Police report PDF (uploaded 04/22 11:38 AM)"},{"type":"pdf","description":"Repair estimate from Detroit Auto Body ($4,820.00)"}],"consent":{"recorded_statement":true,"inspection_window_days":5},"signature":{"name":"[NAME-REDACTED]","date":"2026-04-22"}},"redactions":[{"field_path":"policyholder.name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"5ce90f300c8bf412","method":"path"},{"field_path":"policyholder.dob","pii_type":"dob","masked_value":"[DOB-REDACTED]","original_hash":"d01eae10f927a344","method":"path"},{"field_path":"policyholder.ssn","pii_type":"ssn","masked_value":"[SSN-REDACTED]","original_hash":"46cd29eb705ff3bb","method":"path"},{"field_path":"policyholder.phone","pii_type":"phone","masked_value":"[PHONE-REDACTED]","original_hash":"ee1afe8a5c762cb1","method":"path"},{"field_path":"policyholder.email","pii_type":"email","masked_value":"[EMAIL-REDACTED]","original_hash":"4a5bc7d5894ce3db","method":"path"},{"field_path":"policyholder.address.street","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"06b8adb2db263664","method":"path"},{"field_path":"policyholder.address.unit","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"664c85d16e0d24fe","method":"path"},{"field_path":"policyholder.address.city","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"08382a413cd3de61","method":"path"},{"field_path":"policyholder.address.zip","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"cc5c5c3ecd2e4448","method":"path"},{"field_path":"incident.other_party.driver_name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"7968957d95c73dbc","method":"path"},{"field_path":"incident.other_party.policy_number","pii_type":"identifier","masked_value":"[IDENTIFIER-REDACTED]","original_hash":"b48962519ea808e3","method":"path"},{"field_path":"signature.name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"5ce90f300c8bf412","method":"path"}],"contextual_review_advised":[{"field_path":"description","value":"Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."},{"field_path":"incident.location","value":"I-94 westbound, mile marker 211, Detroit MI","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."},{"field_path":"vehicle.damage_summary","value":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."}],"redactions_count":12,"tokens":{"in":471,"out":481},"duration_ms":1},{"name":"validate","tool":"doc_validate","valid":true,"exceptions":[],"rules_evaluated":4,"rules_passed":3,"rules_skipped":[{"rule_id":"policyholder_age","description":"policyholder.dob implies age >= 16 at date_of_loss","status":"skipped","reason":"dob has been redacted; run this rule before pii_mask in production"}],"schema_errors_filtered_for_redaction":[{"field_path":"/policyholder/dob","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/policyholder/ssn","keyword":"pattern","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/policyholder/email","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/policyholder/address/zip","keyword":"pattern","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"}],"tokens":{"in":481,"out":251},"duration_ms":14},{"name":"hitl_route","tool":"hitl_route","queue":[],"queue_size":0,"summary":{"total_queued":0,"by_priority":{"high":0,"medium":0,"low":0},"by_rule_type":{}},"tokens":{"in":1,"out":1},"duration_ms":0},{"name":"cost_report","tool":"cost_report","mode":"estimated","pricing_model":"claude-sonnet-4-6","rates_usd_per_million":{"input":3,"output":15},"per_stage":[{"stage":"extract","tokens_in":1561,"tokens_out":471,"cost_usd":0.011748,"method":"estimated"},{"stage":"mask","tokens_in":471,"tokens_out":481,"cost_usd":0.008628,"method":"estimated"},{"stage":"validate","tokens_in":481,"tokens_out":251,"cost_usd":0.005208,"method":"estimated"},{"stage":"hitl_route","tokens_in":1,"tokens_out":1,"cost_usd":0.000018,"method":"estimated"}],"totals":{"tokens_in":2514,"tokens_out":1204,"cost_usd":0.025602},"scaling":{"per_1000_docs_usd":25.6,"per_10000_docs_usd":256.02,"per_100000_docs_usd":2560.2},"tokens":{"in":53,"out":213},"duration_ms":0}],"summary":{"valid":true,"exceptions_count":0,"redactions_count":12,"queue_size":0,"total_tokens_in":2514,"total_tokens_out":1204,"total_cost_usd":0.025602,"per_1000_docs_usd":25.6,"per_100000_docs_usd":2560.2}},"invoice":{"doc_id":"INV-2026-04-887","doc_type":"invoice","fixture":"invoice.txt","started_at":"2026-05-10T22:22:57.298Z","finished_at":"2026-05-10T22:22:57.304Z","stages":[{"name":"extract","tool":"doc_extract","doc_text_preview":"                            INVOICE\n\nFrom:                                          Invoice #:   INV-2026-04-887\nNORTH AXIS PRINTWORKS LLC                      Issued:      04/30/2026\n2240 Industrial Way                            Due:     …","work_order_summary":{"task":"Extract structured data from this invoice document. Conform exactly to the schema. Return JSON only.","extraction_rules_count":11,"schema_title":"Invoice","schema_required":["invoice_number","issue_date","due_date","vendor","bill_to","line_items","subtotal","total"]},"data":{"invoice_number":"INV-2026-04-887","issue_date":"2026-04-30","due_date":"2026-05-30","terms":"Net 30","po_number":"PO-44120","vendor":{"name":"NORTH AXIS PRINTWORKS LLC","address":"2240 Industrial Way, Portland, OR 97210","tax_id":"84-2210947"},"bill_to":{"name":"Lattice & Loom Apparel","attn_name":"Accounts Payable","attn_email":"ramona.singh@latticeandloom.co","address":"414 Burnside St, Suite 220, Portland, OR 97209"},"ship_to":{"name":"Lattice & Loom Apparel — Warehouse","address":"812 Holgate Blvd, Bay 4, Portland, OR 97202"},"line_items":[{"number":1,"description":"Cotton/poly tee — silkscreen, 2 colors, front + sleeve hit, sizes S–XXL","qty":240,"unit_price":6.4,"amount":1536},{"number":2,"description":"Heavyweight hoodie — embroidered chest logo, 12k stitch count, sizes S–XL","qty":80,"unit_price":24.5,"amount":1960},{"number":3,"description":"Woven label — sewn-in, 50mm × 25mm, custom Pantone 7686 C","qty":320,"unit_price":0.85,"amount":272},{"number":4,"description":"Setup + screen burn — 2 colors, 1 plate","qty":1,"unit_price":85,"amount":85},{"number":5,"description":"Rush surcharge (5-day turn vs standard 12)","qty":1,"unit_price":220,"amount":220}],"subtotal":4073,"tax":0,"total":4073,"payment":{"method":"ACH","routing":"123000220","account":"884-22-9947","bank":"Umpqua Bank","late_fee_pct":1.5},"contact":{"email":"billing@northaxisprintworks.com","phone":"(503) 555-0814"}},"tokens":{"in":1268,"out":353},"duration_ms":0},{"name":"mask","tool":"pii_mask","data":{"invoice_number":"INV-2026-04-887","issue_date":"2026-04-30","due_date":"2026-05-30","terms":"Net 30","po_number":"PO-44120","vendor":{"name":"NORTH AXIS PRINTWORKS LLC","address":"2240 Industrial Way, Portland, OR 97210","tax_id":"84-2210947"},"bill_to":{"name":"Lattice & Loom Apparel","attn_name":"[NAME-REDACTED]","attn_email":"[EMAIL-REDACTED]","address":"414 Burnside St, Suite 220, Portland, OR 97209"},"ship_to":{"name":"Lattice & Loom Apparel — Warehouse","address":"812 Holgate Blvd, Bay 4, Portland, OR 97202"},"line_items":[{"number":1,"description":"Cotton/poly tee — silkscreen, 2 colors, front + sleeve hit, sizes S–XXL","qty":240,"unit_price":6.4,"amount":1536},{"number":2,"description":"Heavyweight hoodie — embroidered chest logo, 12k stitch count, sizes S–XL","qty":80,"unit_price":24.5,"amount":1960},{"number":3,"description":"Woven label — sewn-in, 50mm × 25mm, custom Pantone 7686 C","qty":320,"unit_price":0.85,"amount":272},{"number":4,"description":"Setup + screen burn — 2 colors, 1 plate","qty":1,"unit_price":85,"amount":85},{"number":5,"description":"Rush surcharge (5-day turn vs standard 12)","qty":1,"unit_price":220,"amount":220}],"subtotal":4073,"tax":0,"total":4073,"payment":{"method":"ACH","routing":"[BANKING-REDACTED]","account":"[BANKING-REDACTED]","bank":"Umpqua Bank","late_fee_pct":1.5},"contact":{"email":"[EMAIL-REDACTED]","phone":"[PHONE-REDACTED]"}},"redactions":[{"field_path":"bill_to.attn_name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"b0472da2c0c302c7","method":"path"},{"field_path":"bill_to.attn_email","pii_type":"email","masked_value":"[EMAIL-REDACTED]","original_hash":"d517bd661d4bc3d3","method":"path"},{"field_path":"contact.email","pii_type":"email","masked_value":"[EMAIL-REDACTED]","original_hash":"a48710baa24b67f8","method":"path"},{"field_path":"contact.phone","pii_type":"phone","masked_value":"[PHONE-REDACTED]","original_hash":"67631be36609b2f7","method":"path"},{"field_path":"payment.routing","pii_type":"banking","masked_value":"[BANKING-REDACTED]","original_hash":"90d21e29b3445e20","method":"path"},{"field_path":"payment.account","pii_type":"banking","masked_value":"[BANKING-REDACTED]","original_hash":"5f0b7b1ef19ca666","method":"path"}],"contextual_review_advised":[],"redactions_count":6,"tokens":{"in":353,"out":350},"duration_ms":0},{"name":"validate","tool":"doc_validate","valid":true,"exceptions":[],"rules_evaluated":4,"rules_passed":4,"rules_skipped":[],"schema_errors_filtered_for_redaction":[{"field_path":"/bill_to/attn_email","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/contact/email","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"}],"tokens":{"in":350,"out":136},"duration_ms":5},{"name":"hitl_route","tool":"hitl_route","queue":[],"queue_size":0,"summary":{"total_queued":0,"by_priority":{"high":0,"medium":0,"low":0},"by_rule_type":{}},"tokens":{"in":1,"out":1},"duration_ms":0},{"name":"cost_report","tool":"cost_report","mode":"estimated","pricing_model":"claude-sonnet-4-6","rates_usd_per_million":{"input":3,"output":15},"per_stage":[{"stage":"extract","tokens_in":1268,"tokens_out":353,"cost_usd":0.009099,"method":"estimated"},{"stage":"mask","tokens_in":353,"tokens_out":350,"cost_usd":0.006309,"method":"estimated"},{"stage":"validate","tokens_in":350,"tokens_out":136,"cost_usd":0.00309,"method":"estimated"},{"stage":"hitl_route","tokens_in":1,"tokens_out":1,"cost_usd":0.000018,"method":"estimated"}],"totals":{"tokens_in":1972,"tokens_out":840,"cost_usd":0.018516},"scaling":{"per_1000_docs_usd":18.52,"per_10000_docs_usd":185.16,"per_100000_docs_usd":1851.6},"tokens":{"in":53,"out":213},"duration_ms":0}],"summary":{"valid":true,"exceptions_count":0,"redactions_count":6,"queue_size":0,"total_tokens_in":1972,"total_tokens_out":840,"total_cost_usd":0.018516,"per_1000_docs_usd":18.52,"per_100000_docs_usd":1851.6}},"contract":{"doc_id":"CRA-2026-118-LL","doc_type":"contract","fixture":"contract.txt","started_at":"2026-05-10T22:22:57.305Z","finished_at":"2026-05-10T22:22:57.312Z","stages":[{"name":"extract","tool":"doc_extract","doc_text_preview":"SOFTWARE AS A SERVICE AGREEMENT\nOrder Form — Schedule A\n\nAgreement #:        CRA-2026-118-LL\nEffective date:     05/01/2026\nInitial term:       12 months\nRenewal:            Auto-renews for successive 12-month terms unless\n                 …","work_order_summary":{"task":"Extract structured data from this contract document. Conform exactly to the schema. Return JSON only.","extraction_rules_count":12,"schema_title":"SaaSOrderForm","schema_required":["agreement_number","effective_date","termination_date","provider","customer","service"]},"data":{"agreement_number":"CRA-2026-118-LL","effective_date":"2026-05-01","initial_term_months":12,"renewal_terms":"Auto-renews for successive 12-month terms unless either party gives 30 days written notice prior to renewal.","termination_date":"2027-04-30","provider":{"name":"Crane Analytics, Inc.","entity_type":"Delaware C-corp","address":"600 California St, 12th Floor, San Francisco, CA 94108","signatory":{"name":"Anita Bhasin","title":"COO"},"email":"anita.bhasin@crane-analytics.com"},"customer":{"name":"Lattice & Loom Apparel","entity_type":"Oregon LLC","address":"414 Burnside St, Suite 220, Portland, OR 97209","signatory":{"name":"David Park","title":"CFO"},"email":"dpark@latticeandloom.co"},"service":{"name":"Crane Cohort Analytics Platform","tier":"Standard","seats":25,"annual_fee_usd":48000,"payment_terms":"Annual, invoiced on Effective Date, Net 30","currency":"USD"},"overage":{"rate_usd":42,"unit":"named user per month","cap_pct":10},"service_levels":{"uptime_pct":99.9,"support_response":{"p1":"1 hour","p2":"4 hours","p3":"1 business day"},"service_credits":{"pct_per_0_1_below_sla":5,"cap_pct_per_month":25}},"data":{"residency":"US (AWS us-west-2)","ownership":"Property of Customer. Provider granted limited license to process for service delivery only.","subprocessors_url":"crane-analytics.com/subprocessors","certifications":["SOC 2 Type II"],"encryption":{"in_transit":"TLS 1.3","at_rest":"AES-256"}},"termination":{"for_convenience":{"notice_days":30,"refund_policy":"Refunds prepaid fees for unused months."},"for_cause":{"notice_days":30,"cure_required":true}},"signatures":[{"name":"Anita Bhasin","title":"COO","organization":"Crane Analytics, Inc.","date":"2026-04-29"},{"name":"David Park","title":"CFO","organization":"Lattice & Loom Apparel","date":"2026-04-30"}]},"tokens":{"in":1761,"out":450},"duration_ms":0},{"name":"mask","tool":"pii_mask","data":{"agreement_number":"CRA-2026-118-LL","effective_date":"2026-05-01","initial_term_months":12,"renewal_terms":"Auto-renews for successive 12-month terms unless either party gives 30 days written notice prior to renewal.","termination_date":"2027-04-30","provider":{"name":"Crane Analytics, Inc.","entity_type":"Delaware C-corp","address":"600 California St, 12th Floor, San Francisco, CA 94108","signatory":{"name":"[NAME-REDACTED]","title":"COO"},"email":"[EMAIL-REDACTED]"},"customer":{"name":"Lattice & Loom Apparel","entity_type":"Oregon LLC","address":"414 Burnside St, Suite 220, Portland, OR 97209","signatory":{"name":"[NAME-REDACTED]","title":"CFO"},"email":"[EMAIL-REDACTED]"},"service":{"name":"Crane Cohort Analytics Platform","tier":"Standard","seats":25,"annual_fee_usd":48000,"payment_terms":"Annual, invoiced on Effective Date, Net 30","currency":"USD"},"overage":{"rate_usd":42,"unit":"named user per month","cap_pct":10},"service_levels":{"uptime_pct":99.9,"support_response":{"p1":"1 hour","p2":"4 hours","p3":"1 business day"},"service_credits":{"pct_per_0_1_below_sla":5,"cap_pct_per_month":25}},"data":{"residency":"US (AWS us-west-2)","ownership":"Property of Customer. Provider granted limited license to process for service delivery only.","subprocessors_url":"crane-analytics.com/subprocessors","certifications":["SOC 2 Type II"],"encryption":{"in_transit":"TLS 1.3","at_rest":"AES-256"}},"termination":{"for_convenience":{"notice_days":30,"refund_policy":"Refunds prepaid fees for unused months."},"for_cause":{"notice_days":30,"cure_required":true}},"signatures":[{"name":"Anita Bhasin","title":"COO","organization":"Crane Analytics, Inc.","date":"2026-04-29"},{"name":"David Park","title":"CFO","organization":"Lattice & Loom Apparel","date":"2026-04-30"}]},"redactions":[{"field_path":"provider.signatory.name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"7e1a549b98522e06","method":"path"},{"field_path":"provider.email","pii_type":"email","masked_value":"[EMAIL-REDACTED]","original_hash":"e41b3214222d022b","method":"path"},{"field_path":"customer.signatory.name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"58ae73013f2b9331","method":"path"},{"field_path":"customer.email","pii_type":"email","masked_value":"[EMAIL-REDACTED]","original_hash":"a93efb572958ca3c","method":"path"}],"contextual_review_advised":[{"field_path":"renewal_terms","value":"Auto-renews for successive 12-month terms unless either party gives 30 days written notice prior to renewal.","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."},{"field_path":"data.ownership","value":"Property of Customer. Provider granted limited license to process for service delivery only.","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."},{"field_path":"termination.for_convenience.refund_policy","value":"Refunds prepaid fees for unused months.","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."}],"redactions_count":4,"tokens":{"in":450,"out":447},"duration_ms":0},{"name":"validate","tool":"doc_validate","valid":true,"exceptions":[],"rules_evaluated":4,"rules_passed":4,"rules_skipped":[],"schema_errors_filtered_for_redaction":[{"field_path":"/provider/email","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/customer/email","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"}],"tokens":{"in":447,"out":136},"duration_ms":7},{"name":"hitl_route","tool":"hitl_route","queue":[],"queue_size":0,"summary":{"total_queued":0,"by_priority":{"high":0,"medium":0,"low":0},"by_rule_type":{}},"tokens":{"in":1,"out":1},"duration_ms":0},{"name":"cost_report","tool":"cost_report","mode":"estimated","pricing_model":"claude-sonnet-4-6","rates_usd_per_million":{"input":3,"output":15},"per_stage":[{"stage":"extract","tokens_in":1761,"tokens_out":450,"cost_usd":0.012033,"method":"estimated"},{"stage":"mask","tokens_in":450,"tokens_out":447,"cost_usd":0.008055,"method":"estimated"},{"stage":"validate","tokens_in":447,"tokens_out":136,"cost_usd":0.003381,"method":"estimated"},{"stage":"hitl_route","tokens_in":1,"tokens_out":1,"cost_usd":0.000018,"method":"estimated"}],"totals":{"tokens_in":2659,"tokens_out":1034,"cost_usd":0.023487},"scaling":{"per_1000_docs_usd":23.49,"per_10000_docs_usd":234.87,"per_100000_docs_usd":2348.7},"tokens":{"in":53,"out":213},"duration_ms":0}],"summary":{"valid":true,"exceptions_count":0,"redactions_count":4,"queue_size":0,"total_tokens_in":2659,"total_tokens_out":1034,"total_cost_usd":0.023487,"per_1000_docs_usd":23.49,"per_100000_docs_usd":2348.7}},"claim-broken":{"doc_id":"NSM-2026-0451829","doc_type":"claim","fixture":"claim.txt","started_at":"2026-05-10T22:22:57.312Z","finished_at":"2026-05-10T22:22:57.318Z","stages":[{"name":"extract","tool":"doc_extract","doc_text_preview":"NORTHSTAR MUTUAL — AUTO CLAIM SUBMISSION\nClaim ID: NSM-2026-0451829\nSubmitted: 04/22/2026 11:43 AM EST\nChannel: Mobile app\n\nPOLICYHOLDER\nName:           Marcus J. Whitfield\nDOB:            08/14/1982\nSSN:            541-22-8893\nPolicy #:   …","work_order_summary":{"task":"Extract structured data from this claim document. Conform exactly to the schema. Return JSON only.","extraction_rules_count":13,"schema_title":"AutoClaim","schema_required":["claim_id","submitted_at","policyholder","incident","vehicle","amounts"]},"data":{"claim_id":"NSM-2026-0451829","submitted_at":"2026-04-22T11:43:00-05:00","channel":"mobile app","policyholder":{"name":"Marcus J. Whitfield","dob":"1982-08-14","ssn":"541-22-8893","policy_number":"NSM-A-220947-04","phone":"(313) 555-0119","email":"mwhitfield.detroit@gmail.com","address":{"street":"2847 Linwood Ave","unit":"Apt 4B","city":"Detroit","state":"MI","zip":"48206"}},"incident":{"date_of_loss":"2026-04-19","time":"7:42 PM","location":"I-94 westbound, mile marker 211, Detroit MI","conditions":"Light rain, dusk","police_report":{"present":true,"agency":"Detroit PD","report_number":"DPD-26-44819"},"other_party":{"present":true,"driver_name":"Linda Sosa","insurer":"GEICO","policy_number":"G-994-22-117"}},"description":"Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.","vehicle":{"year":2022,"make":"Toyota","model":"Camry","trim":"SE","license_plate":"MI 8XJ-K42","damage_summary":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","repair_estimate_usd":4820},"amounts":{"vehicle_repair":100,"rental_coverage":480,"diminished_value":650,"total_claimed":5950,"deductible":500,"net_claim":9999},"attachments":[{"type":"photo","description":"8 photos of damage (mobile upload)"},{"type":"pdf","description":"Police report PDF (uploaded 04/22 11:38 AM)"},{"type":"pdf","description":"Repair estimate from Detroit Auto Body ($4,820.00)"}],"consent":{"recorded_statement":true,"inspection_window_days":5},"signature":{"name":"Marcus J. Whitfield","date":"2026-04-22"}},"tokens":{"in":1561,"out":464},"duration_ms":1},{"name":"mask","tool":"pii_mask","data":{"claim_id":"NSM-2026-0451829","submitted_at":"2026-04-22T11:43:00-05:00","channel":"mobile app","policyholder":{"name":"[NAME-REDACTED]","dob":"[DOB-REDACTED]","ssn":"[SSN-REDACTED]","policy_number":"NSM-A-220947-04","phone":"[PHONE-REDACTED]","email":"[EMAIL-REDACTED]","address":{"street":"[ADDRESS-REDACTED]","unit":"[ADDRESS-REDACTED]","city":"[ADDRESS-REDACTED]","state":"MI","zip":"[ADDRESS-REDACTED]"}},"incident":{"date_of_loss":"2026-04-19","time":"7:42 PM","location":"I-94 westbound, mile marker 211, Detroit MI","conditions":"Light rain, dusk","police_report":{"present":true,"agency":"Detroit PD","report_number":"DPD-26-44819"},"other_party":{"present":true,"driver_name":"[NAME-REDACTED]","insurer":"GEICO","policy_number":"[IDENTIFIER-REDACTED]"}},"description":"Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.","vehicle":{"year":2022,"make":"Toyota","model":"Camry","trim":"SE","license_plate":"MI 8XJ-K42","damage_summary":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","repair_estimate_usd":4820},"amounts":{"vehicle_repair":100,"rental_coverage":480,"diminished_value":650,"total_claimed":5950,"deductible":500,"net_claim":9999},"attachments":[{"type":"photo","description":"8 photos of damage (mobile upload)"},{"type":"pdf","description":"Police report PDF (uploaded 04/22 11:38 AM)"},{"type":"pdf","description":"Repair estimate from Detroit Auto Body ($4,820.00)"}],"consent":{"recorded_statement":true,"inspection_window_days":5},"signature":{"name":"[NAME-REDACTED]","date":"2026-04-22"}},"redactions":[{"field_path":"policyholder.name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"5ce90f300c8bf412","method":"path"},{"field_path":"policyholder.dob","pii_type":"dob","masked_value":"[DOB-REDACTED]","original_hash":"d01eae10f927a344","method":"path"},{"field_path":"policyholder.ssn","pii_type":"ssn","masked_value":"[SSN-REDACTED]","original_hash":"46cd29eb705ff3bb","method":"path"},{"field_path":"policyholder.phone","pii_type":"phone","masked_value":"[PHONE-REDACTED]","original_hash":"ee1afe8a5c762cb1","method":"path"},{"field_path":"policyholder.email","pii_type":"email","masked_value":"[EMAIL-REDACTED]","original_hash":"4a5bc7d5894ce3db","method":"path"},{"field_path":"policyholder.address.street","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"06b8adb2db263664","method":"path"},{"field_path":"policyholder.address.unit","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"664c85d16e0d24fe","method":"path"},{"field_path":"policyholder.address.city","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"08382a413cd3de61","method":"path"},{"field_path":"policyholder.address.zip","pii_type":"address","masked_value":"[ADDRESS-REDACTED]","original_hash":"cc5c5c3ecd2e4448","method":"path"},{"field_path":"incident.other_party.driver_name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"7968957d95c73dbc","method":"path"},{"field_path":"incident.other_party.policy_number","pii_type":"identifier","masked_value":"[IDENTIFIER-REDACTED]","original_hash":"b48962519ea808e3","method":"path"},{"field_path":"signature.name","pii_type":"name","masked_value":"[NAME-REDACTED]","original_hash":"5ce90f300c8bf412","method":"path"}],"contextual_review_advised":[{"field_path":"description","value":"Insured was traveling westbound on I-94 in the center lane when a 2019 Honda Civic merged from the right shoulder without signaling, striking the front passenger-side quarter panel. Insured braked and steered left to avoid additional contact. Both vehicles came to rest on the left shoulder. No injuries reported. Other driver admitted fault at the scene per police report.","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."},{"field_path":"incident.location","value":"I-94 westbound, mile marker 211, Detroit MI","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."},{"field_path":"vehicle.damage_summary","value":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","reason":"Free-text field may contain residual PII (names, addresses, identifiers) not caught by deterministic patterns. Scan and mask as needed before downstream use."}],"redactions_count":12,"tokens":{"in":464,"out":474},"duration_ms":0},{"name":"validate","tool":"doc_validate","valid":false,"exceptions":[{"stage":"validate","rule":"schema","rule_id":"required","field_path":"/vehicle","message":"must have required property 'vin'","actual":{"year":2022,"make":"Toyota","model":"Camry","trim":"SE","license_plate":"MI 8XJ-K42","damage_summary":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","repair_estimate_usd":4820},"suggested_action":"Field missing: vin. Confirm with source.","severity":"error"},{"stage":"validate","rule":"business_rule","rule_id":"amounts_consistent","description":"vehicle_repair + rental_coverage + diminished_value should equal total_claimed (± $1)","expected":5950,"actual":1230,"suggested_action":"Sum of component amounts is 1230; total_claimed is 5950. Reconcile with source.","severity":"error"},{"stage":"validate","rule":"business_rule","rule_id":"net_claim_consistent","description":"net_claim should equal total_claimed - deductible (± $1)","expected":5450,"actual":9999,"suggested_action":"Expected net_claim = total_claimed (5950) - deductible (500) = 5450.","severity":"error"}],"rules_evaluated":4,"rules_passed":1,"rules_skipped":[{"rule_id":"policyholder_age","description":"policyholder.dob implies age >= 16 at date_of_loss","status":"skipped","reason":"dob has been redacted; run this rule before pii_mask in production"}],"schema_errors_filtered_for_redaction":[{"field_path":"/policyholder/dob","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/policyholder/ssn","keyword":"pattern","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/policyholder/email","keyword":"format","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"},{"field_path":"/policyholder/address/zip","keyword":"pattern","reason":"value is a [TYPE-REDACTED] placeholder; strict check skipped"}],"tokens":{"in":474,"out":519},"duration_ms":5},{"name":"hitl_route","tool":"hitl_route","queue":[{"queue_id":"8cfc870b-f1f4-4d4c-9832-74939607132a","doc_id":"NSM-2026-0451829","doc_type":"claim","stage":"validate","priority":"high","exception":{"stage":"validate","rule":"schema","rule_id":"required","field_path":"/vehicle","message":"must have required property 'vin'","actual":{"year":2022,"make":"Toyota","model":"Camry","trim":"SE","license_plate":"MI 8XJ-K42","damage_summary":"Front passenger-side quarter panel, passenger door, passenger-side mirror. Estimated repair $4,820.","repair_estimate_usd":4820},"suggested_action":"Field missing: vin. Confirm with source.","severity":"error"},"suggested_resolution":"Field missing: vin. Confirm with source.","assigned_to":null,"status":"queued","created_at":"2026-05-10T22:22:57.318Z"},{"queue_id":"a7379f80-875d-423b-8db7-c39e8d4ba2df","doc_id":"NSM-2026-0451829","doc_type":"claim","stage":"validate","priority":"high","exception":{"stage":"validate","rule":"business_rule","rule_id":"amounts_consistent","description":"vehicle_repair + rental_coverage + diminished_value should equal total_claimed (± $1)","expected":5950,"actual":1230,"suggested_action":"Sum of component amounts is 1230; total_claimed is 5950. Reconcile with source.","severity":"error"},"suggested_resolution":"Sum of component amounts is 1230; total_claimed is 5950. Reconcile with source.","assigned_to":null,"status":"queued","created_at":"2026-05-10T22:22:57.318Z"},{"queue_id":"a6ab02fb-6dc1-480f-9039-241dfa116933","doc_id":"NSM-2026-0451829","doc_type":"claim","stage":"validate","priority":"high","exception":{"stage":"validate","rule":"business_rule","rule_id":"net_claim_consistent","description":"net_claim should equal total_claimed - deductible (± $1)","expected":5450,"actual":9999,"suggested_action":"Expected net_claim = total_claimed (5950) - deductible (500) = 5450.","severity":"error"},"suggested_resolution":"Expected net_claim = total_claimed (5950) - deductible (500) = 5450.","assigned_to":null,"status":"queued","created_at":"2026-05-10T22:22:57.318Z"}],"queue_size":3,"summary":{"total_queued":3,"by_priority":{"high":3,"medium":0,"low":0},"by_rule_type":{"schema":1,"business_rule":2}},"tokens":{"in":267,"out":502},"duration_ms":0},{"name":"cost_report","tool":"cost_report","mode":"estimated","pricing_model":"claude-sonnet-4-6","rates_usd_per_million":{"input":3,"output":15},"per_stage":[{"stage":"extract","tokens_in":1561,"tokens_out":464,"cost_usd":0.011643,"method":"estimated"},{"stage":"mask","tokens_in":464,"tokens_out":474,"cost_usd":0.008502,"method":"estimated"},{"stage":"validate","tokens_in":474,"tokens_out":519,"cost_usd":0.009207,"method":"estimated"},{"stage":"hitl_route","tokens_in":267,"tokens_out":502,"cost_usd":0.008331,"method":"estimated"}],"totals":{"tokens_in":2766,"tokens_out":1959,"cost_usd":0.037683},"scaling":{"per_1000_docs_usd":37.68,"per_10000_docs_usd":376.83,"per_100000_docs_usd":3768.3},"tokens":{"in":54,"out":214},"duration_ms":0}],"summary":{"valid":false,"exceptions_count":3,"redactions_count":12,"queue_size":3,"total_tokens_in":2766,"total_tokens_out":1959,"total_cost_usd":0.037683,"per_1000_docs_usd":37.68,"per_100000_docs_usd":3768.3}}}</script>
 
@@ -500,42 +457,7 @@ pre.code .c    { color:var(--text-muted); }
 'use strict';
 
 const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const finePntr = window.matchMedia('(pointer:fine)').matches;
 gsap.registerPlugin(ScrollTrigger);
-
-/* ── CURSOR */
-if (finePntr) {
-  const cur = document.getElementById('cur');
-  window.addEventListener('mousemove', e => gsap.to(cur, { x:e.clientX, y:e.clientY, duration:.08, ease:'none' }));
-}
-
-/* ── THEME */
-const root = document.documentElement;
-let theme  = localStorage.getItem('6pct-theme') || 'og';
-root.setAttribute('data-theme', theme);
-document.querySelectorAll('.p-sw').forEach(sw => {
-  sw.classList.toggle('on', sw.dataset.theme === theme);
-  sw.addEventListener('click', () => {
-    theme = sw.dataset.theme;
-    root.setAttribute('data-theme', theme);
-    localStorage.setItem('6pct-theme', theme);
-    document.querySelectorAll('.p-sw').forEach(s => s.classList.toggle('on', s.dataset.theme === theme));
-  });
-});
-
-/* ── MODE */
-(function(){
-  const m   = localStorage.getItem('6pct-mode') || 'dark';
-  const btn = document.getElementById('mode-btn');
-  if (m === 'light') document.body.classList.add('light');
-  if (btn) btn.textContent = m === 'light' ? '[ DARK ]' : '[ LIGHT ]';
-  if (btn) btn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    const isLight = document.body.classList.contains('light');
-    localStorage.setItem('6pct-mode', isLight ? 'light' : 'dark');
-    btn.textContent = isLight ? '[ DARK ]' : '[ LIGHT ]';
-  });
-})();
 
 /* ── HERO */
 const hl = document.getElementById('hero-hl');

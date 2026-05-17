@@ -35,23 +35,6 @@
   --ok-rgb:       43,216,159;
   --mono:         'Space Mono', monospace;
 }
-[data-theme="og"]    { --signal:#E8601C; --signal-rgb:232,96,28; }
-[data-theme="solar"] { --signal:#FF4D4D; --signal-rgb:255,77,77; }
-[data-theme="wave"]  { --signal:#2BC4AB; --signal-rgb:43,196,171; }
-[data-theme="solar"] body.light { --signal:#B22020; --signal-rgb:178,32,32; }
-[data-theme="wave"]  body.light { --signal:#0E695C; --signal-rgb:14,105,92; }
-[data-theme="volt"]  { --signal:#B8E02A; --signal-rgb:184,224,42; }
-[data-theme="haze"]  { --signal:#2AA8C4; --signal-rgb:42,168,196; }
-[data-theme="noir"]  { --signal:#C0C0C0; --signal-rgb:192,192,192; }
-
-body.light{
-  --bg:#F5F5F3; --bg-deep:#EDEDEA;
-  --surface:#EBEBEA; --surface-hi:#E2E2E0;
-  --border:rgba(0,0,0,.10); --border-hi:rgba(0,0,0,.22);
-  --text:#111111; --text-dim:#444444; --text-muted:#6b6b6b;
-  --amber:#A8550A;
-}
-
 /* ─── RESET ───────────────────────────────────── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -609,27 +592,6 @@ footer{
 .pf-links a{color:var(--text-muted);transition:color .2s;}
 .pf-links a:hover{color:var(--amber);}
 
-/* ─── PALETTE TOGGLE ─────────────────────────── */
-#palette-ctrl{
-  position:fixed;bottom:24px;right:24px;z-index:200;
-  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
-}
-.p-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.18em;color:var(--text-dim);opacity:.5;}
-.p-swatches{display:flex;flex-direction:column;gap:6px;}
-.p-sw{width:14px;height:14px;border-radius:50%;cursor:none;border:2px solid transparent;transition:transform .15s;}
-.p-sw[data-theme="og"]{background:#E8601C;}
-.p-sw[data-theme="solar"]{background:#D42B2B;}
-.p-sw[data-theme="wave"]{background:#1A8A7A;}
-.p-sw[data-theme="volt"]{background:#B8E02A;}
-.p-sw[data-theme="haze"]{background:#2AA8C4;}
-.p-sw[data-theme="noir"]{background:#C0C0C0;}
-.p-sw.on{border-color:rgba(255,255,255,.6);}
-.mode-btn{
-  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
-  background:transparent;border:1px solid var(--border-hi);color:var(--text-dim);
-  padding:4px 8px;cursor:none;
-}
-
 /* ─── REVEAL ─────────────────────────────────── */
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s;}
 .reveal.visible{opacity:1;transform:none;}
@@ -844,20 +806,6 @@ footer{
   </div>
 </footer>
 
-<!-- ── PALETTE ──────────────────────────────── -->
-<div id="palette-ctrl">
-  <button class="mode-btn" id="mode-btn" aria-label="Toggle light or dark mode">[ LIGHT ]</button>
-  <span class="p-lbl">PALETTE</span>
-  <div class="p-swatches" role="group" aria-label="Color theme">
-    <button class="p-sw on" data-theme="og" aria-label="OG palette"></button>
-    <button class="p-sw" data-theme="solar" aria-label="Solar palette"></button>
-    <button class="p-sw" data-theme="wave" aria-label="Wave palette"></button>
-    <button class="p-sw" data-theme="volt" aria-label="Volt palette"></button>
-    <button class="p-sw" data-theme="haze" aria-label="Haze palette"></button>
-    <button class="p-sw" data-theme="noir" aria-label="Noir palette"></button>
-  </div>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 'use strict';
@@ -877,34 +825,6 @@ if (finePntr) {
     else { cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px'; }
   });
 }
-
-/* ── THEME */
-const root = document.documentElement;
-let theme  = localStorage.getItem('6pct-theme') || 'og';
-root.setAttribute('data-theme', theme);
-document.querySelectorAll('.p-sw').forEach(sw => {
-  sw.classList.toggle('on', sw.dataset.theme === theme);
-  sw.addEventListener('click', () => {
-    theme = sw.dataset.theme;
-    root.setAttribute('data-theme', theme);
-    localStorage.setItem('6pct-theme', theme);
-    document.querySelectorAll('.p-sw').forEach(s => s.classList.toggle('on', s.dataset.theme === theme));
-  });
-});
-
-/* ── MODE */
-(function(){
-  const m   = localStorage.getItem('6pct-mode') || 'dark';
-  const btn = document.getElementById('mode-btn');
-  if (m === 'light') document.body.classList.add('light');
-  if (btn) btn.textContent = m === 'light' ? '[ DARK ]' : '[ LIGHT ]';
-  if (btn) btn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    const isLight = document.body.classList.contains('light');
-    localStorage.setItem('6pct-mode', isLight ? 'light' : 'dark');
-    btn.textContent = isLight ? '[ DARK ]' : '[ LIGHT ]';
-  });
-})();
 
 /* ── REVEAL */
 const obs = new IntersectionObserver(entries => {

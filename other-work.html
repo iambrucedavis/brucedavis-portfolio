@@ -5,134 +5,166 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Other Work — Bruce Davis</title>
 <meta name="description" content="Experiments, craft demos, and concept builds by Bruce Davis.">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
+/* ─── TOKENS — READYMADE, formal register ─────── */
 :root {
-  --bg:         #0F0F0F;
-  --surface:    #161616;
-  --border:     rgba(255,255,255,.10);
-  --text:       #EBEBEB;
-  --text-dim:   #A8A8A8;
-  --text-muted: #7D7D7D;
-  --signal:     #E8601C;
-  --mono:       'Space Mono', monospace;
-  --sans:       'Space Grotesk', sans-serif;
+  --paper:        #ECE4D0;
+  --paper-clean:  #F4EFE0;
+  --ink:          #111111;
+  --ink-soft:     #2B2522;
+  --mute:         #8A847A;
+  --signal:       #E1261C;
+  --hairline:        rgba(0,0,0,.14);
+  --hairline-strong: rgba(0,0,0,.34);
+  --display: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  --serif:   'EB Garamond', Georgia, serif;
+  --mono:    'Space Mono', ui-monospace, monospace;
+  --m-base: 140ms cubic-bezier(.2,0,0,1);
 }
 
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17px;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  padding: 80px 32px 80px;
 }
 
-.wrap { max-width: 760px; margin: 0 auto; }
+/* ─── NAV ──────────────────────────────────────── */
+#top-nav {
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 clamp(22px,5vw,56px);
+  background:var(--paper);
+  border-bottom:1px solid var(--hairline-strong);
+}
+.nav-back {
+  font-family:var(--mono); font-weight:700;
+  font-size:13px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink); text-decoration:none;
+  transition:color var(--m-base);
+}
+.nav-back:hover { color:var(--signal); }
+.nav-links { display:flex; gap:clamp(20px,3vw,38px); list-style:none; }
+.nav-links a {
+  font-family:var(--mono);
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--mute); text-decoration:none;
+  transition:color var(--m-base);
+}
+.nav-links a:hover { color:var(--ink); }
 
-.back-top {
+/* ─── SHELL ────────────────────────────────────── */
+.wrap { max-width: 760px; margin: 0 auto; padding: 148px clamp(22px,5vw,56px) 96px; }
+
+.eyebrow {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  text-decoration: none;
-  display: inline-block;
-  margin-bottom: 56px;
-  border-bottom: 1px solid transparent;
-  transition: color .2s, border-color .2s;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 22px;
 }
-.back-top:hover { color: var(--signal); border-bottom-color: var(--signal); }
 
 h1 {
-  font-size: clamp(32px, 4vw, 44px);
-  font-weight: 600;
-  letter-spacing: -.02em;
-  margin-bottom: 18px;
-  color: #fff;
+  font-family: var(--display); font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: .95; letter-spacing: .01em;
+  margin-bottom: 22px;
+  color: var(--ink);
 }
 
 .intro {
-  font-size: 17px;
-  color: var(--text-dim);
-  line-height: 1.7;
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(18px, 1.8vw, 22px);
+  color: var(--ink-soft);
+  line-height: 1.5;
   margin-bottom: 56px;
-  max-width: 60ch;
+  max-width: 48ch;
 }
 
-.list {
-  list-style: none;
-  border-top: 1px solid var(--border);
-}
+.list { list-style: none; border-top: 1px solid var(--hairline-strong); }
 .list li {
-  border-bottom: 1px solid var(--border);
-  padding: 28px 0;
+  border-bottom: 1px solid var(--hairline-strong);
+  padding: 30px 0;
 }
 .item-name {
-  font-size: 19px;
-  font-weight: 600;
-  letter-spacing: -.01em;
-  color: var(--text);
-  margin-bottom: 8px;
+  font-family: var(--display); font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1; letter-spacing: .01em;
+  margin-bottom: 12px;
 }
 .item-name a {
-  color: var(--text);
+  color: var(--ink);
   text-decoration: none;
-  transition: color .2s;
+  transition: color var(--m-base);
 }
 .item-name a:hover { color: var(--signal); }
 .item-desc {
-  font-size: 15px;
-  color: var(--text-dim);
-  line-height: 1.7;
-  margin-bottom: 10px;
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  max-width: 56ch;
 }
 .item-link {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--signal);
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color .2s;
+  border-bottom: 1.5px solid transparent;
+  transition: color var(--m-base), border-color var(--m-base);
 }
-.item-link:hover { border-bottom-color: var(--signal); }
+.item-link:hover { color: var(--signal); border-bottom-color: var(--signal); }
 
 .back-bottom {
   margin-top: 56px;
   font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--signal);
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink);
   text-decoration: none;
   display: inline-block;
-  border-bottom: 1px solid transparent;
-  transition: border-color .2s;
+  border-bottom: 1.5px solid transparent;
+  transition: color var(--m-base), border-color var(--m-base);
 }
-.back-bottom:hover { border-bottom-color: var(--signal); }
+.back-bottom:hover { color: var(--signal); border-bottom-color: var(--signal); }
 
-a:focus-visible {
-  outline: 1px solid var(--signal);
-  outline-offset: 3px;
-}
+a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
 
 @media (max-width: 600px) {
-  body { padding: 60px 22px; }
+  .wrap { padding: 120px 22px 72px; }
   .intro { margin-bottom: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 </style>
 </head>
 <body>
 
+<nav id="top-nav">
+  <a href="index.html" class="nav-back">← Bruce Davis</a>
+  <ul class="nav-links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="lab.html">Lab</a></li>
+    <li><a href="bruce-davis-resume.html">Resume</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
 <div class="wrap">
 
-  <a href="index.html" class="back-top">← Back to main site</a>
+  <div class="eyebrow">Other Work</div>
 
   <h1>Other Work</h1>
 
