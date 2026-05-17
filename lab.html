@@ -237,6 +237,22 @@ a { color:inherit; }
 }
 .wisp-cta-btn:hover, .wisp-cta-btn:focus-visible { outline:none; filter:brightness(1.07); }
 
+/* Tumble — injected by tumble.js */
+.tumble-canvas { position:absolute; inset:0; width:100%; height:100%; }
+.tumble-readout {
+  position:absolute; left:0; right:0; bottom:clamp(20px,4vh,34px); z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  pointer-events:none;
+}
+.tumble-hint { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:rgba(236,231,219,.55); }
+.tumble-reset {
+  pointer-events:auto;
+  background:transparent; border:1px solid rgba(236,231,219,.4); color:#ECE7DB;
+  font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  padding:9px 16px; cursor:pointer; transition:border-color .2s, color .2s;
+}
+.tumble-reset:hover, .tumble-reset:focus-visible { outline:none; border-color:var(--yellow); color:var(--yellow); }
+
 /* ─── MOTION ───────────────────────────────── */
 @keyframes rise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
 @keyframes spark { 0% { box-shadow:0 0 0 0 rgba(255,229,0,.65); } 100% { box-shadow:0 0 0 10px rgba(255,229,0,0); } }
@@ -303,13 +319,15 @@ a { color:inherit; }
     <div class="toy-foot">Forthcoming</div>
   </article>
 
-  <article class="toy" aria-label="Tumble — forthcoming">
+  <article class="toy is-live" data-toy="tumble" tabindex="0" role="button"
+           aria-label="Tumble — playable. Open the exhibit.">
+    <div class="toy-drop">Drop 03 · Live</div>
     <div class="toy-no"><span class="br">[</span> 03 <span class="br">]</span></div>
     <h2 class="toy-name">Tumble</h2>
     <p class="toy-line">Draw a line. Watch the world fall through it.</p>
     <div class="toy-rule"></div>
     <div class="toy-meta"><span>medium — cursor, gravity</span><span>2026</span></div>
-    <div class="toy-foot">Forthcoming</div>
+    <div class="toy-foot">[ Enter exhibit → ]</div>
   </article>
 
   <article class="toy is-live" data-toy="familiar" tabindex="0" role="button"
@@ -404,6 +422,7 @@ function recordPlay(toy) {
 const TOYS = {
   familiar: { src: './lab/familiar.js', fn: 'launchFamiliar', sound: true },
   wisp:     { src: './lab/wisp.js',     fn: 'launchWisp',     sound: true },
+  tumble:   { src: './lab/tumble.js',   fn: 'launchTumble',   sound: false },
 };
 
 const overlay = document.getElementById('toy-overlay');
